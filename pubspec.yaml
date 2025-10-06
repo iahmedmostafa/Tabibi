@@ -12,6 +12,14 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
+  flutter_bloc:
+  get_it:
+  equatable:
+  go_router:
+  shared_preferences:
+  flutter_native_splash:
+  carousel_slider: ^5.1.1
+  smooth_page_indicator: ^1.2.0
 
 dev_dependencies:
   flutter_test:
@@ -24,9 +32,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/
 
   # fonts:
   #   - family: Schyler

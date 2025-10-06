@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'core/routing/app_router.dart';
+import 'core/services/shared_prefs_service.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await onboardingServices.init();
   runApp(const TabibiApp());
 }
 
 class TabibiApp extends StatelessWidget {
   const TabibiApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(),
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.blue),
+      routerConfig: router,
     );
   }
 }
