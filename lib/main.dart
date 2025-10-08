@@ -5,6 +5,7 @@ import 'core/services/shared_prefs_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await onboardingServices.init();
+
   runApp(const TabibiApp());
 }
 

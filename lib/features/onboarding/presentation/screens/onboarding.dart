@@ -46,6 +46,9 @@ class OnBoardingScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: PrimaryButton(
+                    height: 48,
+                    width: 311,
+                    title: "Next",
                     onPress: () => cubit.nextPage(context, onboardingData.length),
                   ),
                 ),
@@ -68,7 +71,7 @@ class OnBoardingScreen extends StatelessWidget {
                   onTap: () => cubit.skip(context),
                   child: const Text(
                     AppStrings.skip,
-                    style: AppTextStyles.skipText,
+                    style: AppTextStyles.grey16w500,
                   ),
                 ),
                 const SizedBox(height: 20),
