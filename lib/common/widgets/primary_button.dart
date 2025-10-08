@@ -10,8 +10,8 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        height: 48,
-        width: 311,
+        height: height,
+        width: width,
         child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(
@@ -21,7 +21,7 @@ class PrimaryButton extends StatelessWidget {
 
           onPressed: onPress,
           child: Text(
-            "Next",
+            title,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,

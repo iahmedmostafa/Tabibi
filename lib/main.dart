@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:tabibi/core/services/shared_prefs_service.dart';
 import 'core/routing/app_router.dart';
-import 'core/services/shared_prefs_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await OnboardingServices.init();
+  await onboardingServices.init();
+
   runApp(const TabibiApp());
 }
 
