@@ -5,7 +5,6 @@ import 'core/routing/app_router.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await OnboardingServices.init();
-  await onboardingServices.init();
 
   runApp(const TabibiApp());
 }

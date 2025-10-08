@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:tabibi/core/constants/app_colors.dart';
-import 'package:tabibi/core/constants/app_styles.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_styles.dart';
 
 class SocialButton extends StatelessWidget {
   final String text;
   final String iconPath;
   final VoidCallback onPressed;
 
-  const SocialButton({
+  const SocialButton({super.key, 
     required this.text,
     required this.iconPath,
     required this.onPressed,

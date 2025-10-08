@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tabibi/common/widgets/primary_button.dart';
-import 'package:tabibi/core/constants/app_strings.dart';
+import 'package:tabibi/core/widgets/primary_button.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/features/authentication/presentation/screens/login/widgets/bottom_login_section.dart';
 import 'package:tabibi/features/authentication/presentation/widgets/custom_input_field.dart';
@@ -14,31 +14,31 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 85),
+          const  SizedBox(height: 85),
 
-            TopSection(title: AppStrings.welcome, supTitle: AppStrings.hope),
+          const  TopSection(title: AppStrings.welcome, supTitle: AppStrings.hope),
 
-            SizedBox(height: 32),
+          const  SizedBox(height: 32),
 
-            CustomInputField(
+          const  CustomInputField(
               hintText: AppStrings.email,
               icon: Icons.email_outlined,
               isPassword: false,
             ),
 
-            SizedBox(height: 20),
+          const  SizedBox(height: 20),
 
-            CustomInputField(
+        const    CustomInputField(
               hintText: AppStrings.password,
               icon: Icons.lock_outline,
               isPassword: true,
             ),
 
-            SizedBox(height: 23),
+          const  SizedBox(height: 23),
 
             PrimaryButton(
               onPress: () {},
@@ -47,7 +47,7 @@ class LoginScreen extends StatelessWidget {
               title: AppStrings.signIn,
             ),
 
-            SizedBox(height: 23),
+          const  SizedBox(height: 23),
 
             BottomLoginSection(
               onGooglePressed: () {},

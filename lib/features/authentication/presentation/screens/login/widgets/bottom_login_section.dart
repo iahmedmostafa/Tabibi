@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tabibi/core/constants/app_colors.dart';
-import 'package:tabibi/core/constants/app_images.dart';
-import 'package:tabibi/core/constants/app_strings.dart';
-import 'package:tabibi/core/constants/app_styles.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_images.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:tabibi/core/utils/constants/app_styles.dart';
 import 'package:tabibi/features/authentication/presentation/widgets/auth_prompt_text.dart';
 import 'package:tabibi/features/authentication/presentation/widgets/or_section.dart';
 import 'package:tabibi/features/authentication/presentation/widgets/social_button.dart';
@@ -25,7 +25,7 @@ class BottomLoginSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        OrSection(),
+        const OrSection(),
 
         const SizedBox(height: 23),
         SocialButton(

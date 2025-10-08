@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tabibi/core/constants/app_colors.dart';
-import 'package:tabibi/core/constants/app_styles.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_styles.dart';
 
 class AuthPromptText extends StatelessWidget {
-  String gestureDetectorName;
-  String text;
-  VoidCallback onPress;
-  AuthPromptText({
+  final String gestureDetectorName;
+  final String text;
+  final VoidCallback onPress;
+  const AuthPromptText({
     super.key,
     required this.gestureDetectorName,
     required this.text,

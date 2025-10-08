@@ -55,4 +55,7 @@ class AppStrings {
   static const genderFillProfile= 'Gender';
   static const saveFillProfile= 'Save';
 
+    static const String dateOfBirthError = "You must be at least 18 years old.";
+
+
 }

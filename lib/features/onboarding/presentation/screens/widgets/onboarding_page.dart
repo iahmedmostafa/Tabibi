@@ -15,24 +15,24 @@ class OnboardingPage extends StatelessWidget {
           width: 390,
           child: Image.asset(image!, fit: BoxFit.fill),
         ),
-        SizedBox(height: 28.5),
+        const SizedBox(height: 28.5),
         Center(
           child: Text(
             title!,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
               color: Color(0xff374151),
             ),
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Text(
               description!,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color(0xff6B7280),
                 fontSize: 14,
                 fontWeight: FontWeight.w400,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tabibi/common/widgets/primary_button.dart';
-import 'package:tabibi/core/constants/app_strings.dart';
+import 'package:tabibi/core/widgets/primary_button.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/features/authentication/presentation/widgets/arrow_back.dart';
 import 'package:tabibi/features/authentication/presentation/widgets/custom_input_field.dart';
@@ -17,26 +17,26 @@ class CreateNewPassword extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             children: [
-              SizedBox(height: 32),
-              ArrowBack(nameRoute: AppRoutes.verifyCode),
-              SizedBox(height: 32),
-              TopSection(
+              const SizedBox(height: 32),
+              const ArrowBack(nameRoute: AppRoutes.verifyCode),
+              const SizedBox(height: 32),
+              const TopSection(
                 title: AppStrings.createNewPassword,
                 supTitle:AppStrings.supTitleCreateNewPassword
               ),
-              SizedBox(height: 32),
-              CustomInputField(
+              const SizedBox(height: 32),
+              const CustomInputField(
                 hintText: AppStrings.password,
                 icon: Icons.lock_outline,
                 isPassword: true,
               ),
-              SizedBox(height: 20),
-              CustomInputField(
+              const SizedBox(height: 20),
+              const CustomInputField(
                 hintText: AppStrings.confirmPassword,
                 icon: Icons.lock_outline,
                 isPassword: true,
               ),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               PrimaryButton(
                 onPress: () {},
                 height: 48,

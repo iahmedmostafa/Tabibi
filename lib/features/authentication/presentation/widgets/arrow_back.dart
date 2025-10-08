@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tabibi/core/constants/app_images.dart';
+import 'package:tabibi/core/utils/constants/app_images.dart';
 
 class ArrowBack extends StatelessWidget {
-  String nameRoute;
-   ArrowBack({
+  final String nameRoute;
+   const ArrowBack({
     super.key,
     required this.nameRoute
   });

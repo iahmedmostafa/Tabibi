@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tabibi/core/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 
 class CustomInputField extends StatelessWidget {
   final String hintText;
@@ -7,7 +7,7 @@ class CustomInputField extends StatelessWidget {
   final IconData? suffixIcon;
   final bool isPassword;
 
-  const CustomInputField({
+  const CustomInputField({super.key, 
     required this.hintText,
     this.icon,
     this.suffixIcon,

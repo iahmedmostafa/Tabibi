@@ -10,7 +10,7 @@ import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart'
 import '../services/shared_prefs_service.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: onboardingServices.isFirstTime()
+  initialLocation: OnboardingServices.isFirstTime()
       ? '/onboarding'
       : '/login',
   routes: [

@@ -3,13 +3,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:tabibi/common/widgets/primary_button.dart';
-import 'package:tabibi/core/constants/app_colors.dart';
-import 'package:tabibi/core/constants/app_strings.dart';
-import 'package:tabibi/core/constants/app_styles.dart';
+import 'package:tabibi/core/widgets/primary_button.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:tabibi/core/utils/constants/app_styles.dart';
 import 'package:tabibi/features/onboarding/presentation/cubit/onboarding_cubit.dart';
 import 'package:tabibi/features/onboarding/presentation/screens/widgets/onboarding_page.dart';
-import 'package:tabibi/core/constants/app_images.dart';
+import 'package:tabibi/core/utils/constants/app_images.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});

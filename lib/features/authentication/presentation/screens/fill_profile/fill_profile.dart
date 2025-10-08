@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tabibi/common/widgets/primary_button.dart';
-import 'package:tabibi/core/constants/app_colors.dart';
-import 'package:tabibi/core/constants/app_strings.dart';
-import 'package:tabibi/core/constants/app_styles.dart';
+import 'package:tabibi/core/widgets/primary_button.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:tabibi/core/utils/constants/app_styles.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/features/authentication/presentation/screens/fill_profile/widgets/profile_image_picker.dart';
 import 'package:tabibi/features/authentication/presentation/widgets/arrow_back.dart';
@@ -19,11 +19,11 @@ class FillProfile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             children: [
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               Row(
                 children: [
-                  ArrowBack(nameRoute: AppRoutes.signUp),
-                  SizedBox(width: 14),
+                  const ArrowBack(nameRoute: AppRoutes.signUp),
+                  const SizedBox(width: 14),
                   Text(
                     "Fill Your Profile",
                     style: AppTextStyles.dark20w600.copyWith(
@@ -32,7 +32,7 @@ class FillProfile extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               ProfileImagePicker(
                 onImageSelected: (file) {
                   if (file != null) {
@@ -40,28 +40,28 @@ class FillProfile extends StatelessWidget {
                   }
                 },
               ),
-              SizedBox(height: 24),
-              CustomInputField(hintText: AppStrings.nameFillProfile, isPassword: false),
+              const SizedBox(height: 24),
+              const CustomInputField(hintText: AppStrings.nameFillProfile, isPassword: false),
 
-              SizedBox(height: 20),
-              CustomInputField(hintText: AppStrings.nickNameFillProfile, isPassword: false),
+              const SizedBox(height: 20),
+              const CustomInputField(hintText: AppStrings.nickNameFillProfile, isPassword: false),
 
-              SizedBox(height: 20),
-              CustomInputField(hintText: AppStrings.emailFillProfile, isPassword: false),
+              const SizedBox(height: 20),
+              const CustomInputField(hintText: AppStrings.emailFillProfile, isPassword: false),
 
-              SizedBox(height: 20),
-              CustomInputField(
+              const SizedBox(height: 20),
+              const CustomInputField(
                 hintText: AppStrings.dateFillProfile,
                 icon: Icons.date_range_outlined,
                 isPassword: false,
               ),
-              SizedBox(height: 20),
-              CustomInputField(
+              const SizedBox(height: 20),
+              const CustomInputField(
                 suffixIcon: Icons.keyboard_arrow_down,
                 hintText: AppStrings.genderFillProfile,
                 isPassword: false,
               ),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               PrimaryButton(
                 onPress: () {},
                 height: 48,

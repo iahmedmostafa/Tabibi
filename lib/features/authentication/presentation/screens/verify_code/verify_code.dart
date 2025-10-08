@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tabibi/common/widgets/primary_button.dart';
-import 'package:tabibi/core/constants/app_strings.dart';
+import 'package:tabibi/core/widgets/primary_button.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/features/authentication/presentation/screens/verify_code/widgets/pin_code.dart';
 import 'package:tabibi/features/authentication/presentation/widgets/arrow_back.dart';
@@ -19,16 +19,16 @@ class VerifyCodeScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             children: [
-              SizedBox(height: 32),
-              ArrowBack(nameRoute: AppRoutes.forgotPassword),
-              SizedBox(height: 32),
-              TopSection(
+            const  SizedBox(height: 32),
+            const  ArrowBack(nameRoute: AppRoutes.forgotPassword),
+            const  SizedBox(height: 32),
+            const  TopSection(
                 title: AppStrings.verifyCode,
                 supTitle:AppStrings.supTitleVerifyCode
               ),
-              SizedBox(height: 32),
-              PinCode(),
-              SizedBox(height: 32),
+          const    SizedBox(height: 32),
+            const  PinCode(),
+            const  SizedBox(height: 32),
               PrimaryButton(
                 onPress: () {
                   context.go(AppRoutes.createNewPassword);
@@ -37,7 +37,7 @@ class VerifyCodeScreen extends StatelessWidget {
                 width: double.infinity,
                 title: AppStrings.verify,
               ),
-              SizedBox(height: 24),
+            const  SizedBox(height: 24),
               AuthPromptText(
                 gestureDetectorName:AppStrings.resend ,
                 text: AppStrings.didntGetCode,

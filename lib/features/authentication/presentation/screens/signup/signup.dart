@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tabibi/common/widgets/primary_button.dart';
-import 'package:tabibi/core/constants/app_images.dart';
-import 'package:tabibi/core/constants/app_strings.dart';
+import 'package:tabibi/core/widgets/primary_button.dart';
+import 'package:tabibi/core/utils/constants/app_images.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/features/authentication/presentation/widgets/auth_prompt_text.dart';
 import 'package:tabibi/features/authentication/presentation/widgets/custom_input_field.dart';
@@ -20,34 +20,34 @@ class SignupScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           children: [
-            SizedBox(height: 85),
-            TopSection(
+        const    SizedBox(height: 85),
+          const  TopSection(
               title: AppStrings.createAccount,
               supTitle: AppStrings.subTitleCreateAccount,
             ),
 
-            SizedBox(height: 32),
-            CustomInputField(
+        const    SizedBox(height: 32),
+        const    CustomInputField(
               hintText: AppStrings.email,
               icon: Icons.email_outlined,
               isPassword: false,
             ),
 
-            SizedBox(height: 20),
-            CustomInputField(
+          const  SizedBox(height: 20),
+          const  CustomInputField(
               hintText: AppStrings.name,
               icon: Icons.person_outline,
               isPassword: false,
             ),
 
-            SizedBox(height: 20),
-            CustomInputField(
+        const    SizedBox(height: 20),
+          const  CustomInputField(
               hintText: AppStrings.password,
               icon: Icons.lock_outline,
               isPassword: true,
             ),
 
-            SizedBox(height: 24),
+          const  SizedBox(height: 24),
             PrimaryButton(
               onPress: (){
                 context.go(AppRoutes.fillProfile);
@@ -57,24 +57,24 @@ class SignupScreen extends StatelessWidget {
               title: AppStrings.createAccount,
             ),
 
-            SizedBox(height: 24),
-            OrSection(),
+          const  SizedBox(height: 24),
+          const  OrSection(),
 
-            SizedBox(height: 24),
+          const  SizedBox(height: 24),
             SocialButton(
               text: AppStrings.signWithGoogle,
               iconPath: AppImages.google,
               onPressed: (){},
             ),
 
-            SizedBox(height: 16),
+        const    SizedBox(height: 16),
             SocialButton(
               text: AppStrings.signWithFacebook,
               iconPath: AppImages.facebook,
               onPressed: (){},
             ),
 
-            SizedBox(height: 24,),
+          const  SizedBox(height: 24,),
             AuthPromptText(
               text: AppStrings.haveAccount,
               gestureDetectorName: AppStrings.signIn,
@@ -82,7 +82,7 @@ class SignupScreen extends StatelessWidget {
                 context.go(AppRoutes.login);
               },
             ),
-            SizedBox(height: 24,)
+          const  SizedBox(height: 24,)
           ],
         ),
       ),

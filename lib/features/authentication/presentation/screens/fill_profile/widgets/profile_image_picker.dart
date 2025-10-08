@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tabibi/core/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 
 class ProfileImagePicker extends StatefulWidget {
   final Function(File?)? onImageSelected;
@@ -44,7 +44,7 @@ class _ProfileImagePickerState extends State<ProfileImagePicker> {
           Container(
             width: 168.33,
             height: 168.33,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.grey200,
               shape: BoxShape.circle,
             ),
@@ -59,7 +59,7 @@ class _ProfileImagePickerState extends State<ProfileImagePicker> {
                 widget.initialImageUrl!,
                 fit: BoxFit.cover,
               )
-                  : Icon(
+                  : const Icon(
                 Icons.person,
                 size: 80,
                 color: AppColors.grey400,
@@ -75,7 +75,7 @@ class _ProfileImagePickerState extends State<ProfileImagePicker> {
               child: Container(
                 width: 40,
                 height: 40,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: AppColors.darkTeal,
                   shape: BoxShape.circle,
                 ),

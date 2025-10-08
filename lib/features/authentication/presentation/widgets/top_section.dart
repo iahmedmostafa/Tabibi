@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tabibi/core/constants/app_images.dart';
-import 'package:tabibi/core/constants/app_strings.dart';
-import 'package:tabibi/core/constants/app_styles.dart';
+import 'package:tabibi/core/utils/constants/app_images.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:tabibi/core/utils/constants/app_styles.dart';
 
 class TopSection extends StatelessWidget {
-  String title;
-  String supTitle;
-   TopSection({
+  final String title;
+  final String supTitle;
+   const TopSection({
     super.key,
     required this.title,
     required this.supTitle
@@ -17,11 +17,11 @@ class TopSection extends StatelessWidget {
     return Column(
       children: [
         Center(child: Image.asset(AppImages.login)),
-        SizedBox(height: 16),
-        Text(AppStrings.appName, style: AppTextStyles.grey20w400),
-        SizedBox(height: 32),
+        const SizedBox(height: 16),
+        const Text(AppStrings.appName, style: AppTextStyles.grey20w400),
+        const SizedBox(height: 32),
         Text(title, style: AppTextStyles.dark20w600),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(
           supTitle,
           style: AppTextStyles.grey20w400.copyWith(fontSize: 14),
