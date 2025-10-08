@@ -3,15 +3,25 @@ import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
 
 class PrimaryButton extends StatelessWidget {
-  Function()? onPress;
-  PrimaryButton({super.key, this.onPress});
+  Function() onPress;
+  double height;
+  double width;
+  String title;
+
+  PrimaryButton({
+    super.key,
+    required this.onPress,
+    required this.height,
+    required this.width,
+    required this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        height: 48,
-        width: 311,
+        height: height,
+        width: width,
         child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(
@@ -21,7 +31,7 @@ class PrimaryButton extends StatelessWidget {
 
           onPressed: onPress,
           child: Text(
-            "Next",
+            title,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
