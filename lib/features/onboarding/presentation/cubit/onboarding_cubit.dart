@@ -32,7 +32,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   }
 
   Future<void> _finishOnboarding(BuildContext context) async {
-    await onboardingServices.setSeen();
+    await OnboardingServices.setSeen();
     if (context.mounted) {
       context.goNamed(AppRoutes.login);
     }

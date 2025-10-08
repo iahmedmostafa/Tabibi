@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -13,10 +15,23 @@ class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    log("build");
     final onboardingData = [
-      {"image": AppImages.onboarding1, "title": AppStrings.meetDoctorsTitle, "description": AppStrings.meetDoctorsDesc,},
-      {"image": AppImages.onboarding2, "title": AppStrings.connectWithSpecialistsTitle, "description": AppStrings.connectWithSpecialistsDesc,},
-      {"image": AppImages.onboarding3, "title": AppStrings.thousandsSpecialistsTitle, "description": AppStrings.thousandsSpecialistsDesc,},
+      {
+        "image": AppImages.onboarding1,
+        "title": AppStrings.meetDoctorsTitle,
+        "description": AppStrings.meetDoctorsDesc,
+      },
+      {
+        "image": AppImages.onboarding2,
+        "title": AppStrings.connectWithSpecialistsTitle,
+        "description": AppStrings.connectWithSpecialistsDesc,
+      },
+      {
+        "image": AppImages.onboarding3,
+        "title": AppStrings.thousandsSpecialistsTitle,
+        "description": AppStrings.thousandsSpecialistsDesc,
+      },
     ];
 
     return BlocProvider(
@@ -46,7 +61,8 @@ class OnBoardingScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: PrimaryButton(
-                    onPress: () => cubit.nextPage(context, onboardingData.length),
+                    onPress: () =>
+                        cubit.nextPage(context, onboardingData.length),
                   ),
                 ),
                 const SizedBox(height: 28),

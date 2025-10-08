@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
 
 class PrimaryButton extends StatelessWidget {
-  Function()? onPress;
-  PrimaryButton({super.key, this.onPress});
+  final Function()? onPress;
+  const PrimaryButton({super.key, this.onPress});
 
   @override
   Widget build(BuildContext context) {
