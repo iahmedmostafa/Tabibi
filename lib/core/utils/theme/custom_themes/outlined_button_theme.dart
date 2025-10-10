@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tabibi/core/utils/constants/app_border_radius.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/sizes.dart';
 
@@ -11,9 +12,7 @@ class OutlinedButtonThemes {
       // foregroundColor: AppColors.secondary,
       // side: const BorderSide(color: AppColors.secondary),
       padding: const EdgeInsets.symmetric(vertical: AppSizes.buttonHeight),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizes.borderRadiusLg),
-      ),
+      shape: const RoundedRectangleBorder(borderRadius: AppBorderRadius.r15),
     ),
   );
 
@@ -23,9 +22,7 @@ class OutlinedButtonThemes {
       foregroundColor: AppColors.white,
       side: const BorderSide(color: AppColors.white),
       padding: const EdgeInsets.symmetric(vertical: AppSizes.buttonHeight),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizes.borderRadiusLg),
-      ),
+      shape: const RoundedRectangleBorder(borderRadius: AppBorderRadius.r15),
     ),
   );
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tabibi/core/utils/constants/app_border_radius.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/sizes.dart';
 
@@ -8,12 +9,10 @@ class AppElevatedButtonTheme {
     style: ElevatedButton.styleFrom(
       elevation: 0,
       foregroundColor: AppColors.white,
-      backgroundColor: AppColors.dark,
-      side: const BorderSide(color: AppColors.dark),
+      backgroundColor: AppColors.primary,
+      side: const BorderSide(color: AppColors.grey50),
       padding: const EdgeInsets.symmetric(vertical: AppSizes.buttonHeight),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizes.borderRadiusLg),
-      ),
+      shape: const RoundedRectangleBorder(borderRadius: AppBorderRadius.r66),
     ),
   );
 
@@ -25,9 +24,7 @@ class AppElevatedButtonTheme {
       // backgroundColor: AppColors.buttonPrimary,
       // side: const BorderSide(color: AppColors.buttonPrimary),
       padding: const EdgeInsets.symmetric(vertical: AppSizes.buttonHeight),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizes.borderRadiusLg),
-      ),
+      shape: const RoundedRectangleBorder(borderRadius: AppBorderRadius.r15),
     ),
   );
 }

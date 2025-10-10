@@ -1,4 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:tabibi/core/style/spacing/vertical_space.dart';
+import 'package:tabibi/core/utils/constants/app_dimensions.dart';
+import 'package:tabibi/core/utils/constants/app_padding.dart';
+import 'package:tabibi/core/utils/constants/sizes.dart';
 
 class OnboardingPage extends StatelessWidget {
   final String? image;
@@ -11,30 +15,30 @@ class OnboardingPage extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 532,
-          width: 390,
+          height: AppHeight.h532,
+          width: AppWidth.w390,
           child: Image.asset(image!, fit: BoxFit.fill),
         ),
-        const SizedBox(height: 28.5),
+         VerticalSpace(height: AppHeight.h28_5),
         Center(
           child: Text(
             title!,
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: AppSizes.fontSizeLg,
               fontWeight: FontWeight.w700,
               color: Color(0xff374151),
             ),
           ),
         ),
-        const SizedBox(height: 8),
+         VerticalSpace(height: AppHeight.h8),
         Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
+            padding: const EdgeInsets.symmetric(horizontal: AppPadding.p40),
             child: Text(
               description!,
               style: const TextStyle(
                 color: Color(0xff6B7280),
-                fontSize: 14,
+                fontSize: AppSizes.fonAppSizesm,
                 fontWeight: FontWeight.w400,
               ),
               textAlign: TextAlign.center,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/sizes.dart';
 
 class AppBarThemes {
   AppBarThemes._();
@@ -8,14 +9,14 @@ class AppBarThemes {
     elevation: 0,
     centerTitle: true,
     backgroundColor: Colors.transparent,
-    iconTheme: IconThemeData(color: AppColors.dark, size: 18.0),
-    actionsIconTheme: IconThemeData(color: AppColors.dark, size: 18.0),
+    iconTheme: IconThemeData(color: AppColors.dark, size: AppSizes.fontSizeLg),
+    actionsIconTheme: IconThemeData(color: AppColors.dark, size: AppSizes.fontSizeLg),
   );
   static const darkAppBarTheme = AppBarTheme(
     elevation: 0,
     centerTitle: true,
     backgroundColor: Colors.transparent,
-    iconTheme: IconThemeData(color: AppColors.white, size: 18.0),
-    actionsIconTheme: IconThemeData(color: AppColors.white, size: 18.0),
+    iconTheme: IconThemeData(color: AppColors.white, size: AppSizes.fontSizeLg),
+    actionsIconTheme: IconThemeData(color: AppColors.white, size: AppSizes.fontSizeLg),
   );
 }

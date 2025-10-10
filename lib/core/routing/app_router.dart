@@ -1,11 +1,11 @@
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
-import 'package:tabibi/features/authentication/presentation/screens/create_new_password/create_new_password.dart';
-import 'package:tabibi/features/authentication/presentation/screens/fill_profile/fill_profile.dart';
-import 'package:tabibi/features/authentication/presentation/screens/forgot_password/forgot_password.dart';
-import 'package:tabibi/features/authentication/presentation/screens/login/login.dart';
-import 'package:tabibi/features/authentication/presentation/screens/signup/signup.dart';
-import 'package:tabibi/features/authentication/presentation/screens/verify_code/verify_code.dart';
+import 'package:tabibi/features/authentication/modules/create_new_password/presentation/pages/create_new_password.dart';
+import 'package:tabibi/features/authentication/modules/fill_profile/presentation/pages/fill_profile.dart';
+import 'package:tabibi/features/authentication/modules/forgot_password/presentation/pages/forgot_password.dart';
+import 'package:tabibi/features/authentication/modules/login/presentation/pages/login.dart';
+import 'package:tabibi/features/authentication/modules/signup/presentation/pages/signup.dart';
+import 'package:tabibi/features/authentication/modules/verify_code/presentation/pages/verify_code.dart';
 import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart';
 import '../services/shared_prefs_service.dart';
 
