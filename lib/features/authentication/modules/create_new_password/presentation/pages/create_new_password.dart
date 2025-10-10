@@ -15,6 +15,7 @@ class CreateNewPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppPadding.p24),
@@ -42,8 +43,7 @@ class CreateNewPassword extends StatelessWidget {
               VerticalSpace(height: AppHeight.h32),
               PrimaryButton(
                 onPress: () {},
-                height: 48,
-                width: double.infinity,
+              
                 title: AppStrings.resetPassword,
               ),
             ],

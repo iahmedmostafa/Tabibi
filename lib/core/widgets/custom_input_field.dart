@@ -3,12 +3,14 @@ import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/core/utils/constants/app_padding.dart';
 import 'package:tabibi/core/utils/constants/sizes.dart';
+import 'package:tabibi/core/utils/helper/helper_functions.dart';
 
 class CustomInputField extends StatelessWidget {
   final String hintText;
   final IconData? icon;
   final IconData? suffixIcon;
   final bool isPassword;
+  final bool isPrefixIconNotExist;
 
   const CustomInputField({
     super.key,
@@ -16,6 +18,7 @@ class CustomInputField extends StatelessWidget {
     this.icon,
     this.suffixIcon,
     this.isPassword = false,
+    this.isPrefixIconNotExist = true,
   });
 
   @override
@@ -30,13 +33,20 @@ class CustomInputField extends StatelessWidget {
         decoration: InputDecoration(
           hintText: hintText,
 
-          hintStyle: Theme.of(
-            context,
-          ).textTheme.bodyMedium,
-          prefixIcon: Padding(
-            padding: EdgeInsets.only(left: AppPadding.p16, right: AppWidth.w8),
-            child: Icon(icon, color: AppColors.grey400, size: AppSizes.iconSm2),
-          ),
+          hintStyle: Theme.of(context).textTheme.bodyMedium,
+          prefixIcon: isPrefixIconNotExist
+              ? Padding(
+                  padding: EdgeInsets.only(
+                    left: AppPadding.p16,
+                    right: AppWidth.w8,
+                  ),
+                  child: Icon(
+                    icon,
+                    color: AppColors.grey400,
+                    size: AppSizes.iconSm2,
+                  ),
+                )
+              : null,
           prefixIconConstraints: const BoxConstraints(
             minWidth: 0,
             minHeight: 0,
@@ -50,7 +60,9 @@ class CustomInputField extends StatelessWidget {
             ),
           ),
           filled: true,
-          fillColor: AppColors.grey50,
+          fillColor: AppHelperFunctions.isDarkMode( context)
+              ? AppColors.darkBackground
+              : AppColors.grey100,
           contentPadding: const EdgeInsets.symmetric(
             vertical: AppPadding.p10,
             horizontal: AppPadding.p16,

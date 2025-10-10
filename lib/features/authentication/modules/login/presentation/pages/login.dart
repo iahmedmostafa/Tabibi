@@ -51,8 +51,7 @@ class LoginScreen extends StatelessWidget {
 
             PrimaryButton(
               onPress: () {},
-              height: AppHeight.h48,
-              width: AppWidth.w342,
+            
               title: AppStrings.signIn,
             ),
 

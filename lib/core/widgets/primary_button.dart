@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 
 class PrimaryButton extends StatelessWidget {
   final Function()? onPress;
   const PrimaryButton({
     super.key,
     this.onPress,
-    required this.height,
-    required this.width,
+  
     required this.title,
   });
 
-  final double height;
-  final double width;
   final String title;
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        height: height,
-        width: width,
+          height: AppHeight.h48,
+              width: AppWidth.w342,
         child: ElevatedButton(
           style: Theme.of(context).elevatedButtonTheme.style,
           

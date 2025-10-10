@@ -39,8 +39,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 onPress: () {
                   context.go(AppRoutes.verifyCode);
                 },
-                height: 48,
-                width: double.infinity,
+              
                 title: AppStrings.sendCode,
               ),
             ],

@@ -56,8 +56,7 @@ class SignupScreen extends StatelessWidget {
               onPress: () {
                 context.go(AppRoutes.fillProfile);
               },
-              height: 48,
-              width: double.infinity,
+            
               title: AppStrings.createAccount,
             ),
 

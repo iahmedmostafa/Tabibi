@@ -18,6 +18,7 @@ class FillProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppPadding.p24),
@@ -48,18 +49,21 @@ class FillProfile extends StatelessWidget {
               const CustomInputField(
                 hintText: AppStrings.nameFillProfile,
                 isPassword: false,
+                isPrefixIconNotExist: false,
               ),
 
               VerticalSpace(height: AppHeight.h20),
               const CustomInputField(
                 hintText: AppStrings.nickNameFillProfile,
                 isPassword: false,
+                isPrefixIconNotExist: false,
               ),
 
               VerticalSpace(height: AppHeight.h20),
               const CustomInputField(
                 hintText: AppStrings.emailFillProfile,
                 isPassword: false,
+                isPrefixIconNotExist: false,
               ),
 
               VerticalSpace(height: AppHeight.h20),
@@ -73,12 +77,13 @@ class FillProfile extends StatelessWidget {
                 suffixIcon: Icons.keyboard_arrow_down,
                 hintText: AppStrings.genderFillProfile,
                 isPassword: false,
+                                isPrefixIconNotExist: false,
+
               ),
               VerticalSpace(height: AppHeight.h32),
               PrimaryButton(
                 onPress: () {},
-                height: 48,
-                width: double.infinity,
+              
                 title: AppStrings.saveFillProfile,
               ),
             ],

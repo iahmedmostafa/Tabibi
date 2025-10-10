@@ -21,7 +21,7 @@ class AppElevatedButtonTheme {
     style: ElevatedButton.styleFrom(
       elevation: 0,
       foregroundColor: AppColors.dark,
-      // backgroundColor: AppColors.buttonPrimary,
+       backgroundColor: AppColors.primary,
       // side: const BorderSide(color: AppColors.buttonPrimary),
       padding: const EdgeInsets.symmetric(vertical: AppSizes.buttonHeight),
       shape: const RoundedRectangleBorder(borderRadius: AppBorderRadius.r15),

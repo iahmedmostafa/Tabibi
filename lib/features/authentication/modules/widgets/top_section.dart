@@ -28,7 +28,7 @@ class TopSection extends StatelessWidget {
           supTitle,
           style: Theme.of(
             context,
-          ).textTheme.bodySmall?.copyWith(color: AppColors.grey500),
+          ).textTheme.bodyMedium?.copyWith(color: AppColors.grey500,height: 1.5),
           textAlign: TextAlign.center,
         ),
       ],

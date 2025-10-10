@@ -17,6 +17,7 @@ class VerifyCodeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppPadding.p24),
@@ -36,8 +37,7 @@ class VerifyCodeScreen extends StatelessWidget {
                 onPress: () {
                   context.go(AppRoutes.createNewPassword);
                 },
-                height: 48,
-                width: double.infinity,
+              
                 title: AppStrings.verify,
               ),
                  VerticalSpace(height: AppHeight.h24),

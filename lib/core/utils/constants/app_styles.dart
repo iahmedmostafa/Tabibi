@@ -67,14 +67,14 @@ class AppTextStyle {
   static final TextStyle bodySSemiBold = _baseInter.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w600, // SemiBold
-    height: 1.5,
+    height: 1,
   );
 
   /// Body-S-Medium (Inter, 14, Medium)
   static final TextStyle bodySMedium = _baseInter.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w500, // Medium
-    height: 1.5,
+    height: 1,
   );
 
   /// Body-S-Regular (Inter, 14, Regular)

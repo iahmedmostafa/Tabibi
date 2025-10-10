@@ -65,8 +65,7 @@ class OnBoardingScreen extends StatelessWidget {
                     horizontal: AppPadding.p24,
                   ),
                   child: PrimaryButton(
-                    height: AppHeight.h48,
-                    width: AppWidth.w311,
+                  
                     title: "Next",
                     onPress: () =>
                         cubit.nextPage(context, onboardingData.length),
