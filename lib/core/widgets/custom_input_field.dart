@@ -11,6 +11,8 @@ class CustomInputField extends StatelessWidget {
   final IconData? suffixIcon;
   final bool isPassword;
   final bool isPrefixIconNotExist;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   const CustomInputField({
     super.key,
@@ -19,6 +21,8 @@ class CustomInputField extends StatelessWidget {
     this.suffixIcon,
     this.isPassword = false,
     this.isPrefixIconNotExist = true,
+    this.controller,
+    this.validator,
   });
 
   @override
@@ -27,6 +31,8 @@ class CustomInputField extends StatelessWidget {
       height: AppHeight.h45,
       child: TextFormField(
         obscureText: isPassword,
+        controller: controller,
+        validator: validator,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         onTapOutside: (event) => FocusManager.instance.primaryFocus
             ?.unfocus(), //to disapear keyboard when tap outside
@@ -60,7 +66,7 @@ class CustomInputField extends StatelessWidget {
             ),
           ),
           filled: true,
-          fillColor: AppHelperFunctions.isDarkMode( context)
+          fillColor: AppHelperFunctions.isDarkMode(context)
               ? AppColors.darkBackground
               : AppColors.grey100,
           contentPadding: const EdgeInsets.symmetric(

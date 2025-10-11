@@ -1,18 +1,19 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/pages/create_new_password.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/pages/fill_profile.dart';
 import 'package:tabibi/features/authentication/modules/forgot_password/presentation/pages/forgot_password.dart';
 import 'package:tabibi/features/authentication/modules/login/presentation/pages/login.dart';
+import 'package:tabibi/features/authentication/modules/signup/presentation/cubit/sign_up_cubit.dart';
 import 'package:tabibi/features/authentication/modules/signup/presentation/pages/signup.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/pages/verify_code.dart';
 import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart';
 import '../services/shared_prefs_service.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: OnboardingServices.isFirstTime()
-      ? '/onboarding'
-      : '/login',
+  initialLocation: OnboardingServices.isFirstTime() ? '/onboarding' : '/login',
   routes: [
     GoRoute(
       path: AppRoutes.onboarding,
@@ -42,7 +43,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppRoutes.signUp,
       name: AppRoutes.signUp,
-      builder: (context, state) => const SignupScreen(),
+      builder: (context, state) => BlocProvider(
+        create: (context) => sl<SignUpCubit>(),
+        child: const SignupScreen(),
+      ),
     ),
     GoRoute(
       path: AppRoutes.fillProfile,

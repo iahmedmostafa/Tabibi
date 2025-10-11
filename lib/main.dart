@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/services/shared_prefs_service.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
 
@@ -8,6 +9,7 @@ import 'core/routing/app_router.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await OnboardingServices.init();
+  init();
 
   runApp(const TabibiApp());
 }

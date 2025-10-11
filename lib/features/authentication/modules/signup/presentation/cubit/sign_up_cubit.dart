@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
@@ -21,10 +23,11 @@ class SignUpCubit extends Cubit<SignUpState> {
       SignUpParameters(
         email: emailController.text,
         firstName: nameController.text,
-        lastName: '',
+        lastName: 'fdgd',
         password: passwordController.text,
       ),
     );
+    log(result.toString());
     result.fold(
       (l) => emit(
         state.copyWith(status: SignUpStatus.failure, errorMessage: l.message),
