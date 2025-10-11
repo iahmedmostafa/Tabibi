@@ -10,10 +10,7 @@ class SignUpUseCase extends BaseUseCase<String, SignUpParameters> {
   @override
   Future<Either<Failure, String>> call(SignUpParameters parameters) async {
     return await repository.signup(
-      parameters.firstName,
-      parameters.lastName,
-      parameters.email,
-      parameters.password,
+      parameters
     );
   }
 }
