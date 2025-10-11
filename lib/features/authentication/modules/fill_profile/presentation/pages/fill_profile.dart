@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/style/spacing/horizental_space.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
@@ -67,25 +68,20 @@ class FillProfile extends StatelessWidget {
               ),
 
               VerticalSpace(height: AppHeight.h20),
-              const CustomInputField(
+              CustomInputField(
                 hintText: AppStrings.dateFillProfile,
-                icon: Icons.date_range_outlined,
+                icon: Iconsax.calendar,
                 isPassword: false,
               ),
               VerticalSpace(height: AppHeight.h20),
-              const CustomInputField(
-                suffixIcon: Icons.keyboard_arrow_down,
+              CustomInputField(
+                suffixIcon: Iconsax.arrow_down,
                 hintText: AppStrings.genderFillProfile,
                 isPassword: false,
-                                isPrefixIconNotExist: false,
-
+                isPrefixIconNotExist: false,
               ),
               VerticalSpace(height: AppHeight.h32),
-              PrimaryButton(
-                onPress: () {},
-              
-                title: AppStrings.saveFillProfile,
-              ),
+              PrimaryButton(onPress: () {}, title: AppStrings.saveFillProfile),
             ],
           ),
         ),

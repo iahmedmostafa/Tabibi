@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
@@ -35,7 +36,7 @@ class LoginScreen extends StatelessWidget {
 
             const CustomInputField(
               hintText: AppStrings.email,
-              icon: Icons.email_outlined,
+              icon: Iconsax.sms,
               isPassword: false,
             ),
 
@@ -43,17 +44,13 @@ class LoginScreen extends StatelessWidget {
 
             const CustomInputField(
               hintText: AppStrings.password,
-              icon: Icons.lock_outline,
+              icon: Iconsax.password_check,
               isPassword: true,
             ),
 
             VerticalSpace(height: AppHeight.h23),
 
-            PrimaryButton(
-              onPress: () {},
-            
-              title: AppStrings.signIn,
-            ),
+            PrimaryButton(onPress: () {}, title: AppStrings.signIn),
 
             VerticalSpace(height: AppHeight.h23),
 

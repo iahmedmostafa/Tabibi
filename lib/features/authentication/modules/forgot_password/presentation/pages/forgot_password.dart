@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
@@ -16,6 +17,7 @@ class ForgotPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppPadding.p24),
@@ -31,7 +33,7 @@ class ForgotPasswordScreen extends StatelessWidget {
               VerticalSpace(height: AppHeight.h32),
               const CustomInputField(
                 hintText: AppStrings.email,
-                icon: Icons.email_outlined,
+                icon: Iconsax.sms,
                 isPassword: false,
               ),
               VerticalSpace(height: AppHeight.h32),
@@ -39,7 +41,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 onPress: () {
                   context.go(AppRoutes.verifyCode);
                 },
-              
+
                 title: AppStrings.sendCode,
               ),
             ],

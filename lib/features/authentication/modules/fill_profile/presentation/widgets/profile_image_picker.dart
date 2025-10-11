@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/sizes.dart';
@@ -55,7 +56,7 @@ class _ProfileImagePickerState extends State<ProfileImagePicker> {
                   : widget.initialImageUrl != null
                   ? Image.network(widget.initialImageUrl!, fit: BoxFit.cover)
                   : const Icon(
-                      Icons.person,
+                      Iconsax.user,
                       size: AppSizes.imageThumbSize,
                       color: AppColors.grey400,
                     ),
@@ -74,7 +75,7 @@ class _ProfileImagePickerState extends State<ProfileImagePicker> {
                   color: AppColors.darkTeal,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.edit, color: Colors.white, size: 20),
+                child: Icon(Iconsax.edit, color: Colors.white, size: 20),
               ),
             ),
           ),

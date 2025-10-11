@@ -24,7 +24,6 @@ class PinCode extends StatelessWidget {
 
     return PinCodeTextField(
       appContext: context,
-
       length: 4,
       keyboardType: TextInputType.number,
       enableActiveFill: true,

@@ -18,9 +18,10 @@ dependencies:
   flutter_bloc: null
   flutter_native_splash: null
   flutter_screenutil: ^5.9.3
-  get_it: null
+  get_it: ^8.2.0
   go_router: null
   google_fonts: ^6.3.2
+  iconsax: ^0.0.8
   image_picker: ^1.0.7
   intl: ^0.20.2
   logger: ^2.6.2

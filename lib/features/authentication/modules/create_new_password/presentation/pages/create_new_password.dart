@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
@@ -31,13 +32,13 @@ class CreateNewPassword extends StatelessWidget {
               VerticalSpace(height: AppHeight.h32),
               const CustomInputField(
                 hintText: AppStrings.password,
-                icon: Icons.lock_outline,
+                  icon: Iconsax.password_check,
                 isPassword: true,
               ),
               VerticalSpace(height: AppHeight.h20),
               const CustomInputField(
                 hintText: AppStrings.confirmPassword,
-                icon: Icons.lock_outline,
+                icon: Iconsax.password_check,
                 isPassword: true,
               ),
               VerticalSpace(height: AppHeight.h32),
