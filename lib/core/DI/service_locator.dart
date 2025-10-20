@@ -3,7 +3,9 @@ import 'package:get_it/get_it.dart';
 import 'package:tabibi/features/authentication/data/datasources/auth_remote_date_source.dart';
 import 'package:tabibi/features/authentication/data/repositories/authentication_repository.dart';
 import 'package:tabibi/features/authentication/domain/repositories/base_authentication_repository.dart';
+import 'package:tabibi/features/authentication/domain/usecases/forgot_password_use_case.dart';
 import 'package:tabibi/features/authentication/domain/usecases/sign_up_use_case.dart';
+import 'package:tabibi/features/authentication/modules/forgot_password/presentation/cubit/forgot_password_cubit.dart';
 import 'package:tabibi/features/authentication/modules/signup/presentation/cubit/sign_up_cubit.dart';
 
 final sl = GetIt.instance;
@@ -24,7 +26,9 @@ Future<void> init() async {
 
   /// USE CASE
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
+  sl.registerLazySingleton(() => ForgotPasswordUseCase(sl()));
 
   /// CUBIT
   sl.registerFactory(() => SignUpCubit(sl()));
+  sl.registerFactory(() => ForgotPasswordCubit(sl()));
 }

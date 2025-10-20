@@ -4,6 +4,7 @@ import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/pages/create_new_password.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/pages/fill_profile.dart';
+import 'package:tabibi/features/authentication/modules/forgot_password/presentation/cubit/forgot_password_cubit.dart';
 import 'package:tabibi/features/authentication/modules/forgot_password/presentation/pages/forgot_password.dart';
 import 'package:tabibi/features/authentication/modules/login/presentation/pages/login.dart';
 import 'package:tabibi/features/authentication/modules/signup/presentation/cubit/sign_up_cubit.dart';
@@ -28,7 +29,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppRoutes.forgotPassword,
       name: AppRoutes.forgotPassword,
-      builder: (context, state) => const ForgotPasswordScreen(),
+      builder: (context, state) => BlocProvider(
+        create: (context) => sl<ForgotPasswordCubit>(),
+        child: const ForgotPasswordScreen(),
+      ),
     ),
     GoRoute(
       path: AppRoutes.verifyCode,

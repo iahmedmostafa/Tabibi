@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:get_it/get_it.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
@@ -10,43 +12,83 @@ import 'package:tabibi/core/widgets/custom_input_field.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
 import 'package:tabibi/features/authentication/modules/widgets/arrow_back.dart';
 import 'package:tabibi/features/authentication/modules/widgets/top_section.dart';
+import 'package:tabibi/features/authentication/modules/forgot_password/presentation/cubit/forgot_password_cubit.dart';
+import 'package:tabibi/features/authentication/modules/forgot_password/presentation/cubit/forgot_password_state.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppPadding.p24),
-          child: Column(
-            children: [
-              VerticalSpace(height: AppHeight.h32),
-              const ArrowBack(nameRoute: AppRoutes.login),
-              VerticalSpace(height: AppHeight.h32),
-              const TopSection(
-                title: AppStrings.forgotPassword,
-                supTitle: AppStrings.supTitleForgotPassword,
-              ),
-              VerticalSpace(height: AppHeight.h32),
-              const CustomInputField(
-                hintText: AppStrings.email,
-                icon: Iconsax.sms,
-                isPassword: false,
-              ),
-              VerticalSpace(height: AppHeight.h32),
-              PrimaryButton(
-                onPress: () {
-                  context.go(AppRoutes.verifyCode);
-                },
+    final cubit = GetIt.instance<ForgotPasswordCubit>();
 
-                title: AppStrings.sendCode,
+    return BlocProvider.value(
+      value: cubit,
+      child: BlocConsumer<ForgotPasswordCubit, ForgotPasswordState>(
+        listener: (context, state) {
+          if (state.status == ForgotPasswordStatus.success) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message ?? 'Code sent successfully')),
+            );
+            context.go(AppRoutes.verifyCode);
+          } else if (state.status == ForgotPasswordStatus.failure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.errorMessage ?? 'Error occurred')),
+            );
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: SafeArea(
+              child: Padding(
+                padding:
+                const EdgeInsets.symmetric(horizontal: AppPadding.p24),
+                child: Form(
+                  key: cubit.formKey,
+                  child: Column(
+                    children: [
+                      VerticalSpace(height: AppHeight.h32),
+                      const ArrowBack(nameRoute: AppRoutes.login),
+                      VerticalSpace(height: AppHeight.h32),
+                      const TopSection(
+                        title: AppStrings.forgotPassword,
+                        supTitle: AppStrings.supTitleForgotPassword,
+                      ),
+                      VerticalSpace(height: AppHeight.h32),
+                      CustomInputField(
+                        hintText: AppStrings.email,
+                        icon: Iconsax.sms,
+                        controller: cubit.emailController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          if (!value.contains('@')) {
+                            return 'Enter a valid email';
+                          }
+                          return null;
+                        },
+                        isPassword: false,
+                      ),
+                      VerticalSpace(height: AppHeight.h32),
+                      PrimaryButton(
+                        onPress: state.status ==
+                            ForgotPasswordStatus.loading
+                            ? null
+                            : () => cubit.sendCode(),
+                        title: state.status ==
+                            ForgotPasswordStatus.loading
+                            ? 'Sending...'
+                            : AppStrings.sendCode,
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
