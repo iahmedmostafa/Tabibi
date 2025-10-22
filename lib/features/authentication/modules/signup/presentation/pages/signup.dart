@@ -29,7 +29,6 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   late SignUpCubit cubit;
   @override
-  @override
   Widget build(BuildContext context) {
     cubit = context.read<SignUpCubit>();
 
@@ -93,10 +92,12 @@ class _SignupScreenState extends State<SignupScreen> {
                   if (state.status == SignUpStatus.loading) {
                     return const Center(child: CircularProgressIndicator());
                   }
-
                   return PrimaryButton(
                     onPress: () {
                       cubit.signUp();
+                      //i want to navigate to fill profile page after successful signup
+                      context.go(AppRoutes.login);
+
                     },
                     title: AppStrings.createAccount,
                   );

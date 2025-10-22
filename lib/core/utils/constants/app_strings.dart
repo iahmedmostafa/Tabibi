@@ -19,7 +19,7 @@ class AppStrings {
 
   static const email = "Your Email";
   static const password = "Password";
-  static const signIn = "Sign in";
+  static const signIn = "Sign In";
 
   static const name = "Your Name";
   static const createAccount = "Create Account";

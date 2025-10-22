@@ -1,10 +1,9 @@
 class ApiConstance {
   ApiConstance._();
   static const String baseUrl = "https://accessories-eshop.runasp.net/";
-  static const String signUp = "/api/auth/register";
-
+  static const String signUp = "api/auth/register/";
+  static const String logIn = "api/auth/login/";
 }
-
 class ApiKeys {
   ApiKeys._();
 
@@ -17,7 +16,8 @@ class ApiKeys {
   static const String image = "image";
   static const String phoneNumber = "phone";
   static const String code = "code";
-  static const String accessToken = "access_token";
-  static const String refreshToken = "refresh_token";
-  
+  static const String accessToken = "accessToken";
+  static const String refreshToken = "refreshToken";
+  static const String expiresAtUtc = "expiresAtUtc";
+
 }
