@@ -10,7 +10,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await OnboardingServices.init();
   init();
-
   runApp(const TabibiApp());
 }
 

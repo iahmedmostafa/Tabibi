@@ -15,7 +15,7 @@ class LogInCubit extends Cubit<LogInState> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   void logIn() async {
-      if(formKey.currentState?.validate()?? false){
+      if(!(formKey.currentState?.validate()?? false)){
         return;
       }
     emit(LogInLoading());

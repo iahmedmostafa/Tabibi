@@ -94,6 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     return PrimaryButton(
                       onPress: () {
                         cubit.logIn();
+
                       },
                       title: AppStrings.signIn,
                     );

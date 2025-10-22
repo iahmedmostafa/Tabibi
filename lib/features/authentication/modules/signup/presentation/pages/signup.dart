@@ -96,7 +96,6 @@ class _SignupScreenState extends State<SignupScreen> {
                     onPress: () {
                       cubit.signUp();
                       //i want to navigate to fill profile page after successful signup
-                      context.go(AppRoutes.login);
 
                     },
                     title: AppStrings.createAccount,

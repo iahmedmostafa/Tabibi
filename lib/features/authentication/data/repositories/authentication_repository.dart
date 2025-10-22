@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:tabibi/core/error/exceptions.dart';
 import 'package:tabibi/core/error/failure.dart';
+import 'package:tabibi/core/network/api_constance.dart';
+import 'package:tabibi/core/services/cache_helper.dart';
 import 'package:tabibi/features/authentication/data/datasources/auth_remote_date_source.dart';
 import 'package:tabibi/features/authentication/data/models/log_in_request_params_model.dart';
 import 'package:tabibi/features/authentication/domain/entities/log_in_entity.dart';
@@ -32,7 +34,9 @@ class AuthenticationRepositoryImpl extends BaseAuthenticationRepository {
   Future<Either<Failure, LogInEntity>> logIn(LogInRequestParamsModel parameters)async {
     try {
       final LogInEntity response = await baseAuthenticationRemoteDataSource.logIn(parameters);
-      log("########### Access Token is :${response.accessToken} #############");
+      await CacheHelper.saveData(key: ApiKeys.accessToken, value: response.accessToken);
+      await CacheHelper.saveData(key: ApiKeys.refreshToken, value: response.refreshToken);
+     // log(" Access Token is :${await CacheHelper.getData(key: ApiKeys.accessToken)}");
 
       return Right(response);
 
