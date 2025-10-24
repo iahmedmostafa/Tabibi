@@ -21,8 +21,8 @@ class Validator {
     }
 
     // Check for minimum pinCode length
-    if (pinCode.length < 6) {
-      return 'Pin Code must be 6 Digits.';
+    if (pinCode.length < 4) {
+      return 'Pin Code must be 4 Digits.';
     }
 
     return null;
@@ -147,6 +147,16 @@ class Validator {
       return 'Invalid phone number format (10 digits required).';
     }
 
+    return null;
+  }
+
+  static String? validateConfirmPassword(String? confirmPassword, String originalPassword) {
+    if (confirmPassword == null || confirmPassword.isEmpty) {
+      return 'Confirm password is required.';
+    }
+    if (confirmPassword != originalPassword) {
+      return 'Passwords do not match.';
+    }
     return null;
   }
 

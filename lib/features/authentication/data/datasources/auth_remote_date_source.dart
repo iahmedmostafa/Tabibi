@@ -3,13 +3,17 @@ import 'package:tabibi/core/error/exceptions.dart';
 import 'package:tabibi/core/error/failure.dart';
 import 'package:tabibi/core/network/api_constance.dart';
 import 'package:tabibi/core/network/error_message_model.dart';
+import 'package:tabibi/features/authentication/domain/usecases/create_new_password_use_case.dart';
 import 'package:tabibi/features/authentication/domain/usecases/forgot_password_use_case.dart';
 import 'package:tabibi/features/authentication/domain/usecases/sign_up_use_case.dart';
+import 'package:tabibi/features/authentication/domain/usecases/verify_code_use_case.dart';
 
 abstract class BaseAuthenticationRemoteDataSource {
 
   Future<String> signup(SignUpParameters parameters);
   Future<String> forgotPassword(ForgotPasswordParameters parameters);
+  Future<String> verifyCode(VerifyCodeParameters parameters);
+  Future<String> createNewPassword(CreateNewPasswordParameters parameters);
 }
 
 class AuthenticationRemoteDataSource
@@ -87,6 +91,55 @@ class AuthenticationRemoteDataSource
       rethrow;
     }
   }*/
+
+  @override
+  Future<String> verifyCode(VerifyCodeParameters parameters) async {
+    try {
+      final response = await dio.post(
+        '${ApiConstance.baseUrl}/api/auth/verify-code',
+        data: {
+          ApiKeys.email: parameters.email,
+          ApiKeys.code: parameters.code,
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return response.data['message'] ?? 'Code verified successfully';
+      } else {
+        throw ServerException(
+          errorMessageModel: ErrorMessageModel.fromJson(response.data),
+        );
+      }
+    } on DioException catch (e) {
+      handleDioException(e);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> createNewPassword(CreateNewPasswordParameters parameters) async {
+    try {
+      final response = await dio.post(
+        '${ApiConstance.baseUrl}/api/auth/reset-password',
+        data: {
+          ApiKeys.email: parameters.email,
+          ApiKeys.password: parameters.newPassword,
+          ApiKeys.confirmPassword: parameters.confirmPassword,
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return response.data['message'] ?? 'Password reset successfully';
+      } else {
+        throw ServerException(
+          errorMessageModel: ErrorMessageModel.fromJson(response.data),
+        );
+      }
+    } on DioException catch (e) {
+      handleDioException(e);
+      rethrow;
+    }
+  }
 
 
 }
