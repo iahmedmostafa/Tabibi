@@ -11,7 +11,7 @@ import 'package:tabibi/core/widgets/custom_input_field.dart';
 // ...existing code...
 import 'package:tabibi/core/widgets/primary_button.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/profile_image_picker.dart';
-import 'package:tabibi/features/authentication/modules/widgets/arrow_back.dart';
+import 'package:tabibi/core/widgets/arrow_back.dart';
 
 class FillProfile extends StatelessWidget {
   const FillProfile({super.key});

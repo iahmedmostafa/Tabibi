@@ -7,7 +7,7 @@ import 'package:tabibi/core/utils/constants/app_padding.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/widgets/pin_code.dart';
-import 'package:tabibi/features/authentication/modules/widgets/arrow_back.dart';
+import 'package:tabibi/core/widgets/arrow_back.dart';
 import 'package:tabibi/features/authentication/modules/widgets/auth_prompt_text.dart';
 import 'package:tabibi/features/authentication/modules/widgets/top_section.dart';
 
