@@ -1,9 +1,6 @@
-// lib/features/authentication/data/models/verify_code_model.dart
-
 import 'package:tabibi/features/authentication/domain/entities/verify_code.dart'; // import the base Entity
 
 class VerifyCodeModel extends VerifyCode {
-  // استخدام super() لتمرير الخصائص إلى الـ Entity
   const VerifyCodeModel({
     required super.email,
     required super.code,

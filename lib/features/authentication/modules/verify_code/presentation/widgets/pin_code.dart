@@ -3,9 +3,11 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:tabibi/core/utils/constants/app_border_radius.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/helper/helper_functions.dart';
+import 'package:tabibi/core/utils/validators/validation.dart';
 
 class PinCode extends StatelessWidget {
-  const PinCode({super.key});
+  final TextEditingController controller;
+  const PinCode({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,8 @@ class PinCode extends StatelessWidget {
       length: 4,
       keyboardType: TextInputType.number,
       enableActiveFill: true,
+      controller: controller, // ربط الـ controller
+      validator: (value) => Validator.validatePinCode(value),
       textStyle:
           Theme.of(context).textTheme.bodyMedium ??
           const TextStyle(fontSize: 16),
