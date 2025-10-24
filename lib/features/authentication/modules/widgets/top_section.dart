@@ -4,7 +4,6 @@ import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/core/utils/constants/app_images.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
-// ...existing code...
 
 class TopSection extends StatelessWidget {
   final String title;
