@@ -9,25 +9,22 @@ class SignUpUseCase extends BaseUseCase<String, SignUpParameters> {
   SignUpUseCase(this.repository);
   @override
   Future<Either<Failure, String>> call(SignUpParameters parameters) async {
-    return await repository.signup(
-      parameters
-    );
+    return await repository.signup(parameters);
   }
 }
 
 class SignUpParameters extends Equatable {
-  final String firstName;
-  final String lastName;
+  final String userName;
   final String email;
   final String password;
 
   const SignUpParameters({
-    required this.firstName,
-    required this.lastName,
+    required this.userName,
+
     required this.email,
     required this.password,
   });
 
   @override
-  List<Object?> get props => [firstName, lastName, email, password];
+  List<Object?> get props => [userName,  email, password];
 }

@@ -7,11 +7,11 @@ import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/core/utils/constants/app_padding.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:tabibi/core/widgets/arrow_back.dart';
 import 'package:tabibi/core/widgets/custom_input_field.dart';
 // ...existing code...
 import 'package:tabibi/core/widgets/primary_button.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/profile_image_picker.dart';
-import 'package:tabibi/core/widgets/arrow_back.dart';
 
 class FillProfile extends StatelessWidget {
   const FillProfile({super.key});
@@ -68,13 +68,13 @@ class FillProfile extends StatelessWidget {
               ),
 
               VerticalSpace(height: AppHeight.h20),
-              CustomInputField(
+              const CustomInputField(
                 hintText: AppStrings.dateFillProfile,
                 icon: Iconsax.calendar,
                 isPassword: false,
               ),
               VerticalSpace(height: AppHeight.h20),
-              CustomInputField(
+              const CustomInputField(
                 suffixIcon: Iconsax.arrow_down,
                 hintText: AppStrings.genderFillProfile,
                 isPassword: false,

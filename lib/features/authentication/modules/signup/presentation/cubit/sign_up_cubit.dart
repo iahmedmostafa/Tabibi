@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
@@ -21,8 +22,8 @@ class SignUpCubit extends Cubit<SignUpState> {
     final result = await signUpUseCase(
       SignUpParameters(
         email: emailController.text,
-        firstName: nameController.text,
-        lastName: 'fdgd',
+        userName: nameController.text,
+
         password: passwordController.text,
       ),
     );

@@ -26,10 +26,12 @@ class AuthenticationRepository extends BaseAuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, String>> forgotPassword(ForgotPasswordParameters parameters) async {
+  Future<Either<Failure, String>> forgotPassword(
+    ForgotPasswordParameters parameters,
+  ) async {
     try {
-      final String response =
-          await baseAuthenticationRemoteDataSource.forgotPassword(parameters);
+      final String response = await baseAuthenticationRemoteDataSource
+          .forgotPassword(parameters);
       return Right(response);
     } on ServerException catch (failure) {
       return Left(ServerFailure(failure.errorMessageModel.statusMessage));
@@ -39,10 +41,12 @@ class AuthenticationRepository extends BaseAuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, String>> verifyCode(VerifyCodeParameters parameters) async {
+  Future<Either<Failure, String>> verifyCode(
+    VerifyCodeParameters parameters,
+  ) async {
     try {
-      final String response =
-      await baseAuthenticationRemoteDataSource.verifyCode(parameters);
+      final String response = await baseAuthenticationRemoteDataSource
+          .verifyCode(parameters);
       return Right(response);
     } on ServerException catch (failure) {
       return Left(ServerFailure(failure.errorMessageModel.statusMessage));
@@ -52,10 +56,12 @@ class AuthenticationRepository extends BaseAuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, String>> createNewPassword(CreateNewPasswordParameters parameters) async {
+  Future<Either<Failure, String>> createNewPassword(
+    CreateNewPasswordParameters parameters,
+  ) async {
     try {
-      final String response =
-      await baseAuthenticationRemoteDataSource.createNewPassword(parameters);
+      final String response = await baseAuthenticationRemoteDataSource
+          .createNewPassword(parameters);
       return Right(response);
     } on ServerException catch (failure) {
       return Left(ServerFailure(failure.errorMessageModel.statusMessage));
