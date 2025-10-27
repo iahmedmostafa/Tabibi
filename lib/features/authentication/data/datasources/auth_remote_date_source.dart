@@ -5,6 +5,8 @@ import 'package:tabibi/core/error/exceptions.dart';
 import 'package:tabibi/core/error/failure.dart';
 import 'package:tabibi/core/network/api_constance.dart';
 import 'package:tabibi/core/network/error_message_model.dart';
+import 'package:tabibi/features/authentication/data/models/log_in_request_params_model.dart';
+import 'package:tabibi/features/authentication/data/models/log_in_response_model.dart';
 import 'package:tabibi/features/authentication/domain/usecases/create_new_password_use_case.dart';
 import 'package:tabibi/features/authentication/domain/usecases/forgot_password_use_case.dart';
 import 'package:tabibi/features/authentication/domain/usecases/sign_up_use_case.dart';
@@ -12,8 +14,13 @@ import 'package:tabibi/features/authentication/domain/usecases/verify_code_use_c
 
 abstract class BaseAuthenticationRemoteDataSource {
   Future<String> signup(SignUpParameters parameters);
+
+  Future<LogInResponseModel> logIn(LogInRequestParamsModel parameters);
+
   Future<String> forgotPassword(ForgotPasswordParameters parameters);
+
   Future<String> verifyCode(VerifyCodeParameters parameters);
+
   Future<String> createNewPassword(CreateNewPasswordParameters parameters);
 }
 
@@ -53,7 +60,6 @@ class AuthenticationRemoteDataSource
     }
   }
 
-  @override
   @override
   Future<String> forgotPassword(ForgotPasswordParameters parameters) async {
     try {
@@ -117,6 +123,29 @@ class AuthenticationRemoteDataSource
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return response.data['message'] ?? 'Password reset successfully';
+      } else {
+        throw ServerException(
+          errorMessageModel: ErrorMessageModel.fromJson(response.data),
+        );
+      }
+    } on DioException catch (e) {
+      handleDioException(e);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<LogInResponseModel> logIn(LogInRequestParamsModel parameters) async {
+    try {
+      final response = await dio.post(
+        ApiConstance.login,
+        data: {
+          ApiKeys.email: parameters.email,
+          ApiKeys.password: parameters.password,
+        },
+      );
+      if (response.statusCode == 200) {
+        return LogInResponseModel.fromJson(response.data);
       } else {
         throw ServerException(
           errorMessageModel: ErrorMessageModel.fromJson(response.data),

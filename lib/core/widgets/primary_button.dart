@@ -14,18 +14,15 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-          height: AppHeight.h48,
-              width: AppWidth.w342,
-        child: ElevatedButton(
-          style: Theme.of(context).elevatedButtonTheme.style,
-          
-          onPressed: onPress,
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.labelLarge
-          ),
+    return SizedBox(
+        height: AppHeight.h50,
+            width: AppWidth.w342,
+      child: ElevatedButton(
+        style: Theme.of(context).elevatedButtonTheme.style,
+        onPressed: onPress,
+        child: Text(
+          title,
+          style: Theme.of(context).textTheme.labelLarge
         ),
       ),
     );

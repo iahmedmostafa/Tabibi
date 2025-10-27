@@ -11,7 +11,6 @@ class ApiConstance {
   static const String activeCode = "auth/activate";
 
 }
-
 class ApiKeys {
   ApiKeys._();
 
@@ -26,7 +25,8 @@ class ApiKeys {
   static const String image = "image";
   static const String phoneNumber = "phone";
   static const String code = "code";
-  static const String accessToken = "access_token";
-  static const String refreshToken = "refresh_token";
-  
+  static const String accessToken = "accessToken";
+  static const String refreshToken = "refreshToken";
+  static const String expiresAtUtc = "expiresAtUtc";
+
 }
