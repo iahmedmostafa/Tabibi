@@ -25,7 +25,7 @@ Future<void> init() async {
 
   /// REPOSITORY
   sl.registerLazySingleton<BaseAuthenticationRepository>(
-    () => AuthenticationRepository(sl()),
+    () => AuthenticationRepositoryImpl(sl()),
   );
 
   /// USE CASE
@@ -33,10 +33,14 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ForgotPasswordUseCase(sl()));
   sl.registerLazySingleton(() => VerifyCodeUseCase(sl()));
   sl.registerLazySingleton(() => CreateNewPasswordUseCase(sl()));
+    sl.registerLazySingleton(() => LogInUseCass(sl()));
+
 
   /// CUBIT
   sl.registerFactory(() => SignUpCubit(sl()));
   sl.registerFactory(() => ForgotPasswordCubit(sl()));
   sl.registerFactory(() => VerifyCodeCubit(sl(), sl()));
   sl.registerFactory(() => CreateNewPasswordCubit(sl()));
+    sl.registerFactory(() => LogInCubit(sl()));
+
 }
