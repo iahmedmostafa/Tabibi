@@ -5,10 +5,12 @@ import 'package:tabibi/features/authentication/data/repositories/authentication_
 import 'package:tabibi/features/authentication/domain/repositories/base_authentication_repository.dart';
 import 'package:tabibi/features/authentication/domain/usecases/create_new_password_use_case.dart';
 import 'package:tabibi/features/authentication/domain/usecases/forgot_password_use_case.dart';
+import 'package:tabibi/features/authentication/domain/usecases/log_in_use_case.dart';
 import 'package:tabibi/features/authentication/domain/usecases/sign_up_use_case.dart';
 import 'package:tabibi/features/authentication/domain/usecases/verify_code_use_case.dart';
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/cubit/create_new_password_cubit.dart';
 import 'package:tabibi/features/authentication/modules/forgot_password/presentation/cubit/forgot_password_cubit.dart';
+import 'package:tabibi/features/authentication/modules/login/presentation/business_logic/log_in_cubit.dart';
 import 'package:tabibi/features/authentication/modules/signup/presentation/cubit/sign_up_cubit.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/cubit/verify_code_cubit.dart';
 
@@ -33,7 +35,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ForgotPasswordUseCase(sl()));
   sl.registerLazySingleton(() => VerifyCodeUseCase(sl()));
   sl.registerLazySingleton(() => CreateNewPasswordUseCase(sl()));
-    sl.registerLazySingleton(() => LogInUseCass(sl()));
+    sl.registerLazySingleton(() => LogInUseCase(sl()));
 
 
   /// CUBIT

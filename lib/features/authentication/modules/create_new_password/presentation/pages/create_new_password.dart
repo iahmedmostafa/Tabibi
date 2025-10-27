@@ -73,7 +73,7 @@ class CreateNewPassword extends StatelessWidget {
                       controller: cubit.confirmPasswordController,
                       validator: (value) => Validator.validateConfirmPassword(
                           value,
-                          cubit.passwordController.text
+                          cubit.confirmPasswordController.text
                       ),
                       isPassword: true,
                     ),

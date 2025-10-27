@@ -9,6 +9,7 @@ class ApiConstance {
   static const String refreshToken = "auth/refresh";
   static const String logout = "auth/logout";
   static const String activeCode = "auth/activate";
+  static const String generateNewAccessToken = "auth/refresh";
 
 }
 class ApiKeys {
