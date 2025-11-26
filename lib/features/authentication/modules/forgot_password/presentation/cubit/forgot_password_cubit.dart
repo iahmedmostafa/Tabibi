@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:tabibi/features/authentication/domain/usecases/forgot_password_use_case.dart';
@@ -6,7 +5,7 @@ import 'package:tabibi/features/authentication/modules/forgot_password/presentat
 
 class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   ForgotPasswordCubit(this.forgotPasswordUseCase)
-      : super(const ForgotPasswordState());
+    : super(const ForgotPasswordState());
 
   final ForgotPasswordUseCase forgotPasswordUseCase;
 
@@ -22,20 +21,15 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
       ForgotPasswordParameters(email: emailController.text),
     );
 
-    log(result.toString());
-
     result.fold(
-          (failure) => emit(
+      (failure) => emit(
         state.copyWith(
           status: ForgotPasswordStatus.failure,
           errorMessage: failure.message,
         ),
       ),
-          (message) => emit(
-        state.copyWith(
-          status: ForgotPasswordStatus.success,
-          message: message,
-        ),
+      (message) => emit(
+        state.copyWith(status: ForgotPasswordStatus.success, message: "Done successfully"),
       ),
     );
   }

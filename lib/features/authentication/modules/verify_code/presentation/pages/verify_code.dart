@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/core/utils/constants/app_padding.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
-import 'package:tabibi/core/widgets/primary_button.dart';
+import 'package:tabibi/core/widgets/arrow_back.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/cubit/verify_code_cubit.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/cubit/verify_code_state.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/widgets/pin_code.dart';
-import 'package:tabibi/core/widgets/arrow_back.dart';
-import 'package:tabibi/features/authentication/modules/widgets/auth_prompt_text.dart';
+import 'package:tabibi/features/authentication/modules/verify_code/presentation/widgets/resend_code_text.dart';
+import 'package:tabibi/features/authentication/modules/verify_code/presentation/widgets/verify_code_button.dart';
+import 'package:tabibi/features/authentication/modules/verify_code/presentation/widgets/verify_code_listeners.dart';
 import 'package:tabibi/features/authentication/modules/widgets/top_section.dart';
 
 class VerifyCodeScreen extends StatelessWidget {
@@ -23,63 +23,48 @@ class VerifyCodeScreen extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: BlocConsumer<VerifyCodeCubit, VerifyCodeState>(
-        listener: (context, state) {
-          if (state.status == VerifyCodeStatus.success) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message ?? 'Verification successful!')));
-            context.go(AppRoutes.createNewPassword,extra: cubit.state.targetEmail,);
-          } else if (state.status == VerifyCodeStatus.failure) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.errorMessage ?? 'Verification failed!')));
-          }
-
-          if (state.resendStatus == ResendCodeStatus.success) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message ?? 'Code resent successfully!')));
-          } else if (state.resendStatus == ResendCodeStatus.failure) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.errorMessage ?? 'Failed to resend code!')));
-          }
-        },
-        builder: (context, state) {
-          return SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p24),
-              child: Form(
-                key: cubit.formKey,
-                child: Column(
-                  children: [
-                    VerticalSpace(height: AppHeight.h32),
-                    const ArrowBack(nameRoute: AppRoutes.forgotPassword),
-                    VerticalSpace(height: AppHeight.h32),
-                    const TopSection(
-                      title: AppStrings.verifyCode,
-                      supTitle: AppStrings.supTitleVerifyCode,
-                    ),
-                    VerticalSpace(height: AppHeight.h32),
-                    PinCode(controller: cubit.pinController),
-                    VerticalSpace(height: AppHeight.h32),
-                    PrimaryButton(
-                      onPress: state.status == VerifyCodeStatus.loading
-                          ? null
-                          : () => cubit.verifyCode(),
-                      title: state.status == VerifyCodeStatus.loading
-                          ? 'Verifying...'
-                          : AppStrings.verify,
-                    ),
-                    VerticalSpace(height: AppHeight.h24),
-                    AuthPromptText(
-                      gestureDetectorName: state.resendStatus == ResendCodeStatus.loading
-                          ? 'Sending...'
-                          : AppStrings.resend,
-                      text: AppStrings.didntGetCode,
-                      onPress: state.resendStatus == ResendCodeStatus.loading
-                          ? (){}
-                          : () => cubit.resendCode(),
-                    ),
-                  ],
-                ),
+      body: VerifyCodeListeners(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppPadding.p24),
+            child: Form(
+              key: cubit.formKey,
+              child: Column(
+                children: [
+                  VerticalSpace(height: AppHeight.h32),
+                  BlocSelector<VerifyCodeCubit, VerifyCodeState, VerifyOrigin>(
+                    selector: (state) => state.origin,
+                    builder: (context, origin) {
+                      return ArrowBack(
+                        nameRoute: origin == VerifyOrigin.forgot
+                            ? AppRoutes.forgotPassword
+                            : AppRoutes.signUp,
+                      );
+                    },
+                  ),
+                  VerticalSpace(height: AppHeight.h32),
+                  BlocSelector<VerifyCodeCubit, VerifyCodeState, VerifyOrigin>(
+                    selector: (state) => state.origin,
+                    builder: (context, origin) {
+                      return TopSection(
+                        title: AppStrings.verifyCode,
+                        supTitle: origin == VerifyOrigin.signup
+                            ? AppStrings.supTitleSignupVerify
+                            : AppStrings.supTitleVerifyCode,
+                      );
+                    },
+                  ),
+                  VerticalSpace(height: AppHeight.h32),
+                  PinCode(controller: cubit.pinController),
+                  VerticalSpace(height: AppHeight.h32),
+                  const VerifyCodeButton(),
+                  VerticalSpace(height: AppHeight.h24),
+                  const ResendCodeText(),
+                ],
               ),
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }

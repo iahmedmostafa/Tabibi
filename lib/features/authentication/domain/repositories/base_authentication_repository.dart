@@ -19,6 +19,8 @@ abstract class BaseAuthenticationRepository {
   );
 
   Future<Either<Failure, String>> verifyCode(VerifyCodeParameters parameters);
+  Future<Either<Failure, String>> verifyPasswordResetCode(VerifyCodeParameters parameters);
+
 
   Future<Either<Failure, String>> createNewPassword(
     CreateNewPasswordParameters parameters,

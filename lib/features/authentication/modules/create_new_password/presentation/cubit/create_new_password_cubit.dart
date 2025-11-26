@@ -37,7 +37,6 @@ class CreateNewPasswordCubit extends Cubit<CreateNewPasswordState> {
     final resetData = CreateNewPasswordParameters(
       email: state.targetEmail,
       newPassword: passwordController.text,
-      confirmPassword: confirmPasswordController.text,
     );
 
     final result = await createNewPasswordUseCase(resetData);

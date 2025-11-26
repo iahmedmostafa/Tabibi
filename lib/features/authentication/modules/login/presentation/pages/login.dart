@@ -14,7 +14,7 @@ import 'package:tabibi/features/authentication/modules/login/presentation/busine
 import 'package:tabibi/features/authentication/modules/login/presentation/widgets/bottom_login_section.dart';
 import 'package:tabibi/features/authentication/modules/widgets/auth_prompt_text.dart';
 import 'package:tabibi/features/authentication/modules/widgets/top_section.dart';
-import 'package:tabibi/features/test.dart';
+
 import '../../../../../../core/utils/validators/validation.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -25,7 +25,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   late LogInCubit cubit;
   @override
   Widget build(BuildContext context) {
@@ -49,13 +48,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
               VerticalSpace(height: AppHeight.h32),
 
-               CustomInputField(
+              CustomInputField(
                 hintText: AppStrings.email,
                 icon: Iconsax.sms,
                 isPassword: false,
                 controller: cubit.emailController,
-                 validator: (value) =>
-                     Validator.validateEmptyText("Email", value),
+                validator: (value) =>
+                    Validator.validateEmptyText("Email", value),
               ),
 
               VerticalSpace(height: AppHeight.h20),
@@ -65,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 icon: Iconsax.password_check,
                 isPassword: true,
                 validator: Validator.validatePassword,
-                controller:cubit.passwordController,
+                controller: cubit.passwordController,
               ),
 
               VerticalSpace(height: AppHeight.h23),
@@ -73,17 +72,14 @@ class _LoginScreenState extends State<LoginScreen> {
               BlocListener<LogInCubit, LogInState>(
                 listener: (context, state) {
                   if (state is LogInFailure) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(state.errorMessage)),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
                   } else if (state is LogInSuccess) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Logged in successfully")),
                     );
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Test()),
-                    );
+                    context.go(AppRoutes.home);
                   }
                 },
                 child: BlocBuilder<LogInCubit, LogInState>(
@@ -94,15 +90,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     return PrimaryButton(
                       onPress: () {
                         cubit.logIn();
-
                       },
                       title: AppStrings.signIn,
                     );
                   },
                 ),
               ),
-
-
 
               VerticalSpace(height: AppHeight.h23),
 

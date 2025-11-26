@@ -8,6 +8,7 @@ import 'package:tabibi/features/authentication/domain/usecases/forgot_password_u
 import 'package:tabibi/features/authentication/domain/usecases/log_in_use_case.dart';
 import 'package:tabibi/features/authentication/domain/usecases/sign_up_use_case.dart';
 import 'package:tabibi/features/authentication/domain/usecases/verify_code_use_case.dart';
+import 'package:tabibi/features/authentication/domain/usecases/verify_password_reset_code.dart';
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/cubit/create_new_password_cubit.dart';
 import 'package:tabibi/features/authentication/modules/forgot_password/presentation/cubit/forgot_password_cubit.dart';
 import 'package:tabibi/features/authentication/modules/login/presentation/business_logic/log_in_cubit.dart';
@@ -34,15 +35,14 @@ Future<void> init() async {
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
   sl.registerLazySingleton(() => ForgotPasswordUseCase(sl()));
   sl.registerLazySingleton(() => VerifyCodeUseCase(sl()));
+  sl.registerLazySingleton(() => VerifyPasswordResetCodeUseCase(sl()));
   sl.registerLazySingleton(() => CreateNewPasswordUseCase(sl()));
-    sl.registerLazySingleton(() => LogInUseCase(sl()));
-
+  sl.registerLazySingleton(() => LogInUseCase(sl()));
 
   /// CUBIT
   sl.registerFactory(() => SignUpCubit(sl()));
   sl.registerFactory(() => ForgotPasswordCubit(sl()));
-  sl.registerFactory(() => VerifyCodeCubit(sl(), sl()));
+  sl.registerFactory(() => VerifyCodeCubit(sl(), sl(), sl()));
   sl.registerFactory(() => CreateNewPasswordCubit(sl()));
-    sl.registerFactory(() => LogInCubit(sl()));
-
+  sl.registerFactory(() => LogInCubit(sl()));
 }

@@ -2,10 +2,8 @@ import '../../domain/entities/log_in_entity.dart';
 
 class LogInResponseModel extends LogInEntity {
 
-  final String expiresAtUtc;
 
   const LogInResponseModel({
-    required this.expiresAtUtc,
     required super.accessToken,
     required super.refreshToken,
   });
@@ -13,7 +11,6 @@ class LogInResponseModel extends LogInEntity {
     return LogInResponseModel(
       accessToken: json['accessToken'] as String,
       refreshToken: json['refreshToken'] as String,
-      expiresAtUtc: json['expiresAtUtc'] as String,
     );
   }
 
@@ -21,7 +18,6 @@ class LogInResponseModel extends LogInEntity {
     return {
       'accessToken': accessToken,
       'refreshToken': refreshToken,
-      'expiresAtUtc': expiresAtUtc,
     };
   }
 }

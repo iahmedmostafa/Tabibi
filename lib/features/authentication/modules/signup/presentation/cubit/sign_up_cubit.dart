@@ -23,7 +23,6 @@ class SignUpCubit extends Cubit<SignUpState> {
       SignUpParameters(
         email: emailController.text,
         userName: nameController.text,
-
         password: passwordController.text,
       ),
     );

@@ -24,7 +24,7 @@ class AuthenticationRepositoryImpl extends BaseAuthenticationRepository {
       );
       return Right(response);
     } on ServerException catch (failure) {
-      return Left(ServerFailure(failure.errorMessageModel.statusMessage));
+      return Left(ServerFailure(failure.errorMessageModel.formattedErrors));
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
@@ -54,7 +54,7 @@ class AuthenticationRepositoryImpl extends BaseAuthenticationRepository {
           .verifyCode(parameters);
       return Right(response);
     } on ServerException catch (failure) {
-      return Left(ServerFailure(failure.errorMessageModel.statusMessage));
+      return Left(ServerFailure(failure.errorMessageModel.formattedErrors));
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
@@ -69,7 +69,7 @@ class AuthenticationRepositoryImpl extends BaseAuthenticationRepository {
           .createNewPassword(parameters);
       return Right(response);
     } on ServerException catch (failure) {
-      return Left(ServerFailure(failure.errorMessageModel.statusMessage));
+      return Left(ServerFailure(failure.errorMessageModel.formattedErrors));
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
@@ -92,7 +92,23 @@ class AuthenticationRepositoryImpl extends BaseAuthenticationRepository {
       );
       return Right(response);
     } on ServerException catch (failure) {
-      return Left(ServerFailure(failure.errorMessageModel.statusMessage));
+      return Left(ServerFailure(failure.errorMessageModel.formattedErrors));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> verifyPasswordResetCode(
+    VerifyCodeParameters parameters,
+  ) async {
+    try {
+      final String response = await baseAuthenticationRemoteDataSource
+          .verifyPasswordResetCode(parameters);
+      await CacheHelper.saveData(key: ApiKeys.resetToken, value: response);
+      return const Right("the Code verified successfully");
+    } on ServerException catch (failure) {
+      return Left(ServerFailure(failure.errorMessageModel.formattedErrors));
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }

@@ -1,6 +1,3 @@
-
-
-
 import 'package:intl/intl.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
 
@@ -20,9 +17,9 @@ class Validator {
       return 'Pin Code is required.';
     }
 
-    // Check for minimum pinCode length
-    if (pinCode.length < 4) {
-      return 'Pin Code must be 4 Digits.';
+    // Check for exact pinCode length (6 digits expected)
+    if (pinCode.length < 6) {
+      return 'Pin Code must be 6 Digits.';
     }
 
     return null;
@@ -40,7 +37,13 @@ class Validator {
 
       final DateTime today = DateTime.now();
       final int age =
-          today.year - dateOfBirth.year - ((today.month < dateOfBirth.month || (today.month == dateOfBirth.month && today.day < dateOfBirth.day)) ? 1 : 0);
+          today.year -
+          dateOfBirth.year -
+          ((today.month < dateOfBirth.month ||
+                  (today.month == dateOfBirth.month &&
+                      today.day < dateOfBirth.day))
+              ? 1
+              : 0);
 
       if (age < 18) {
         return AppStrings.dateOfBirthError;
@@ -69,7 +72,11 @@ class Validator {
 
     // Check if the username doesn't start or end with an underscore or hyphen.
     if (isValid) {
-      isValid = !username.startsWith('_') && !username.startsWith('-') && !username.endsWith('_') && !username.endsWith('-');
+      isValid =
+          !username.startsWith('_') &&
+          !username.startsWith('-') &&
+          !username.endsWith('_') &&
+          !username.endsWith('-');
     }
 
     if (!isValid) {
@@ -150,7 +157,10 @@ class Validator {
     return null;
   }
 
-  static String? validateConfirmPassword(String? confirmPassword, String originalPassword) {
+  static String? validateConfirmPassword(
+    String? confirmPassword,
+    String originalPassword,
+  ) {
     if (confirmPassword == null || confirmPassword.isEmpty) {
       return 'Confirm password is required.';
     }

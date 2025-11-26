@@ -26,7 +26,7 @@ class PinCode extends StatelessWidget {
 
     return PinCodeTextField(
       appContext: context,
-      length: 4,
+      length: 6,
       keyboardType: TextInputType.number,
       enableActiveFill: true,
       controller: controller, // ربط الـ controller
@@ -36,7 +36,7 @@ class PinCode extends StatelessWidget {
           const TextStyle(fontSize: 16),
       pinTheme: PinTheme(
         fieldHeight: 56,
-        fieldWidth: 56,
+        fieldWidth: 30,
         shape: PinCodeFieldShape.box,
         borderRadius: AppBorderRadius.r12,
         borderWidth: 1,

@@ -18,14 +18,12 @@ class CreateNewPasswordUseCase extends BaseUseCase<String, CreateNewPasswordPara
 class CreateNewPasswordParameters extends Equatable {
   final String email;
   final String newPassword;
-  final String confirmPassword;
 
   const CreateNewPasswordParameters({
     required this.email,
     required this.newPassword,
-    required this.confirmPassword,
   });
 
   @override
-  List<Object?> get props => [email, newPassword, confirmPassword];
+  List<Object?> get props => [email, newPassword];
 }

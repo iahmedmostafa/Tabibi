@@ -80,7 +80,12 @@ class _SignupScreenState extends State<SignupScreen> {
               BlocConsumer<SignUpCubit, SignUpState>(
                 listener: (context, state) {
                   if (state.status == SignUpStatus.success) {
-                    context.go(AppRoutes.fillProfile);
+                    // navigate to verify code page with email and origin
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(state.message!)));
+                    // navigate using a full path to avoid name-based mismatches
+                    context.go('${AppRoutes.verifyCode}/${cubit.emailController.text}', extra: {'origin': 'signup'});
                   } else if (state.status == SignUpStatus.failure) {
                     final msg = state.errorMessage ?? 'Sign up failed';
                     ScaffoldMessenger.of(
@@ -92,11 +97,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   if (state.status == SignUpStatus.loading) {
                     return const Center(child: CircularProgressIndicator());
                   }
+
                   return PrimaryButton(
                     onPress: () {
                       cubit.signUp();
-                      //i want to navigate to fill profile page after successful signup
-
                     },
                     title: AppStrings.createAccount,
                   );

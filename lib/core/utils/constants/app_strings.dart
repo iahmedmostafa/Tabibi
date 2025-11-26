@@ -31,31 +31,36 @@ class AppStrings {
   static const or = "or";
 
   static const verifyCode = "Verify Code";
-  static const supTitleVerifyCode = "Enter the the code \nwe just sent you on your registered Email";
+  static const supTitleVerifyCode =
+      "Enter the the code \nwe just sent you on your registered Email";
   static const verify = "Verify";
   static const resend = "Resend";
   static const didntGetCode = "Didn’t get the Code? ";
+
+  // Verify code variations
+  static const supTitleSignupVerify = "Enter the code to activate your account";
+  static const activateAccount = "Activate";
 
   static const forgotPassword = "Forgot password?";
   static const signUp = "Sign Up";
   static const dontHaveAccount = "Don’t have an account yet? ";
 
-  static const supTitleForgotPassword = "Enter your Email, we will send you a verification \ncode.";
-  static const sendCode= "Send Code";
+  static const supTitleForgotPassword =
+      "Enter your Email, we will send you a verification \ncode.";
+  static const sendCode = "Send Code";
 
-  static const createNewPassword= "Create new password";
-  static const supTitleCreateNewPassword="Your new password must be different form \npreviously used password";
-  static const confirmPassword= 'Confirm Password';
-  static const resetPassword= "Reset Password";
+  static const createNewPassword = "Create new password";
+  static const supTitleCreateNewPassword =
+      "Your new password must be different form \npreviously used password";
+  static const confirmPassword = 'Confirm Password';
+  static const resetPassword = "Reset Password";
 
-  static const nameFillProfile= 'Name';
-  static const nickNameFillProfile= 'Nickname';
-  static const dateFillProfile= 'Date of Birth';
-  static const emailFillProfile= 'name@example.com';
-  static const genderFillProfile= 'Gender';
-  static const saveFillProfile= 'Save';
+  static const nameFillProfile = 'Name';
+  static const nickNameFillProfile = 'Nickname';
+  static const dateFillProfile = 'Date of Birth';
+  static const emailFillProfile = 'name@example.com';
+  static const genderFillProfile = 'Gender';
+  static const saveFillProfile = 'Save';
 
-    static const String dateOfBirthError = "You must be at least 18 years old.";
-
-
+  static const String dateOfBirthError = "You must be at least 18 years old.";
 }

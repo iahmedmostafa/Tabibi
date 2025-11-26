@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:get_it/get_it.dart';
+import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/core/utils/constants/app_padding.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/utils/validators/validation.dart';
+import 'package:tabibi/core/widgets/arrow_back.dart';
 import 'package:tabibi/core/widgets/custom_input_field.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
-import 'package:tabibi/core/widgets/arrow_back.dart';
-import 'package:tabibi/features/authentication/modules/widgets/top_section.dart';
 import 'package:tabibi/features/authentication/modules/forgot_password/presentation/cubit/forgot_password_cubit.dart';
 import 'package:tabibi/features/authentication/modules/forgot_password/presentation/cubit/forgot_password_state.dart';
+import 'package:tabibi/features/authentication/modules/widgets/top_section.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cubit = GetIt.instance<ForgotPasswordCubit>();
+    final cubit = sl<ForgotPasswordCubit>();
 
     return BlocProvider.value(
       value: cubit,
@@ -54,23 +54,15 @@ class ForgotPasswordScreen extends StatelessWidget {
                     listener: (context, state) {
                       if (state.status == ForgotPasswordStatus.success) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              state.message ?? 'Code sent successfully',
-                            ),
-                          ),
+                          const SnackBar(content: Text('Code sent successfully')),
                         );
-                        context.goNamed(
-                          AppRoutes.verifyCode,
-                          pathParameters: {'email': cubit.emailController.text},
+                        context.go(
+                          '${AppRoutes.verifyCode}/${cubit.emailController.text}',
+                          extra: {'origin': 'forgot'},
                         );
                       } else if (state.status == ForgotPasswordStatus.failure) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              state.errorMessage ?? 'Error occurred',
-                            ),
-                          ),
+                          const SnackBar(content: Text('Error occurred')),
                         );
                       }
                     },

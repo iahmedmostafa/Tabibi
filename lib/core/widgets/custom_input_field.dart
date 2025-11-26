@@ -38,7 +38,6 @@ class CustomInputField extends StatelessWidget {
             ?.unfocus(), //to disapear keyboard when tap outside
         decoration: InputDecoration(
           hintText: hintText,
-
           hintStyle: Theme.of(context).textTheme.bodyMedium,
           prefixIcon: isPrefixIconNotExist
               ? Padding(

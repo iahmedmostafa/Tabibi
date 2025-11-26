@@ -12,8 +12,11 @@ import 'package:tabibi/features/authentication/modules/login/presentation/pages/
 import 'package:tabibi/features/authentication/modules/signup/presentation/cubit/sign_up_cubit.dart';
 import 'package:tabibi/features/authentication/modules/signup/presentation/pages/signup.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/cubit/verify_code_cubit.dart';
+import 'package:tabibi/features/authentication/modules/verify_code/presentation/cubit/verify_code_state.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/pages/verify_code.dart';
+import 'package:tabibi/features/home/presentation/home_screen.dart';
 import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart';
+
 import '../services/shared_prefs_service.dart';
 
 final GoRouter router = GoRouter(
@@ -28,8 +31,9 @@ final GoRouter router = GoRouter(
       path: AppRoutes.login,
       name: AppRoutes.login,
       builder: (context, state) => BlocProvider(
-          create: (context) => sl<LogInCubit>(),
-          child: const LoginScreen()),
+        create: (context) => sl<LogInCubit>(),
+        child: const LoginScreen(),
+      ),
     ),
     GoRoute(
       path: AppRoutes.forgotPassword,
@@ -44,10 +48,18 @@ final GoRouter router = GoRouter(
       name: AppRoutes.verifyCode,
       builder: (context, state) {
         final email = state.pathParameters['email'] ?? '';
+        final extra = state.extra;
+        final originStr = (extra is Map && extra['origin'] != null)
+            ? extra['origin'] as String
+            : '';
+        var originEnum = VerifyOrigin.unknown;
+        if (originStr == 'signup') originEnum = VerifyOrigin.signup;
+        if (originStr == 'forgot') originEnum = VerifyOrigin.forgot;
         return BlocProvider(
           create: (context) {
             final cubit = sl<VerifyCodeCubit>();
             cubit.setTargetEmail(email);
+            if (originStr.isNotEmpty) cubit.setOrigin(originEnum);
             return cubit;
           },
           child: const VerifyCodeScreen(),
@@ -83,5 +95,11 @@ final GoRouter router = GoRouter(
       name: AppRoutes.fillProfile,
       builder: (context, state) => const FillProfile(),
     ),
+    GoRoute(
+      path: AppRoutes.home,
+      name: AppRoutes.home,
+      builder: (context, state) => const HomeScreen(),
+    ),
+
   ],
 );

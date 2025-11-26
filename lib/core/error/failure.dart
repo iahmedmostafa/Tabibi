@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tabibi/core/error/exceptions.dart';
@@ -40,13 +42,55 @@ void handleDioException(Object e) {
         ));
       case DioExceptionType.badResponse:
         if (e.response != null && e.response?.data != null) {
-          throw ServerException(errorMessageModel: ErrorMessageModel.fromJson(e.response?.data));  
+          final dynamic data = e.response?.data;
+          // If the response data is already a Map, use it directly
+          if (data is Map<String, dynamic>) {
+            throw ServerException(errorMessageModel: ErrorMessageModel.fromJson(data));
+          }
+
+          // If it's a String, try to decode JSON, otherwise use raw string
+          if (data is String) {
+            try {
+              final decoded = jsonDecode(data);
+              if (decoded is Map<String, dynamic>) {
+                throw ServerException(errorMessageModel: ErrorMessageModel.fromJson(decoded));
+              } else {
+                throw ServerException(errorMessageModel: ErrorMessageModel(
+                  statusCode: e.response?.statusCode ?? 500,
+                  statusMessage: data,
+                ));
+              }
+            } catch (_) {
+              throw ServerException(errorMessageModel: ErrorMessageModel(
+                statusCode: e.response?.statusCode ?? 500,
+                statusMessage: data,
+              ));
+            }
+          }
+
+          // If it's a Map with dynamic keys (e.g., Map<dynamic, dynamic>), try converting
+          if (data is Map) {
+            try {
+              final converted = Map<String, dynamic>.from(data);
+              throw ServerException(errorMessageModel: ErrorMessageModel.fromJson(converted));
+            } catch (_) {
+              throw ServerException(errorMessageModel: ErrorMessageModel(
+                statusCode: e.response?.statusCode ?? 500,
+                statusMessage: data.toString(),
+              ));
+            }
+          }
+
+          // Fallback for other shapes (List, etc.) - stringify
+          throw ServerException(errorMessageModel: ErrorMessageModel(
+            statusCode: e.response?.statusCode ?? 500,
+            statusMessage: data.toString(),
+          ));
         } else {
           throw ServerException(errorMessageModel: ErrorMessageModel(
             statusCode: e.response?.statusCode ?? 500,
             statusMessage: "Received invalid status code: ${e.response?.statusCode}",
           ));
-
         }
       case DioExceptionType.cancel:
         throw ServerException(errorMessageModel: ErrorMessageModel(
