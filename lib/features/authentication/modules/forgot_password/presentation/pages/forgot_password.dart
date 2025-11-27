@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +9,7 @@ import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/core/utils/constants/app_padding.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:tabibi/core/utils/helper/helper_functions.dart';
 import 'package:tabibi/core/utils/validators/validation.dart';
 import 'package:tabibi/core/widgets/arrow_back.dart';
 import 'package:tabibi/core/widgets/custom_input_field.dart';
@@ -53,16 +55,22 @@ class ForgotPasswordScreen extends StatelessWidget {
                   BlocConsumer<ForgotPasswordCubit, ForgotPasswordState>(
                     listener: (context, state) {
                       if (state.status == ForgotPasswordStatus.success) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Code sent successfully')),
+                        AppHelperFunctions.showAwesomeSnackBar(
+                          title: 'Success',
+                          message: 'Code sent successfully',
+                          contentType: ContentType.success,
+                          context: context,
                         );
                         context.go(
                           '${AppRoutes.verifyCode}/${cubit.emailController.text}',
                           extra: {'origin': 'forgot'},
                         );
                       } else if (state.status == ForgotPasswordStatus.failure) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Error occurred')),
+                        AppHelperFunctions.showAwesomeSnackBar(
+                          title: 'Error',
+                          message: state.errorMessage ?? 'Error occurred',
+                          contentType: ContentType.failure,
+                          context: context,
                         );
                       }
                     },

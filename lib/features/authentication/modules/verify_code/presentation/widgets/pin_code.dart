@@ -18,7 +18,7 @@ class PinCode extends StatelessWidget {
     // color mapping for pin fields depending on theme
     final Color activeBorder =
         AppColors.primary; // bright accent for active border
-    final Color activeFill =  AppColors.primary ;
+    final Color activeFill = AppColors.primary;
     final Color selectedBorder = AppColors.primary;
     final Color selectedFill = isDark ? AppColors.primary : AppColors.white;
     final Color inactiveBorder = isDark ? AppColors.grey700 : AppColors.grey200;

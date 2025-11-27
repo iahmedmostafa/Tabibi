@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/sizes.dart';
+import 'package:tabibi/core/utils/functions/select_image.dart';
 
 class ProfileImagePicker extends StatefulWidget {
   final Function(File?)? onImageSelected;
@@ -22,21 +22,6 @@ class ProfileImagePicker extends StatefulWidget {
 
 class _ProfileImagePickerState extends State<ProfileImagePicker> {
   File? _selectedImage;
-  final ImagePicker _picker = ImagePicker();
-
-  Future<void> _pickImage() async {
-    final XFile? image = await _picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 80,
-    );
-
-    if (image != null) {
-      setState(() {
-        _selectedImage = File(image.path);
-      });
-      widget.onImageSelected?.call(_selectedImage);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +52,14 @@ class _ProfileImagePickerState extends State<ProfileImagePicker> {
             bottom: 0,
             right: 0,
             child: GestureDetector(
-              onTap: _pickImage,
+              onTap: () {
+                selectImage((file) {
+                  setState(() {
+                    _selectedImage = file;
+                  });
+                  widget.onImageSelected?.call(_selectedImage);
+                }, context);
+              },
               child: Container(
                 width: 40,
                 height: 40,
@@ -75,7 +67,7 @@ class _ProfileImagePickerState extends State<ProfileImagePicker> {
                   color: AppColors.darkTeal,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Iconsax.edit, color: Colors.white, size: 20),
+                child: const Icon(Iconsax.edit, color: Colors.white, size: 20),
               ),
             ),
           ),

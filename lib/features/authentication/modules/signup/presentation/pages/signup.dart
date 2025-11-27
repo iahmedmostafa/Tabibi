@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -9,6 +10,7 @@ import 'package:tabibi/core/utils/constants/app_images.dart';
 import 'package:tabibi/core/utils/constants/app_padding.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
+import 'package:tabibi/core/utils/helper/helper_functions.dart';
 import 'package:tabibi/core/utils/validators/validation.dart';
 import 'package:tabibi/core/widgets/custom_input_field.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
@@ -81,16 +83,25 @@ class _SignupScreenState extends State<SignupScreen> {
                 listener: (context, state) {
                   if (state.status == SignUpStatus.success) {
                     // navigate to verify code page with email and origin
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(state.message!)));
+                    AppHelperFunctions.showAwesomeSnackBar(
+                      title: 'Success',
+                      message: state.message!,
+                      contentType: ContentType.success,
+                      context: context,
+                    );
                     // navigate using a full path to avoid name-based mismatches
-                    context.go('${AppRoutes.verifyCode}/${cubit.emailController.text}', extra: {'origin': 'signup'});
+                    context.go(
+                      '${AppRoutes.verifyCode}/${cubit.emailController.text}',
+                      extra: {'origin': 'signup'},
+                    );
                   } else if (state.status == SignUpStatus.failure) {
                     final msg = state.errorMessage ?? 'Sign up failed';
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(msg)));
+                    AppHelperFunctions.showAwesomeSnackBar(
+                      title: 'Error',
+                      message: msg,
+                      contentType: ContentType.failure,
+                      context: context,
+                    );
                   }
                 },
                 builder: (context, state) {

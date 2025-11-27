@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +9,7 @@ import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/core/utils/constants/app_padding.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:tabibi/core/utils/helper/helper_functions.dart';
 import 'package:tabibi/core/widgets/custom_input_field.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
 import 'package:tabibi/features/authentication/modules/login/presentation/business_logic/log_in_cubit.dart';
@@ -72,14 +74,20 @@ class _LoginScreenState extends State<LoginScreen> {
               BlocListener<LogInCubit, LogInState>(
                 listener: (context, state) {
                   if (state is LogInFailure) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
-                  } else if (state is LogInSuccess) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Logged in successfully")),
+                    AppHelperFunctions.showAwesomeSnackBar(
+                      title: 'Error',
+                      message: state.errorMessage,
+                      contentType: ContentType.failure,
+                      context: context,
                     );
-                    context.go(AppRoutes.home);
+                  } else if (state is LogInSuccess) {
+                    AppHelperFunctions.showAwesomeSnackBar(
+                      title: 'Success',
+                      message: "Logged in successfully",
+                      contentType: ContentType.success,
+                      context: context,
+                    );
+                    context.go(AppRoutes.fillProfile);
                   }
                 },
                 child: BlocBuilder<LogInCubit, LogInState>(

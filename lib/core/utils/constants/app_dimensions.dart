@@ -2,6 +2,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppHeight {
   static double get h8 => 8.h;
+  static double get h12 => 12.h;
   static double get h16 => 16.h;
   static double get h18 => 18.h;
   static double get h20 => 20.h;
@@ -23,6 +24,7 @@ class AppHeight {
 
 class AppWidth {
   static double get w8 => 8.w;
+  static double get w12 => 12.w;
   static double get w14 => 14.w;
   static double get w16 => 16.w;
   static double get w20 => 20.w;

@@ -1,47 +1,12 @@
 import 'dart:math';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AppHelperFunctions {
-//  static Color? getColor(String value) {
-    /// Define your product specific colors here and it will match the attribute colors and show specific 🟠🟡🟢🔵🟣🟤
-
-    // if (value == 'Green') {
-    //   return Colors.green;
-    // } else if (value == 'Green') {
-    //   return Colors.green;
-    // } else if (value == 'Red') {
-    //   return Colors.red;
-    // } else if (value == 'Blue') {
-    //   return Colors.blue;
-    // } else if (value == 'Pink') {
-    //   return Colors.pink;
-    // } else if (value == 'Grey') {
-    //   return Colors.grey;
-    // } else if (value == 'Purple') {
-    //   return Colors.purple;
-    // } else if (value == 'Black') {
-    //   return Colors.black;
-    // } else if (value == 'White') {
-    //   return Colors.white;
-    // } else if (value == 'Yellow') {
-    //   return Colors.yellow;
-    // } else if (value == 'Orange') {
-    //   return Colors.deepOrange;
-    // } else if (value == 'Brown') {
-    //   return Colors.brown;
-    // } else if (value == 'Teal') {
-    //   return Colors.teal;
-    // } else if (value == 'Indigo') {
-    //   return Colors.indigo;
-    // } else {
-    //   return null;
-    // }
-  
-
   /// Gets safe area height based on notch presence
-  static double  getTopSafeArea(BuildContext context) {
+  static double getTopSafeArea(BuildContext context) {
     return MediaQuery.of(context).viewPadding.top;
   }
 
@@ -50,13 +15,35 @@ class AppHelperFunctions {
     return MediaQuery.of(context).viewPadding.bottom;
   }
 
-  static void showSnackBar(String message,BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+  static void showSnackBar(String message, BuildContext context) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  static void showAlert(String title, String message,BuildContext context) {
+  static void showAwesomeSnackBar({
+    required String title,
+    required String message,
+    required ContentType contentType,
+    required BuildContext context,
+  }) {
+    final snackBar = SnackBar(
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      content: AwesomeSnackbarContent(
+        title: title,
+        message: message,
+        contentType: contentType,
+      ),
+    );
+
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(snackBar);
+  }
+
+  static void showAlert(String title, String message, BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -75,10 +62,7 @@ class AppHelperFunctions {
   }
 
   static void navigateToScreen(BuildContext context, Widget screen) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => screen),
-    );
+    Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
   }
 
   static String truncateText(String text, int maxLength) {
@@ -90,38 +74,29 @@ class AppHelperFunctions {
   }
 
   static bool isDarkMode(BuildContext context) {
-    return Theme
-        .of(context)
-        .brightness == Brightness.dark;
+    return Theme.of(context).brightness == Brightness.dark;
   }
 
   static bool isPortrait(BuildContext context) {
-    return MediaQuery
-        .of(context)
-        .orientation == Orientation.portrait;
+    return MediaQuery.of(context).orientation == Orientation.portrait;
   }
 
   static Size screenSize(BuildContext context) {
-    return MediaQuery
-        .of(context)
-        .size;
+    return MediaQuery.of(context).size;
   }
 
   static double screenHeight(BuildContext context) {
-    return MediaQuery
-        .of(context)
-        .size
-        .height;
+    return MediaQuery.of(context).size.height;
   }
 
   static double screenWidth(BuildContext context) {
-    return MediaQuery
-        .of(context)
-        .size
-        .width;
+    return MediaQuery.of(context).size.width;
   }
 
-  static String getFormattedDate(DateTime date, {String format = 'dd MMM yyyy'}) {
+  static String getFormattedDate(
+    DateTime date, {
+    String format = 'dd MMM yyyy',
+  }) {
     return DateFormat(format).format(date);
   }
 
@@ -133,23 +108,24 @@ class AppHelperFunctions {
     final wrappedList = <Widget>[];
     for (var i = 0; i < widgets.length; i += rowSize) {
       final rowChildren = widgets.sublist(
-          i, i + rowSize > widgets.length ? widgets.length : i + rowSize);
+        i,
+        i + rowSize > widgets.length ? widgets.length : i + rowSize,
+      );
       wrappedList.add(Row(children: rowChildren));
     }
     return wrappedList;
   }
 
-
   static String maskPhoneNumber(String number) {
     if (number.length > 6) {
       final visibleStart = number.substring(0, 2);
       final visibleEnd = number.substring(number.length - 3);
-      final maskedPart = '*' * (number.length - visibleStart.length - visibleEnd.length);
+      final maskedPart =
+          '*' * (number.length - visibleStart.length - visibleEnd.length);
       return '$visibleStart $maskedPart $visibleEnd';
     }
     return number;
   }
-
 
   static String generateReferralCode(String firstName) {
     final random = Random();
@@ -157,17 +133,7 @@ class AppHelperFunctions {
     return firstName.toUpperCase() + randomNumber.toString();
   }
 
-
   /// Converts a dynamic [value] to a [DateTime] object.
-  ///
-  /// This method supports:
-  /// - [T] Use this to pass firestore Timestamp
-  /// - Firestore Timestamps (calls `toDate()`).
-  /// - [DateTime] objects (returns as-is).
-  /// - [String] values (attempts to parse using [DateTime.tryParse]).
-  /// - [int] or [double] values (interpreted as Unix timestamp in milliseconds).
-  ///
-  /// If conversion fails, the method returns `null`.
   static DateTime? convertToDateTime<T>(dynamic value) {
     if (value == null) return null;
 
@@ -208,5 +174,4 @@ class AppHelperFunctions {
 
     return age;
   }
-
 }
