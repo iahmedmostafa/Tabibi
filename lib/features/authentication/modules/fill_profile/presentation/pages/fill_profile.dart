@@ -9,6 +9,7 @@ import 'package:tabibi/core/widgets/arrow_back.dart';
 import 'package:tabibi/core/widgets/custom_input_field.dart';
 import 'package:tabibi/core/widgets/drop_menu.dart/drop_menu.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
+import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/city_dropdown.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/date_picker_field.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/image_upload_section.dart';
 
@@ -21,6 +22,7 @@ class FillProfile extends StatefulWidget {
 
 class _FillProfileState extends State<FillProfile> {
   DateTime? selectedBirthdate;
+  String? selectedCityId;
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +78,15 @@ class _FillProfileState extends State<FillProfile> {
                 items: const ['Male', 'Female'],
                 onChanged: (value) {},
                 value: null,
+              ),
+              VerticalSpace(height: AppHeight.h8),
+              CityDropdown(
+                selectedCityId: selectedCityId,
+                onCitySelected: (cityId) {
+                  setState(() {
+                    selectedCityId = cityId;
+                  });
+                },
               ),
               VerticalSpace(height: AppHeight.h32),
               PrimaryButton(onPress: () {}, title: AppStrings.saveFillProfile),

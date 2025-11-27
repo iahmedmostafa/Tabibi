@@ -6,9 +6,10 @@ class ApiConstance {
   static const String forgotPassword = "auth/forgot-password";
   static const String verifyCode = "auth/email-confirmation";
   static const String resetPassword = "auth/reset-password";
-  static const String verifyPasswordResetCode = "auth/verify-password-reset-code";
+  static const String verifyPasswordResetCode =
+      "auth/verify-password-reset-code";
   static const String uploadImage = "images/upload";
-
+  static const String cities = "cities";
 
   //  static const String refreshToken = "auth/refresh​";
   // static const String logout = "auth/logout";
@@ -37,6 +38,5 @@ class ApiKeys {
   static const String expiresAtUtc = "expiresAtUtc";
   //profile
   static const String file = "File";
-    static const String imageUrl = "imageUrl";
-
+  static const String imageUrl = "imageUrl";
 }
