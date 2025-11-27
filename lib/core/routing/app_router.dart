@@ -4,6 +4,7 @@ import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/cubit/create_new_password_cubit.dart';
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/pages/create_new_password.dart';
+import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/pages/fill_profile.dart';
 import 'package:tabibi/features/authentication/modules/forgot_password/presentation/cubit/forgot_password_cubit.dart';
 import 'package:tabibi/features/authentication/modules/forgot_password/presentation/pages/forgot_password.dart';
@@ -93,13 +94,15 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppRoutes.fillProfile,
       name: AppRoutes.fillProfile,
-      builder: (context, state) => const FillProfile(),
+      builder: (context, state) => BlocProvider(
+        create: (context) => sl<UploadImageCubit>(),
+        child: const FillProfile(),
+      ),
     ),
     GoRoute(
       path: AppRoutes.home,
       name: AppRoutes.home,
       builder: (context, state) => const HomeScreen(),
     ),
-
   ],
 );

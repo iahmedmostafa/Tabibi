@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tabibi/features/authentication/data/datasources/auth_remote_date_source.dart';
+import 'package:tabibi/features/authentication/data/datasources/upload_image_data_source.dart';
 import 'package:tabibi/features/authentication/data/repositories/authentication_repository.dart';
+import 'package:tabibi/features/authentication/data/repositories/upload_image_repositary.dart';
 import 'package:tabibi/features/authentication/domain/repositories/base_authentication_repository.dart';
 import 'package:tabibi/features/authentication/domain/usecases/create_new_password_use_case.dart';
 import 'package:tabibi/features/authentication/domain/usecases/forgot_password_use_case.dart';
@@ -10,6 +12,7 @@ import 'package:tabibi/features/authentication/domain/usecases/sign_up_use_case.
 import 'package:tabibi/features/authentication/domain/usecases/verify_code_use_case.dart';
 import 'package:tabibi/features/authentication/domain/usecases/verify_password_reset_code.dart';
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/cubit/create_new_password_cubit.dart';
+import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/forgot_password/presentation/cubit/forgot_password_cubit.dart';
 import 'package:tabibi/features/authentication/modules/login/presentation/business_logic/log_in_cubit.dart';
 import 'package:tabibi/features/authentication/modules/signup/presentation/cubit/sign_up_cubit.dart';
@@ -25,11 +28,13 @@ Future<void> init() async {
   sl.registerLazySingleton<BaseAuthenticationRemoteDataSource>(
     () => AuthenticationRemoteDataSource(sl()),
   );
+  sl.registerLazySingleton(() => UploadImageDataSource(sl()));
 
   /// REPOSITORY
   sl.registerLazySingleton<BaseAuthenticationRepository>(
     () => AuthenticationRepositoryImpl(sl()),
   );
+  sl.registerLazySingleton(() => UploadImageRepositary(sl()));
 
   /// USE CASE
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
@@ -45,4 +50,5 @@ Future<void> init() async {
   sl.registerFactory(() => VerifyCodeCubit(sl(), sl(), sl()));
   sl.registerFactory(() => CreateNewPasswordCubit(sl()));
   sl.registerFactory(() => LogInCubit(sl()));
+  sl.registerFactory(() => UploadImageCubit(sl()));
 }

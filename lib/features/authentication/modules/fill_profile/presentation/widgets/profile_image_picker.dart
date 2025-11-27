@@ -4,24 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/sizes.dart';
-import 'package:tabibi/core/utils/functions/select_image.dart';
 
-class ProfileImagePicker extends StatefulWidget {
-  final Function(File?)? onImageSelected;
-  final String? initialImageUrl;
+class ProfileImagePicker extends StatelessWidget {
+  final void Function()? onImageSelected;
+  final File? selectedImage;
 
   const ProfileImagePicker({
     super.key,
     this.onImageSelected,
-    this.initialImageUrl,
+    this.selectedImage,
   });
-
-  @override
-  State<ProfileImagePicker> createState() => _ProfileImagePickerState();
-}
-
-class _ProfileImagePickerState extends State<ProfileImagePicker> {
-  File? _selectedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +28,8 @@ class _ProfileImagePickerState extends State<ProfileImagePicker> {
               shape: BoxShape.circle,
             ),
             child: ClipOval(
-              child: _selectedImage != null
-                  ? Image.file(_selectedImage!, fit: BoxFit.cover)
-                  : widget.initialImageUrl != null
-                  ? Image.network(widget.initialImageUrl!, fit: BoxFit.cover)
+              child: selectedImage != null
+                  ? Image.file(selectedImage!, fit: BoxFit.cover)
                   : const Icon(
                       Iconsax.user,
                       size: AppSizes.imageThumbSize,
@@ -52,14 +42,7 @@ class _ProfileImagePickerState extends State<ProfileImagePicker> {
             bottom: 0,
             right: 0,
             child: GestureDetector(
-              onTap: () {
-                selectImage((file) {
-                  setState(() {
-                    _selectedImage = file;
-                  });
-                  widget.onImageSelected?.call(_selectedImage);
-                }, context);
-              },
+              onTap: onImageSelected,
               child: Container(
                 width: 40,
                 height: 40,

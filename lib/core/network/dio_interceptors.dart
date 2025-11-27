@@ -41,7 +41,9 @@ class DioInterceptors {
 
       final response = await dio.post(
         ApiConstance.generateNewAccessToken,
-        options: Options(headers: {ApiKeys.refreshToken: refreshToken}),
+        data: {
+          ApiKeys.refreshToken: refreshToken,
+        },
       );
 
       final newAccessToken = response.data.toString();

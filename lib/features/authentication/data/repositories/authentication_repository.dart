@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:tabibi/core/error/exceptions.dart';
 import 'package:tabibi/core/error/failure.dart';
@@ -90,6 +92,7 @@ class AuthenticationRepositoryImpl extends BaseAuthenticationRepository {
         key: ApiKeys.refreshToken,
         value: response.refreshToken,
       );
+      log(response.accessToken);
       return Right(response);
     } on ServerException catch (failure) {
       return Left(ServerFailure(failure.errorMessageModel.formattedErrors));
