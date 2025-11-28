@@ -8,11 +8,13 @@ import 'package:tabibi/core/utils/constants/sizes.dart';
 class ProfileImagePicker extends StatelessWidget {
   final void Function()? onImageSelected;
   final File? selectedImage;
+  final bool isUploaded;
 
   const ProfileImagePicker({
     super.key,
     this.onImageSelected,
     this.selectedImage,
+    this.isUploaded = false,
   });
 
   @override
@@ -28,7 +30,7 @@ class ProfileImagePicker extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: ClipOval(
-              child: selectedImage != null
+              child: selectedImage != null && isUploaded
                   ? Image.file(selectedImage!, fit: BoxFit.cover)
                   : const Icon(
                       Iconsax.user,

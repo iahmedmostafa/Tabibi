@@ -18,8 +18,8 @@ class ImageUploadSection extends StatefulWidget {
 }
 
 class _ImageUploadSectionState extends State<ImageUploadSection> {
+  bool isUploaded = false;
   File? selectedImage;
-  String? uploadedImageUrl;
 
   void _handleImageSelection() {
     selectImage((file) {
@@ -35,6 +35,8 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
     return BlocListener<UploadImageCubit, UploadImageState>(
       listener: (context, state) {
         if (state.status == UploadImageStatus.loading) {
+          isUploaded = false;
+
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Uploading image...'),
@@ -43,7 +45,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
           );
         } else if (state.status == UploadImageStatus.success) {
           setState(() {
-            uploadedImageUrl = state.imageUrl;
+            isUploaded = true;
           });
           AppHelperFunctions.showAwesomeSnackBar(
             title: 'Success',
@@ -52,6 +54,8 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
             context: context,
           );
         } else if (state.status == UploadImageStatus.failure) {
+          isUploaded = false;
+
           AppHelperFunctions.showAwesomeSnackBar(
             title: 'Error',
             message: state.errorMessage ?? 'Upload failed',
@@ -63,6 +67,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
       child: ProfileImagePicker(
         onImageSelected: _handleImageSelection,
         selectedImage: selectedImage,
+        isUploaded: isUploaded,
       ),
     );
   }

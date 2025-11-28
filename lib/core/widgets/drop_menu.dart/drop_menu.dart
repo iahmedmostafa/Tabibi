@@ -23,7 +23,7 @@ class DropMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = AppHelperFunctions.isDarkMode(context);
     return Padding(
-      padding: EdgeInsets.only(top: AppHeight.h20, bottom: AppHeight.h18),
+      padding: EdgeInsets.only(top: AppHeight.h12, bottom: AppHeight.h8),
       child: Material(
         elevation: 4,
         borderRadius: AppBorderRadius.r8,

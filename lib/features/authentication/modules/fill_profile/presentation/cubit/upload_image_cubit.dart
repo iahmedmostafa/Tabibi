@@ -35,4 +35,7 @@ class UploadImageCubit extends Cubit<UploadImageState> {
   void resetState() {
     emit(const UploadImageState());
   }
+
+  // Getter to access the uploaded image URL
+  String? get uploadedImageUrl => state.imageUrl;
 }

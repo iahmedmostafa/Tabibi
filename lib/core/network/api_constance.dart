@@ -10,6 +10,7 @@ class ApiConstance {
       "auth/verify-password-reset-code";
   static const String uploadImage = "images/upload";
   static const String cities = "cities";
+  static const String patientProfile = "patients/me";
 
   //  static const String refreshToken = "auth/refresh​";
   // static const String logout = "auth/logout";

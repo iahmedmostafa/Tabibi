@@ -16,6 +16,7 @@ import 'package:tabibi/features/authentication/modules/signup/presentation/pages
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/cubit/verify_code_cubit.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/cubit/verify_code_state.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/pages/verify_code.dart';
+import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.dart';
 import 'package:tabibi/features/home/presentation/home_screen.dart';
 import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart';
 
@@ -99,6 +100,9 @@ final GoRouter router = GoRouter(
         providers: [
           BlocProvider(create: (context) => sl<UploadImageCubit>()),
           BlocProvider(create: (context) => sl<CitiesCubit>()..getCities()),
+          BlocProvider(
+            create: (context) => sl<PatientProfileCubit>()..getPatientProfile(),
+          ),
         ],
         child: const FillProfile(),
       ),

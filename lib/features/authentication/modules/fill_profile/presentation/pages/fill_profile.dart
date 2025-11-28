@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/style/spacing/horizental_space.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
@@ -9,9 +10,12 @@ import 'package:tabibi/core/widgets/arrow_back.dart';
 import 'package:tabibi/core/widgets/custom_input_field.dart';
 import 'package:tabibi/core/widgets/drop_menu.dart/drop_menu.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
+import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/city_dropdown.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/date_picker_field.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/image_upload_section.dart';
+import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.dart';
+import 'package:tabibi/features/home/presentation/cubit/patient_profile_state.dart';
 
 class FillProfile extends StatefulWidget {
   const FillProfile({super.key});
@@ -47,17 +51,26 @@ class _FillProfileState extends State<FillProfile> {
               VerticalSpace(height: AppHeight.h32),
               const ImageUploadSection(),
               VerticalSpace(height: AppHeight.h24),
-              const CustomInputField(
-                hintText: AppStrings.nameFillProfile,
-                isPassword: false,
-                isPrefixIconNotExist: false,
+              BlocBuilder<PatientProfileCubit, PatientProfileState>(
+                builder: (context, state) {
+                  final initialName =
+                      state.status == PatientProfileStatus.success
+                      ? state.profile?.name ?? ''
+                      : '';
+
+                  final nameController = TextEditingController(
+                    text: initialName,
+                  );
+
+                  return CustomInputField(
+                    hintText: AppStrings.nameFillProfile,
+                    isPassword: false,
+                    isPrefixIconNotExist: false,
+                    controller: nameController,
+                  );
+                },
               ),
-              VerticalSpace(height: AppHeight.h20),
-              const CustomInputField(
-                hintText: AppStrings.emailFillProfile,
-                isPassword: false,
-                isPrefixIconNotExist: false,
-              ),
+
               VerticalSpace(height: AppHeight.h20),
               DatePickerField(
                 selectedDate: selectedBirthdate,
@@ -79,7 +92,6 @@ class _FillProfileState extends State<FillProfile> {
                 onChanged: (value) {},
                 value: null,
               ),
-              VerticalSpace(height: AppHeight.h8),
               CityDropdown(
                 selectedCityId: selectedCityId,
                 onCitySelected: (cityId) {
@@ -89,7 +101,20 @@ class _FillProfileState extends State<FillProfile> {
                 },
               ),
               VerticalSpace(height: AppHeight.h32),
-              PrimaryButton(onPress: () {}, title: AppStrings.saveFillProfile),
+              PrimaryButton(
+                onPress: () {
+                  final uploadedImageUrl = context
+                      .read<UploadImageCubit>()
+                      .uploadedImageUrl;
+
+                  print('Uploaded Image URL: $uploadedImageUrl');
+                  print('Selected City ID: $selectedCityId');
+                  print('Selected Birthdate: $selectedBirthdate');
+
+                  
+                },
+                title: AppStrings.saveFillProfile,
+              ),
             ],
           ),
         ),
