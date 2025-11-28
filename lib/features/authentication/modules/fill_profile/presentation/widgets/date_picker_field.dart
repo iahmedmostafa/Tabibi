@@ -10,10 +10,10 @@ import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/core/utils/helper/helper_functions.dart';
 
 class DatePickerField extends StatelessWidget {
-  final DateTime? selectedDate;
+  final String? selectedDate;
   final String hintText;
   final String pickerTitle;
-  final Function(DateTime) onDateSelected;
+  final Function(String) onDateSelected;
   final DateTime? initialDateTime;
   final DateTime? maxDateTime;
   final DateTime? minDateTime;
@@ -43,12 +43,12 @@ class DatePickerField extends StatelessWidget {
         );
       },
       onSubmit: (date) {
-        onDateSelected(date);
+        onDateSelected(DateFormat('yyyy-MM-dd').format(date));
       },
       bottomPickerTheme: isDark
           ? BottomPickerTheme.morningSalad
           : BottomPickerTheme.blue,
-      initialDateTime: selectedDate ?? initialDateTime ?? DateTime(2000, 1, 1),
+      initialDateTime:  initialDateTime ?? DateTime(2000, 1, 1),
       maxDateTime: maxDateTime ?? DateTime.now(),
       minDateTime: minDateTime ?? DateTime(1900),
       pickerTextStyle: Theme.of(context).textTheme.bodyLarge!,
@@ -84,7 +84,7 @@ class DatePickerField extends StatelessWidget {
             HorizentalSpace(width: AppWidth.w12),
             Text(
               selectedDate != null
-                  ? DateFormat('dd/MM/yyyy').format(selectedDate!)
+                  ? selectedDate!
                   : hintText,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: selectedDate != null

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/services/shared_prefs_service.dart';
@@ -28,6 +29,7 @@ class TabibiApp extends StatelessWidget {
           themeMode: ThemeMode.system,
           darkTheme: AppTheme.darkTheme,
           theme: AppTheme.lightTheme,
+          builder: EasyLoading.init(),
         );
       },
     );

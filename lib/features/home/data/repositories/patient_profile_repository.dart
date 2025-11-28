@@ -3,6 +3,7 @@ import 'package:tabibi/core/error/exceptions.dart';
 import 'package:tabibi/core/error/failure.dart';
 import 'package:tabibi/features/home/data/datasources/base_patient_profile_data_source.dart';
 import 'package:tabibi/features/home/data/models/patient_profile_model.dart';
+import 'package:tabibi/features/home/data/models/update_patient_profile_params.dart';
 import 'package:tabibi/features/home/domain/repositories/base_patient_profile_repository.dart';
 
 class PatientProfileRepository implements BasePatientProfileRepository {
@@ -17,6 +18,20 @@ class PatientProfileRepository implements BasePatientProfileRepository {
           .getPatientProfile();
 
       return Right(profile);
+    } on ServerException catch (failure) {
+      return Left(ServerFailure(failure.errorMessageModel.formattedErrors));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> updatePatientProfile(
+    UpdatePatientProfileParams params,
+  ) async {
+    try {
+      final String message = await patientProfileDataSource.updatePatientProfile(params);
+      return Right(message);
     } on ServerException catch (failure) {
       return Left(ServerFailure(failure.errorMessageModel.formattedErrors));
     } catch (e) {

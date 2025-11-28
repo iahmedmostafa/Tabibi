@@ -11,6 +11,7 @@ class ApiConstance {
   static const String uploadImage = "images/upload";
   static const String cities = "cities";
   static const String patientProfile = "patients/me";
+  static const String updatePatientProfile = "patients/me";
 
   //  static const String refreshToken = "auth/refresh​";
   // static const String logout = "auth/logout";

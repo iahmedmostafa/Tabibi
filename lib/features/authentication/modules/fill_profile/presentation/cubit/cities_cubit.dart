@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/features/authentication/data/repositories/cities_repository.dart';
@@ -14,8 +12,6 @@ class CitiesCubit extends Cubit<CitiesState> {
     emit(state.copyWith(status: CitiesStatus.loading));
 
     final result = await citiesRepository.getCities();
-
-    log('Get Cities Result: $result');
 
     result.fold(
       (failure) => emit(

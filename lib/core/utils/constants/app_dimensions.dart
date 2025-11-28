@@ -28,6 +28,7 @@ class AppWidth {
   static double get w14 => 14.w;
   static double get w16 => 16.w;
   static double get w20 => 20.w;
+  static double get w32 => 32.w;
   static double get w311 => 311.w;
   static double get w342 => 342.w;
   static double get w390 => 390.w;

@@ -7,7 +7,6 @@ class PatientProfileModel extends PatientProfile {
     super.avatarUrl,
     super.gender,
     super.dateOfBirth,
-    super.city,
     required super.createdAtUtc,
     super.updatedAtUtc,
   });
@@ -17,9 +16,8 @@ class PatientProfileModel extends PatientProfile {
       name: json['name'] as String,
       email: json['email'] as String,
       avatarUrl: json['avatarUrl'] as String?,
-      gender: json['gender'] as String?,
+      gender: json['gender'] as int?,
       dateOfBirth: json['dateOfBirth'] as String?,
-      city: json['city'] as String?,
       createdAtUtc: json['createdAtUtc'] as String,
       updatedAtUtc: json['updatedAtUtc'] as String?,
     );
@@ -32,7 +30,6 @@ class PatientProfileModel extends PatientProfile {
       'avatarUrl': avatarUrl,
       'gender': gender,
       'dateOfBirth': dateOfBirth,
-      'city': city,
       'createdAtUtc': createdAtUtc,
       'updatedAtUtc': updatedAtUtc,
     };

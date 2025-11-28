@@ -25,6 +25,7 @@ import 'package:tabibi/features/home/data/datasources/patient_profile_data_sourc
 import 'package:tabibi/features/home/data/repositories/patient_profile_repository.dart';
 import 'package:tabibi/features/home/domain/repositories/base_patient_profile_repository.dart';
 import 'package:tabibi/features/home/domain/usecases/get_patient_profile_use_case.dart';
+import 'package:tabibi/features/home/domain/usecases/update_patient_profile_use_case.dart';
 import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.dart';
 
 final sl = GetIt.instance;
@@ -61,6 +62,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CreateNewPasswordUseCase(sl()));
   sl.registerLazySingleton(() => LogInUseCase(sl()));
   sl.registerLazySingleton(() => GetPatientProfileUseCase(sl()));
+  sl.registerLazySingleton(() => UpdatePatientProfileUseCase(sl()));
 
   /// CUBIT
   sl.registerFactory(() => SignUpCubit(sl()));
@@ -70,5 +72,5 @@ Future<void> init() async {
   sl.registerFactory(() => LogInCubit(sl()));
   sl.registerFactory(() => UploadImageCubit(sl()));
   sl.registerFactory(() => CitiesCubit(sl()));
-  sl.registerFactory(() => PatientProfileCubit(sl()));
+  sl.registerFactory(() => PatientProfileCubit(sl(), sl()));
 }
