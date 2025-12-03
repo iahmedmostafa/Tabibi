@@ -22,46 +22,43 @@ class DropMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = AppHelperFunctions.isDarkMode(context);
-    return Padding(
-      padding: EdgeInsets.only(top: AppHeight.h12, bottom: AppHeight.h8),
-      child: Material(
-        elevation: 4,
-        borderRadius: AppBorderRadius.r8,
-        child: DropdownButtonFormField<String>(
-          initialValue: value,
-          hint: Text(
-            hint,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          decoration: InputDecoration(
-            hintStyle: Theme.of(context).textTheme.bodyMedium,
-            filled: true,
-            fillColor: isDark ? AppColors.darkBackground : AppColors.grey100,
-            border: Theme.of(context).inputDecorationTheme.border,
-            enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-            focusedBorder: Theme.of(context).inputDecorationTheme.focusedBorder,
-            contentPadding: EdgeInsets.symmetric(
-              vertical: AppHeight.h8,
-              horizontal: AppWidth.w16,
-            ),
-          ),
-          dropdownColor: isDark ? AppColors.darkBackground : AppColors.grey100,
-          icon: const Icon(
-            Icons.keyboard_arrow_down,
-            color: AppColors.grey100,
-            size: AppSizes.iconSm2,
-          ),
-          items: items.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(
-                value,
-                style: Theme.of(context).textTheme.bodyMedium
-              ),
-            );
-          }).toList(),
-          onChanged: onChanged,
+    return Material(
+      elevation: 4,
+      borderRadius: AppBorderRadius.r8,
+      child: DropdownButtonFormField<String>(
+        initialValue: value,
+        hint: Text(
+          hint,
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(color:AppColors.grey ),
         ),
+        decoration: InputDecoration(
+          hintStyle: Theme.of(context).textTheme.bodyMedium,
+          filled: true,
+          fillColor: isDark ? AppColors.darkBackground : AppColors.grey100,
+          border: Theme.of(context).inputDecorationTheme.border,
+          enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
+          focusedBorder: Theme.of(context).inputDecorationTheme.focusedBorder,
+          contentPadding: EdgeInsets.symmetric(
+            vertical: AppHeight.h8,
+            horizontal: AppWidth.w16,
+          ),
+        ),
+        dropdownColor: isDark ? AppColors.darkBackground : AppColors.white,
+        icon: const Icon(
+          Icons.keyboard_arrow_down,
+          color: AppColors.grey100,
+          size: AppSizes.iconSm2,
+        ),
+        items: items.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(
+              value,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: isDark ? AppColors.white : AppColors.black)
+            ),
+          );
+        }).toList(),
+        onChanged: onChanged,
       ),
     );
   }

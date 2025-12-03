@@ -5,13 +5,13 @@ import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/sizes.dart';
 
-class ProfileImagePicker extends StatelessWidget {
+class CredentialImagePicker extends StatelessWidget {
   final void Function()? onImageSelected;
   final File? selectedImage;
   final bool isUploaded;
   final String? imageUrl;
 
-  const ProfileImagePicker({
+  const CredentialImagePicker({
     super.key,
     this.onImageSelected,
     this.selectedImage,
@@ -25,13 +25,16 @@ class ProfileImagePicker extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            width: 120,
-            height: 120,
+            width: 250,
+            height: 168.33,
             decoration: const BoxDecoration(
               color: AppColors.grey200,
-              shape: BoxShape.circle,
+              borderRadius: BorderRadius.all(Radius.circular(12)),
             ),
-            child: ClipOval(child: _buildImage()),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              child: _buildImage(),
+            ),
           ),
 
           Positioned(
@@ -57,12 +60,12 @@ class ProfileImagePicker extends StatelessWidget {
 
   Widget _buildImage() {
     if (selectedImage != null) {
-      return Image.file(selectedImage!, fit: BoxFit.cover);
+      return Image.file(selectedImage!, fit: BoxFit.fill);
     } else if (imageUrl != null && imageUrl!.isNotEmpty) {
-      return Image.network(imageUrl!, fit: BoxFit.cover);
+      return Image.network(imageUrl!, fit: BoxFit.fill);
     } else {
       return const Icon(
-        Iconsax.user,
+        Icons.credit_card_rounded,
         size: AppSizes.imageThumbSize,
         color: AppColors.grey400,
       );

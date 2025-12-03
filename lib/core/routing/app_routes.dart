@@ -7,5 +7,7 @@ class AppRoutes {
   static const createNewPassword = '/create_new_password';
   static const signUp            = '/signup';
   static const fillProfile       = '/fill_profile';
+  static const doctorFillProfile = '/doctor_fill_profile';
   static const home              = '/home';
+  static const pending           = '/pending';
 }

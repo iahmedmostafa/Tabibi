@@ -12,8 +12,10 @@ class ApiConstance {
   static const String cities = "cities";
   static const String patientProfile = "patients/me";
   static const String updatePatientProfile = "patients/me";
+  static const String updateDoctorProfile = "doctors/me";
+  static const String departments = "departments";
 
-  //  static const String refreshToken = "auth/refresh​";
+  //  static const String refreshToken = "auth/refresh";
   // static const String logout = "auth/logout";
   //  static const String activeCode = "auth/activate";
   static const String generateNewAccessToken = "auth/refresh";

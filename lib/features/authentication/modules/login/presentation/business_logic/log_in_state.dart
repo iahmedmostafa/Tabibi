@@ -9,7 +9,8 @@ final class LogInLoading extends LogInState {}
 
 final class LogInSuccess extends LogInState {
   final LogInEntity logInEntity;
-   LogInSuccess({required this.logInEntity,});
+  final String? role;
+  LogInSuccess({required this.logInEntity, this.role});
 }
 
 final class LogInFailure extends LogInState {

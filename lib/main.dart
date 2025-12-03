@@ -26,7 +26,7 @@ class TabibiApp extends StatelessWidget {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
           routerConfig: router,
-          themeMode: ThemeMode.system,
+          themeMode: ThemeMode.light,
           darkTheme: AppTheme.darkTheme,
           theme: AppTheme.lightTheme,
           builder: EasyLoading.init(),

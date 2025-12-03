@@ -29,7 +29,7 @@ class AppStrings {
   static const subTitleCreateAccount = "We are here to help you!";
 
   static const or = "or";
-
+  static const selectRole="Patient or Doctor";
   static const verifyCode = "Verify Code";
   static const supTitleVerifyCode =
       "Enter the the code \nwe just sent you on your registered Email";

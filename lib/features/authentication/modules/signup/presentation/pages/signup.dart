@@ -21,6 +21,9 @@ import 'package:tabibi/features/authentication/modules/widgets/or_section.dart';
 import 'package:tabibi/features/authentication/modules/widgets/social_button.dart';
 import 'package:tabibi/features/authentication/modules/widgets/top_section.dart';
 
+import '../../../../../../core/services/cache_helper.dart';
+import '../../../../../../core/widgets/drop_menu.dart/drop_menu.dart';
+
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
@@ -30,6 +33,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   late SignUpCubit cubit;
+  int role = 1;
   @override
   Widget build(BuildContext context) {
     cubit = context.read<SignUpCubit>();
@@ -40,111 +44,129 @@ class _SignupScreenState extends State<SignupScreen> {
         padding: const EdgeInsets.symmetric(horizontal: AppPadding.p24),
         child: Form(
           key: cubit.formKey,
-          child: Column(
-            children: [
-              VerticalSpace(height: AppHeight.h85),
-              const TopSection(
-                title: AppStrings.createAccount,
-                supTitle: AppStrings.subTitleCreateAccount,
-              ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                VerticalSpace(height: AppHeight.h85),
+                const TopSection(
+                  title: AppStrings.createAccount,
+                  supTitle: AppStrings.subTitleCreateAccount,
+                ),
 
-              VerticalSpace(height: AppHeight.h32),
-              CustomInputField(
-                hintText: AppStrings.email,
-                controller: cubit.emailController,
-                icon: Iconsax.sms,
-                // pass the validator function itself (signature: String? Function(String?))
-                validator: Validator.validateEmail,
-                isPassword: false,
-              ),
+                VerticalSpace(height: AppHeight.h32),
+                CustomInputField(
+                  hintText: AppStrings.email,
+                  controller: cubit.emailController,
+                  icon: Iconsax.sms,
+                  // pass the validator function itself (signature: String? Function(String?))
+                  validator: Validator.validateEmail,
+                  isPassword: false,
+                ),
 
-              VerticalSpace(height: AppHeight.h20),
-              CustomInputField(
-                hintText: AppStrings.name,
-                controller: cubit.nameController,
-                icon: Iconsax.user,
-                // pass a validator closure so it matches String? Function(String?)?
-                validator: (value) =>
-                    Validator.validateEmptyText("Name", value),
-                isPassword: false,
-              ),
+                VerticalSpace(height: AppHeight.h20),
+                CustomInputField(
+                  hintText: AppStrings.name,
+                  controller: cubit.nameController,
+                  icon: Iconsax.user,
+                  // pass a validator closure so it matches String? Function(String?)?
+                  validator: (value) =>
+                      Validator.validateEmptyText("Name", value),
+                  isPassword: false,
+                ),
 
-              VerticalSpace(height: AppHeight.h20),
-              CustomInputField(
-                hintText: AppStrings.password,
-                controller: cubit.passwordController,
-                validator: Validator.validatePassword,
-                icon: Iconsax.password_check,
-                isPassword: true,
-              ),
-
-              VerticalSpace(height: AppHeight.h24),
-              BlocConsumer<SignUpCubit, SignUpState>(
-                listener: (context, state) {
-                  if (state.status == SignUpStatus.success) {
-                    // navigate to verify code page with email and origin
-                    AppHelperFunctions.showAwesomeSnackBar(
-                      title: 'Success',
-                      message: state.message!,
-                      contentType: ContentType.success,
-                      context: context,
+                VerticalSpace(height: AppHeight.h20),
+                CustomInputField(
+                  hintText: AppStrings.password,
+                  controller: cubit.passwordController,
+                  validator: Validator.validatePassword,
+                  icon: Iconsax.password_check,
+                  isPassword: true,
+                ),
+                VerticalSpace(height: AppHeight.h24),
+                // DropMenu for role selection
+                DropMenu(
+                  hint: AppStrings.selectRole,
+                  items: const ['Patient', 'Doctor'],
+                  onChanged: (value) async {
+                    setState(() {
+                      role = value == 'Patient' ? 1 : 2;
+                    });
+                    await CacheHelper.saveData(
+                      key: 'role',
+                      value: role.toString(),
                     );
-                    // navigate using a full path to avoid name-based mismatches
-                    context.go(
-                      '${AppRoutes.verifyCode}/${cubit.emailController.text}',
-                      extra: {'origin': 'signup'},
+                  },
+                  value: role == 1 ? 'Patient' : 'Doctor',
+                ),
+
+                VerticalSpace(height: AppHeight.h24),
+                BlocConsumer<SignUpCubit, SignUpState>(
+                  listener: (context, state) {
+                    if (state.status == SignUpStatus.success) {
+                      // navigate to verify code page with email and origin
+                      AppHelperFunctions.showAwesomeSnackBar(
+                        title: 'Success',
+                        message: state.message!,
+                        contentType: ContentType.success,
+                        context: context,
+                      );
+                      // navigate using a full path to avoid name-based mismatches
+                      context.go(
+                        '${AppRoutes.verifyCode}/${cubit.emailController.text}',
+                        extra: {'origin': 'signup'},
+                      );
+                    } else if (state.status == SignUpStatus.failure) {
+                      final msg = state.errorMessage ?? 'Sign up failed';
+                      AppHelperFunctions.showAwesomeSnackBar(
+                        title: 'Error',
+                        message: msg,
+                        contentType: ContentType.failure,
+                        context: context,
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state.status == SignUpStatus.loading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    return PrimaryButton(
+                      onPress: () {
+                        cubit.signUp(role);
+                      },
+                      title: AppStrings.createAccount,
                     );
-                  } else if (state.status == SignUpStatus.failure) {
-                    final msg = state.errorMessage ?? 'Sign up failed';
-                    AppHelperFunctions.showAwesomeSnackBar(
-                      title: 'Error',
-                      message: msg,
-                      contentType: ContentType.failure,
-                      context: context,
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  if (state.status == SignUpStatus.loading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+                  },
+                ),
 
-                  return PrimaryButton(
-                    onPress: () {
-                      cubit.signUp();
-                    },
-                    title: AppStrings.createAccount,
-                  );
-                },
-              ),
+                VerticalSpace(height: AppHeight.h24),
+                const OrSection(),
 
-              VerticalSpace(height: AppHeight.h24),
-              const OrSection(),
+                const VerticalSpace(height: 24),
+                SocialButton(
+                  text: AppStrings.signWithGoogle,
+                  iconPath: AppImages.google,
+                  onPressed: () {},
+                ),
 
-              const VerticalSpace(height: 24),
-              SocialButton(
-                text: AppStrings.signWithGoogle,
-                iconPath: AppImages.google,
-                onPressed: () {},
-              ),
+                VerticalSpace(height: AppHeight.h16),
+                SocialButton(
+                  text: AppStrings.signWithFacebook,
+                  iconPath: AppImages.facebook,
+                  onPressed: () {},
+                ),
 
-              VerticalSpace(height: AppHeight.h16),
-              SocialButton(
-                text: AppStrings.signWithFacebook,
-                iconPath: AppImages.facebook,
-                onPressed: () {},
-              ),
-
-              VerticalSpace(height: AppHeight.h24),
-              AuthPromptText(
-                text: AppStrings.haveAccount,
-                gestureDetectorName: AppStrings.signIn,
-                onPress: () {
-                  context.go(AppRoutes.login);
-                },
-              ),
-              VerticalSpace(height: AppHeight.h24),
-            ],
+                VerticalSpace(height: AppHeight.h24),
+                AuthPromptText(
+                  text: AppStrings.haveAccount,
+                  gestureDetectorName: AppStrings.signIn,
+                  onPress: () {
+                    context.go(AppRoutes.login);
+                  },
+                ),
+                VerticalSpace(height: AppHeight.h24),
+              ],
+            ),
           ),
         ),
       ),

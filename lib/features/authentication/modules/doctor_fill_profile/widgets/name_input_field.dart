@@ -4,19 +4,16 @@ import 'package:tabibi/core/widgets/custom_input_field.dart';
 
 class NameInputField extends StatelessWidget {
   final TextEditingController controller;
-  final String? hintText;
-  final int? maxLines;
 
-  const NameInputField({super.key, required this.controller, this.hintText,this.maxLines});
+  const NameInputField({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return CustomInputField(
-      hintText: hintText?? AppStrings.name,
+      hintText: AppStrings.nameFillProfile,
       isPassword: false,
       isPrefixIconNotExist: false,
       controller: controller,
-      maxLines:maxLines??1 ,
     );
   }
 }

@@ -87,7 +87,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       contentType: ContentType.success,
                       context: context,
                     );
-                    context.go(AppRoutes.fillProfile);
+                    // error may be here
+                    if (state.role == '2') {
+                      context.go(AppRoutes.doctorFillProfile);
+                    } else {
+                      context.go(AppRoutes.fillProfile);
+                    }
                   }
                 },
                 child: BlocBuilder<LogInCubit, LogInState>(

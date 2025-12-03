@@ -21,15 +21,6 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
   bool isUploaded = false;
   File? selectedImage;
 
-  @override
-  void initState() {
-    super.initState();
-    final state = context.read<UploadImageCubit>().state;
-    if (state.status == UploadImageStatus.success && state.imageUrl != null) {
-      isUploaded = true;
-    }
-  }
-
   void _handleImageSelection() {
     selectImage((file) {
       setState(() {
@@ -77,7 +68,6 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
         onImageSelected: _handleImageSelection,
         selectedImage: selectedImage,
         isUploaded: isUploaded,
-        imageUrl: context.read<UploadImageCubit>().state.imageUrl,
       ),
     );
   }

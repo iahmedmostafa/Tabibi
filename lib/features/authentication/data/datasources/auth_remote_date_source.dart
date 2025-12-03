@@ -48,7 +48,7 @@ class AuthenticationRemoteDataSource
           ApiKeys.email: parameters.email,
           ApiKeys.name: parameters.userName,
           ApiKeys.password: parameters.password,
-          ApiKeys.role: 1,
+          ApiKeys.role: parameters.role,
         },
       );
 
@@ -131,7 +131,7 @@ class AuthenticationRemoteDataSource
     }
   }
 
-  @override
+
   @override
   Future<String> createNewPassword(
     CreateNewPasswordParameters parameters,

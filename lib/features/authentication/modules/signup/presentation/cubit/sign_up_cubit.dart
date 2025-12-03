@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:tabibi/core/services/cache_helper.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +15,8 @@ class SignUpCubit extends Cubit<SignUpState> {
   final nameController = TextEditingController();
   final passwordController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  void signUp() async {
+
+  void signUp(int role) async {
     if (!(formKey.currentState?.validate() ?? false)) {
       return;
     }
@@ -24,6 +26,7 @@ class SignUpCubit extends Cubit<SignUpState> {
         email: emailController.text,
         userName: nameController.text,
         password: passwordController.text,
+        role: role,
       ),
     );
     log(result.toString());
@@ -31,7 +34,10 @@ class SignUpCubit extends Cubit<SignUpState> {
       (l) => emit(
         state.copyWith(status: SignUpStatus.failure, errorMessage: l.message),
       ),
-      (r) => emit(state.copyWith(status: SignUpStatus.success, message: r)),
+      (r) {
+        CacheHelper.saveData(key: 'role', value: role.toString());
+        emit(state.copyWith(status: SignUpStatus.success, message: r));
+      },
     );
   }
 }

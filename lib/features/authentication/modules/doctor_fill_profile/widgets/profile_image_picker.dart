@@ -25,8 +25,8 @@ class ProfileImagePicker extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            width: 120,
-            height: 120,
+            width: 168.33,
+            height: 168.33,
             decoration: const BoxDecoration(
               color: AppColors.grey200,
               shape: BoxShape.circle,

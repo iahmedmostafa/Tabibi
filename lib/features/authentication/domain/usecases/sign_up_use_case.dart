@@ -17,14 +17,15 @@ class SignUpParameters extends Equatable {
   final String userName;
   final String email;
   final String password;
+  final int role;
 
   const SignUpParameters({
     required this.userName,
-
     required this.email,
     required this.password,
+    required this.role
   });
 
   @override
-  List<Object?> get props => [userName,  email, password];
+  List<Object?> get props => [userName,  email, password,role];
 }
