@@ -13,9 +13,9 @@ class CustomInputField extends StatelessWidget {
   final bool isPrefixIconNotExist;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
-   int? maxLines ;
+  final int? maxLines;
 
-   CustomInputField({
+  const CustomInputField({
     super.key,
     required this.hintText,
     this.icon,
@@ -35,7 +35,7 @@ class CustomInputField extends StatelessWidget {
         obscureText: isPassword,
         controller: controller,
         validator: validator,
-        maxLines: maxLines??1,
+        maxLines: maxLines ?? 1,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         onTapOutside: (event) => FocusManager.instance.primaryFocus
             ?.unfocus(), //to disapear keyboard when tap outside

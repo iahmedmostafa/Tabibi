@@ -16,29 +16,30 @@ import 'package:tabibi/features/authentication/domain/usecases/sign_up_use_case.
 import 'package:tabibi/features/authentication/domain/usecases/verify_code_use_case.dart';
 import 'package:tabibi/features/authentication/domain/usecases/verify_password_reset_code.dart';
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/cubit/create_new_password_cubit.dart';
+import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/credential_upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/cities_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_cubit.dart';
-import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/credential_upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/forgot_password/presentation/cubit/forgot_password_cubit.dart';
 import 'package:tabibi/features/authentication/modules/login/presentation/business_logic/log_in_cubit.dart';
 import 'package:tabibi/features/authentication/modules/signup/presentation/cubit/sign_up_cubit.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/cubit/verify_code_cubit.dart';
-import 'package:tabibi/features/home/data/datasources/base_patient_profile_data_source.dart';
-import 'package:tabibi/features/home/data/datasources/patient_profile_data_source.dart';
-import 'package:tabibi/features/home/data/repositories/patient_profile_repository.dart';
-import 'package:tabibi/features/home/domain/repositories/base_patient_profile_repository.dart';
-import 'package:tabibi/features/home/domain/usecases/get_patient_profile_use_case.dart';
-import 'package:tabibi/features/home/domain/usecases/update_patient_profile_use_case.dart';
-import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.dart';
 import 'package:tabibi/features/home/data/datasources/base_doctor_profile_data_source.dart';
+import 'package:tabibi/features/home/data/datasources/base_patient_profile_data_source.dart';
 import 'package:tabibi/features/home/data/datasources/doctor_profile_data_source.dart';
+import 'package:tabibi/features/home/data/datasources/patient_profile_data_source.dart';
 import 'package:tabibi/features/home/data/repositories/doctor_profile_repository.dart';
+import 'package:tabibi/features/home/data/repositories/patient_profile_repository.dart';
 import 'package:tabibi/features/home/domain/repositories/base_doctor_profile_repository.dart';
+import 'package:tabibi/features/home/domain/repositories/base_patient_profile_repository.dart';
 import 'package:tabibi/features/home/domain/usecases/get_doctor_profile_use_case.dart';
+import 'package:tabibi/features/home/domain/usecases/get_patient_profile_use_case.dart';
 import 'package:tabibi/features/home/domain/usecases/update_doctor_profile_use_case.dart';
+import 'package:tabibi/features/home/domain/usecases/update_patient_profile_use_case.dart';
 import 'package:tabibi/features/home/presentation/cubit/doctor_profile_cubit.dart';
+import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
+import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
 import '../services/cache_helper.dart';
 
 final sl = GetIt.instance;
@@ -56,7 +57,7 @@ Future<void> init() async {
   );
   sl.registerLazySingleton(() => UploadImageDataSource(sl()));
   sl.registerLazySingleton(() => CitiesDataSource(sl()));
-  sl.registerLazySingleton(() => DepartmentsDataSource(sl()),);
+  sl.registerLazySingleton(() => DepartmentsDataSource(sl()));
   sl.registerLazySingleton<BasePatientProfileDataSource>(
     () => PatientProfileDataSource(sl()),
   );
@@ -65,12 +66,18 @@ Future<void> init() async {
   );
 
   /// REPOSITORY
-  sl.registerLazySingleton<BaseAuthenticationRepository>(() => AuthenticationRepositoryImpl(sl()),);
+  sl.registerLazySingleton<BaseAuthenticationRepository>(
+    () => AuthenticationRepositoryImpl(sl()),
+  );
   sl.registerLazySingleton(() => UploadImageRepositary(sl()));
   sl.registerLazySingleton(() => CitiesRepository(sl()));
-  sl.registerLazySingleton<BasePatientProfileRepository>(() => PatientProfileRepository(sl()),);
-  sl.registerLazySingleton<BaseDoctorProfileRepository>(() => DoctorProfileRepository(sl()),);
-  sl.registerLazySingleton(() => DepartmentRepository(sl()),);
+  sl.registerLazySingleton<BasePatientProfileRepository>(
+    () => PatientProfileRepository(sl()),
+  );
+  sl.registerLazySingleton<BaseDoctorProfileRepository>(
+    () => DoctorProfileRepository(sl()),
+  );
+  sl.registerLazySingleton(() => DepartmentRepository(sl()));
 
   /// USE CASE
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
@@ -95,6 +102,6 @@ Future<void> init() async {
   sl.registerFactory(() => CitiesCubit(sl()));
   sl.registerFactory(() => PatientProfileCubit(sl(), sl()));
   sl.registerFactory(() => DoctorProfileCubit(sl(), sl()));
-  sl.registerFactory(() => DepartmentsCubit(sl()),);
-
+  sl.registerFactory(() => DepartmentsCubit(sl()));
+  sl.registerFactory(() => DoctorFillProfileFormCubit());
 }

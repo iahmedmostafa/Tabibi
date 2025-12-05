@@ -2,14 +2,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
-
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/cubit/create_new_password_cubit.dart';
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/pages/create_new_password.dart';
+import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/credential_upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/pages/doctor_fill_profile.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/pages/pending_page.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/cities_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_cubit.dart';
-import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/credential_upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/pages/fill_profile.dart';
 import 'package:tabibi/features/authentication/modules/forgot_password/presentation/cubit/forgot_password_cubit.dart';
 import 'package:tabibi/features/authentication/modules/forgot_password/presentation/pages/forgot_password.dart';
@@ -20,12 +19,13 @@ import 'package:tabibi/features/authentication/modules/signup/presentation/pages
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/cubit/verify_code_cubit.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/cubit/verify_code_state.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/pages/verify_code.dart';
-import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.dart';
 import 'package:tabibi/features/home/presentation/cubit/doctor_profile_cubit.dart';
+import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.dart';
 import 'package:tabibi/features/home/presentation/home_screen.dart';
 import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
+import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
 import '../services/shared_prefs_service.dart';
 
 final GoRouter router = GoRouter(
@@ -116,17 +116,22 @@ final GoRouter router = GoRouter(
         child: const FillProfile(),
       ),
     ),
-  
+
     GoRoute(
       path: AppRoutes.doctorFillProfile,
       name: AppRoutes.doctorFillProfile,
       builder: (context, state) => MultiBlocProvider(
         providers: [
+          BlocProvider(create: (context) => sl<DoctorFillProfileFormCubit>()),
           BlocProvider(create: (context) => sl<UploadImageCubit>()),
           BlocProvider(create: (context) => sl<CitiesCubit>()..getCities()),
-          BlocProvider(create: (context) => sl<DepartmentsCubit>()..getDepartments(),),
+          BlocProvider(
+            create: (context) => sl<DepartmentsCubit>()..getDepartments(),
+          ),
           BlocProvider(create: (context) => sl<CredentialUploadImageCubit>()),
-          BlocProvider(create: (context) => sl<DoctorProfileCubit>()..getDoctorProfile(),),
+          BlocProvider(
+            create: (context) => sl<DoctorProfileCubit>()..getDoctorProfile(),
+          ),
         ],
         child: const DoctorFillProfile(),
       ),
@@ -142,7 +147,5 @@ final GoRouter router = GoRouter(
       name: AppRoutes.pending,
       builder: (context, state) => const PendingPage(),
     ),
-  
   ],
-
 );

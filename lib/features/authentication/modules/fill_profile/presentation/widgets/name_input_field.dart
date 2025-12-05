@@ -7,16 +7,21 @@ class NameInputField extends StatelessWidget {
   final String? hintText;
   final int? maxLines;
 
-  const NameInputField({super.key, required this.controller, this.hintText,this.maxLines});
+  const NameInputField({
+    super.key,
+    required this.controller,
+    this.hintText,
+    this.maxLines,
+  });
 
   @override
   Widget build(BuildContext context) {
     return CustomInputField(
-      hintText: hintText?? AppStrings.name,
+      hintText: hintText ?? AppStrings.name,
       isPassword: false,
       isPrefixIconNotExist: false,
       controller: controller,
-      maxLines:maxLines??1 ,
+      maxLines: maxLines ?? 1,
     );
   }
 }

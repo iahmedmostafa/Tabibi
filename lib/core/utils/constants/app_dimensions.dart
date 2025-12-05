@@ -20,6 +20,7 @@ class AppHeight {
   static double get h120 => 120.h;
 
   static double get h532 => 532.h;
+  static double get h595 => 595.h;
 }
 
 class AppWidth {
