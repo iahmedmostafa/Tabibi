@@ -4,6 +4,7 @@ import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/cubit/create_new_password_cubit.dart';
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/pages/create_new_password.dart';
+import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/clinic_upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/credential_upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/pages/approved_page.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/pages/doctor_fill_profile.dart';
@@ -133,6 +134,8 @@ final GoRouter router = GoRouter(
             create: (context) => sl<DepartmentsCubit>()..getDepartments(),
           ),
           BlocProvider(create: (context) => sl<CredentialUploadImageCubit>()),
+          BlocProvider(create: (context) => sl<ClinicUploadImageCubit>()),
+
           BlocProvider(
             create: (context) => sl<DoctorProfileCubit>()..getDoctorProfile(),
           ),

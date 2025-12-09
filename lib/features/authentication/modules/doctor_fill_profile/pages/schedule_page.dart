@@ -22,13 +22,13 @@ class _SchedulePageState extends State<SchedulePage> {
   TimeOfDay? _closeTime;
 
   final List<String> _daysOfWeek = [
+    'Sunday',
     'Monday',
     'Tuesday',
     'Wednesday',
     'Thursday',
     'Friday',
     'Saturday',
-    'Sunday',
   ];
 
   String _formatTime(TimeOfDay time) {
@@ -79,8 +79,6 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   String _getDayName(int dayIndex) {
-    // dayIndex is 0-6 (Mon-Sun) based on the dropdown logic below
-    // Adjust if backend expects 1-7 or different mapping
     if (dayIndex >= 0 && dayIndex < _daysOfWeek.length) {
       return _daysOfWeek[dayIndex];
     }

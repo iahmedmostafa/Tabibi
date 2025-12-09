@@ -11,6 +11,7 @@ class UpdateDoctorProfileParams {
   final int? yearsOfExperience;
   final String? departmentId;
   final String? clinicName;
+  final String? clinicURL;
   final String? clinicAddress;
   final String? clinicPhoneNumber;
   final String? clinicCity;
@@ -28,6 +29,7 @@ class UpdateDoctorProfileParams {
     this.yearsOfExperience,
     this.departmentId,
     this.clinicName,
+    this.clinicURL,
     this.clinicAddress,
     this.clinicPhoneNumber,
     this.clinicCity,
@@ -48,6 +50,7 @@ class UpdateDoctorProfileParams {
       'departmentId': departmentId,
       'clinic': {
         'name': clinicName,
+        'imageUrl': clinicURL,
         'address': clinicAddress,
         'phoneNumber': clinicPhoneNumber,
         'cityId': clinicCity,

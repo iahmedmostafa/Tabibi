@@ -16,6 +16,7 @@ import 'package:tabibi/features/authentication/domain/usecases/sign_up_use_case.
 import 'package:tabibi/features/authentication/domain/usecases/verify_code_use_case.dart';
 import 'package:tabibi/features/authentication/domain/usecases/verify_password_reset_code.dart';
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/cubit/create_new_password_cubit.dart';
+import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/clinic_upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/credential_upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/cities_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_cubit.dart';
@@ -101,6 +102,7 @@ Future<void> init() async {
   sl.registerFactory(() => LogInCubit(sl()));
   sl.registerFactory(() => UploadImageCubit(sl()));
   sl.registerFactory(() => CredentialUploadImageCubit(sl()));
+  sl.registerFactory(() => ClinicUploadImageCubit(sl()));
   sl.registerFactory(() => CitiesCubit(sl()));
   sl.registerFactory(() => PatientProfileCubit(sl(), sl()));
   sl.registerFactory(() => DoctorProfileCubit(sl(), sl(), sl()));
