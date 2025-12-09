@@ -29,7 +29,6 @@ class ProfileActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<DoctorProfileCubit, DoctorProfileState>(
       listener: (context, state) {
-    
         if (state.updateStatus == DoctorProfileUpdateStatus.loading) {
           EasyLoading.show(status: 'Loading...');
         }
@@ -44,6 +43,7 @@ class ProfileActionButton extends StatelessWidget {
             barrierDismissible: false,
             builder: (context) => const SuccessDialog(),
           );
+          context.read<DoctorProfileCubit>().getDoctorStatus();
 
           // After 2 seconds, close dialog and navigate to pending, then fetch status
           Future.delayed(const Duration(seconds: 2), () {

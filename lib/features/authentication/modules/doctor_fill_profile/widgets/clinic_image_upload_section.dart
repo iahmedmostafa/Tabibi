@@ -8,7 +8,6 @@ import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/core/utils/functions/select_image.dart';
 import 'package:tabibi/core/utils/helper/helper_functions.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/clinic_upload_image_cubit.dart';
-import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/credential_upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/widgets/credential_image_picker.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_state.dart';
 
@@ -20,7 +19,8 @@ class ClinicImageUploadSection extends StatefulWidget {
       _CredentialImageUploadSectionState();
 }
 
-class _CredentialImageUploadSectionState extends State<ClinicImageUploadSection> {
+class _CredentialImageUploadSectionState
+    extends State<ClinicImageUploadSection> {
   bool isUploaded = false;
   File? selectedImage;
 

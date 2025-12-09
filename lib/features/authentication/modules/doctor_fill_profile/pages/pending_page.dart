@@ -43,7 +43,7 @@ class PendingPage extends StatelessWidget {
               ),
               const VerticalSpace(height: 16),
               Text(
-                'Your profile is currently being reviewed by our admin team. This process usually takes 24-48 hours.\n\nYou will be notified once your account is approved.',
+                'Your profile is currently being reviewed by our admin team. This process usually takes 24-48 hours.\n\nRefresh the page to check the status.',
                 style: AppTextStyle.bodySRegular.copyWith(
                   color: AppColors.textGrey,
                   height: 1.5,

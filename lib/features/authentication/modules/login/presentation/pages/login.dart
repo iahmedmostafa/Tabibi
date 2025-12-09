@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/core/utils/constants/app_padding.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/core/utils/helper/helper_functions.dart';
 import 'package:tabibi/core/widgets/custom_input_field.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
@@ -16,6 +18,7 @@ import 'package:tabibi/features/authentication/modules/login/presentation/busine
 import 'package:tabibi/features/authentication/modules/login/presentation/widgets/bottom_login_section.dart';
 import 'package:tabibi/features/authentication/modules/widgets/auth_prompt_text.dart';
 import 'package:tabibi/features/authentication/modules/widgets/top_section.dart';
+import 'package:tabibi/features/home/domain/usecases/doctor_status_use_case.dart';
 
 import '../../../../../../core/utils/validators/validation.dart';
 
@@ -72,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
               VerticalSpace(height: AppHeight.h23),
 
               BlocListener<LogInCubit, LogInState>(
-                listener: (context, state) {
+                listener: (context, state) async {
                   if (state is LogInFailure) {
                     AppHelperFunctions.showAwesomeSnackBar(
                       title: 'Error',
@@ -87,9 +90,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       contentType: ContentType.success,
                       context: context,
                     );
-                    // error may be here
                     if (state.role == '2') {
-                      context.go(AppRoutes.doctorFillProfile);
+                      await _handleDoctorNavigation(context);
                     } else {
                       context.go(AppRoutes.fillProfile);
                     }
@@ -141,6 +143,40 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _handleDoctorNavigation(BuildContext context) async {
+    final result = await sl<DoctorStatusUseCase>()();
+
+    if (!mounted) return;
+
+    result.fold(
+      (failure) {
+        AppHelperFunctions.showAwesomeSnackBar(
+          title: 'Error',
+          message: failure.message,
+          contentType: ContentType.failure,
+          context: context,
+        );
+        context.go(AppRoutes.doctorFillProfile);
+      },
+      (status) {
+        switch (status) {
+          case DoctorStatus.New:
+            context.go(AppRoutes.doctorFillProfile);
+            break;
+          case DoctorStatus.Pending:
+            context.go(AppRoutes.doctorStatusHandler);
+            break;
+          case DoctorStatus.Approved:
+            context.go(AppRoutes.home);
+            break;
+          case DoctorStatus.Rejected:
+            context.go(AppRoutes.rejected);
+            break;
+        }
+      },
     );
   }
 }

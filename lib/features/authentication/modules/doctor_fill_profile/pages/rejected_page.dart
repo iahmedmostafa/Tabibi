@@ -62,10 +62,10 @@ class RejectedPage extends StatelessWidget {
               const VerticalSpace(height: 12),
               TextButton(
                 onPressed: () {
-                  context.goNamed(AppRoutes.home);
+                  context.goNamed(AppRoutes.login);
                 },
                 child: Text(
-                  'Go to Home',
+                  'Go to Login',
                   style: AppTextStyle.bodySRegular.copyWith(
                     color: AppColors.primary,
                     fontSize: 16,

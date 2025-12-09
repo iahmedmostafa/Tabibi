@@ -173,7 +173,7 @@ final GoRouter router = GoRouter(
       path: AppRoutes.doctorStatusHandler,
       name: AppRoutes.doctorStatusHandler,
       builder: (context, state) => BlocProvider(
-        create: (context) => sl<DoctorProfileCubit>(),
+        create: (context) => sl<DoctorProfileCubit>()..getDoctorStatus(),
         child: const DoctorStatusHandler(),
       ),
     ),

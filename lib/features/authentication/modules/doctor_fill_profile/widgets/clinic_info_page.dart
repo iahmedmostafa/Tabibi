@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/widgets/clinic_image_upload_section.dart';
-import 'package:tabibi/features/authentication/modules/doctor_fill_profile/widgets/image_upload_section.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/city_dropdown.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/name_input_field.dart';
 
@@ -25,8 +24,8 @@ class ClinicInfoPage extends StatelessWidget {
     required this.yearsOfExperienceController,
     required this.selectedClinicCityId,
     required this.onClinicCitySelected,
-  //  this.clinicImageUrl,
 
+    //  this.clinicImageUrl,
   });
 
   @override
