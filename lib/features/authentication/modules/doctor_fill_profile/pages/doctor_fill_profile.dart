@@ -7,6 +7,7 @@ import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/core/utils/constants/app_padding.dart';
+import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/clinic_upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/credential_upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_state.dart';
@@ -117,9 +118,8 @@ class _FillProfileState extends State<DoctorFillProfile> {
 
   void _handleSubmit(DoctorFillProfileFormState formState) {
     final uploadedImageUrl = context.read<UploadImageCubit>().uploadedImageUrl;
-    final credentialImageUrl = context
-        .read<CredentialUploadImageCubit>()
-        .uploadedImageUrl;
+    final uploadedClinicImageUrl = context.read<ClinicUploadImageCubit>().uploadedImageUrl;
+    final credentialImageUrl = context.read<CredentialUploadImageCubit>().uploadedImageUrl;
 
     log('Submitting profile: ${_nameController.text}');
 
@@ -134,6 +134,7 @@ class _FillProfileState extends State<DoctorFillProfile> {
       credentialImageUrl: credentialImageUrl,
       gender: formState.gender,
       clinicName: _clinicNameController.text,
+      clinicURL: uploadedClinicImageUrl,
       clinicAddress: _clinicAddressController.text,
       clinicPhoneNumber: _clinicPhoneController.text,
       clinicCity: formState.selectedClinicCityId,
@@ -152,7 +153,6 @@ class _FillProfileState extends State<DoctorFillProfile> {
       body: SafeArea(
         child: BlocListener<DoctorProfileCubit, DoctorProfileState>(
           listener: (context, state) {
-            // Populate controllers when profile is loaded
             if (state.status == DoctorProfileStatus.success &&
                 _nameController.text.isEmpty) {
               _populateControllers(state);
@@ -163,10 +163,7 @@ class _FillProfileState extends State<DoctorFillProfile> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppPadding.p24),
               child:
-                  BlocBuilder<
-                    DoctorFillProfileFormCubit,
-                    DoctorFillProfileFormState
-                  >(
+                  BlocBuilder<DoctorFillProfileFormCubit, DoctorFillProfileFormState>(
                     builder: (context, formState) {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,6 +218,7 @@ class _FillProfileState extends State<DoctorFillProfile> {
                                   selectedClinicCityId:
                                       formState.selectedClinicCityId,
                                   onClinicCitySelected: formCubit.setClinicCity,
+
                                 ),
                                 SchedulePage(
                                   onScheduleChanged: formCubit.setSchedules,

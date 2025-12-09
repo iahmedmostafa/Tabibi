@@ -7,27 +7,27 @@ import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/core/utils/functions/select_image.dart';
 import 'package:tabibi/core/utils/helper/helper_functions.dart';
+import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/clinic_upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/credential_upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/widgets/credential_image_picker.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_state.dart';
 
-class CredentialImageUploadSection extends StatefulWidget {
-  const CredentialImageUploadSection({super.key});
+class ClinicImageUploadSection extends StatefulWidget {
+  const ClinicImageUploadSection({super.key});
 
   @override
-  State<CredentialImageUploadSection> createState() =>
+  State<ClinicImageUploadSection> createState() =>
       _CredentialImageUploadSectionState();
 }
 
-class _CredentialImageUploadSectionState
-    extends State<CredentialImageUploadSection> {
+class _CredentialImageUploadSectionState extends State<ClinicImageUploadSection> {
   bool isUploaded = false;
   File? selectedImage;
 
   @override
   void initState() {
     super.initState();
-    final state = context.read<CredentialUploadImageCubit>().state;
+    final state = context.read<ClinicUploadImageCubit>().state;
     if (state.status == UploadImageStatus.success && state.imageUrl != null) {
       isUploaded = true;
     }
@@ -38,13 +38,13 @@ class _CredentialImageUploadSectionState
       setState(() {
         selectedImage = file;
       });
-      context.read<CredentialUploadImageCubit>().uploadImage(file);
+      context.read<ClinicUploadImageCubit>().uploadImage(file);
     }, context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<CredentialUploadImageCubit, UploadImageState>(
+    return BlocListener<ClinicUploadImageCubit, UploadImageState>(
       listener: (context, state) {
         if (state.status == UploadImageStatus.loading) {
           isUploaded = false;
@@ -83,7 +83,8 @@ class _CredentialImageUploadSectionState
             onImageSelected: _handleImageSelection,
             selectedImage: selectedImage,
             isUploaded: isUploaded,
-            imageUrl: context.read<CredentialUploadImageCubit>().state.imageUrl,
+            imageUrl: context.read<ClinicUploadImageCubit>().state.imageUrl,
+            iconData: Icons.local_hospital,
           ),
         ],
       ),

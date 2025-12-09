@@ -10,6 +10,7 @@ class CredentialImagePicker extends StatelessWidget {
   final File? selectedImage;
   final bool isUploaded;
   final String? imageUrl;
+  final IconData? iconData;
 
   const CredentialImagePicker({
     super.key,
@@ -17,6 +18,7 @@ class CredentialImagePicker extends StatelessWidget {
     this.selectedImage,
     this.imageUrl,
     this.isUploaded = false,
+    this.iconData
   });
 
   @override
@@ -64,8 +66,8 @@ class CredentialImagePicker extends StatelessWidget {
     } else if (imageUrl != null && imageUrl!.isNotEmpty) {
       return Image.network(imageUrl!, fit: BoxFit.fill);
     } else {
-      return const Icon(
-        Icons.credit_card_rounded,
+      return Icon(
+        iconData?? Icons.credit_card_rounded,
         size: AppSizes.imageThumbSize,
         color: AppColors.grey400,
       );
