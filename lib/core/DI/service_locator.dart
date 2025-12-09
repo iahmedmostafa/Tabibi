@@ -31,6 +31,7 @@ import 'package:tabibi/features/home/data/repositories/doctor_profile_repository
 import 'package:tabibi/features/home/data/repositories/patient_profile_repository.dart';
 import 'package:tabibi/features/home/domain/repositories/base_doctor_profile_repository.dart';
 import 'package:tabibi/features/home/domain/repositories/base_patient_profile_repository.dart';
+import 'package:tabibi/features/home/domain/usecases/doctor_status_use_case.dart';
 import 'package:tabibi/features/home/domain/usecases/get_doctor_profile_use_case.dart';
 import 'package:tabibi/features/home/domain/usecases/get_patient_profile_use_case.dart';
 import 'package:tabibi/features/home/domain/usecases/update_doctor_profile_use_case.dart';
@@ -90,6 +91,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => UpdatePatientProfileUseCase(sl()));
   sl.registerLazySingleton(() => GetDoctorProfileUseCase(sl()));
   sl.registerLazySingleton(() => UpdateDoctorProfileUseCase(sl()));
+  sl.registerLazySingleton(() => DoctorStatusUseCase(sl()));
 
   /// CUBIT
   sl.registerFactory(() => SignUpCubit(sl()));
@@ -101,7 +103,7 @@ Future<void> init() async {
   sl.registerFactory(() => CredentialUploadImageCubit(sl()));
   sl.registerFactory(() => CitiesCubit(sl()));
   sl.registerFactory(() => PatientProfileCubit(sl(), sl()));
-  sl.registerFactory(() => DoctorProfileCubit(sl(), sl()));
+  sl.registerFactory(() => DoctorProfileCubit(sl(), sl(), sl()));
   sl.registerFactory(() => DepartmentsCubit(sl()));
   sl.registerFactory(() => DoctorFillProfileFormCubit());
 }

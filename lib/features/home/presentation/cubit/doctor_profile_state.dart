@@ -1,8 +1,11 @@
+import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/features/home/data/models/doctor_profile_model.dart';
 
 enum DoctorProfileStatus { initial, loading, success, failure }
 
 enum DoctorProfileUpdateStatus { initial, loading, success, failure }
+
+enum DoctorStatusAction { initial, loading, success, failure }
 
 class DoctorProfileState {
   final DoctorProfileStatus status;
@@ -10,11 +13,15 @@ class DoctorProfileState {
   final DoctorProfileModel? profile;
   final String updateMessage;
   final String? errorMessage;
+  final DoctorStatusAction? doctorStatus;
+  final DoctorStatus? newDoctorStatus;
 
   const DoctorProfileState({
     this.status = DoctorProfileStatus.initial,
     this.updateStatus = DoctorProfileUpdateStatus.initial,
     this.profile,
+    this.newDoctorStatus,
+    this.doctorStatus,
     this.errorMessage,
     this.updateMessage = '',
   });
@@ -23,6 +30,8 @@ class DoctorProfileState {
     DoctorProfileStatus? status,
     DoctorProfileUpdateStatus? updateStatus,
     DoctorProfileModel? profile,
+    DoctorStatus? newDoctorStatus,
+    DoctorStatusAction? doctorStatus,
     String? errorMessage,
     String? updateMessage,
   }) {
@@ -30,6 +39,8 @@ class DoctorProfileState {
       status: status ?? this.status,
       updateStatus: updateStatus ?? this.updateStatus,
       profile: profile ?? this.profile,
+      newDoctorStatus: newDoctorStatus ?? this.newDoctorStatus,
+      doctorStatus: doctorStatus ?? this.doctorStatus,
       errorMessage: errorMessage ?? this.errorMessage,
       updateMessage: updateMessage ?? this.updateMessage,
     );

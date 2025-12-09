@@ -10,4 +10,8 @@ class AppRoutes {
   static const doctorFillProfile = '/doctor_fill_profile';
   static const home              = '/home';
   static const pending           = '/pending';
+  static const doctorStatusHandler          = '/DoctorStatusHandler';
+  static const rejected          = '/rejected';
+  static const approved          = '/approved';
+  static const newpage               = '/new';
 }

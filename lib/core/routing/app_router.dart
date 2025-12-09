@@ -5,8 +5,12 @@ import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/cubit/create_new_password_cubit.dart';
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/pages/create_new_password.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/credential_upload_image_cubit.dart';
+import 'package:tabibi/features/authentication/modules/doctor_fill_profile/pages/approved_page.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/pages/doctor_fill_profile.dart';
+import 'package:tabibi/features/authentication/modules/doctor_fill_profile/pages/new_page.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/pages/pending_page.dart';
+import 'package:tabibi/features/authentication/modules/doctor_fill_profile/pages/rejected_page.dart';
+import 'package:tabibi/features/authentication/modules/doctor_fill_profile/widgets/doctor_status_handler.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/cities_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/pages/fill_profile.dart';
@@ -21,7 +25,7 @@ import 'package:tabibi/features/authentication/modules/verify_code/presentation/
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/pages/verify_code.dart';
 import 'package:tabibi/features/home/presentation/cubit/doctor_profile_cubit.dart';
 import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.dart';
-import 'package:tabibi/features/home/presentation/home_screen.dart';
+import 'package:tabibi/features/home/presentation/screen/home_screen.dart';
 import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
@@ -146,6 +150,29 @@ final GoRouter router = GoRouter(
       path: AppRoutes.pending,
       name: AppRoutes.pending,
       builder: (context, state) => const PendingPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.approved,
+      name: AppRoutes.approved,
+      builder: (context, state) => const ApprovedPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.newpage,
+      name: AppRoutes.newpage,
+      builder: (context, state) => const NewPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.rejected,
+      name: AppRoutes.rejected,
+      builder: (context, state) => const RejectedPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.doctorStatusHandler,
+      name: AppRoutes.doctorStatusHandler,
+      builder: (context, state) => BlocProvider(
+        create: (context) => sl<DoctorProfileCubit>(),
+        child: const DoctorStatusHandler(),
+      ),
     ),
   ],
 );

@@ -21,7 +21,6 @@ import 'package:tabibi/features/authentication/modules/widgets/or_section.dart';
 import 'package:tabibi/features/authentication/modules/widgets/social_button.dart';
 import 'package:tabibi/features/authentication/modules/widgets/top_section.dart';
 
-import '../../../../../../core/services/cache_helper.dart';
 import '../../../../../../core/widgets/drop_menu.dart/drop_menu.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -91,10 +90,6 @@ class _SignupScreenState extends State<SignupScreen> {
                     setState(() {
                       role = value == 'Patient' ? 1 : 2;
                     });
-                    await CacheHelper.saveData(
-                      key: 'role',
-                      value: role.toString(),
-                    );
                   },
                   value: role == 1 ? 'Patient' : 'Doctor',
                 ),
@@ -110,7 +105,6 @@ class _SignupScreenState extends State<SignupScreen> {
                         contentType: ContentType.success,
                         context: context,
                       );
-                      // navigate using a full path to avoid name-based mismatches
                       context.go(
                         '${AppRoutes.verifyCode}/${cubit.emailController.text}',
                         extra: {'origin': 'signup'},

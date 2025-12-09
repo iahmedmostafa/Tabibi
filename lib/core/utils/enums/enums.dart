@@ -7,3 +7,5 @@ enum CitiesStatus { initial, loading, success, failure }
 enum Gender { male, female }
 
 enum DepartmentsStatus { initial, loading, success, failure }
+
+enum DoctorStatus { New, Pending, Approved, Rejected }  

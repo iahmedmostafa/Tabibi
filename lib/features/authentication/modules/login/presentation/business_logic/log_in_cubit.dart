@@ -1,12 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
-import 'package:tabibi/features/authentication/domain/usecases/log_in_use_case.dart';
-import '../../../../data/models/log_in_request_params_model.dart';
-import '../../../../domain/entities/log_in_entity.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:tabibi/core/services/cache_helper.dart';
-import 'dart:developer';
+import 'package:tabibi/features/authentication/domain/usecases/log_in_use_case.dart';
+
+import '../../../../data/models/log_in_request_params_model.dart';
+import '../../../../domain/entities/log_in_entity.dart';
+
 part 'log_in_state.dart';
 
 class LogInCubit extends Cubit<LogInState> {
@@ -49,9 +51,7 @@ class LogInCubit extends Cubit<LogInState> {
         log('Error decoding token: $e');
       }
 
-      if (role == null) {
-        role = await CacheHelper.getData(key: 'role');
-      }
+      role ??= await CacheHelper.getData(key: 'role');
 
       emit(LogInSuccess(logInEntity: r, role: role));
     });

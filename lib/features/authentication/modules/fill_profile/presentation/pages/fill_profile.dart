@@ -96,7 +96,7 @@ class _FillProfileState extends State<FillProfile> {
                 },
                 initialDateTime: DateTime(2000, 1, 1),
               ),
-              VerticalSpace(height: AppHeight.h8),
+              VerticalSpace(height: AppHeight.h20),
               DropMenu(
                 hint: AppStrings.genderFillProfile,
                 items: const ['Male', 'Female'],
@@ -107,6 +107,8 @@ class _FillProfileState extends State<FillProfile> {
                 },
                 value: gender == 1 ? 'Male' : 'Female',
               ),
+              VerticalSpace(height: AppHeight.h20),
+
               CityDropdown(
                 selectedCityId: selectedCityId,
                 onCitySelected: (cityId) {

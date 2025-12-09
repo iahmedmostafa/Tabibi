@@ -29,25 +29,32 @@ class ProfileActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<DoctorProfileCubit, DoctorProfileState>(
       listener: (context, state) {
-        log(
-          'BlocListener: Status=${state.status}, Name=${state.profile?.name}, Error=${state.errorMessage}',
-        );
-
+    
         if (state.updateStatus == DoctorProfileUpdateStatus.loading) {
           EasyLoading.show(status: 'Loading...');
-        } else if (state.updateStatus == DoctorProfileUpdateStatus.success) {
+        }
+        // Handle profile update success
+        else if (state.updateStatus == DoctorProfileUpdateStatus.success) {
           EasyLoading.dismiss();
+          log('Profile updated successfully, showing success dialog...');
+
+          // Show success dialog
           showDialog(
             context: context,
             barrierDismissible: false,
             builder: (context) => const SuccessDialog(),
           );
-          Future.delayed(const Duration(seconds: 3), () {
+
+          // After 2 seconds, close dialog and navigate to pending, then fetch status
+          Future.delayed(const Duration(seconds: 2), () {
             if (context.mounted) {
-              context.goNamed(AppRoutes.pending);
+              Navigator.pop(context); // Close success dialog
+              context.go(AppRoutes.doctorStatusHandler);
             }
           });
-        } else if (state.updateStatus == DoctorProfileUpdateStatus.failure) {
+        }
+        // Handle profile update failure
+        else if (state.updateStatus == DoctorProfileUpdateStatus.failure) {
           EasyLoading.dismiss();
           AppHelperFunctions.showAwesomeSnackBar(
             title: 'Error',
