@@ -27,6 +27,7 @@ import 'package:tabibi/features/authentication/modules/verify_code/presentation/
 import 'package:tabibi/features/home/presentation/cubit/doctor_profile_cubit.dart';
 import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/home_screen.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/patient_home_screen.dart';
 import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
@@ -34,7 +35,7 @@ import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_f
 import '../services/shared_prefs_service.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: OnboardingServices.isFirstTime() ? '/onboarding' : '/login',
+  initialLocation: OnboardingServices.isFirstTime() ? '/onboarding' : '/patientHome',
   routes: [
     GoRoute(
       path: AppRoutes.onboarding,
@@ -148,6 +149,11 @@ final GoRouter router = GoRouter(
       path: AppRoutes.home,
       name: AppRoutes.home,
       builder: (context, state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.patientHome,
+      name: AppRoutes.patientHome,
+      builder: (context, state) => PatientHomeScreen(),
     ),
     GoRoute(
       path: AppRoutes.pending,

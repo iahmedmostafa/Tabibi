@@ -9,6 +9,7 @@ class AppRoutes {
   static const fillProfile       = '/fill_profile';
   static const doctorFillProfile = '/doctor_fill_profile';
   static const home              = '/home';
+  static const patientHome              = '/patientHome';
   static const pending           = '/pending';
   static const doctorStatusHandler          = '/DoctorStatusHandler';
   static const rejected          = '/rejected';
