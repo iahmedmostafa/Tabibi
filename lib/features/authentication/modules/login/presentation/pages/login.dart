@@ -115,7 +115,9 @@ class _LoginScreenState extends State<LoginScreen> {
               VerticalSpace(height: AppHeight.h23),
 
               BottomLoginSection(
-                onGooglePressed: () {},
+                onGooglePressed: () {
+                  context.go(AppRoutes.mapTest);
+                },
                 onFacebookPressed: () {},
               ),
               VerticalSpace(height: AppHeight.h23),

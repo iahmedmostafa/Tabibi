@@ -10,7 +10,6 @@ import 'package:tabibi/features/home/presentation/cubit/doctor_profile_state.dar
 
 class DoctorStatusHandler extends StatelessWidget {
   const DoctorStatusHandler({super.key});
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DoctorProfileCubit, DoctorProfileState>(

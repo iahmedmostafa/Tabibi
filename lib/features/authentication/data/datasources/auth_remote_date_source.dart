@@ -33,7 +33,6 @@ class AuthenticationRemoteDataSource
 
   AuthenticationRemoteDataSource(this.dio) {
     dio.options.baseUrl = ApiConstance.baseUrl;
-    //  dio.interceptors.add(DioInterceptors(dio).interceptor);
     dio.options.connectTimeout = const Duration(seconds: 30);
     dio.options.receiveTimeout = const Duration(seconds: 30);
     dio.options.sendTimeout = const Duration(seconds: 30);

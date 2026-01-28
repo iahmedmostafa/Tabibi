@@ -27,6 +27,7 @@ import 'package:tabibi/features/authentication/modules/verify_code/presentation/
 import 'package:tabibi/features/home/presentation/cubit/doctor_profile_cubit.dart';
 import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/home_screen.dart';
+import 'package:tabibi/features/map_test/presentation/pages/map_test_page.dart';
 import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
@@ -168,6 +169,11 @@ final GoRouter router = GoRouter(
       path: AppRoutes.rejected,
       name: AppRoutes.rejected,
       builder: (context, state) => const RejectedPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.mapTest,
+      name: AppRoutes.mapTest,
+      builder: (context, state) => const MapTestPage(),
     ),
     GoRoute(
       path: AppRoutes.doctorStatusHandler,
