@@ -15,4 +15,5 @@ class AppRoutes {
   static const rejected          = '/rejected';
   static const approved          = '/approved';
   static const newpage               = '/new';
+  static const allDoctors        = '/all_doctors_screen';
 }

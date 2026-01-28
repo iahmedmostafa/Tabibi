@@ -26,8 +26,9 @@ import 'package:tabibi/features/authentication/modules/verify_code/presentation/
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/pages/verify_code.dart';
 import 'package:tabibi/features/home/presentation/cubit/doctor_profile_cubit.dart';
 import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.dart';
-import 'package:tabibi/features/home/presentation/screen/home_screen.dart';
-import 'package:tabibi/features/home/presentation/screen/patient/patient_home_screen.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_cubit.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/screens/all_doctors_screen.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/screens/patient_home_screen.dart';
 import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
@@ -35,7 +36,7 @@ import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_f
 import '../services/shared_prefs_service.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: OnboardingServices.isFirstTime() ? '/onboarding' : '/patientHome',
+  initialLocation: OnboardingServices.isFirstTime() ? '/onboarding' : '/login',
   routes: [
     GoRoute(
       path: AppRoutes.onboarding,
@@ -146,11 +147,6 @@ final GoRouter router = GoRouter(
     ),
 
     GoRoute(
-      path: AppRoutes.home,
-      name: AppRoutes.home,
-      builder: (context, state) => const HomeScreen(),
-    ),
-    GoRoute(
       path: AppRoutes.patientHome,
       name: AppRoutes.patientHome,
       builder: (context, state) => PatientHomeScreen(),
@@ -182,6 +178,19 @@ final GoRouter router = GoRouter(
         create: (context) => sl<DoctorProfileCubit>()..getDoctorStatus(),
         child: const DoctorStatusHandler(),
       ),
+    ),
+    GoRoute(
+      path: AppRoutes.allDoctors,
+      name: AppRoutes.allDoctors,
+      builder: (context, state) {
+        final departmentName = state.extra as String?;
+        return BlocProvider(
+          create: (context) =>
+              sl<DoctorsCubit>()
+                ..getAllDoctors(initialDepartment: departmentName),
+          child: AllDoctorsScreen(departmentName: departmentName),
+        );
+      },
     ),
   ],
 );

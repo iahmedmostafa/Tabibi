@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_styles.dart';
-import '../../../../core/utils/constants/app_colors.dart';
-import '../../../../core/utils/constants/app_images.dart';
+
+import '../../../../../../core/utils/constants/app_colors.dart';
+import '../../../../../../core/utils/constants/app_images.dart';
 
 class CustomCarouselSlider extends StatefulWidget {
   const CustomCarouselSlider({super.key});
@@ -97,6 +98,7 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
                       left: 120.h,
                       child: DotsIndicator(
                         dotsCount: 3,
+                        animate: true,
                         position: currentIndex.toDouble(),
                         decorator: DotsDecorator(
                           size: const Size.square(10.0),
