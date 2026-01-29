@@ -6,6 +6,8 @@ class DoctorFillProfileFormState {
   final String? selectedDoctorCityId;
   final String? selectedDepartmentId;
   final String? selectedClinicCityId;
+  final double? clinicLatitude;
+  final double? clinicLongitude;
   final int gender;
   final List<WorkScheduleDto> schedules;
 
@@ -15,6 +17,8 @@ class DoctorFillProfileFormState {
     this.selectedDoctorCityId,
     this.selectedDepartmentId,
     this.selectedClinicCityId,
+    this.clinicLatitude,
+    this.clinicLongitude,
     this.gender = 0,
     this.schedules = const [],
   });
@@ -25,6 +29,8 @@ class DoctorFillProfileFormState {
     String? selectedDoctorCityId,
     String? selectedDepartmentId,
     String? selectedClinicCityId,
+    double? clinicLatitude,
+    double? clinicLongitude,
     int? gender,
     List<WorkScheduleDto>? schedules,
   }) {
@@ -34,6 +40,8 @@ class DoctorFillProfileFormState {
       selectedDoctorCityId: selectedDoctorCityId ?? this.selectedDoctorCityId,
       selectedDepartmentId: selectedDepartmentId ?? this.selectedDepartmentId,
       selectedClinicCityId: selectedClinicCityId ?? this.selectedClinicCityId,
+      clinicLatitude: clinicLatitude ?? this.clinicLatitude,
+      clinicLongitude: clinicLongitude ?? this.clinicLongitude,
       gender: gender ?? this.gender,
       schedules: schedules ?? this.schedules,
     );

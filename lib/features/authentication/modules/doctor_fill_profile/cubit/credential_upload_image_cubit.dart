@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,8 +15,6 @@ class CredentialUploadImageCubit extends Cubit<UploadImageState> {
     emit(state.copyWith(status: UploadImageStatus.loading));
 
     final result = await uploadImageRepository.uploadImage(image);
-
-    log('Upload Credential Image Result: $result');
 
     result.fold(
       (failure) => emit(

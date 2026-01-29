@@ -116,7 +116,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
               BottomLoginSection(
                 onGooglePressed: () {
-                  context.go(AppRoutes.mapTest);
                 },
                 onFacebookPressed: () {},
               ),

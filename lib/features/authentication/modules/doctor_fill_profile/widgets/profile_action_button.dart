@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,23 +32,27 @@ class ProfileActionButton extends StatelessWidget {
         }
         // Handle profile update success
         else if (state.updateStatus == DoctorProfileUpdateStatus.success) {
-          EasyLoading.dismiss();
-          log('Profile updated successfully, showing success dialog...');
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            if (!context.mounted) return;
 
-          // Show success dialog
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => const SuccessDialog(),
-          );
-          context.read<DoctorProfileCubit>().getDoctorStatus();
+            EasyLoading.dismiss();
 
-          // After 2 seconds, close dialog and navigate to pending, then fetch status
-          Future.delayed(const Duration(seconds: 2), () {
-            if (context.mounted) {
-              Navigator.pop(context); // Close success dialog
-              context.go(AppRoutes.doctorStatusHandler);
-            }
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              useRootNavigator: true,
+              builder: (_) => const SuccessDialog(),
+            );
+
+            await Future.delayed(const Duration(seconds: 2));
+
+            if (!context.mounted) return;
+
+            Navigator.of(context, rootNavigator: true).pop();
+            context.go(AppRoutes.doctorStatusHandler);
+
+            // ⬅️ خليها بعد التنقل
+            context.read<DoctorProfileCubit>().getDoctorStatus();
           });
         }
         // Handle profile update failure

@@ -15,6 +15,8 @@ class UpdateDoctorProfileParams {
   final String? clinicAddress;
   final String? clinicPhoneNumber;
   final String? clinicCity;
+  final double? clinicLatitude;
+  final double? clinicLongitude;
   final List<WorkScheduleDto>? schedule;
   //final String? clinicWorkingHours;
 
@@ -33,6 +35,8 @@ class UpdateDoctorProfileParams {
     this.clinicAddress,
     this.clinicPhoneNumber,
     this.clinicCity,
+    this.clinicLatitude,
+    this.clinicLongitude,
     this.schedule,
     //this.clinicWorkingHours,
   });
@@ -54,6 +58,8 @@ class UpdateDoctorProfileParams {
         'address': clinicAddress,
         'phoneNumber': clinicPhoneNumber,
         'cityId': clinicCity,
+        'latitude': clinicLatitude,
+        'longitude': clinicLongitude,
       },
       'schedule': schedule?.map((e) => e.toJson()).toList(),
       //'clinicWorkingHours': clinicWorkingHours,

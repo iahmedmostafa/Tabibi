@@ -14,5 +14,5 @@ class AppRoutes {
   static const rejected = '/rejected';
   static const approved = '/approved';
   static const newpage = '/new';
-  static const mapTest = '/map_test';
+  static const clinicLocation = '/clinic_location';
 }

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:tabibi/core/services/location_services.dart';
 import 'package:tabibi/features/authentication/data/datasources/auth_remote_date_source.dart';
 import 'package:tabibi/features/authentication/data/datasources/cities_data_source.dart';
 import 'package:tabibi/features/authentication/data/datasources/departments_data_source.dart';
@@ -16,6 +17,7 @@ import 'package:tabibi/features/authentication/domain/usecases/sign_up_use_case.
 import 'package:tabibi/features/authentication/domain/usecases/verify_code_use_case.dart';
 import 'package:tabibi/features/authentication/domain/usecases/verify_password_reset_code.dart';
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/cubit/create_new_password_cubit.dart';
+import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/clinic_location_cubit.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/clinic_upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/credential_upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/cities_cubit.dart';
@@ -47,6 +49,8 @@ import '../services/cache_helper.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  //location services
+  sl.registerLazySingleton(() => LocationServices());
   //cache helper
   sl.registerLazySingleton(() => sl<CacheHelper>());
 
@@ -108,4 +112,5 @@ Future<void> init() async {
   sl.registerFactory(() => DoctorProfileCubit(sl(), sl(), sl()));
   sl.registerFactory(() => DepartmentsCubit(sl()));
   sl.registerFactory(() => DoctorFillProfileFormCubit());
+  sl.registerFactory(() => ClinicLocationCubit(sl<LocationServices>()));
 }

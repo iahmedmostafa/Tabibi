@@ -43,6 +43,10 @@ class DoctorFillProfileFormCubit extends Cubit<DoctorFillProfileFormState> {
     emit(state.copyWith(selectedClinicCityId: cityId));
   }
 
+  void setClinicLocation(double latitude, double longitude) {
+    emit(state.copyWith(clinicLatitude: latitude, clinicLongitude: longitude));
+  }
+
   void setSchedules(List<WorkScheduleDto> schedules) {
     emit(state.copyWith(schedules: schedules));
   }
