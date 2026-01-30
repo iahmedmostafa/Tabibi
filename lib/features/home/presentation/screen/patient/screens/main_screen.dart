@@ -12,8 +12,7 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen>
-    with TickerProviderStateMixin {
+class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   TabController? _tabController;
   int selectedIndex = 0;
   bool _initialized = false;
@@ -63,9 +62,7 @@ class _MainScreenState extends State<MainScreen>
                   child: TabBarView(
                     controller: _tabController,
                     children: state.departments!.map((dept) {
-                      return AllDoctorsScreen(
-                        departmentName: dept.name,
-                      );
+                      return AllDoctorsScreen(initialDepartmentId: dept.id);
                     }).toList(),
                   ),
                 ),

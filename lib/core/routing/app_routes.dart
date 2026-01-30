@@ -16,4 +16,5 @@ class AppRoutes {
   static const approved          = '/approved';
   static const newpage               = '/new';
   static const allDoctors        = '/all_doctors_screen';
+  static const bottomNavScreen = '/bottomNavScreen';
 }

@@ -13,26 +13,42 @@ import 'package:tabibi/features/home/presentation/screen/patient/widgets/custom_
 import '../cubit/departments_cubit.dart';
 import '../widgets/custom_doctor_cart.dart';
 import '../../../../../../core/style/spacing/vertical_space.dart';
+import '../../../../data/models/department_model.dart';
 
 class AllDoctorsScreen extends StatefulWidget {
-  final String? departmentName;
+  final String? initialDepartmentId;
 
-  const AllDoctorsScreen({super.key, this.departmentName});
+  const AllDoctorsScreen({super.key, this.initialDepartmentId});
 
   @override
   State<AllDoctorsScreen> createState() => _AllDoctorsScreenState();
 }
 
 class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
-  // We handle "All" manually as instructed.
-  String selectedCategory = "All";
+  static const double _scrollThreshold = 0.9;
+
+  String? selectedDepartmentId;
   final TextEditingController _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    if (widget.departmentName != null) {
-      selectedCategory = widget.departmentName!;
+    selectedDepartmentId = widget.initialDepartmentId;
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent * _scrollThreshold) {
+      context.read<DoctorsCubit>().loadMoreDoctors();
     }
   }
 
@@ -56,7 +72,9 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: AppColors.midnightBlue),
-            onPressed: () => GoRouter.of(context).push(AppRoutes.patientHome),
+            onPressed: () {
+              GoRouter.of(context).go(AppRoutes.bottomNavScreen);
+            },
           ),
         ),
         body: Column(
@@ -67,6 +85,12 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
               child: CustomTextField(
                 controller: _searchController,
                 isEnabled: true,
+                onChanged: (query) {
+                  context.read<DoctorsCubit>().getDoctors(
+                    departmentId: selectedDepartmentId,
+                    query: query,
+                  );
+                },
               ),
             ),
             const VerticalSpace(height: 16),
@@ -79,10 +103,8 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
                   }
 
                   final departments = state.departments ?? [];
-                  final List<String> categories = [
-                    "All",
-                    ...departments.map((e) => e.name),
-                  ];
+                  // Create a list of "All" + actual departments
+                  final List<Department?> categories = [null, ...departments];
 
                   return ListView.separated(
                     padding: EdgeInsets.symmetric(
@@ -95,19 +117,20 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
                         HorizentalSpace(width: 10),
                     itemBuilder: (context, index) {
                       final category = categories[index];
-                      final isSelected = category == selectedCategory;
+                      final categoryName = category?.name ?? "All";
+                      final categoryId = category?.id; // null for All
+
+                      final isSelected = selectedDepartmentId == categoryId;
+
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            selectedCategory = category;
+                            selectedDepartmentId = categoryId;
                           });
-                          if (category == "All") {
-                            context.read<DoctorsCubit>().showAllDoctors();
-                          } else {
-                            context.read<DoctorsCubit>().filterByDepartmentName(
-                              category,
-                            );
-                          }
+                          context.read<DoctorsCubit>().getDoctors(
+                            departmentId: categoryId,
+                            query: _searchController.text,
+                          );
                         },
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
@@ -145,7 +168,7 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
                           ),
                           child: Center(
                             child: Text(
-                              category,
+                              categoryName,
                               style: TextStyle(
                                 color: isSelected
                                     ? Colors.white
@@ -179,7 +202,7 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
                     );
                   }
 
-                  final doctors = state.filteredDoctors;
+                  final doctors = state.doctors; // using new getter
 
                   return Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -196,6 +219,7 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
                                 color: AppColors.midnightBlue,
                               ),
                             ),
+                            // Keeps the "Default" sort UI but it's not functional yet
                             Row(
                               children: [
                                 Text(
@@ -228,7 +252,7 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
                                     ),
                                     VerticalSpace(height: 16.h),
                                     Text(
-                                      "No doctors found in this category",
+                                      "No doctors found",
                                       style: TextStyle(
                                         color: AppColors.textSecondary,
                                         fontSize: 16.sp,
@@ -237,11 +261,22 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
                                   ],
                                 )
                               : ListView.separated(
+                                  controller: _scrollController,
                                   padding: EdgeInsets.only(bottom: 20.h),
-                                  itemCount: doctors.length,
+                                  itemCount: state.hasReachedMax
+                                      ? doctors.length
+                                      : doctors.length + 1,
                                   separatorBuilder: (context, index) =>
                                       VerticalSpace(height: 16.h),
                                   itemBuilder: (context, index) {
+                                    if (index >= doctors.length) {
+                                      return const Center(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      );
+                                    }
                                     return DoctorCard(doctor: doctors[index]);
                                   },
                                 ),

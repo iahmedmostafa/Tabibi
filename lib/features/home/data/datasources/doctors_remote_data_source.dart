@@ -1,8 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:tabibi/core/network/api_constance.dart';
+import '../models/doctors_response_model.dart';
 
 abstract class DoctorsRemoteDataSource {
-  Future<List<Map<String, dynamic>>> getDoctors();
+  /// Fetches doctors from the API with pagination and optional filters
+  Future<DoctorsResponseModel> getDoctors({
+    int page = 1,
+    int pageSize = 10,
+    String? departmentId,
+    String? query,
+  });
 }
 
 class DoctorsRemoteDataSourceImpl implements DoctorsRemoteDataSource {
@@ -13,23 +20,31 @@ class DoctorsRemoteDataSourceImpl implements DoctorsRemoteDataSource {
   }
 
   @override
-  Future<List<Map<String, dynamic>>> getDoctors() async {
+  Future<DoctorsResponseModel> getDoctors({
+    int page = 1,
+    int pageSize = 10,
+    String? departmentId,
+    String? query,
+  }) async {
     try {
-      final response = await dio.get(ApiConstance.doctors);
-      final dynamic data = response.data;
-      List<dynamic> items = [];
+      final Map<String, dynamic> queryParams = {
+        'Page': page,
+        'PageSize': pageSize,
+      };
 
-      if (data is List) {
-        items = data;
-      } else if (data is Map<String, dynamic>) {
-        if (data.containsKey('items') && data['items'] is List) {
-          items = data['items'];
-        }
+      if (departmentId != null) {
+        queryParams['DepartmentId'] = departmentId;
+      }
+      if (query != null && query.isNotEmpty) {
+        queryParams['q'] = query;
       }
 
-      return items
-          .map<Map<String, dynamic>>((e) => Map<String, dynamic>.from(e as Map))
-          .toList();
+      final response = await dio.get(
+        ApiConstance.doctors,
+        queryParameters: queryParams,
+      );
+
+      return DoctorsResponseModel.fromJson(response.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data['message'] ?? 'Server error');
     }

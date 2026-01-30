@@ -1,18 +1,34 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/features/home/data/repositories/doctor_repository.dart';
-import '../../../../data/models/doctor_model.dart';
 import 'doctors_state.dart';
 
 class DoctorsCubit extends Cubit<DoctorsState> {
   DoctorsCubit(this.repository) : super(const DoctorsState());
 
   final DoctorsRepository repository;
+  String? _currentDepartmentId;
+  String? _currentQuery;
 
-  Future<void> getAllDoctors({String? initialDepartment}) async {
-    emit(state.copyWith(status: DoctorsStatus.loading));
+  /// Fetches the first page of doctors with optional filters
+  Future<void> getDoctors({String? departmentId, String? query}) async {
+    _currentDepartmentId = departmentId;
+    _currentQuery = query;
 
-    final result = await repository.getDoctors();
+    emit(
+      state.copyWith(
+        status: DoctorsStatus.loading,
+        page: 1,
+        hasReachedMax: false,
+        doctors: [],
+      ),
+    );
+
+    final result = await repository.getDoctors(
+      page: 1,
+      departmentId: departmentId,
+      query: query,
+    );
 
     result.fold(
       (failure) => emit(
@@ -21,33 +37,48 @@ class DoctorsCubit extends Cubit<DoctorsState> {
           errorMessage: failure.message,
         ),
       ),
-      (doctors) {
-        List<DoctorModel> filtered = doctors;
-        if (initialDepartment != null) {
-          filtered = doctors
-              .where((doctor) => doctor.departmentName == initialDepartment)
-              .toList();
-        }
+      (response) {
         emit(
           state.copyWith(
             status: DoctorsStatus.success,
-            allDoctors: doctors,
-            filteredDoctors: filtered,
+            doctors: response.items,
+            hasReachedMax: !response.hasNextPage,
+            page: 1,
           ),
         );
       },
     );
   }
 
-  void filterByDepartmentName(String departmentName) {
-    final filtered = state.allDoctors
-        .where((doctor) => doctor.departmentName == departmentName)
-        .toList();
+  /// Loads the next page of doctors
+  Future<void> loadMoreDoctors() async {
+    if (state.hasReachedMax || state.isMoreLoading) return;
 
-    emit(state.copyWith(filteredDoctors: filtered));
+    emit(state.copyWith(isMoreLoading: true));
+
+    final nextPage = state.page + 1;
+    final result = await repository.getDoctors(
+      page: nextPage,
+      departmentId: _currentDepartmentId,
+      query: _currentQuery,
+    );
+
+    result.fold((failure) => emit(state.copyWith(isMoreLoading: false)), (
+      response,
+    ) {
+      emit(
+        state.copyWith(
+          isMoreLoading: false,
+          doctors: List.of(state.doctors)..addAll(response.items),
+          hasReachedMax: !response.hasNextPage,
+          page: nextPage,
+        ),
+      );
+    });
   }
 
-  void showAllDoctors() {
-    emit(state.copyWith(filteredDoctors: state.allDoctors));
+  /// Filters doctors by department ID
+  void filterByDepartmentId(String? departmentId) {
+    getDoctors(departmentId: departmentId);
   }
 }

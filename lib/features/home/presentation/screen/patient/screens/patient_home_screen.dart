@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_images.dart';
-import 'package:tabibi/features/home/presentation/screen/patient/screens/all_doctors_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/customCarouselSlider.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/custom_text_field.dart';
 import '../../../../../../core/DI/service_locator.dart';
@@ -13,7 +12,6 @@ import '../../../../../../core/style/spacing/vertical_space.dart';
 import '../../../../../../core/utils/constants/app_colors.dart';
 import '../../../../../../core/utils/constants/app_dimensions.dart';
 import '../../../../../../core/utils/enums/enums.dart';
-import '../../../../data/models/department_model.dart';
 import '../cubit/departments_cubit.dart';
 
 class PatientHomeScreen extends StatelessWidget {
@@ -168,7 +166,7 @@ class _DepartmentsGrid extends StatelessWidget {
                 onTap: () {
                   context.pushNamed(
                     AppRoutes.allDoctors,
-                    extra: department.name,
+                    extra: department.id, // Pass ID instead of name
                   );
                 },
                 child: Column(

@@ -28,6 +28,7 @@ import 'package:tabibi/features/home/presentation/cubit/doctor_profile_cubit.dar
 import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/all_doctors_screen.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/screens/bottom_nav_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/patient_home_screen.dart';
 import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart';
 
@@ -180,15 +181,19 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      path: AppRoutes.bottomNavScreen,
+      name: AppRoutes.bottomNavScreen,
+      builder: (context, state) => const BottomNavScreen(),
+    ),
+    GoRoute(
       path: AppRoutes.allDoctors,
       name: AppRoutes.allDoctors,
       builder: (context, state) {
-        final departmentName = state.extra as String?;
+        final departmentId = state.extra as String?;
         return BlocProvider(
           create: (context) =>
-              sl<DoctorsCubit>()
-                ..getAllDoctors(initialDepartment: departmentName),
-          child: AllDoctorsScreen(departmentName: departmentName),
+              sl<DoctorsCubit>()..getDoctors(departmentId: departmentId),
+          child: AllDoctorsScreen(initialDepartmentId: departmentId),
         );
       },
     ),
