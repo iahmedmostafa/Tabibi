@@ -6,4 +6,8 @@ class AppImages {
   static const google      = "assets/images/google1.png";
   static const facebook    = "assets/images/facebook1.png";
   static const back        = "assets/images/back.png";
+  static const layer1    = "assets/images/layer1.png";
+  static const layer2        = "assets/images/layer2.png";
+  static const carouselImage        = "assets/images/image.png";
+
 }

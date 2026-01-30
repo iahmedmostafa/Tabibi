@@ -141,7 +141,7 @@ class _FillProfileState extends State<FillProfile> {
                     );
                     Future.delayed(const Duration(seconds: 3), () {
                       if (context.mounted) {
-                        context.goNamed(AppRoutes.home);
+                        context.goNamed(AppRoutes.bottomNavScreen);
                       }
                     });
                   } else if (state.updateStatus ==
