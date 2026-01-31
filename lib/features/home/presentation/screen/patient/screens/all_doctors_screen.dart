@@ -277,7 +277,15 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
                                         ),
                                       );
                                     }
-                                    return DoctorCard(doctor: doctors[index]);
+                                    return GestureDetector(
+                                      onTap: () {
+                                        context.push(
+                                          AppRoutes.doctorDetails,
+                                          extra: doctors[index],
+                                        );
+                                      },
+                                      child: DoctorCard(doctor: doctors[index]),
+                                    );
                                   },
                                 ),
                         ),

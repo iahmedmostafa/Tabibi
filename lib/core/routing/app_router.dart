@@ -36,6 +36,11 @@ import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart'
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
+import 'package:tabibi/features/appointment/presentation/cubit/appointment_cubit.dart';
+import 'package:tabibi/features/appointment/presentation/pages/book_appointment_screen.dart';
+import 'package:tabibi/features/appointment/presentation/pages/booking_success_screen.dart';
+import 'package:tabibi/features/appointment/presentation/pages/doctor_details_screen.dart';
+import 'package:tabibi/features/home/data/models/doctor_model.dart';
 import '../services/shared_prefs_service.dart';
 
 final GoRouter router = GoRouter(
@@ -179,7 +184,7 @@ final GoRouter router = GoRouter(
       path: AppRoutes.clinicLocation,
       name: AppRoutes.clinicLocation,
       builder: (context, state) => BlocProvider(
-      create: (_) => sl<ClinicLocationCubit>()..initialize(),
+        create: (_) => sl<ClinicLocationCubit>()..initialize(),
         child: const ClinicLocationScreen(),
       ),
     ),
@@ -207,6 +212,30 @@ final GoRouter router = GoRouter(
           child: AllDoctorsScreen(initialDepartmentId: departmentId),
         );
       },
+    ),
+
+    GoRoute(
+      path: AppRoutes.doctorDetails,
+      name: AppRoutes.doctorDetails,
+      builder: (context, state) {
+        final doctor = state.extra as DoctorModel;
+        return DoctorDetailsScreen(doctor: doctor);
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.bookAppointment,
+      name: AppRoutes.bookAppointment,
+      builder: (context, state) {
+        return BlocProvider(
+          create: (context) => sl<AppointmentCubit>(),
+          child: const BookAppointmentScreen(),
+        );
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.bookingSuccess,
+      name: AppRoutes.bookingSuccess,
+      builder: (context, state) => const BookingSuccessScreen(),
     ),
   ],
 );
