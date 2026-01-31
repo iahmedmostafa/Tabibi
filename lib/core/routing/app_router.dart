@@ -38,7 +38,7 @@ import '../../features/authentication/modules/doctor_fill_profile/cubit/departme
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
 import 'package:tabibi/features/appointment/presentation/cubit/appointment_cubit.dart';
 import 'package:tabibi/features/appointment/presentation/pages/book_appointment_screen.dart';
-import 'package:tabibi/features/appointment/presentation/pages/booking_success_screen.dart';
+
 import 'package:tabibi/features/appointment/presentation/pages/doctor_details_screen.dart';
 import 'package:tabibi/features/home/data/models/doctor_model.dart';
 import '../services/shared_prefs_service.dart';
@@ -231,11 +231,6 @@ final GoRouter router = GoRouter(
           child: const BookAppointmentScreen(),
         );
       },
-    ),
-    GoRoute(
-      path: AppRoutes.bookingSuccess,
-      name: AppRoutes.bookingSuccess,
-      builder: (context, state) => const BookingSuccessScreen(),
     ),
   ],
 );

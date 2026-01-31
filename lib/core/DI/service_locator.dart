@@ -45,6 +45,7 @@ import 'package:tabibi/features/home/presentation/cubit/doctor_profile_cubit.dar
 import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_cubit.dart';
 import 'package:tabibi/features/appointment/presentation/cubit/appointment_cubit.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/cubit/my_bookings_cubit.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
 import '../../features/home/data/datasources/departments_data_source.dart'
@@ -134,4 +135,5 @@ Future<void> init() async {
   sl.registerFactory(() => ClinicLocationCubit(sl<LocationServices>()));
   sl.registerFactory(() => DoctorsCubit(sl()));
   sl.registerFactory(() => AppointmentCubit());
+  sl.registerFactory(() => MyBookingsCubit());
 }

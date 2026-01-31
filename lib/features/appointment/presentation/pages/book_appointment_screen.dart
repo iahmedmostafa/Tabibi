@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tabibi/core/routing/app_routes.dart';
 
 import 'package:tabibi/core/widgets/primary_button.dart';
 import 'package:tabibi/features/appointment/presentation/cubit/appointment_cubit.dart';
+import 'package:tabibi/features/appointment/presentation/widgets/booking_success_dialog.dart';
 import 'package:tabibi/features/appointment/presentation/widgets/custom_calendar.dart';
 import 'package:tabibi/features/appointment/presentation/widgets/time_slot_grid.dart';
 
@@ -26,7 +26,10 @@ class BookAppointmentScreen extends StatelessWidget {
       body: BlocConsumer<AppointmentCubit, AppointmentState>(
         listener: (context, state) {
           if (state is AppointmentBookingSuccess) {
-            context.pushReplacement(AppRoutes.bookingSuccess);
+            showDialog(
+              context: context,
+              builder: (context) => const BookingSuccessDialog(),
+            );
           } else if (state is AppointmentFailure) {
             ScaffoldMessenger.of(
               context,

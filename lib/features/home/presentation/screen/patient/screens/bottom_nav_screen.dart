@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/patient_home_screen.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/screens/my_bookings_screen.dart';
 
 class BottomNavScreen extends StatefulWidget {
   const BottomNavScreen({super.key});
@@ -15,17 +16,14 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   final List<Widget> _screens = const [
     PatientHomeScreen(),
     Scaffold(body: Center(child: Text("Maps"))),
-    Scaffold(body: Center(child: Text("Calendar"))),
+    MyBookingsScreen(),
     Scaffold(body: Center(child: Text("Profile"))),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {

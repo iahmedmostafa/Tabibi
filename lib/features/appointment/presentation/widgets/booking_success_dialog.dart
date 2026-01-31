@@ -5,21 +5,24 @@ import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
 
-class BookingSuccessScreen extends StatelessWidget {
-  const BookingSuccessScreen({super.key});
+class BookingSuccessDialog extends StatelessWidget {
+  const BookingSuccessDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.w),
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
+      backgroundColor: Colors.white,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              width: 150.w,
-              height: 150.h,
+              width: 100.w,
+              height: 100.h,
               decoration: BoxDecoration(
                 color: AppColors.primary.withOpacity(0.1),
                 shape: BoxShape.circle,
@@ -27,36 +30,38 @@ class BookingSuccessScreen extends StatelessWidget {
               child: Icon(
                 Icons.check_rounded,
                 color: AppColors.primary,
-                size: 80.sp,
+                size: 60.sp,
               ),
             ),
-            SizedBox(height: 32.h),
+            SizedBox(height: 24.h),
             Text(
               "Congratulations!",
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: AppColors.dark,
+                fontSize: 22.sp,
               ),
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 12.h),
             Text(
               "Your appointment with Dr. David Patel is confirmed for June 30, 2023, at 10:00 AM.",
               textAlign: TextAlign.center,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyLarge?.copyWith(color: AppColors.grey500),
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: AppColors.grey500,
+                fontSize: 14.sp,
+              ),
             ),
-            SizedBox(height: 48.h),
+            SizedBox(height: 32.h),
             PrimaryButton(
               title: "Done",
               onPress: () {
-                context.go(AppRoutes.patientHome); // Or wherever home is
+                context.go(AppRoutes.patientHome); // Go to home
               },
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 12.h),
             TextButton(
               onPressed: () {
-                // Edit appointment logic
+                context.pop(); // Close dialog to edit
               },
               child: Text(
                 "Edit your appointment",
