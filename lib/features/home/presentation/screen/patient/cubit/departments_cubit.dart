@@ -31,7 +31,7 @@ class DepartmentsCubit extends Cubit<DepartmentsState> {
     );
   }
 
-  void resetState() {
-    emit(const DepartmentsState());
-  }
+  // void resetState() {
+  //   emit(const DepartmentsState());
+  // }
 }

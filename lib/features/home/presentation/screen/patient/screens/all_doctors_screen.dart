@@ -10,10 +10,11 @@ import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_state.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/custom_text_field.dart';
-import '../cubit/departments_cubit.dart';
-import '../widgets/custom_doctor_cart.dart';
+
 import '../../../../../../core/style/spacing/vertical_space.dart';
 import '../../../../data/models/department_model.dart';
+import '../cubit/departments_cubit.dart';
+import '../widgets/custom_doctor_cart.dart';
 
 class AllDoctorsScreen extends StatefulWidget {
   final String? initialDepartmentId;
@@ -76,6 +77,14 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
               GoRouter.of(context).go(AppRoutes.bottomNavScreen);
             },
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.map, color: AppColors.midnightBlue),
+              onPressed: () {
+                GoRouter.of(context).push(AppRoutes.doctorsMapScreen);
+              },
+            ),
+          ],
         ),
         body: Column(
           children: [
@@ -114,7 +123,7 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
                     scrollDirection: Axis.horizontal,
                     itemCount: categories.length,
                     separatorBuilder: (context, index) =>
-                        HorizentalSpace(width: 10),
+                        const HorizentalSpace(width: 10),
                     itemBuilder: (context, index) {
                       final category = categories[index];
                       final categoryName = category?.name ?? "All";

@@ -31,6 +31,7 @@ import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.da
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/all_doctors_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/bottom_nav_screen.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/screens/doctors_map_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/patient_home_screen.dart';
 import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart';
 
@@ -152,7 +153,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppRoutes.patientHome,
       name: AppRoutes.patientHome,
-      builder: (context, state) => PatientHomeScreen(),
+      builder: (context, state) => const PatientHomeScreen(),
     ),
     GoRoute(
       path: AppRoutes.pending,
@@ -179,7 +180,7 @@ final GoRouter router = GoRouter(
       path: AppRoutes.clinicLocation,
       name: AppRoutes.clinicLocation,
       builder: (context, state) => BlocProvider(
-      create: (_) => sl<ClinicLocationCubit>()..initialize(),
+        create: (_) => sl<ClinicLocationCubit>()..initialize(),
         child: const ClinicLocationScreen(),
       ),
     ),
@@ -205,6 +206,16 @@ final GoRouter router = GoRouter(
           create: (context) =>
               sl<DoctorsCubit>()..getDoctors(departmentId: departmentId),
           child: AllDoctorsScreen(initialDepartmentId: departmentId),
+        );
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.doctorsMapScreen,
+      name: AppRoutes.doctorsMapScreen,
+      builder: (context, state) {
+        return BlocProvider(
+          create: (context) => sl<DoctorsCubit>()..getDoctors(),
+          child: const DoctorsMapScreen(),
         );
       },
     ),

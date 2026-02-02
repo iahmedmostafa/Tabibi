@@ -7,6 +7,7 @@ import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_images.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/customCarouselSlider.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/custom_text_field.dart';
+
 import '../../../../../../core/DI/service_locator.dart';
 import '../../../../../../core/style/spacing/vertical_space.dart';
 import '../../../../../../core/utils/constants/app_colors.dart';
@@ -33,13 +34,9 @@ class PatientHomeScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         "Location",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.black,
-                        ),
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       Container(
                         width: 40,
@@ -50,26 +47,22 @@ class PatientHomeScreen extends StatelessWidget {
                         ),
                         child: IconButton(
                           onPressed: () {},
-                          icon: Icon(CupertinoIcons.bell_fill, size: 21),
+                          icon: const Icon(CupertinoIcons.bell_fill, size: 21),
                         ),
                       ),
                     ],
                   ),
                   VerticalSpace(height: AppHeight.h8),
-                  CustomTextField(controller: controller, isEnabled: true),
+                CustomTextField(controller: controller, isEnabled: true),
                   VerticalSpace(height: AppHeight.h8),
                   const CustomCarouselSlider(),
                   VerticalSpace(height: AppHeight.h8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         "Categories",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.black,
-                        ),
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       InkWell(
                         onTap: () {
@@ -88,7 +81,7 @@ class PatientHomeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  VerticalSpace(height: AppHeight.h8),
+                  VerticalSpace(height: AppHeight.h12),
                   const _DepartmentsGrid(),
                 ],
               ),
@@ -105,6 +98,7 @@ class _DepartmentsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocBuilder<DepartmentsCubit, DepartmentsState>(
       builder: (context, state) {
         if (state.departmentsStatus == DepartmentsStatus.loading) {
@@ -218,10 +212,9 @@ class _DepartmentsGrid extends StatelessWidget {
                       department.name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.black,
+                      style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        fontSize: 12.sp,
+                        color:  isDark? AppColors.white : AppColors.black,
                       ),
                       textAlign: TextAlign.center,
                     ),

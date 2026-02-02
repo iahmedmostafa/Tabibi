@@ -6,6 +6,8 @@ class DoctorModel {
   final int yearsOfExperience;
   final String? address;
   final String? department;
+  final double? latitude;
+  final double? longitude;
 
   DoctorModel({
     required this.id,
@@ -15,6 +17,8 @@ class DoctorModel {
     required this.yearsOfExperience,
     this.address,
     this.department,
+    this.latitude,
+    this.longitude,
   });
 
   factory DoctorModel.fromJson(Map<String, dynamic> json) {
@@ -39,6 +43,13 @@ class DoctorModel {
       return value.toString();
     }
 
+    // Helper to parse lat/long
+    double? parseCoord(dynamic value) {
+      if (value == null) return null;
+      if (value is num) return value.toDouble();
+      return double.tryParse(value.toString());
+    }
+
     return DoctorModel(
       id: json['id']?.toString() ?? '',
       name: json['name']?.toString() ?? '',
@@ -47,6 +58,8 @@ class DoctorModel {
       yearsOfExperience: parseInt(json['yearsOfExperience']),
       address: json['address']?.toString(),
       department: parseDepartment(json['department']),
+      latitude: parseCoord(json['latitude']),
+      longitude: parseCoord(json['longitude']),
     );
   }
 }
