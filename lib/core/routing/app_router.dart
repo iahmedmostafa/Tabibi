@@ -36,10 +36,10 @@ import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart'
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
-import 'package:tabibi/features/appointment/presentation/cubit/appointment_cubit.dart';
-import 'package:tabibi/features/appointment/presentation/pages/book_appointment_screen.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/cubit/appointment_cubit.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/screens/book_appointment_screen.dart';
 
-import 'package:tabibi/features/appointment/presentation/pages/doctor_details_screen.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/screens/doctor_details_screen.dart';
 import 'package:tabibi/features/home/data/models/doctor_model.dart';
 import '../services/shared_prefs_service.dart';
 

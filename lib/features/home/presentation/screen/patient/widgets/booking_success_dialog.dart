@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
 
 class BookingSuccessDialog extends StatelessWidget {
   const BookingSuccessDialog({super.key});
@@ -12,7 +13,7 @@ class BookingSuccessDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
         child: Column(
@@ -35,7 +36,7 @@ class BookingSuccessDialog extends StatelessWidget {
             ),
             SizedBox(height: 24.h),
             Text(
-              "Congratulations!",
+              AppStrings.congratulations,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: AppColors.dark,
@@ -44,7 +45,7 @@ class BookingSuccessDialog extends StatelessWidget {
             ),
             SizedBox(height: 12.h),
             Text(
-              "Your appointment with Dr. David Patel is confirmed for June 30, 2023, at 10:00 AM.",
+              AppStrings.bookingConfirmedMessage,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: AppColors.grey500,
@@ -53,7 +54,7 @@ class BookingSuccessDialog extends StatelessWidget {
             ),
             SizedBox(height: 32.h),
             PrimaryButton(
-              title: "Done",
+              title: AppStrings.done,
               onPress: () {
                 context.go(AppRoutes.patientHome); // Go to home
               },
@@ -64,8 +65,11 @@ class BookingSuccessDialog extends StatelessWidget {
                 context.pop(); // Close dialog to edit
               },
               child: Text(
-                "Edit your appointment",
-                style: TextStyle(color: AppColors.grey500, fontSize: 14.sp),
+                AppStrings.editAppointment,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.grey500,
+                  fontSize: 14.sp,
+                ),
               ),
             ),
           ],

@@ -29,7 +29,7 @@ class AppStrings {
   static const subTitleCreateAccount = "We are here to help you!";
 
   static const or = "or";
-  static const selectRole="Patient or Doctor";
+  static const selectRole = "Patient or Doctor";
   static const verifyCode = "Verify Code";
   static const supTitleVerifyCode =
       "Enter the the code \nwe just sent you on your registered Email";
@@ -63,4 +63,24 @@ class AppStrings {
   static const saveFillProfile = 'Save';
 
   static const String dateOfBirthError = "You must be at least 18 years old.";
+
+  // My Bookings & Appointment
+  static const myBookings = "My Bookings";
+  static const noBookingsFound = "No bookings found";
+  static const bookAppointment = "Book Appointment";
+  static const selectDate = "Select Date";
+  static const selectHour = "Select Hour";
+  static const confirm = "Confirm";
+  static const booking = "Booking...";
+  static const doctorDetails = "Doctor Details";
+  static const aboutMe = "About me";
+  static const workingTime = "Working Time";
+  static const reviews = "Reviews";
+  static const seeAll = "See All";
+  static const workingHours = "Monday - Friday, 08:00 AM - 18:00 PM";
+  static const congratulations = "Congratulations!";
+  static const bookingConfirmedMessage =
+      "Your appointment is confirmed successfully.";
+  static const done = "Done";
+  static const editAppointment = "Edit your appointment";
 }

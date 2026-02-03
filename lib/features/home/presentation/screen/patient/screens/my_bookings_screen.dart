@@ -6,6 +6,7 @@ import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/my_bookings_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/booking_card.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/booking_tab_filter.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
 
 class MyBookingsScreen extends StatelessWidget {
   const MyBookingsScreen({super.key});
@@ -18,9 +19,8 @@ class MyBookingsScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text(
-            "My Bookings",
-            style: TextStyle(
-              fontSize: 20.sp,
+            AppStrings.myBookings,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: AppColors.midnightBlue,
             ),
@@ -49,11 +49,12 @@ class MyBookingsScreen extends StatelessWidget {
                   child: state.filteredBookings.isEmpty
                       ? Center(
                           child: Text(
-                            "No bookings found",
-                            style: TextStyle(
-                              color: AppColors.grey500,
-                              fontSize: 16.sp,
-                            ),
+                            AppStrings.noBookingsFound,
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  color: AppColors.grey500,
+                                  fontSize: 16.sp,
+                                ),
                           ),
                         )
                       : ListView.separated(

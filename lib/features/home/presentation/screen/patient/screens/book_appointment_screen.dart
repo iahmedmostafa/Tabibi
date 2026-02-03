@@ -4,10 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:tabibi/core/widgets/primary_button.dart';
-import 'package:tabibi/features/appointment/presentation/cubit/appointment_cubit.dart';
-import 'package:tabibi/features/appointment/presentation/widgets/booking_success_dialog.dart';
-import 'package:tabibi/features/appointment/presentation/widgets/custom_calendar.dart';
-import 'package:tabibi/features/appointment/presentation/widgets/time_slot_grid.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/cubit/appointment_cubit.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/widgets/booking_success_dialog.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/widgets/custom_calendar.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/widgets/time_slot_grid.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
 
 class BookAppointmentScreen extends StatelessWidget {
   const BookAppointmentScreen({super.key});
@@ -16,7 +17,7 @@ class BookAppointmentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Book Appointment"),
+        title: const Text(AppStrings.bookAppointment),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -43,7 +44,7 @@ class BookAppointmentScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Select Date",
+                  AppStrings.selectDate,
                   style: Theme.of(
                     context,
                   ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
@@ -56,7 +57,7 @@ class BookAppointmentScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 24.h),
                 Text(
-                  "Select Hour",
+                  AppStrings.selectHour,
                   style: Theme.of(
                     context,
                   ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
@@ -70,8 +71,8 @@ class BookAppointmentScreen extends StatelessWidget {
                 SizedBox(height: 32.h),
                 PrimaryButton(
                   title: state is AppointmentBookingLoading
-                      ? "Booking..."
-                      : "Confirm",
+                      ? AppStrings.booking
+                      : AppStrings.confirm,
                   onPress: state is AppointmentReadyToBook
                       ? () {
                           context.read<AppointmentCubit>().bookAppointment();

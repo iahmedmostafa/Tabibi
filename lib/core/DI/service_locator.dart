@@ -44,7 +44,7 @@ import 'package:tabibi/features/home/domain/usecases/update_patient_profile_use_
 import 'package:tabibi/features/home/presentation/cubit/doctor_profile_cubit.dart';
 import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_cubit.dart';
-import 'package:tabibi/features/appointment/presentation/cubit/appointment_cubit.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/cubit/appointment_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/my_bookings_cubit.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';

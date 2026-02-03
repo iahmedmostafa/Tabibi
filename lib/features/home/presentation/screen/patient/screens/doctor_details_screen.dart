@@ -4,9 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
-import 'package:tabibi/features/appointment/presentation/widgets/doctor_details_header.dart';
-import 'package:tabibi/features/appointment/presentation/widgets/doctor_stats.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/widgets/doctor_details_header.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/widgets/doctor_stats.dart';
 import 'package:tabibi/features/home/data/models/doctor_model.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
 
 class DoctorDetailsScreen extends StatelessWidget {
   final DoctorModel doctor;
@@ -17,7 +18,7 @@ class DoctorDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Doctor Details"),
+        title: const Text(AppStrings.doctorDetails),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -47,7 +48,7 @@ class DoctorDetailsScreen extends StatelessWidget {
             ),
             SizedBox(height: 24.h),
             Text(
-              "About me",
+              AppStrings.aboutMe,
               style: Theme.of(
                 context,
               ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
@@ -62,14 +63,14 @@ class DoctorDetailsScreen extends StatelessWidget {
             ),
             SizedBox(height: 24.h),
             Text(
-              "Working Time",
+              AppStrings.workingTime,
               style: Theme.of(
                 context,
               ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.h),
             Text(
-              "Monday - Friday, 08:00 AM - 18:00 PM",
+              AppStrings.workingHours,
               style: Theme.of(
                 context,
               ).textTheme.bodyMedium?.copyWith(color: AppColors.grey500),
@@ -79,18 +80,21 @@ class DoctorDetailsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Reviews",
+                  AppStrings.reviews,
                   style: Theme.of(
                     context,
                   ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
-                TextButton(onPressed: () {}, child: const Text("See All")),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text(AppStrings.seeAll),
+                ),
               ],
             ),
-            _buildReviewItem(),
+            _buildReviewItem(context),
             SizedBox(height: 32.h),
             PrimaryButton(
-              title: "Book Appointment",
+              title: AppStrings.bookAppointment,
               onPress: () {
                 context.push(AppRoutes.bookAppointment, extra: doctor);
               },
@@ -101,7 +105,7 @@ class DoctorDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildReviewItem() {
+  Widget _buildReviewItem(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
@@ -124,9 +128,11 @@ class DoctorDetailsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Emily Anderson",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     Row(
                       children: [
@@ -143,9 +149,11 @@ class DoctorDetailsScreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: 12.h),
-          const Text(
+          Text(
             "Dr. Patel is a true professional who genuinely cares about his patients. I highly recommend Dr. Patel to anyone.",
-            style: TextStyle(color: AppColors.grey600),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.grey600),
           ),
         ],
       ),
