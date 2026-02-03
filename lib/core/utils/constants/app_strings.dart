@@ -83,4 +83,18 @@ class AppStrings {
       "Your appointment is confirmed successfully.";
   static const done = "Done";
   static const editAppointment = "Edit your appointment";
+
+  // Profile
+  static const profile = "Profile";
+  static const editProfile = "Edit Profile";
+  static const favorite = "Favorite";
+  static const notifications = "Notifications";
+  static const settings = "Settings";
+  static const helpAndSupport = "Help and Support";
+  static const termsAndConditions = "Terms and Conditions";
+  static const logOut = "Log Out";
+  static const logout = "Logout";
+  static const areYouSureLogout = "Are you sure you want to log out?";
+  static const cancel = "Cancel";
+  static const yesLogout = "Yes, Logout";
 }

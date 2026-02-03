@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/screens/profile_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/patient_home_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/my_bookings_screen.dart';
 
@@ -13,11 +14,11 @@ class BottomNavScreen extends StatefulWidget {
 class _BottomNavScreenState extends State<BottomNavScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const [
+  final List<Widget> _screens = [
     PatientHomeScreen(),
     Scaffold(body: Center(child: Text("Maps"))),
     MyBookingsScreen(),
-    Scaffold(body: Center(child: Text("Profile"))),
+    ProfileScreen(),
   ];
 
   @override
