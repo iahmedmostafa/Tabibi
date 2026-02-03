@@ -59,6 +59,15 @@ import '../../features/home/presentation/screen/patient/cubit/profile_cubit.dart
 import 'package:tabibi/features/authentication/domain/usecases/log_out_use_case.dart';
 import '../services/cache_helper.dart';
 
+import 'package:tabibi/features/home/data/repositories/favorites_repository_impl.dart';
+import 'package:tabibi/features/home/data/repositories/notifications_repository_impl.dart';
+import 'package:tabibi/features/home/domain/repositories/favorites_repository.dart';
+import 'package:tabibi/features/home/domain/repositories/notifications_repository.dart';
+import 'package:tabibi/features/home/domain/usecases/get_favorites_use_case.dart';
+import 'package:tabibi/features/home/domain/usecases/get_notifications_use_case.dart';
+import 'package:tabibi/features/home/presentation/cubit/favorites_cubit.dart';
+import 'package:tabibi/features/home/presentation/cubit/notifications_cubit.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -145,4 +154,19 @@ Future<void> init() async {
   sl.registerFactory(
     () => ProfileCubit(logOutUseCase: sl(), getPatientProfileUseCase: sl()),
   );
+  // Notifications & Favorites Repositories
+  sl.registerLazySingleton<NotificationsRepository>(
+    () => NotificationsRepositoryImpl(),
+  );
+  sl.registerLazySingleton<FavoritesRepository>(
+    () => FavoritesRepositoryImpl(),
+  );
+
+  // UseCases
+  sl.registerLazySingleton(() => GetNotificationsUseCase(sl()));
+  sl.registerLazySingleton(() => GetFavoritesUseCase(sl()));
+
+  // Cubits
+  sl.registerFactory(() => NotificationsCubit(sl()));
+  sl.registerFactory(() => FavoritesCubit(sl()));
 }

@@ -97,4 +97,22 @@ class AppStrings {
   static const areYouSureLogout = "Are you sure you want to log out?";
   static const cancel = "Cancel";
   static const yesLogout = "Yes, Logout";
+
+  // Notifications
+  static const notification = "Notification";
+  static const markAllAsRead = "Mark all as read";
+  static const today = "TODAY";
+  static const yesterday = "YESTERDAY";
+  static const appointmentSuccess = "Appointment Success";
+  static const appointmentCancelled = "Appointment Cancelled";
+  static const scheduleChanged = "Schedule Changed";
+  static const newTag = "New";
+
+  // Favorites
+  static const favorites = "Favorites";
+  static const doctors = "Doctors";
+  static const removeFromFavorites = "Remove from Favorites?";
+  static const areYouSureRemoveFavorite =
+      "Are you sure you want to remove this doctor from favorites?";
+  static const yesRemove = "Yes, Remove";
 }

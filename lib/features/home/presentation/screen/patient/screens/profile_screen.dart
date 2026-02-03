@@ -100,8 +100,11 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   ProfileMenuItem(
                     icon: CupertinoIcons.heart,
-                    text: AppStrings.favorite,
-                    onTap: () {},
+                    text: AppStrings
+                        .favorites, // Was AppStrings.favorite, adjusted to favorites
+                    onTap: () {
+                      context.pushNamed(AppRoutes.favorites);
+                    },
                   ),
                   Divider(
                     color: AppColors.grey100,
@@ -110,8 +113,10 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   ProfileMenuItem(
                     icon: CupertinoIcons.bell,
-                    text: AppStrings.notifications,
-                    onTap: () {},
+                    text: AppStrings.notification, // Was notifications
+                    onTap: () {
+                      context.pushNamed(AppRoutes.notifications);
+                    },
                   ),
                   Divider(
                     color: AppColors.grey100,
