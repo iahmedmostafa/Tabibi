@@ -8,6 +8,8 @@ enum Gender { male, female }
 
 enum DepartmentsStatus { initial, loading, success, failure }
 
-enum DoctorStatus { New, Pending, Approved, Rejected }  
+enum DoctorStatus { New, Pending, Approved, Rejected }
 
 enum DoctorsStatus { initial, loading, success, failure }
+
+enum BookingStatus { upcoming, completed, canceled }

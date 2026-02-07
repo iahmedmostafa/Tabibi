@@ -5,10 +5,16 @@ import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/home/data/models/doctor_model.dart';
 
-
 class DoctorCard extends StatelessWidget {
   final DoctorModel doctor;
-  const DoctorCard({required this.doctor});
+  final bool isFavorite;
+  final VoidCallback? onFavoriteTap;
+
+  const DoctorCard({
+    required this.doctor,
+    this.isFavorite = false,
+    this.onFavoriteTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +74,13 @@ class DoctorCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const Icon(
-                      Icons.favorite_border,
-                      color: AppColors.grey400,
-                      size: 20,
+                    InkWell(
+                      onTap: onFavoriteTap,
+                      child: Icon(
+                        isFavorite ? Icons.favorite : Icons.favorite_border,
+                        color: isFavorite ? AppColors.error : AppColors.grey400,
+                        size: 20,
+                      ),
                     ),
                   ],
                 ),

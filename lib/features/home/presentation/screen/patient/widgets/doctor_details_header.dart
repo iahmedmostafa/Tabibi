@@ -1,0 +1,79 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/features/home/data/models/doctor_model.dart';
+
+class DoctorDetailsHeader extends StatelessWidget {
+  final DoctorModel doctor;
+
+  const DoctorDetailsHeader({super.key, required this.doctor});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 100.w,
+          height: 100.h,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12.r),
+            color: AppColors.grey100,
+            image: doctor.avatarUrl != null && doctor.avatarUrl!.isNotEmpty
+                ? DecorationImage(
+                    image: NetworkImage(doctor.avatarUrl!),
+                    fit: BoxFit.cover,
+                  )
+                : const DecorationImage(
+                    image: AssetImage(
+                      'assets/images/doctor_placeholder.png',
+                    ), // Fallback
+                    fit: BoxFit.cover,
+                  ),
+          ),
+        ),
+        SizedBox(width: 16.w),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                doctor.name,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.sp,
+                ),
+              ),
+              SizedBox(height: 8.h),
+              Text(
+                doctor.departmentName,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: AppColors.grey500),
+              ),
+              SizedBox(height: 8.h),
+              Row(
+                children: [
+                  Icon(
+                    Icons.location_on,
+                    size: 16.sp,
+                    color: AppColors.grey500,
+                  ),
+                  SizedBox(width: 4.w),
+                  Expanded(
+                    child: Text(
+                      doctor.address ?? "New York, USA", // Fallback address
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.copyWith(color: AppColors.grey500),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}

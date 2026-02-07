@@ -44,6 +44,8 @@ import 'package:tabibi/features/home/domain/usecases/update_patient_profile_use_
 import 'package:tabibi/features/home/presentation/cubit/doctor_profile_cubit.dart';
 import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_cubit.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/cubit/appointment_cubit.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/cubit/my_bookings_cubit.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
 import '../../features/home/data/datasources/departments_data_source.dart'
@@ -53,7 +55,18 @@ import '../../features/home/data/repositories/department_repo.dart'
 import '../../features/home/presentation/screen/patient/cubit/departments_cubit.dart'
     as home_cubit;
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
+import '../../features/home/presentation/screen/patient/cubit/profile_cubit.dart';
+import 'package:tabibi/features/authentication/domain/usecases/log_out_use_case.dart';
 import '../services/cache_helper.dart';
+
+import 'package:tabibi/features/home/data/repositories/favorites_repository_impl.dart';
+import 'package:tabibi/features/home/data/repositories/notifications_repository_impl.dart';
+import 'package:tabibi/features/home/domain/repositories/favorites_repository.dart';
+import 'package:tabibi/features/home/domain/repositories/notifications_repository.dart';
+import 'package:tabibi/features/home/domain/usecases/get_favorites_use_case.dart';
+import 'package:tabibi/features/home/domain/usecases/get_notifications_use_case.dart';
+import 'package:tabibi/features/home/presentation/cubit/favorites_cubit.dart';
+import 'package:tabibi/features/home/presentation/cubit/notifications_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -113,6 +126,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => UpdateDoctorProfileUseCase(sl()));
   sl.registerLazySingleton(() => DoctorStatusUseCase(sl()));
 
+  sl.registerLazySingleton(() => LogOutUseCase(sl()));
+
   /// CUBIT
   sl.registerFactory(() => SignUpCubit(sl()));
   sl.registerFactory(() => ForgotPasswordCubit(sl()));
@@ -132,4 +147,26 @@ Future<void> init() async {
   sl.registerFactory(() => DoctorFillProfileFormCubit());
   sl.registerFactory(() => ClinicLocationCubit(sl<LocationServices>()));
   sl.registerFactory(() => DoctorsCubit(sl()));
+  sl.registerFactory(() => AppointmentCubit());
+  sl.registerFactory(() => MyBookingsCubit());
+
+  // Profile (New)
+  sl.registerFactory(
+    () => ProfileCubit(logOutUseCase: sl(), getPatientProfileUseCase: sl()),
+  );
+  // Notifications & Favorites Repositories
+  sl.registerLazySingleton<NotificationsRepository>(
+    () => NotificationsRepositoryImpl(),
+  );
+  sl.registerLazySingleton<FavoritesRepository>(
+    () => FavoritesRepositoryImpl(),
+  );
+
+  // UseCases
+  sl.registerLazySingleton(() => GetNotificationsUseCase(sl()));
+  sl.registerLazySingleton(() => GetFavoritesUseCase(sl()));
+
+  // Cubits
+  sl.registerFactory(() => NotificationsCubit(sl()));
+  sl.registerFactory(() => FavoritesCubit(sl()));
 }

@@ -16,36 +16,48 @@ abstract class Failure extends Equatable {
 
 class ServerFailure extends Failure {
   const ServerFailure(super.message);
-  
 }
 
 class DatabaseFailure extends Failure {
   const DatabaseFailure(super.message);
 }
+
+class CacheFailure extends Failure {
+  const CacheFailure(super.message);
+}
+
 void handleDioException(Object e) {
   if (e is DioException) {
     switch (e.type) {
       case DioExceptionType.connectionTimeout:
-        throw ServerException(errorMessageModel: ErrorMessageModel(
-          statusCode: e.response?.statusCode ?? 408,
-          statusMessage: "Connection Timeout",
-        ));
+        throw ServerException(
+          errorMessageModel: ErrorMessageModel(
+            statusCode: e.response?.statusCode ?? 408,
+            statusMessage: "Connection Timeout",
+          ),
+        );
       case DioExceptionType.sendTimeout:
-        throw ServerException(errorMessageModel: ErrorMessageModel(
-          statusCode: e.response?.statusCode ?? 408,
-          statusMessage: "Send Timeout",
-        ));
+        throw ServerException(
+          errorMessageModel: ErrorMessageModel(
+            statusCode: e.response?.statusCode ?? 408,
+            statusMessage: "Send Timeout",
+          ),
+        );
       case DioExceptionType.receiveTimeout:
-        throw ServerException(errorMessageModel: ErrorMessageModel(
-          statusCode: e.response?.statusCode ?? 408,
-          statusMessage: "Receive Timeout",
-        ));
+        throw ServerException(
+          errorMessageModel: ErrorMessageModel(
+            statusCode: e.response?.statusCode ?? 408,
+            statusMessage: "Receive Timeout",
+          ),
+        );
       case DioExceptionType.badResponse:
         if (e.response != null && e.response?.data != null) {
           final dynamic data = e.response?.data;
           // If the response data is already a Map, use it directly
           if (data is Map<String, dynamic>) {
-            throw ServerException(errorMessageModel: ErrorMessageModel.fromJson(data));
+            throw ServerException(
+              errorMessageModel: ErrorMessageModel.fromJson(data),
+            );
           }
 
           // If it's a String, try to decode JSON, otherwise use raw string
@@ -53,18 +65,24 @@ void handleDioException(Object e) {
             try {
               final decoded = jsonDecode(data);
               if (decoded is Map<String, dynamic>) {
-                throw ServerException(errorMessageModel: ErrorMessageModel.fromJson(decoded));
+                throw ServerException(
+                  errorMessageModel: ErrorMessageModel.fromJson(decoded),
+                );
               } else {
-                throw ServerException(errorMessageModel: ErrorMessageModel(
-                  statusCode: e.response?.statusCode ?? 500,
-                  statusMessage: data,
-                ));
+                throw ServerException(
+                  errorMessageModel: ErrorMessageModel(
+                    statusCode: e.response?.statusCode ?? 500,
+                    statusMessage: data,
+                  ),
+                );
               }
             } catch (_) {
-              throw ServerException(errorMessageModel: ErrorMessageModel(
-                statusCode: e.response?.statusCode ?? 500,
-                statusMessage: data,
-              ));
+              throw ServerException(
+                errorMessageModel: ErrorMessageModel(
+                  statusCode: e.response?.statusCode ?? 500,
+                  statusMessage: data,
+                ),
+              );
             }
           }
 
@@ -72,47 +90,64 @@ void handleDioException(Object e) {
           if (data is Map) {
             try {
               final converted = Map<String, dynamic>.from(data);
-              throw ServerException(errorMessageModel: ErrorMessageModel.fromJson(converted));
+              throw ServerException(
+                errorMessageModel: ErrorMessageModel.fromJson(converted),
+              );
             } catch (_) {
-              throw ServerException(errorMessageModel: ErrorMessageModel(
-                statusCode: e.response?.statusCode ?? 500,
-                statusMessage: data.toString(),
-              ));
+              throw ServerException(
+                errorMessageModel: ErrorMessageModel(
+                  statusCode: e.response?.statusCode ?? 500,
+                  statusMessage: data.toString(),
+                ),
+              );
             }
           }
 
           // Fallback for other shapes (List, etc.) - stringify
-          throw ServerException(errorMessageModel: ErrorMessageModel(
-            statusCode: e.response?.statusCode ?? 500,
-            statusMessage: data.toString(),
-          ));
+          throw ServerException(
+            errorMessageModel: ErrorMessageModel(
+              statusCode: e.response?.statusCode ?? 500,
+              statusMessage: data.toString(),
+            ),
+          );
         } else {
-          throw ServerException(errorMessageModel: ErrorMessageModel(
-            statusCode: e.response?.statusCode ?? 500,
-            statusMessage: "Received invalid status code: ${e.response?.statusCode}",
-          ));
+          throw ServerException(
+            errorMessageModel: ErrorMessageModel(
+              statusCode: e.response?.statusCode ?? 500,
+              statusMessage:
+                  "Received invalid status code: ${e.response?.statusCode}",
+            ),
+          );
         }
       case DioExceptionType.cancel:
-        throw ServerException(errorMessageModel: ErrorMessageModel(
-          statusCode: e.response?.statusCode ?? 499,
-          statusMessage: "Request to API server was cancelled",
-        ));
+        throw ServerException(
+          errorMessageModel: ErrorMessageModel(
+            statusCode: e.response?.statusCode ?? 499,
+            statusMessage: "Request to API server was cancelled",
+          ),
+        );
       case DioExceptionType.connectionError:
-        throw ServerException(errorMessageModel: ErrorMessageModel(
-          statusCode: e.response?.statusCode ?? 503,
-          statusMessage: "Connection to API server failed due to internet connection",
-        ));
+        throw ServerException(
+          errorMessageModel: ErrorMessageModel(
+            statusCode: e.response?.statusCode ?? 503,
+            statusMessage:
+                "Connection to API server failed due to internet connection",
+          ),
+        );
       case DioExceptionType.unknown:
-        throw ServerException(errorMessageModel: ErrorMessageModel(
-          statusCode: e.response?.statusCode ?? 520,
-          statusMessage: "Unknown error occurred",
-        ));
+        throw ServerException(
+          errorMessageModel: ErrorMessageModel(
+            statusCode: e.response?.statusCode ?? 520,
+            statusMessage: "Unknown error occurred",
+          ),
+        );
       case DioExceptionType.badCertificate:
-        throw ServerException(errorMessageModel: ErrorMessageModel(
-          statusCode: e.response?.statusCode ?? 526,
-          statusMessage: "Bad certificate",
-        ));
-    
+        throw ServerException(
+          errorMessageModel: ErrorMessageModel(
+            statusCode: e.response?.statusCode ?? 526,
+            statusMessage: "Bad certificate",
+          ),
+        );
     }
   }
 }
