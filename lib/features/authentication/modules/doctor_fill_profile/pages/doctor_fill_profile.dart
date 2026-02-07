@@ -10,8 +10,9 @@ import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/pages/clinic_location_screen.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/widgets/doctor_fill_profile_body.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_cubit.dart';
-import 'package:tabibi/features/home/data/models/UpdateDoctorProfileParams.dart';
-import 'package:tabibi/features/home/presentation/cubit/doctor_profile_cubit.dart';
+import 'package:tabibi/features/doctor_profile/data/models/update_doctor_profile_params.dart';
+import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_cubit.dart';
+
 
 class DoctorFillProfile extends StatefulWidget {
   const DoctorFillProfile({super.key});

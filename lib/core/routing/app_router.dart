@@ -26,24 +26,22 @@ import 'package:tabibi/features/authentication/modules/signup/presentation/pages
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/cubit/verify_code_cubit.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/cubit/verify_code_state.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/pages/verify_code.dart';
-import 'package:tabibi/features/home/presentation/cubit/doctor_profile_cubit.dart';
-import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.dart';
+import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
+import 'package:tabibi/features/booking/presentation/screens/book_appointment_screen.dart';
+import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_cubit.dart';
+import 'package:tabibi/features/favorite/presentation/screens/favorites_screen.dart';
+import 'package:tabibi/features/home/data/models/doctor_model.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/all_doctors_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/bottom_nav_screen.dart';
-import 'package:tabibi/features/home/presentation/screen/patient/screens/doctors_map_screen.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/screens/doctor_details_screen.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/screens/notifications_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/patient_home_screen.dart';
 import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart';
+import 'package:tabibi/features/patient_profile/presentation/controller/patient_profile_cubit.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
-import 'package:tabibi/features/home/presentation/screen/patient/cubit/appointment_cubit.dart';
-import 'package:tabibi/features/home/presentation/screen/patient/screens/book_appointment_screen.dart';
-import 'package:tabibi/features/home/presentation/screen/patient/screens/favorites_screen.dart';
-import 'package:tabibi/features/home/presentation/screen/patient/screens/notifications_screen.dart';
-
-import 'package:tabibi/features/home/presentation/screen/patient/screens/doctor_details_screen.dart';
-import 'package:tabibi/features/home/data/models/doctor_model.dart';
 import '../services/shared_prefs_service.dart';
 
 final GoRouter router = GoRouter(

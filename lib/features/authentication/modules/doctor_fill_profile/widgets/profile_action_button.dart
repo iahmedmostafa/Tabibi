@@ -8,8 +8,9 @@ import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/utils/helper/helper_functions.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
 import 'package:tabibi/core/widgets/success_dialog.dart';
-import 'package:tabibi/features/home/presentation/cubit/doctor_profile_cubit.dart';
-import 'package:tabibi/features/home/presentation/cubit/doctor_profile_state.dart';
+import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_cubit.dart';
+import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_state.dart';
+
 
 class ProfileActionButton extends StatelessWidget {
   final int currentPage;

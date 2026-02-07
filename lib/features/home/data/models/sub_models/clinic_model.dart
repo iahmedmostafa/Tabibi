@@ -1,4 +1,4 @@
-import 'package:tabibi/features/home/domain/entities/doctor_profile.dart';
+import 'package:tabibi/features/doctor_profile/domain/entities/doctor_profile.dart';
 
 class ClinicModel extends Clinic {
   const ClinicModel({

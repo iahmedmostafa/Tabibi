@@ -18,7 +18,7 @@ import 'package:tabibi/features/authentication/modules/login/presentation/busine
 import 'package:tabibi/features/authentication/modules/login/presentation/widgets/bottom_login_section.dart';
 import 'package:tabibi/features/authentication/modules/widgets/auth_prompt_text.dart';
 import 'package:tabibi/features/authentication/modules/widgets/top_section.dart';
-import 'package:tabibi/features/home/domain/usecases/doctor_status_use_case.dart';
+import 'package:tabibi/features/doctor_profile/domain/usecases/doctor_status_use_case.dart';
 
 import '../../../../../../core/utils/validators/validation.dart';
 
@@ -115,8 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
               VerticalSpace(height: AppHeight.h23),
 
               BottomLoginSection(
-                onGooglePressed: () {
-                },
+                onGooglePressed: () {},
                 onFacebookPressed: () {},
               ),
               VerticalSpace(height: AppHeight.h23),

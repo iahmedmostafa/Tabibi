@@ -21,9 +21,9 @@ import 'package:tabibi/features/authentication/modules/fill_profile/presentation
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/date_picker_field.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/image_upload_section.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/name_input_field.dart';
-import 'package:tabibi/features/home/data/models/update_patient_profile_params.dart';
-import 'package:tabibi/features/home/presentation/cubit/patient_profile_cubit.dart';
-import 'package:tabibi/features/home/presentation/cubit/patient_profile_state.dart';
+import 'package:tabibi/features/patient_profile/data/models/update_patient_profile_params.dart';
+import 'package:tabibi/features/patient_profile/presentation/controller/patient_profile_cubit.dart';
+import 'package:tabibi/features/patient_profile/presentation/controller/patient_profile_state.dart';
 
 class FillProfile extends StatefulWidget {
   const FillProfile({super.key});
