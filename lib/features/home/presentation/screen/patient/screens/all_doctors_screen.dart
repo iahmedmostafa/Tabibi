@@ -123,7 +123,7 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
                     scrollDirection: Axis.horizontal,
                     itemCount: categories.length,
                     separatorBuilder: (context, index) =>
-                        const HorizentalSpace(width: 10),
+                    const HorizentalSpace(width: 10),
                     itemBuilder: (context, index) {
                       final category = categories[index];
                       final categoryName = category?.name ?? "All";

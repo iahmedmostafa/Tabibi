@@ -14,7 +14,7 @@ class MyBookingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<MyBookingsCubit>()..getBookings(),
+        create: (context) => sl<MyBookingsCubit>(),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -40,9 +40,7 @@ class MyBookingsScreen extends StatelessWidget {
                 SizedBox(height: 16.h),
                 BookingTabFilter(
                   selectedTab: state.selectedTab,
-                  onTabSelected: (status) {
-                    context.read<MyBookingsCubit>().filterBookings(status);
-                  },
+                  onTabSelected: (status) {},
                 ),
                 SizedBox(height: 24.h),
                 Expanded(

@@ -21,6 +21,7 @@ class AppRoutes {
   static const bottomNavScreen = '/bottomNavScreen';
   static const doctorDetails = '/doctor_details';
   static const bookAppointment = '/book_appointment';
+  static const myBookings = '/my_bookings';
   static const bookingSuccess = '/booking_success';
   static const notifications = '/notifications';
   static const favorites = '/favorites';

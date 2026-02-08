@@ -6,11 +6,13 @@ import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
 import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
 import 'package:tabibi/features/booking/presentation/widgets/booking_success_dialog.dart';
-import 'package:tabibi/features/booking/presentation/widgets/custom_calendar.dart';
+import 'package:tabibi/features/booking/presentation/widgets/show_data_time.dart';
 import 'package:tabibi/features/booking/presentation/widgets/time_slot_grid.dart';
+import 'package:tabibi/features/doctor_details/data/models/doctor_details_model.dart';
 
 class BookAppointmentScreen extends StatelessWidget {
-  const BookAppointmentScreen({super.key});
+  final DoctorDetailsModel doctor;
+  const BookAppointmentScreen({super.key, required this.doctor});
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +51,7 @@ class BookAppointmentScreen extends StatelessWidget {
                   ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 16.h),
-                CustomCalendar(
-                  onDateSelected: (date) {
-                    context.read<AppointmentCubit>().selectDate(date);
-                  },
-                ),
+                ShowDateTime(doctorId: doctor.id, schedule: doctor.schedule),
                 SizedBox(height: 24.h),
                 Text(
                   AppStrings.selectHour,

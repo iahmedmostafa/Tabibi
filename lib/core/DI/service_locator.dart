@@ -27,8 +27,17 @@ import 'package:tabibi/features/authentication/modules/forgot_password/presentat
 import 'package:tabibi/features/authentication/modules/login/presentation/business_logic/log_in_cubit.dart';
 import 'package:tabibi/features/authentication/modules/signup/presentation/cubit/sign_up_cubit.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/cubit/verify_code_cubit.dart';
+import 'package:tabibi/features/booking/data/datasources/appointment_remote_data_source.dart';
+import 'package:tabibi/features/booking/data/repositories/appointment_repository_impl.dart';
+import 'package:tabibi/features/booking/domain/repositories/appointment_repository.dart';
+import 'package:tabibi/features/booking/domain/usecases/get_available_slots_use_case.dart';
 import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
 import 'package:tabibi/features/booking/presentation/controller/my_bookings_cubit.dart';
+import 'package:tabibi/features/doctor_details/data/datasources/doctor_details_remote_data_source.dart';
+import 'package:tabibi/features/doctor_details/data/repositories/doctor_details_repository_impl.dart';
+import 'package:tabibi/features/doctor_details/domain/repositories/doctor_details_repository.dart';
+import 'package:tabibi/features/doctor_details/domain/usecases/get_doctor_details_use_case.dart';
+import 'package:tabibi/features/doctor_details/presentation/controller/doctor_details_cubit.dart';
 import 'package:tabibi/features/doctor_profile/data/datasources/base_doctor_profile_data_source.dart';
 import 'package:tabibi/features/doctor_profile/data/datasources/doctor_profile_data_source.dart';
 import 'package:tabibi/features/doctor_profile/data/repositories/doctor_profile_repository.dart';
@@ -100,6 +109,12 @@ Future<void> init() async {
   sl.registerLazySingleton<DoctorMapRemoteDataSource>(
     () => DoctorMapRemoteDataSourceImpl(sl<Dio>()),
   );
+  sl.registerLazySingleton<DoctorDetailsRemoteDataSource>(
+    () => DoctorDetailsRemoteDataSourceImpl(sl()),
+  );
+  sl.registerLazySingleton<AppointmentRemoteDataSource>(
+    () => AppointmentRemoteDataSourceImpl(sl()),
+  );
 
   /// REPOSITORY
   sl.registerLazySingleton<BaseAuthenticationRepository>(
@@ -120,6 +135,12 @@ Future<void> init() async {
   sl.registerLazySingleton<DoctorMapRepository>(
     () => DoctorMapRepositoryImpl(sl()),
   );
+  sl.registerLazySingleton<DoctorDetailsRepository>(
+    () => DoctorDetailsRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<AppointmentRepository>(
+    () => AppointmentRepositoryImpl(sl()),
+  );
 
   /// USE CASE
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
@@ -133,6 +154,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetDoctorProfileUseCase(sl()));
   sl.registerLazySingleton(() => UpdateDoctorProfileUseCase(sl()));
   sl.registerLazySingleton(() => DoctorStatusUseCase(sl()));
+  sl.registerLazySingleton(() => GetDoctorDetailsUseCase(sl()));
+  sl.registerLazySingleton(() => GetAvailableSlotsUseCase(sl()));
 
   sl.registerLazySingleton(() => LogOutUseCase(sl()));
 
@@ -155,9 +178,10 @@ Future<void> init() async {
   sl.registerFactory(() => DoctorFillProfileFormCubit());
   sl.registerFactory(() => ClinicLocationCubit(sl<LocationServices>()));
   sl.registerFactory(() => DoctorsCubit(sl()));
-  sl.registerFactory(() => AppointmentCubit());
+  sl.registerFactory(() => AppointmentCubit(sl()));
   sl.registerFactory(() => MyBookingsCubit());
   sl.registerFactory(() => DoctorMapCubit(sl<DoctorMapRepository>()));
+  sl.registerFactory(() => DoctorDetailsCubit(sl()));
 
   // Profile (New)
   sl.registerFactory(

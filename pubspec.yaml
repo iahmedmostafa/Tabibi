@@ -8,6 +8,7 @@ environment:
   sdk: ^3.9.2
 
 dependencies:
+  animated_dashed_circle: ^0.0.5
   awesome_snackbar_content: ^0.1.8
   bottom_picker: ^4.1.1
   cached_network_image: ^3.4.1
@@ -16,6 +17,7 @@ dependencies:
   dartz: ^0.10.1
   dio: ^5.9.0
   dots_indicator: ^4.0.1
+  easy_date_timeline: ^2.0.9
   equatable: ^2.0.7
   firebase_core: ^4.4.0
   flutter:

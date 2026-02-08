@@ -56,7 +56,7 @@ class BookingSuccessDialog extends StatelessWidget {
             PrimaryButton(
               title: AppStrings.done,
               onPress: () {
-                context.go(AppRoutes.patientHome); // Go to home
+                context.go(AppRoutes.bottomNavScreen); // Go to home
               },
             ),
             SizedBox(height: 12.h),

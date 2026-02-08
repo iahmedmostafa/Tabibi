@@ -35,6 +35,22 @@ class AppointmentBookingLoading extends AppointmentState {}
 
 class AppointmentBookingSuccess extends AppointmentState {}
 
+class AppointmentSlotsLoading extends AppointmentState {}
+
+class AppointmentSlotsSuccess extends AppointmentState {
+  final List<AvailableSlot> slots;
+  const AppointmentSlotsSuccess(this.slots);
+  @override
+  List<Object> get props => [slots];
+}
+
+class AppointmentSlotsFailure extends AppointmentState {
+  final String message;
+  const AppointmentSlotsFailure(this.message);
+  @override
+  List<Object> get props => [message];
+}
+
 class AppointmentFailure extends AppointmentState {
   final String message;
   const AppointmentFailure(this.message);

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
-import 'package:tabibi/features/home/data/models/doctor_model.dart';
+import 'package:tabibi/features/doctor_details/domain/entities/doctor_details_entity.dart';
 
 class DoctorDetailsHeader extends StatelessWidget {
-  final DoctorModel doctor;
+  final DoctorDetails doctor;
 
   const DoctorDetailsHeader({super.key, required this.doctor});
 
@@ -45,7 +45,7 @@ class DoctorDetailsHeader extends StatelessWidget {
               ),
               SizedBox(height: 8.h),
               Text(
-                doctor.departmentName,
+                doctor.department,
                 style: Theme.of(
                   context,
                 ).textTheme.bodyMedium?.copyWith(color: AppColors.grey500),
@@ -61,7 +61,7 @@ class DoctorDetailsHeader extends StatelessWidget {
                   SizedBox(width: 4.w),
                   Expanded(
                     child: Text(
-                      doctor.address ?? "New York, USA", // Fallback address
+                      doctor.address,
                       style: Theme.of(
                         context,
                       ).textTheme.bodySmall?.copyWith(color: AppColors.grey500),

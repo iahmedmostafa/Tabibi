@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/style/spacing/horizental_space.dart';
@@ -11,6 +12,7 @@ class DoctorCard extends StatelessWidget {
   final VoidCallback? onFavoriteTap;
 
   const DoctorCard({
+    super.key,
     required this.doctor,
     this.isFavorite = false,
     this.onFavoriteTap,
@@ -43,7 +45,7 @@ class DoctorCard extends StatelessWidget {
               color: AppColors.grey100,
               image: doctor.avatarUrl != null
                   ? DecorationImage(
-                      image: NetworkImage(doctor.avatarUrl!),
+                      image: CachedNetworkImageProvider(doctor.avatarUrl!),
                       fit: BoxFit.cover,
                     )
                   : null,
@@ -52,7 +54,7 @@ class DoctorCard extends StatelessWidget {
                 ? const Icon(Icons.person, color: AppColors.grey400, size: 40)
                 : null,
           ),
-          HorizentalSpace(width: 16),
+          const HorizentalSpace(width: 16),
           // Info
           Expanded(
             child: Column(
@@ -108,7 +110,7 @@ class DoctorCard extends StatelessWidget {
                       size: 14.sp,
                       color: AppColors.grey500,
                     ),
-                    HorizentalSpace(width: 4),
+                    const HorizentalSpace(width: 4),
                     Expanded(
                       child: Text(
                         doctor.address ?? "New York, USA", // Mock default
@@ -127,7 +129,7 @@ class DoctorCard extends StatelessWidget {
                 Row(
                   children: [
                     const Icon(Icons.star, color: AppColors.warning, size: 16),
-                    HorizentalSpace(width: 4),
+                    const HorizentalSpace(width: 4),
                     Text(
                       "5.0", // Mock rating
                       style: TextStyle(
@@ -136,9 +138,9 @@ class DoctorCard extends StatelessWidget {
                         color: AppColors.midnightBlue,
                       ),
                     ),
-                    HorizentalSpace(width: 8),
+                    const HorizentalSpace(width: 8),
                     Container(height: 12, width: 1, color: AppColors.grey300),
-                    HorizentalSpace(width: 8),
+                    const HorizentalSpace(width: 8),
                     Text(
                       "${doctor.yearsOfExperience * 10 + 5} Reviews", // Mock reviews
                       style: TextStyle(

@@ -28,6 +28,8 @@ import 'package:tabibi/features/authentication/modules/verify_code/presentation/
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/pages/verify_code.dart';
 import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
 import 'package:tabibi/features/booking/presentation/screens/book_appointment_screen.dart';
+import 'package:tabibi/features/booking/presentation/screens/my_bookings_screen.dart';
+import 'package:tabibi/features/doctor_details/data/models/doctor_details_model.dart';
 import 'package:tabibi/features/doctor_details/presentation/screens/doctor_details_screen.dart';
 import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_cubit.dart';
 import 'package:tabibi/features/doctors_map/presentation/screens/doctors_map_screen.dart';
@@ -245,11 +247,17 @@ final GoRouter router = GoRouter(
       path: AppRoutes.bookAppointment,
       name: AppRoutes.bookAppointment,
       builder: (context, state) {
+        final doctor = state.extra as DoctorDetailsModel;
         return BlocProvider(
           create: (context) => sl<AppointmentCubit>(),
-          child: const BookAppointmentScreen(),
+          child: BookAppointmentScreen(doctor: doctor),
         );
       },
+    ),
+    GoRoute(
+      path: AppRoutes.myBookings,
+      name: AppRoutes.myBookings,
+      builder: (context, state) => const MyBookingsScreen(),
     ),
     GoRoute(
       path: AppRoutes.notifications,
