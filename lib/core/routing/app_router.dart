@@ -28,6 +28,7 @@ import 'package:tabibi/features/authentication/modules/verify_code/presentation/
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/pages/verify_code.dart';
 import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
 import 'package:tabibi/features/booking/presentation/screens/book_appointment_screen.dart';
+import 'package:tabibi/features/doctor_details/presentation/screens/doctor_details_screen.dart';
 import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_cubit.dart';
 import 'package:tabibi/features/doctors_map/presentation/screens/doctors_map_screen.dart';
 import 'package:tabibi/features/favorite/presentation/screens/favorites_screen.dart';
@@ -36,7 +37,6 @@ import 'package:tabibi/features/home/presentation/screen/doctor/home_screen.dart
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/all_doctors_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/bottom_nav_screen.dart';
-import 'package:tabibi/features/home/presentation/screen/patient/screens/doctor_details_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/notifications_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/patient_home_screen.dart';
 import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart';

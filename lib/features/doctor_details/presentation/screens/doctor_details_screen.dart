@@ -3,11 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
-import 'package:tabibi/core/widgets/primary_button.dart';
-import 'package:tabibi/features/home/presentation/screen/patient/widgets/doctor_details_header.dart';
-import 'package:tabibi/features/home/presentation/screen/patient/widgets/doctor_stats.dart';
-import 'package:tabibi/features/home/data/models/doctor_model.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:tabibi/core/widgets/primary_button.dart';
+import 'package:tabibi/features/doctor_details/presentation/widgets/doctor_details_header.dart';
+import 'package:tabibi/features/doctor_details/presentation/widgets/doctor_stats.dart';
+import 'package:tabibi/features/doctor_details/presentation/widgets/review_item.dart';
+import 'package:tabibi/features/home/data/models/doctor_model.dart';
 
 class DoctorDetailsScreen extends StatelessWidget {
   final DoctorModel doctor;
@@ -91,7 +92,7 @@ class DoctorDetailsScreen extends StatelessWidget {
                 ),
               ],
             ),
-            _buildReviewItem(context),
+            const ReviewItem(),
             SizedBox(height: 32.h),
             PrimaryButton(
               title: AppStrings.bookAppointment,
@@ -101,61 +102,6 @@ class DoctorDetailsScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildReviewItem(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16.r),
-      decoration: BoxDecoration(
-        color: AppColors.grey50,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                backgroundImage: const AssetImage(
-                  'assets/images/review_user.png',
-                ), // Placeholder
-                radius: 20.r,
-                backgroundColor: AppColors.grey200,
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Emily Anderson",
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 12.h),
-          Text(
-            "Dr. Patel is a true professional who genuinely cares about his patients. I highly recommend Dr. Patel to anyone.",
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: AppColors.grey600),
-          ),
-        ],
       ),
     );
   }

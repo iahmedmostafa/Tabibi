@@ -44,7 +44,7 @@ class DoctorStats extends StatelessWidget {
       children: [
         Container(
           padding: EdgeInsets.all(12.r),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: AppColors.grey100,
             shape: BoxShape.circle,
           ),
