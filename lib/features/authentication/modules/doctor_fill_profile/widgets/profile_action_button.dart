@@ -11,7 +11,6 @@ import 'package:tabibi/core/widgets/success_dialog.dart';
 import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_cubit.dart';
 import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_state.dart';
 
-
 class ProfileActionButton extends StatelessWidget {
   final int currentPage;
   final VoidCallback onNextPage;

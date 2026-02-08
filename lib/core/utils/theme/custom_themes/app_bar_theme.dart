@@ -10,13 +10,19 @@ class AppBarThemes {
     centerTitle: true,
     backgroundColor: Colors.transparent,
     iconTheme: IconThemeData(color: AppColors.dark, size: AppSizes.fontSizeLg),
-    actionsIconTheme: IconThemeData(color: AppColors.dark, size: AppSizes.fontSizeLg),
+    actionsIconTheme: IconThemeData(
+      color: AppColors.dark,
+      size: AppSizes.fontSizeLg,
+    ),
   );
   static const darkAppBarTheme = AppBarTheme(
     elevation: 0,
     centerTitle: true,
     backgroundColor: Colors.transparent,
     iconTheme: IconThemeData(color: AppColors.white, size: AppSizes.fontSizeLg),
-    actionsIconTheme: IconThemeData(color: AppColors.white, size: AppSizes.fontSizeLg),
+    actionsIconTheme: IconThemeData(
+      color: AppColors.white,
+      size: AppSizes.fontSizeLg,
+    ),
   );
 }

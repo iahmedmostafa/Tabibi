@@ -19,7 +19,7 @@ class OnboardingPage extends StatelessWidget {
           width: AppWidth.w390,
           child: Image.asset(image!, fit: BoxFit.fill),
         ),
-         VerticalSpace(height: AppHeight.h28_5),
+        VerticalSpace(height: AppHeight.h28_5),
         Center(
           child: Text(
             title!,
@@ -30,7 +30,7 @@ class OnboardingPage extends StatelessWidget {
             ),
           ),
         ),
-         VerticalSpace(height: AppHeight.h8),
+        VerticalSpace(height: AppHeight.h8),
         Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppPadding.p40),

@@ -37,6 +37,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
       context.goNamed(AppRoutes.login);
     }
   }
+
   @override
   Future<void> close() {
     pageController.dispose();

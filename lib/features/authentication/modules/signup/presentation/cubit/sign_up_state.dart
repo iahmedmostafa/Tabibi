@@ -27,5 +27,3 @@ class SignUpState extends Equatable {
   @override
   List<Object?> get props => [status, message, errorMessage];
 }
-
-

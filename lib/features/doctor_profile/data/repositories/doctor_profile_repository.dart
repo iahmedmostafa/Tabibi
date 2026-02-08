@@ -8,7 +8,6 @@ import 'package:tabibi/features/doctor_profile/data/models/doctor_profile_model.
 import 'package:tabibi/features/doctor_profile/data/models/update_doctor_profile_params.dart';
 import 'package:tabibi/features/doctor_profile/domain/repositories/base_doctor_profile_repository.dart';
 
-
 class DoctorProfileRepository implements BaseDoctorProfileRepository {
   final BaseDoctorProfileDataSource baseDoctorProfileDataSource;
 

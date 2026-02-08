@@ -16,9 +16,7 @@ class AppTextTheme {
     // Body
     bodyLarge: AppTextStyle.bodyXl.copyWith(color: AppColors.textPrimary),
     bodyMedium: AppTextStyle.bodySRegular.copyWith(color: AppColors.grey400),
-    bodySmall: AppTextStyle.bodySMedium.copyWith(
-      color: AppColors.primary,
-    ),
+    bodySmall: AppTextStyle.bodySMedium.copyWith(color: AppColors.primary),
 
     // Labels
     labelLarge: AppTextStyle.button.copyWith(color: AppColors.textWhite),

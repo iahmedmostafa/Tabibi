@@ -1,9 +1,12 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class CacheHelper {
-  static final storage =const FlutterSecureStorage();
+  static final storage = const FlutterSecureStorage();
 
-  static Future<void> saveData({required String key, required String value}) async {
+  static Future<void> saveData({
+    required String key,
+    required String value,
+  }) async {
     await storage.write(key: key, value: value);
   }
 

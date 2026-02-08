@@ -48,7 +48,7 @@ class DatePickerField extends StatelessWidget {
       bottomPickerTheme: isDark
           ? BottomPickerTheme.morningSalad
           : BottomPickerTheme.blue,
-      initialDateTime:  initialDateTime ?? DateTime(2000, 1, 1),
+      initialDateTime: initialDateTime ?? DateTime(2000, 1, 1),
       maxDateTime: maxDateTime ?? DateTime.now(),
       minDateTime: minDateTime ?? DateTime(1900),
       pickerTextStyle: Theme.of(context).textTheme.bodyLarge!,
@@ -83,9 +83,7 @@ class DatePickerField extends StatelessWidget {
             ),
             HorizentalSpace(width: AppWidth.w12),
             Text(
-              selectedDate != null
-                  ? selectedDate!
-                  : hintText,
+              selectedDate != null ? selectedDate! : hintText,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: selectedDate != null
                     ? (isDark ? AppColors.white : AppColors.black)

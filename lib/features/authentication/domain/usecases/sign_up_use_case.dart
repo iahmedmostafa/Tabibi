@@ -23,9 +23,9 @@ class SignUpParameters extends Equatable {
     required this.userName,
     required this.email,
     required this.password,
-    required this.role
+    required this.role,
   });
 
   @override
-  List<Object?> get props => [userName,  email, password,role];
+  List<Object?> get props => [userName, email, password, role];
 }

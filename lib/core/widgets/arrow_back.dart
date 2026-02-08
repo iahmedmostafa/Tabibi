@@ -5,10 +5,7 @@ import 'package:tabibi/core/utils/constants/app_images.dart';
 
 class ArrowBack extends StatelessWidget {
   final String nameRoute;
-   const ArrowBack({
-    super.key,
-    required this.nameRoute
-  });
+  const ArrowBack({super.key, required this.nameRoute});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +16,10 @@ class ArrowBack extends StatelessWidget {
           onPressed: () {
             context.go(nameRoute);
           },
-          icon: Image.asset(AppImages.back,color: isDark ? AppColors.white : AppColors.black,),
+          icon: Image.asset(
+            AppImages.back,
+            color: isDark ? AppColors.white : AppColors.black,
+          ),
         ),
       ],
     );

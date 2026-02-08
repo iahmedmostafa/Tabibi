@@ -13,5 +13,5 @@ class SignUp extends Equatable {
   });
 
   @override
-  List<Object?> get props => [firstName, lastName, email, password];// to make value comparison 
+  List<Object?> get props => [firstName, lastName, email, password]; // to make value comparison
 }

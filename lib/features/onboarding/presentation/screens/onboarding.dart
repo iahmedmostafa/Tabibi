@@ -59,19 +59,18 @@ class OnBoardingScreen extends StatelessWidget {
                     },
                   ),
                 ),
-                 VerticalSpace(height: AppHeight.h24),
+                VerticalSpace(height: AppHeight.h24),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppPadding.p24,
                   ),
                   child: PrimaryButton(
-                  
                     title: "Next",
                     onPress: () =>
                         cubit.nextPage(context, onboardingData.length),
                   ),
                 ),
-                 VerticalSpace(height: AppHeight.h28),
+                VerticalSpace(height: AppHeight.h28),
                 SmoothPageIndicator(
                   controller: cubit.pageController,
                   count: onboardingData.length,
@@ -85,7 +84,7 @@ class OnBoardingScreen extends StatelessWidget {
                     radius: 40,
                   ),
                 ),
-                 VerticalSpace(height: AppHeight.h18),
+                VerticalSpace(height: AppHeight.h18),
                 GestureDetector(
                   onTap: () => cubit.skip(context),
                   child: Text(
@@ -95,7 +94,7 @@ class OnBoardingScreen extends StatelessWidget {
                     ).textTheme.bodyMedium?.copyWith(color: AppColors.grey500),
                   ),
                 ),
-                 VerticalSpace(height: AppHeight.h20),
+                VerticalSpace(height: AppHeight.h20),
               ],
             ),
           );

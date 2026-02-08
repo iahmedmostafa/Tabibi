@@ -1,8 +1,6 @@
 import '../../domain/entities/log_in_entity.dart';
 
 class LogInResponseModel extends LogInEntity {
-
-
   const LogInResponseModel({
     required super.accessToken,
     required super.refreshToken,
@@ -15,9 +13,6 @@ class LogInResponseModel extends LogInEntity {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'accessToken': accessToken,
-      'refreshToken': refreshToken,
-    };
+    return {'accessToken': accessToken, 'refreshToken': refreshToken};
   }
 }

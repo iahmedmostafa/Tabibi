@@ -29,7 +29,10 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         ),
       ),
       (message) => emit(
-        state.copyWith(status: ForgotPasswordStatus.success, message: "Done successfully"),
+        state.copyWith(
+          status: ForgotPasswordStatus.success,
+          message: "Done successfully",
+        ),
       ),
     );
   }

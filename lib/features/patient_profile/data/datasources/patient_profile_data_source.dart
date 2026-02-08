@@ -8,7 +8,6 @@ import 'package:tabibi/features/patient_profile/data/datasources/base_patient_pr
 import 'package:tabibi/features/patient_profile/data/models/patient_profile_model.dart';
 import 'package:tabibi/features/patient_profile/data/models/update_patient_profile_params.dart';
 
-
 class PatientProfileDataSource implements BasePatientProfileDataSource {
   final Dio dio;
 
@@ -48,10 +47,9 @@ class PatientProfileDataSource implements BasePatientProfileDataSource {
         data: params.toJson(),
       );
 
-      if ( response.statusCode == 204) {
+      if (response.statusCode == 204) {
         return "The Account Information Is Uploaded Successfully";
-      }
-      else {
+      } else {
         throw ServerException(
           errorMessageModel: ErrorMessageModel.fromJson(response.data),
         );

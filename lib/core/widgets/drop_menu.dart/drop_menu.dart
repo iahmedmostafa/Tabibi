@@ -29,7 +29,9 @@ class DropMenu extends StatelessWidget {
         initialValue: value,
         hint: Text(
           hint,
-          style: Theme.of(context).textTheme.bodyMedium!.copyWith(color:AppColors.grey ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium!.copyWith(color: AppColors.grey),
         ),
         decoration: InputDecoration(
           hintStyle: Theme.of(context).textTheme.bodyMedium,
@@ -54,7 +56,9 @@ class DropMenu extends StatelessWidget {
             value: value,
             child: Text(
               value,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: isDark ? AppColors.white : AppColors.black)
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                color: isDark ? AppColors.white : AppColors.black,
+              ),
             ),
           );
         }).toList(),

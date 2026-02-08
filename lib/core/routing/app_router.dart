@@ -29,8 +29,10 @@ import 'package:tabibi/features/authentication/modules/verify_code/presentation/
 import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
 import 'package:tabibi/features/booking/presentation/screens/book_appointment_screen.dart';
 import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_cubit.dart';
+import 'package:tabibi/features/doctors_map/presentation/screens/doctors_map_screen.dart';
 import 'package:tabibi/features/favorite/presentation/screens/favorites_screen.dart';
 import 'package:tabibi/features/home/data/models/doctor_model.dart';
+import 'package:tabibi/features/home/presentation/screen/doctor/home_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/all_doctors_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/bottom_nav_screen.dart';
@@ -45,7 +47,13 @@ import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_f
 import '../services/shared_prefs_service.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: OnboardingServices.isFirstTime() ? '/onboarding' : '/login',
+  initialLocation: OnboardingServices.isFirstTime()
+      ? AppRoutes.onboarding
+      : (OnboardingServices.isLoggedIn()
+            ? (OnboardingServices.getRole() == '2'
+                  ? AppRoutes.homeScreen
+                  : AppRoutes.bottomNavScreen)
+            : AppRoutes.login),
   routes: [
     GoRoute(
       path: AppRoutes.onboarding,
@@ -117,6 +125,16 @@ final GoRouter router = GoRouter(
         create: (context) => sl<SignUpCubit>(),
         child: const SignupScreen(),
       ),
+    ),
+    GoRoute(
+      path: AppRoutes.home,
+      name: AppRoutes.home,
+      builder: (context, state) => const BottomNavScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.homeScreen,
+      name: AppRoutes.homeScreen,
+      builder: (context, state) => const HomeScreen(),
     ),
     GoRoute(
       path: AppRoutes.fillProfile,
@@ -242,6 +260,14 @@ final GoRouter router = GoRouter(
       path: AppRoutes.favorites,
       name: AppRoutes.favorites,
       builder: (context, state) => const FavoritesScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.doctorsMapScreen,
+      name: AppRoutes.doctorsMapScreen,
+      builder: (context, state) => BlocProvider(
+        create: (context) => sl<DoctorsCubit>(),
+        child: const DoctorsMapScreen(),
+      ),
     ),
   ],
 );

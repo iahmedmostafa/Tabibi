@@ -129,7 +129,6 @@ class AuthenticationRemoteDataSource
     }
   }
 
-
   @override
   Future<String> createNewPassword(
     CreateNewPasswordParameters parameters,

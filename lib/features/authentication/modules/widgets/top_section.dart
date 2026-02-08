@@ -25,9 +25,10 @@ class TopSection extends StatelessWidget {
         VerticalSpace(height: AppHeight.h8),
         Text(
           supTitle,
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(color: AppColors.grey500,height: 1.5),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: AppColors.grey500,
+            height: 1.5,
+          ),
           textAlign: TextAlign.center,
         ),
       ],

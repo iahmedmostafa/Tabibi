@@ -4,13 +4,16 @@ import 'package:tabibi/core/error/failure.dart';
 import 'package:tabibi/core/usecase/base_use_case.dart';
 import 'package:tabibi/features/authentication/domain/repositories/base_authentication_repository.dart';
 
-class CreateNewPasswordUseCase extends BaseUseCase<String, CreateNewPasswordParameters> {
+class CreateNewPasswordUseCase
+    extends BaseUseCase<String, CreateNewPasswordParameters> {
   final BaseAuthenticationRepository repository;
 
   CreateNewPasswordUseCase(this.repository);
 
   @override
-  Future<Either<Failure, String>> call(CreateNewPasswordParameters parameters) async {
+  Future<Either<Failure, String>> call(
+    CreateNewPasswordParameters parameters,
+  ) async {
     return await repository.createNewPassword(parameters);
   }
 }

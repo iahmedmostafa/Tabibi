@@ -15,6 +15,7 @@ class ApiConstance {
   static const String updateDoctorProfile = "doctors/me";
   static const String doctorStatus = "doctors/me/status";
   static const String doctors = "doctors";
+  static const String doctorsMap = "doctors/map";
   static const String departments = "departments";
 
   //  static const String refreshToken = "auth/refresh";

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:tabibi/core/services/cache_helper.dart';
+import 'package:tabibi/core/services/shared_prefs_service.dart';
 import 'package:tabibi/features/authentication/domain/usecases/log_in_use_case.dart';
 
 import '../../../../data/models/log_in_request_params_model.dart';
@@ -52,6 +53,11 @@ class LogInCubit extends Cubit<LogInState> {
       }
 
       role ??= await CacheHelper.getData(key: 'role');
+
+      await OnboardingServices.setLoggedIn(true);
+      if (role != null) {
+        await OnboardingServices.setRole(role);
+      }
 
       emit(LogInSuccess(logInEntity: r, role: role));
     });

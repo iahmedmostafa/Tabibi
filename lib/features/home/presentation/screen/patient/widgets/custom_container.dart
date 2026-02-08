@@ -20,9 +20,7 @@ class CustomContainer extends StatelessWidget {
             ? Colors.blue.withOpacity(.15)
             : Colors.grey.withOpacity(.25),
         borderRadius: BorderRadius.circular(25),
-        border: Border.all(
-          color: isSelected ? Colors.blue : Colors.black26,
-        ),
+        border: Border.all(color: isSelected ? Colors.blue : Colors.black26),
       ),
       child: Center(child: widget),
     );

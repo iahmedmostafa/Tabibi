@@ -36,8 +36,7 @@ class SocialButton extends StatelessWidget {
         children: [
           Image.asset(iconPath, width: AppWidth.w20, height: AppHeight.h20),
           HorizentalSpace(width: AppWidth.w8),
-         Text(text, style: Theme.of(context).textTheme.bodySmall)
-        
+          Text(text, style: Theme.of(context).textTheme.bodySmall),
         ],
       ),
     );

@@ -18,7 +18,7 @@ class CredentialImagePicker extends StatelessWidget {
     this.selectedImage,
     this.imageUrl,
     this.isUploaded = false,
-    this.iconData
+    this.iconData,
   });
 
   @override
@@ -67,7 +67,7 @@ class CredentialImagePicker extends StatelessWidget {
       return Image.network(imageUrl!, fit: BoxFit.fill);
     } else {
       return Icon(
-        iconData?? Icons.credit_card_rounded,
+        iconData ?? Icons.credit_card_rounded,
         size: AppSizes.imageThumbSize,
         color: AppColors.grey400,
       );

@@ -37,6 +37,9 @@ import 'package:tabibi/features/doctor_profile/domain/usecases/doctor_status_use
 import 'package:tabibi/features/doctor_profile/domain/usecases/get_doctor_profile_use_case.dart';
 import 'package:tabibi/features/doctor_profile/domain/usecases/update_doctor_profile_use_case.dart';
 import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_cubit.dart';
+import 'package:tabibi/features/doctors_map/data/datasources/doctor_map_remote_data_source.dart';
+import 'package:tabibi/features/doctors_map/data/repositories/doctor_map_repository.dart';
+import 'package:tabibi/features/doctors_map/presentation/controller/doctor_map_cubit.dart';
 import 'package:tabibi/features/favorite/data/repositories/favorites_repository_impl.dart';
 import 'package:tabibi/features/favorite/domain/repositories/favorites_repository.dart';
 import 'package:tabibi/features/favorite/domain/usecases/get_favorites_use_case.dart';
@@ -94,6 +97,9 @@ Future<void> init() async {
   sl.registerLazySingleton<DoctorsRemoteDataSource>(
     () => DoctorsRemoteDataSourceImpl(sl<Dio>()),
   );
+  sl.registerLazySingleton<DoctorMapRemoteDataSource>(
+    () => DoctorMapRemoteDataSourceImpl(sl<Dio>()),
+  );
 
   /// REPOSITORY
   sl.registerLazySingleton<BaseAuthenticationRepository>(
@@ -110,6 +116,9 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DepartmentRepository(sl()));
   sl.registerLazySingleton<DoctorsRepository>(
     () => DoctorsRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<DoctorMapRepository>(
+    () => DoctorMapRepositoryImpl(sl()),
   );
 
   /// USE CASE
@@ -148,6 +157,7 @@ Future<void> init() async {
   sl.registerFactory(() => DoctorsCubit(sl()));
   sl.registerFactory(() => AppointmentCubit());
   sl.registerFactory(() => MyBookingsCubit());
+  sl.registerFactory(() => DoctorMapCubit(sl<DoctorMapRepository>()));
 
   // Profile (New)
   sl.registerFactory(
@@ -168,4 +178,5 @@ Future<void> init() async {
   // Cubits
   sl.registerFactory(() => NotificationsCubit(sl()));
   sl.registerFactory(() => FavoritesCubit(sl()));
+  sl.registerFactory(() => DoctorMapCubit(sl()));
 }

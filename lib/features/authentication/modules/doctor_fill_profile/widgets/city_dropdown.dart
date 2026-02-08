@@ -39,12 +39,14 @@ class CityDropdown extends StatelessWidget {
         if (state.status == CitiesStatus.success && state.cities.isNotEmpty) {
           return DropMenu(
             hint: 'City',
-            items: state.cities.map((city) => city.name).toList(),//to show the city name
+            items: state.cities
+                .map((city) => city.name)
+                .toList(), //to show the city name
             onChanged: (value) {
               if (value != null) {
                 final selectedCity = state.cities.firstWhere(
                   (city) => city.name == value,
-                );//to get the city id
+                ); //to get the city id
                 onCitySelected(selectedCity.id);
               }
             },

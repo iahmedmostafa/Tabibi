@@ -27,7 +27,12 @@ class ClinicLocationCubit extends Cubit<ClinicLocationState> {
 
   /// Called when user taps on the map.
   void onMapTapped(LatLng position) {
-    emit(state.copyWith(selectedLocation: position, cameraPosition: CameraPosition(target: position, zoom: 16)));
+    emit(
+      state.copyWith(
+        selectedLocation: position,
+        cameraPosition: CameraPosition(target: position, zoom: 16),
+      ),
+    );
   }
 
   /// Called when user presses "Use My Current Location".

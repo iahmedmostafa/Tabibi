@@ -35,20 +35,25 @@ class DepartmentDropdown extends StatelessWidget {
           );
         }
 
-        if (state.departmentsStatus == DepartmentsStatus.success && state.departments.isNotEmpty) {
+        if (state.departmentsStatus == DepartmentsStatus.success &&
+            state.departments.isNotEmpty) {
           return DropMenu(
             hint: 'Department',
-            items: state.departments.map((department) => department.name).toList(),
+            items: state.departments
+                .map((department) => department.name)
+                .toList(),
             onChanged: (value) {
               if (value != null) {
                 final selectedCity = state.departments.firstWhere(
-                      (department) => department.name == value,
+                  (department) => department.name == value,
                 );
                 onDepartmentSelected(selectedCity.id);
               }
             },
             value: selectedDepartmentId != null
-                ? state.departments.firstWhere((city) => city.id == selectedDepartmentId).name
+                ? state.departments
+                      .firstWhere((city) => city.id == selectedDepartmentId)
+                      .name
                 : null,
           );
         }

@@ -24,4 +24,5 @@ class AppRoutes {
   static const bookingSuccess = '/booking_success';
   static const notifications = '/notifications';
   static const favorites = '/favorites';
+  static const homeScreen = '/homeScreen';
 }

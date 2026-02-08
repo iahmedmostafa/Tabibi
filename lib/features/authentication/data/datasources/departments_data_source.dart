@@ -22,8 +22,11 @@ class DepartmentsDataSource {
       final response = await dio.get(ApiConstance.departments);
 
       if (response.statusCode == 200) {
-        final List<dynamic> departmentsJson = response.data['items'] as List<dynamic>;
-        return departmentsJson.map((json) => DepartmentModel.fromJson(json)).toList();
+        final List<dynamic> departmentsJson =
+            response.data['items'] as List<dynamic>;
+        return departmentsJson
+            .map((json) => DepartmentModel.fromJson(json))
+            .toList();
       } else {
         throw ServerException(
           errorMessageModel: ErrorMessageModel.fromJson(response.data),

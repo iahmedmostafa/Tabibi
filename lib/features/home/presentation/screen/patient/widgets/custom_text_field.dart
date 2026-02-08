@@ -7,7 +7,7 @@ import '../../../../../../core/utils/constants/app_colors.dart';
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final bool? isEnabled;
- final void Function(String)? onChanged;
+  final void Function(String)? onChanged;
   const CustomTextField({
     required this.controller,
     super.key,

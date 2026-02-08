@@ -15,7 +15,6 @@ class BottomLoginSection extends StatelessWidget {
     super.key,
     required this.onGooglePressed,
     required this.onFacebookPressed,
-    
   });
 
   @override
@@ -37,7 +36,6 @@ class BottomLoginSection extends StatelessWidget {
           iconPath: AppImages.facebook,
           onPressed: onFacebookPressed,
         ),
-      
       ],
     );
   }

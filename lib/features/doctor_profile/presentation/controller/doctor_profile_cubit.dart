@@ -5,7 +5,6 @@ import 'package:tabibi/features/doctor_profile/domain/usecases/get_doctor_profil
 import 'package:tabibi/features/doctor_profile/domain/usecases/update_doctor_profile_use_case.dart';
 import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_state.dart';
 
-
 class DoctorProfileCubit extends Cubit<DoctorProfileState> {
   final GetDoctorProfileUseCase getDoctorProfileUseCase;
   final UpdateDoctorProfileUseCase updateDoctorProfileUseCase;
@@ -69,7 +68,10 @@ class DoctorProfileCubit extends Cubit<DoctorProfileState> {
         ),
       ),
       (doctorStatus) => emit(
-        state.copyWith(doctorStatus: DoctorStatusAction.success, newDoctorStatus: doctorStatus),
+        state.copyWith(
+          doctorStatus: DoctorStatusAction.success,
+          newDoctorStatus: doctorStatus,
+        ),
       ),
     );
   }

@@ -11,7 +11,8 @@ class DepartmentRepository {
 
   Future<Either<Failure, List<DepartmentModel>>> getDepartments() async {
     try {
-      final List<DepartmentModel> departments = await departmentsDataSource.getDepartments();
+      final List<DepartmentModel> departments = await departmentsDataSource
+          .getDepartments();
 
       return Right(departments);
     } on ServerException catch (failure) {

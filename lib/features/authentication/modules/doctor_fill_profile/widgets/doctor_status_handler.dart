@@ -8,7 +8,6 @@ import 'package:tabibi/features/authentication/modules/doctor_fill_profile/pages
 import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_cubit.dart';
 import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_state.dart';
 
-
 class DoctorStatusHandler extends StatelessWidget {
   const DoctorStatusHandler({super.key});
   @override

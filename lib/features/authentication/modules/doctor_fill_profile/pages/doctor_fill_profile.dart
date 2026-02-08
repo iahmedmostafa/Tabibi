@@ -13,7 +13,6 @@ import 'package:tabibi/features/authentication/modules/fill_profile/presentation
 import 'package:tabibi/features/doctor_profile/data/models/update_doctor_profile_params.dart';
 import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_cubit.dart';
 
-
 class DoctorFillProfile extends StatefulWidget {
   const DoctorFillProfile({super.key});
 

@@ -55,7 +55,7 @@ class PatientHomeScreen extends StatelessWidget {
                     ],
                   ),
                   VerticalSpace(height: AppHeight.h8),
-                CustomTextField(controller: controller, isEnabled: true),
+                  CustomTextField(controller: controller, isEnabled: true),
                   VerticalSpace(height: AppHeight.h8),
                   const CustomCarouselSlider(),
                   VerticalSpace(height: AppHeight.h8),
@@ -214,10 +214,11 @@ class _DepartmentsGrid extends StatelessWidget {
                       department.name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                        fontSize: 12.sp,
-                        color:  isDark? AppColors.white : AppColors.black,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall!
+                          .copyWith(
+                            fontSize: 12.sp,
+                            color: isDark ? AppColors.white : AppColors.black,
+                          ),
                       textAlign: TextAlign.center,
                     ),
                   ],

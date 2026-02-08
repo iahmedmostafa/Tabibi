@@ -5,7 +5,6 @@ class ClinicModel {
   final String phone;
   final int cityId;
 
-
   ClinicModel({
     required this.id,
     required this.name,
@@ -33,7 +32,4 @@ class ClinicModel {
       'cityId': cityId,
     };
   }
-
-
 }
-

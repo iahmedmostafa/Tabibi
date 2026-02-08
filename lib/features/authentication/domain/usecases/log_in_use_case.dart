@@ -5,12 +5,13 @@ import 'package:tabibi/features/authentication/domain/entities/log_in_entity.dar
 
 import '../repositories/base_authentication_repository.dart';
 
-class LogInUseCase{
+class LogInUseCase {
   final BaseAuthenticationRepository loginRepository;
   LogInUseCase(this.loginRepository);
 
-  Future<Either<Failure,LogInEntity>> call(LogInRequestParamsModel parameters)async{
+  Future<Either<Failure, LogInEntity>> call(
+    LogInRequestParamsModel parameters,
+  ) async {
     return await loginRepository.logIn(parameters);
   }
 }
-

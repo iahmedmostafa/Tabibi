@@ -9,7 +9,6 @@ import 'package:tabibi/features/doctor_profile/data/datasources/base_doctor_prof
 import 'package:tabibi/features/doctor_profile/data/models/doctor_profile_model.dart';
 import 'package:tabibi/features/doctor_profile/data/models/update_doctor_profile_params.dart';
 
-
 class DoctorProfileDataSource implements BaseDoctorProfileDataSource {
   final Dio dio;
 
@@ -61,13 +60,13 @@ class DoctorProfileDataSource implements BaseDoctorProfileDataSource {
       rethrow;
     }
   }
-  
+
   @override
   Future<DoctorStatus> doctorStatus() async {
     try {
       final response = await dio.get(ApiConstance.doctorStatus);
 
-      if (response.statusCode == 200 ) {
+      if (response.statusCode == 200) {
         return DoctorStatus.values.firstWhere(
           (element) => element.name == response.data["status"],
         );

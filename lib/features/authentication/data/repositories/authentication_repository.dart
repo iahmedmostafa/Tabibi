@@ -5,6 +5,7 @@ import 'package:tabibi/core/error/exceptions.dart';
 import 'package:tabibi/core/error/failure.dart';
 import 'package:tabibi/core/network/api_constance.dart';
 import 'package:tabibi/core/services/cache_helper.dart';
+import 'package:tabibi/core/services/shared_prefs_service.dart';
 import 'package:tabibi/features/authentication/data/datasources/auth_remote_date_source.dart';
 import 'package:tabibi/features/authentication/data/models/log_in_request_params_model.dart';
 import 'package:tabibi/features/authentication/domain/entities/log_in_entity.dart';
@@ -122,6 +123,7 @@ class AuthenticationRepositoryImpl extends BaseAuthenticationRepository {
     try {
       await CacheHelper.deleteData(key: ApiKeys.accessToken);
       await CacheHelper.deleteData(key: ApiKeys.refreshToken);
+      await OnboardingServices.setLoggedIn(false);
       return const Right(null);
     } catch (e) {
       return Left(CacheFailure(e.toString()));

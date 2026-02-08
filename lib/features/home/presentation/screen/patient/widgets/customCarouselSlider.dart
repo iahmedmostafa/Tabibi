@@ -52,14 +52,14 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
                       top: 0,
                       height: 90.h,
                       width: 100.w,
-                      child: Image.asset(AppImages.layer1,fit: BoxFit.fill,),
+                      child: Image.asset(AppImages.layer1, fit: BoxFit.fill),
                     ),
                     Positioned(
                       left: 40.w,
                       bottom: 0,
                       height: 20.h,
                       width: 100.w,
-                      child: Image.asset(AppImages.layer2,fit: BoxFit.fill),
+                      child: Image.asset(AppImages.layer2, fit: BoxFit.fill),
                     ),
                     Positioned(
                       child: Padding(
@@ -77,7 +77,8 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
                                     style: AppTextStyle.bodySBold.copyWith(
                                       color: AppColors.white,
                                       fontSize: 20.sp,
-                                  ),),
+                                    ),
+                                  ),
                                   const VerticalSpace(height: 8),
                                   Text(
                                     "Schedule an appointment with our top doctors.",

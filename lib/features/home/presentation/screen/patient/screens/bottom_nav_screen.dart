@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/booking/presentation/screens/my_bookings_screen.dart';
+import 'package:tabibi/features/doctors_map/presentation/screens/doctors_map_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/patient_home_screen.dart';
 import 'package:tabibi/features/patient_profile/presentation/screens/profile_screen.dart';
 
@@ -15,11 +16,11 @@ class BottomNavScreen extends StatefulWidget {
 class _BottomNavScreenState extends State<BottomNavScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const[
-    PatientHomeScreen(),
-    Scaffold(body: Center(child: Text("Maps"))),
-    MyBookingsScreen(),
-    ProfileScreen(),
+  final List<Widget> _screens = [
+    const PatientHomeScreen(),
+    const DoctorsMapScreen(),
+    const MyBookingsScreen(),
+    const ProfileScreen(),
   ];
 
   @override

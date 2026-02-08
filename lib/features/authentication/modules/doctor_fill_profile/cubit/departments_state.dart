@@ -24,8 +24,4 @@ class DepartmentsState extends Equatable {
 
   @override
   List<Object?> get props => [departmentsStatus, departments, errorMessage];
-
-
-
 }
-

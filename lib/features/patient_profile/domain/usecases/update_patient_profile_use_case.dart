@@ -8,7 +8,9 @@ class UpdatePatientProfileUseCase {
 
   UpdatePatientProfileUseCase(this.repository);
 
-  Future<Either<Failure, String>> call(UpdatePatientProfileParams params) async {
+  Future<Either<Failure, String>> call(
+    UpdatePatientProfileParams params,
+  ) async {
     return await repository.updatePatientProfile(params);
   }
 }

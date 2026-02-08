@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -39,23 +40,42 @@ class DioInterceptors {
       final refreshToken = await CacheHelper.getData(key: ApiKeys.refreshToken);
       if (refreshToken == null) return false;
 
-      final response = await dio.post(
+      // 🔴 حسب الـ Docs الـ Content-Type لازم يكون application/json-patch+json
+      final refreshDio = Dio(
+        BaseOptions(
+          baseUrl: ApiConstance.baseUrl,
+          headers: {'Content-Type': 'application/json-patch+json'},
+        ),
+      );
+
+      // 📝 لازم نحول الـ Map لـ String يدوياً عشان الـ Content-Type مش standard json
+      final response = await refreshDio.post(
         ApiConstance.generateNewAccessToken,
-        data: {
-          ApiKeys.refreshToken: refreshToken,
-        },
+        data: jsonEncode({ApiKeys.refreshToken: refreshToken}),
       );
 
-      final newAccessToken = response.data.toString();
+      if (response.statusCode == 200) {
+        final data = response.data;
+        final newAccessToken = data[ApiKeys.accessToken];
+        final newRefreshToken = data[ApiKeys.refreshToken];
 
-      // 📝 خزّن التوكنات الجديدة
-      await CacheHelper.saveData(
-        key: ApiKeys.accessToken,
-        value: newAccessToken,
-      );
-      log("✅ Token refreshed successfully $newAccessToken");
+        if (newAccessToken != null) {
+          await CacheHelper.saveData(
+            key: ApiKeys.accessToken,
+            value: newAccessToken,
+          );
+          if (newRefreshToken != null) {
+            await CacheHelper.saveData(
+              key: ApiKeys.refreshToken,
+              value: newRefreshToken,
+            );
+          }
 
-      return true;
+          log("✅ Token refreshed successfully");
+          return true;
+        }
+      }
+      return false;
     } catch (e) {
       log("❌ Refresh failed: $e");
       return false;

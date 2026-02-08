@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/theme/custom_themes/app_bar_theme.dart';
@@ -9,7 +8,7 @@ import 'package:tabibi/core/utils/theme/custom_themes/text_theme.dart';
 
 class AppTheme {
   AppTheme._();
-  
+
   static ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: AppColors.lightBackground,
     brightness: Brightness.light,

@@ -15,8 +15,8 @@ class AppTextStyle {
   /// Style for H1 headings. (Inter, 20, Bold)
   static final TextStyle h1 = _baseInter.copyWith(
     fontSize: 20,
-    fontWeight: FontWeight.w600 ,
-       height: 1.5,
+    fontWeight: FontWeight.w600,
+    height: 1.5,
   );
 
   /// Style for H2 headings. (Inter, 18, Bold)
