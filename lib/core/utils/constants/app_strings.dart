@@ -83,7 +83,7 @@ class AppStrings {
       "Your appointment is confirmed successfully.";
   static const done = "Done";
   static const editAppointment = "Edit your appointment";
-
+  static const consultationFee = "Consultation Fee";
   // Profile
   static const profile = "Profile";
   static const editProfile = "Edit Profile";

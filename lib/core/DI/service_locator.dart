@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:tabibi/core/network/api_constance.dart';
 import 'package:tabibi/core/services/location_services.dart';
 import 'package:tabibi/features/authentication/data/datasources/auth_remote_date_source.dart';
 import 'package:tabibi/features/authentication/data/datasources/cities_data_source.dart';
@@ -30,6 +31,9 @@ import 'package:tabibi/features/authentication/modules/verify_code/presentation/
 import 'package:tabibi/features/booking/data/datasources/appointment_remote_data_source.dart';
 import 'package:tabibi/features/booking/data/repositories/appointment_repository_impl.dart';
 import 'package:tabibi/features/booking/domain/repositories/appointment_repository.dart';
+import 'package:tabibi/features/booking/domain/usecases/cancel_booking_use_case.dart';
+import 'package:tabibi/features/booking/domain/usecases/confirm_payment_use_case.dart';
+import 'package:tabibi/features/booking/domain/usecases/create_booking_use_case.dart';
 import 'package:tabibi/features/booking/domain/usecases/get_available_slots_use_case.dart';
 import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
 import 'package:tabibi/features/booking/presentation/controller/my_bookings_cubit.dart';
@@ -88,7 +92,9 @@ Future<void> init() async {
   sl.registerLazySingleton(() => sl<CacheHelper>());
 
   //Dio
-  sl.registerLazySingleton(() => Dio());
+  sl.registerLazySingleton(
+    () => Dio(BaseOptions(baseUrl: ApiConstance.baseUrl)),
+  );
 
   /// DATA SOURCE
   sl.registerLazySingleton<BaseAuthenticationRemoteDataSource>(
@@ -156,6 +162,9 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DoctorStatusUseCase(sl()));
   sl.registerLazySingleton(() => GetDoctorDetailsUseCase(sl()));
   sl.registerLazySingleton(() => GetAvailableSlotsUseCase(sl()));
+  sl.registerLazySingleton(() => CreateBookingUseCase(sl()));
+  sl.registerLazySingleton(() => ConfirmPaymentUseCase(sl()));
+  sl.registerLazySingleton(() => CancelBookingUseCase(sl()));
 
   sl.registerLazySingleton(() => LogOutUseCase(sl()));
 
@@ -178,7 +187,7 @@ Future<void> init() async {
   sl.registerFactory(() => DoctorFillProfileFormCubit());
   sl.registerFactory(() => ClinicLocationCubit(sl<LocationServices>()));
   sl.registerFactory(() => DoctorsCubit(sl()));
-  sl.registerFactory(() => AppointmentCubit(sl()));
+  sl.registerFactory(() => AppointmentCubit(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => MyBookingsCubit());
   sl.registerFactory(() => DoctorMapCubit(sl<DoctorMapRepository>()));
   sl.registerFactory(() => DoctorDetailsCubit(sl()));

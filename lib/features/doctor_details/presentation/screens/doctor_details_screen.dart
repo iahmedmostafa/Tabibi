@@ -96,6 +96,19 @@ class DoctorDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 24.h),
+                    Text(
+                      AppStrings.consultationFee,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      "${details.consultationFee} EGP",
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppColors.grey500,
+                      ),
+                    ),
+                    SizedBox(height: 24.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

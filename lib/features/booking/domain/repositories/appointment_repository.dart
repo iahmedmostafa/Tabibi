@@ -7,4 +7,13 @@ abstract class AppointmentRepository {
     required String doctorId,
     required String date,
   });
+
+  Future<Either<Failure, Map<String, dynamic>>> createBooking({
+    required String appointmentDate,
+    required String doctorId,
+    required int type,
+  });
+
+  Future<Either<Failure, void>> confirmPayment({required String bookingId});
+  Future<Either<Failure, void>> cancelBooking({required String bookingId});
 }

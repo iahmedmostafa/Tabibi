@@ -48,7 +48,7 @@ class PatientHomeScreen extends StatelessWidget {
                   ],
                 ),
                 VerticalSpace(height: AppHeight.h8),
-                CustomTextField(controller: controller, isEnabled: true),
+                CustomTextField(controller: controller, isEnabled: false),
                 VerticalSpace(height: AppHeight.h8),
                 const CustomCarouselSlider(),
                 VerticalSpace(height: AppHeight.h8),

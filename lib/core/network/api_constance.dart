@@ -1,3 +1,5 @@
+import 'package:http/http.dart' as dotenv;
+
 class ApiConstance {
   ApiConstance._();
   static const String baseUrl = "https://tabibi.runasp.net/";
@@ -19,11 +21,15 @@ class ApiConstance {
   static const String departments = "departments";
   static const String doctorDetails = "doctors/doctor-details";
   static const String availableSlots = "bookings/available-slots";
+  static const String booking = "bookings";
 
   //  static const String refreshToken = "auth/refresh";
   // static const String logout = "auth/logout";
   //  static const String activeCode = "auth/activate";
   static const String generateNewAccessToken = "auth/refresh";
+
+  static String confirmPayment(String id) => "bookings/$id/confirm-payment";
+  static String cancelBooking(String id) => "bookings/$id/cancel";
 }
 
 class ApiKeys {
@@ -48,4 +54,7 @@ class ApiKeys {
   //profile
   static const String file = "File";
   static const String imageUrl = "imageUrl";
+  static const String clientSecret = "clientSecret";
+  static const String bookingId = "bookingId";
+  static String get publishableKey => dotenv.get('STRIPE_PUBLISHABLE_KEY');
 }

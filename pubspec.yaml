@@ -23,10 +23,12 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: null
+  flutter_dotenv: ^6.0.0
   flutter_easyloading: ^3.0.5
   flutter_native_splash: null
   flutter_screenutil: ^5.9.3
   flutter_secure_storage: ^9.2.4
+  flutter_stripe: ^12.2.0
   get_it: ^8.2.0
   go_router: null
   google_fonts: ^6.3.2
@@ -55,6 +57,7 @@ flutter:
     - assets/images/
     - assets/logo/
     - assets/icons/
+    - .env
   # fonts:
   #   - family: Schyler
   #     fonts:

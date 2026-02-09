@@ -23,6 +23,13 @@ class AppointmentTimeSelected extends AppointmentState {
   List<Object> get props => [time];
 }
 
+class AppointmentTypeSelected extends AppointmentState {
+  final int type;
+  const AppointmentTypeSelected(this.type);
+  @override
+  List<Object> get props => [type];
+}
+
 class AppointmentReadyToBook extends AppointmentState {
   final DateTime date;
   final String time;

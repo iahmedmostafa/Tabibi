@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -66,10 +67,10 @@ class DepartmentGridView extends StatelessWidget {
                         padding: const EdgeInsets.all(12),
                         child: Center(
                           child: department.imageUrl != null
-                              ? Image.network(
-                                  department.imageUrl!,
+                              ? CachedNetworkImage(
+                                  imageUrl: department.imageUrl!,
                                   fit: BoxFit.contain,
-                                  errorBuilder: (context, error, stackTrace) =>
+                                  errorWidget: (context, error, stackTrace) =>
                                       const Icon(
                                         Icons.category,
                                         color: Colors.white,
