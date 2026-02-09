@@ -8,13 +8,27 @@ import 'package:tabibi/features/booking/presentation/controller/my_bookings_cubi
 import 'package:tabibi/features/booking/presentation/widgets/booking_card.dart';
 import 'package:tabibi/features/booking/presentation/widgets/booking_tab_filter.dart';
 
-class MyBookingsScreen extends StatelessWidget {
+class MyBookingsScreen extends StatefulWidget {
   const MyBookingsScreen({super.key});
 
   @override
+  State<MyBookingsScreen> createState() => _MyBookingsScreenState();
+}
+
+class _MyBookingsScreenState extends State<MyBookingsScreen> {
+    // ignore: unused_field
+    late MyBookingsCubit _cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _cubit = sl<MyBookingsCubit>()..getBookings();
+    
+  }
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => sl<MyBookingsCubit>(),
+    return BlocProvider.value(
+        value: _cubit,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -30,21 +44,25 @@ class MyBookingsScreen extends StatelessWidget {
           elevation: 0,
         ),
         body: BlocBuilder<MyBookingsCubit, MyBookingsState>(
+          buildWhen: (previous, current) {
+            return previous.selectedTab != current.selectedTab || previous.status != current.status || previous.allBookings != current.allBookings;
+          },
           builder: (context, state) {
             if (state.status == MyBookingsStatus.loading) {
               return const Center(child: CircularProgressIndicator());
             }
-
             return Column(
               children: [
                 SizedBox(height: 16.h),
                 BookingTabFilter(
                   selectedTab: state.selectedTab,
-                  onTabSelected: (status) {},
+                  onTabSelected: (status) {            
+                    _cubit.getBookings(status: status);
+                  },
                 ),
                 SizedBox(height: 24.h),
                 Expanded(
-                  child: state.filteredBookings.isEmpty
+                  child: state.allBookings.isEmpty
                       ? Center(
                           child: Text(
                             AppStrings.noBookingsFound,
@@ -60,12 +78,12 @@ class MyBookingsScreen extends StatelessWidget {
                             horizontal: 24.w,
                             vertical: 8.h,
                           ),
-                          itemCount: state.filteredBookings.length,
+                          itemCount: state.allBookings.length,
                           separatorBuilder: (context, index) =>
                               SizedBox(height: 16.h),
                           itemBuilder: (context, index) {
                             return BookingCard(
-                              booking: state.filteredBookings[index],
+                              booking: state.allBookings[index],
                             );
                           },
                         ),

@@ -220,7 +220,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppRoutes.bottomNavScreen,
       name: AppRoutes.bottomNavScreen,
-      builder: (context, state) => const BottomNavScreen(),
+      builder: (context, state) {
+        final initialIndex = state.extra as int? ?? 0;
+        return BottomNavScreen(initialIndex: initialIndex);
+      },
     ),
     GoRoute(
       path: AppRoutes.allDoctors,

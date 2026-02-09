@@ -1,41 +1,60 @@
-import 'package:tabibi/core/utils/enums/enums.dart';
-import 'package:tabibi/features/booking/domain/entities/booking.dart';
+import 'package:equatable/equatable.dart';
 
-class BookingModel extends Booking {
+class BookingModel extends Equatable {
+  final String id;
+  final String doctorId;
+  final String doctorName;
+  final String? doctorAvatar;
+  final String department;
+  final String address;
+  final String appointmentDate;
+  final int type;
+  final int? status;
+  final bool? showReviewButton;
+  final bool? showPrescriptionButton;
+
   const BookingModel({
-    required super.id,
-    required super.date,
-    required super.time,
-    required super.doctorName,
-    required super.doctorImage,
-    required super.speciality,
-    required super.location,
-    required super.status,
+    required this.id,
+    required this.doctorId,
+    required this.doctorName,
+    this.doctorAvatar,
+    required this.department,
+    required this.address,
+    required this.appointmentDate,
+    required this.type,
+    this.status,
+    this.showReviewButton,
+    this.showPrescriptionButton,
   });
 
   factory BookingModel.fromJson(Map<String, dynamic> json) {
     return BookingModel(
-      id: json['id'] ?? '',
-      date: json['date'] ?? '',
-      time: json['time'] ?? '',
-      doctorName: json['doctorName'] ?? '',
-      doctorImage: json['doctorImage'] ?? '',
-      speciality: json['speciality'] ?? '',
-      location: json['location'] ?? '',
-      status: _mapStringToStatus(json['status']),
+      id: json['id'],
+      doctorId: json['doctorId'],
+      doctorName: json['doctorName'],
+      doctorAvatar: json['doctorAvatar'],
+      department: json['department'],
+      address: json['address'],
+      appointmentDate: json['appointmentDate'],
+      type: json['type'],
+      status: json['status'],
+      showReviewButton: json['showReviewButton'],
+      showPrescriptionButton: json['showPrescriptionButton'],
     );
   }
 
-  static BookingStatus _mapStringToStatus(String? status) {
-    switch (status) {
-      case 'upcoming':
-        return BookingStatus.upcoming;
-      case 'completed':
-        return BookingStatus.completed;
-      case 'canceled':
-        return BookingStatus.canceled;
-      default:
-        return BookingStatus.upcoming;
-    }
-  }
+  @override
+  List<Object?> get props => [
+    id,
+    doctorId,
+    doctorName,
+    doctorAvatar,
+    department,
+    address,
+    appointmentDate,
+    type,
+    status,
+    showReviewButton,
+    showPrescriptionButton,
+  ];
 }

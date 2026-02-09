@@ -31,6 +31,7 @@ class BookAppointmentScreen extends StatelessWidget {
         ),
       ),
       body: BlocConsumer<AppointmentCubit, AppointmentState>(
+      
         listener: (context, state) {
           if (state is AppointmentBookingSuccess) {
             showDialog(

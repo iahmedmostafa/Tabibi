@@ -1,11 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
-import 'package:tabibi/features/booking/domain/entities/booking.dart';
+import 'package:tabibi/core/utils/formatters.dart/formatters.dart';
+import 'package:tabibi/features/booking/data/models/booking_model.dart';
 
 class BookingCard extends StatelessWidget {
-  final Booking booking;
+  final BookingModel booking;
 
   const BookingCard({super.key, required this.booking});
 
@@ -18,7 +21,7 @@ class BookingCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -28,7 +31,7 @@ class BookingCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "${booking.date} - ${booking.time}",
+            Formatter.formatIsoToDateTime(booking.appointmentDate),
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 14.sp,
@@ -47,7 +50,7 @@ class BookingCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.r),
                   color: AppColors.grey100,
                   image: DecorationImage(
-                    image: NetworkImage(booking.doctorImage),
+                    image: CachedNetworkImageProvider(booking.doctorAvatar!),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -67,7 +70,7 @@ class BookingCard extends StatelessWidget {
                     ),
                     SizedBox(height: 4.h),
                     Text(
-                      booking.speciality,
+                      booking.department,
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: AppColors.grey500,
@@ -77,14 +80,14 @@ class BookingCard extends StatelessWidget {
                     Row(
                       children: [
                         Icon(
-                          Icons.location_on,
+                          Iconsax.location,
                           size: 14.sp,
                           color: AppColors.grey500,
                         ),
                         SizedBox(width: 4.w),
                         Expanded(
                           child: Text(
-                            booking.location,
+                            booking.address,
                             style: TextStyle(
                               fontSize: 12.sp,
                               color: AppColors.grey500,

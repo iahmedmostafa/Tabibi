@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/formatters.dart/formatters.dart';
 import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
 
 class TimeSlotGrid extends StatelessWidget {
@@ -62,7 +62,7 @@ class TimeSlotGrid extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      formatIsoTo12Hour(slot.startTime),
+                      Formatter.formatIsoTo12Hour(slot.startTime),
                       style: TextStyle(
                         color: isSelected ? Colors.white : AppColors.dark,
                         fontWeight: isSelected
@@ -80,8 +80,4 @@ class TimeSlotGrid extends StatelessWidget {
       },
     );
   }
-}
-String formatIsoTo12Hour(String isoDate) {
-  final dateTime = DateTime.parse(isoDate).toLocal(); 
-  return DateFormat('hh:mm a').format(dateTime);
 }
