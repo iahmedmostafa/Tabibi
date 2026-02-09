@@ -1,4 +1,4 @@
-import 'package:http/http.dart' as dotenv;
+import 'package:flutter_dotenv/flutter_dotenv.dart' as dot_env;
 
 class ApiConstance {
   ApiConstance._();
@@ -56,5 +56,6 @@ class ApiKeys {
   static const String imageUrl = "imageUrl";
   static const String clientSecret = "clientSecret";
   static const String bookingId = "bookingId";
-  static String get publishableKey => dotenv.get('STRIPE_PUBLISHABLE_KEY');
+  static String get publishableKey =>
+      dot_env.dotenv.get('STRIPE_PUBLISHABLE_KEY');
 }
