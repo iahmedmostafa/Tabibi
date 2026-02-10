@@ -31,6 +31,7 @@ import 'package:tabibi/features/booking/presentation/screens/book_appointment_sc
 import 'package:tabibi/features/booking/presentation/screens/my_bookings_screen.dart';
 import 'package:tabibi/features/doctor_details/data/models/doctor_details_model.dart';
 import 'package:tabibi/features/doctor_details/presentation/screens/doctor_details_screen.dart';
+import 'package:tabibi/features/doctor_details/presentation/screens/doctor_reviews_screen.dart';
 import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_cubit.dart';
 import 'package:tabibi/features/doctors_map/presentation/screens/doctors_map_screen.dart';
 import 'package:tabibi/features/favorite/presentation/screens/favorites_screen.dart';
@@ -279,6 +280,14 @@ final GoRouter router = GoRouter(
         create: (context) => sl<DoctorsCubit>(),
         child: const DoctorsMapScreen(),
       ),
+    ),
+    GoRoute(
+      path: '${AppRoutes.doctorReviews}/:doctorId',
+      name: AppRoutes.doctorReviews,
+      builder: (context, state) {
+        final doctorId = state.pathParameters['doctorId'] ?? '';
+        return DoctorReviewsScreen(doctorId: doctorId);
+      },
     ),
   ],
 );

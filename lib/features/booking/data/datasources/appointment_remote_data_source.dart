@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:tabibi/core/error/failure.dart';
 import 'package:tabibi/core/network/api_constance.dart';
-import 'package:tabibi/core/network/dio_interceptors.dart';
 import 'package:tabibi/features/booking/data/models/available_slot_model.dart';
 
 abstract class AppointmentRemoteDataSource {
@@ -25,13 +24,7 @@ abstract class AppointmentRemoteDataSource {
 class AppointmentRemoteDataSourceImpl implements AppointmentRemoteDataSource {
   final Dio dio;
 
-  AppointmentRemoteDataSourceImpl(this.dio) {
-    dio.options.baseUrl = ApiConstance.baseUrl;
-    dio.interceptors.add(DioInterceptors(dio).interceptor);
-    dio.options.connectTimeout = const Duration(seconds: 30);
-    dio.options.receiveTimeout = const Duration(seconds: 30);
-    dio.options.sendTimeout = const Duration(seconds: 30);
-  }
+  AppointmentRemoteDataSourceImpl(this.dio);
 
   @override
   Future<List<AvailableSlotModel>> getAvailableSlots({

@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:tabibi/core/error/exceptions.dart';
 import 'package:tabibi/core/error/failure.dart';
 import 'package:tabibi/core/network/api_constance.dart';
-import 'package:tabibi/core/network/dio_interceptors.dart';
 import 'package:tabibi/core/network/error_message_model.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/features/doctor_profile/data/datasources/base_doctor_profile_data_source.dart';
@@ -12,13 +11,7 @@ import 'package:tabibi/features/doctor_profile/data/models/update_doctor_profile
 class DoctorProfileDataSource implements BaseDoctorProfileDataSource {
   final Dio dio;
 
-  DoctorProfileDataSource(this.dio) {
-    dio.options.baseUrl = ApiConstance.baseUrl;
-    dio.interceptors.add(DioInterceptors(dio).interceptor);
-    dio.options.connectTimeout = const Duration(seconds: 30);
-    dio.options.receiveTimeout = const Duration(seconds: 30);
-    dio.options.sendTimeout = const Duration(seconds: 30);
-  }
+  DoctorProfileDataSource(this.dio);
 
   @override
   Future<DoctorProfileModel> getDoctorProfile() async {

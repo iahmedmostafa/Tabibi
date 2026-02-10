@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
@@ -23,7 +24,7 @@ class ReviewItem extends StatelessWidget {
             children: [
               CircleAvatar(
                 backgroundImage: review.patientAvatar != null
-                    ? NetworkImage(review.patientAvatar!) as ImageProvider
+                    ? CachedNetworkImageProvider(review.patientAvatar!) as ImageProvider
                     : const AssetImage('assets/images/review_user.png'),
                 radius: 20.r,
                 backgroundColor: AppColors.grey200,

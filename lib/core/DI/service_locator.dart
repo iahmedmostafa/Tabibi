@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tabibi/core/network/api_constance.dart';
+import 'package:tabibi/core/network/dio_interceptors.dart';
 import 'package:tabibi/core/services/location_services.dart';
 import 'package:tabibi/features/authentication/data/datasources/auth_remote_date_source.dart';
 import 'package:tabibi/features/authentication/data/datasources/cities_data_source.dart';
@@ -45,7 +46,9 @@ import 'package:tabibi/features/doctor_details/data/datasources/doctor_details_r
 import 'package:tabibi/features/doctor_details/data/repositories/doctor_details_repository_impl.dart';
 import 'package:tabibi/features/doctor_details/domain/repositories/doctor_details_repository.dart';
 import 'package:tabibi/features/doctor_details/domain/usecases/get_doctor_details_use_case.dart';
+import 'package:tabibi/features/doctor_details/domain/usecases/get_doctor_reviews_use_case.dart';
 import 'package:tabibi/features/doctor_details/presentation/controller/doctor_details_cubit.dart';
+import 'package:tabibi/features/doctor_details/presentation/controller/reviews_cubit.dart';
 import 'package:tabibi/features/doctor_profile/data/datasources/base_doctor_profile_data_source.dart';
 import 'package:tabibi/features/doctor_profile/data/datasources/doctor_profile_data_source.dart';
 import 'package:tabibi/features/doctor_profile/data/repositories/doctor_profile_repository.dart';
@@ -96,9 +99,18 @@ Future<void> init() async {
   sl.registerLazySingleton(() => sl<CacheHelper>());
 
   //Dio
-  sl.registerLazySingleton(
-    () => Dio(BaseOptions(baseUrl: ApiConstance.baseUrl)),
-  );
+  sl.registerLazySingleton(() {
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: ApiConstance.baseUrl,
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        sendTimeout: const Duration(seconds: 30),
+      ),
+    );
+    dio.interceptors.add(DioInterceptors(dio).interceptor);
+    return dio;
+  });
 
   /// DATA SOURCE
   sl.registerLazySingleton<BaseAuthenticationRemoteDataSource>(
@@ -154,9 +166,7 @@ Future<void> init() async {
   sl.registerLazySingleton<AppointmentRepository>(
     () => AppointmentRepositoryImpl(sl()),
   );
-  sl.registerLazySingleton<BaseBookingRepo>(
-    () => BookingRepoImpl(sl()),
-  );
+  sl.registerLazySingleton<BaseBookingRepo>(() => BookingRepoImpl(sl()));
 
   /// USE CASE
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
@@ -171,12 +181,12 @@ Future<void> init() async {
   sl.registerLazySingleton(() => UpdateDoctorProfileUseCase(sl()));
   sl.registerLazySingleton(() => DoctorStatusUseCase(sl()));
   sl.registerLazySingleton(() => GetDoctorDetailsUseCase(sl()));
+  sl.registerLazySingleton(() => GetDoctorReviewsUseCase(sl()));
   sl.registerLazySingleton(() => GetAvailableSlotsUseCase(sl()));
   sl.registerLazySingleton(() => CreateBookingUseCase(sl()));
   sl.registerLazySingleton(() => ConfirmPaymentUseCase(sl()));
   sl.registerLazySingleton(() => CancelBookingUseCase(sl()));
   sl.registerLazySingleton(() => GetMyBookingsUseCase(sl()));
-
   sl.registerLazySingleton(() => LogOutUseCase(sl()));
 
   /// CUBIT
@@ -202,6 +212,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => MyBookingsCubit(sl()));
   sl.registerFactory(() => DoctorMapCubit(sl<DoctorMapRepository>()));
   sl.registerFactory(() => DoctorDetailsCubit(sl()));
+  sl.registerFactory(() => ReviewsCubit(sl()));
 
   // Profile (New)
   sl.registerFactory(

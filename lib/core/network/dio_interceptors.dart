@@ -40,22 +40,26 @@ class DioInterceptors {
       final refreshToken = await CacheHelper.getData(key: ApiKeys.refreshToken);
       if (refreshToken == null) return false;
 
-      // 🔴 حسب الـ Docs الـ Content-Type لازم يكون application/json-patch+json
-      final refreshDio = Dio(
-        BaseOptions(
-          baseUrl: ApiConstance.baseUrl,
+      // final refreshDio = Dio(
+      //   BaseOptions(
+      //     headers: {'Content-Type': 'application/json-patch+json'},
+      //   ),
+      // );
+
+      final response = await dio.post(
+        ApiConstance.generateNewAccessToken,
+        data: jsonEncode({ApiKeys.refreshToken: refreshToken}),
+        options: Options(
           headers: {'Content-Type': 'application/json-patch+json'},
         ),
       );
 
-      // 📝 لازم نحول الـ Map لـ String يدوياً عشان الـ Content-Type مش standard json
-      final response = await refreshDio.post(
-        ApiConstance.generateNewAccessToken,
-        data: jsonEncode({ApiKeys.refreshToken: refreshToken}),
-      );
-
       if (response.statusCode == 200) {
-        final data = response.data;
+        final dynamic respData = response.data;
+        final Map<String, dynamic> data = respData is String
+            ? jsonDecode(respData)
+            : respData;
+
         final newAccessToken = data[ApiKeys.accessToken];
         final newRefreshToken = data[ApiKeys.refreshToken];
 
@@ -77,7 +81,13 @@ class DioInterceptors {
       }
       return false;
     } catch (e) {
-      log("❌ Refresh failed: $e");
+      if (e is DioException) {
+        log(
+          "❌ Refresh failed: ${e.response?.statusCode} - ${e.response?.data}",
+        );
+      } else {
+        log("❌ Refresh failed: $e");
+      }
       return false;
     }
   }

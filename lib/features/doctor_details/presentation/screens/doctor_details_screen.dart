@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:tabibi/core/utils/formatters.dart/formatters.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
 import 'package:tabibi/features/doctor_details/presentation/controller/doctor_details_cubit.dart';
 import 'package:tabibi/features/doctor_details/presentation/controller/doctor_details_state.dart';
@@ -89,7 +89,7 @@ class DoctorDetailsScreen extends StatelessWidget {
                     SizedBox(height: 8.h),
                     ...details.schedule.map(
                       (s) => Text(
-                        "${_getDayName(s.dayOfWeek)}: ${formatTo12Hour(s.openTime)} - ${formatTo12Hour(s.closeTime)}",
+                        "${_getDayName(s.dayOfWeek)}: ${Formatter.formatTo12Hour(s.openTime)} - ${Formatter.formatTo12Hour(s.closeTime)}",
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.grey500,
                         ),
@@ -118,7 +118,11 @@ class DoctorDetailsScreen extends StatelessWidget {
                               ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context.push(
+                              '${AppRoutes.doctorReviews}/${details.id}',
+                            );
+                          },
                           child: const Text(AppStrings.seeAll),
                         ),
                       ],
@@ -150,10 +154,6 @@ class DoctorDetailsScreen extends StatelessWidget {
     );
   }
 
-String formatTo12Hour(String time24) {
-  final dateTime = DateFormat('HH:mm').parse(time24);
-  return DateFormat('hh:mm a').format(dateTime);
-}
   String _getDayName(int day) {
     switch (day) {
       case 1:

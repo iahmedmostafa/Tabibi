@@ -15,9 +15,7 @@ abstract class DoctorsRemoteDataSource {
 class DoctorsRemoteDataSourceImpl implements DoctorsRemoteDataSource {
   final Dio dio;
 
-  DoctorsRemoteDataSourceImpl(this.dio) {
-    dio.options.baseUrl = ApiConstance.baseUrl;
-  }
+  DoctorsRemoteDataSourceImpl(this.dio);
 
   @override
   Future<DoctorsResponseModel> getDoctors({

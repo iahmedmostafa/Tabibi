@@ -17,6 +17,10 @@ class Formatter {
     final dateTime = DateTime.parse(isoDate).toLocal();
     return DateFormat('hh:mm a').format(dateTime);
   }
+  static String formatTo12Hour(String time24) {
+  final dateTime = DateFormat('HH:mm').parse(time24);
+  return DateFormat('hh:mm a').format(dateTime);
+}
 
   static String formatIsoToDateTime(String isoDate) {
     final dateTime = DateTime.parse(isoDate).toLocal();

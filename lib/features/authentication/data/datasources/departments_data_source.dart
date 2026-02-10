@@ -2,20 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:tabibi/core/error/exceptions.dart';
 import 'package:tabibi/core/error/failure.dart';
 import 'package:tabibi/core/network/api_constance.dart';
-import 'package:tabibi/core/network/dio_interceptors.dart';
 import 'package:tabibi/core/network/error_message_model.dart';
 import 'package:tabibi/features/authentication/data/models/department_model.dart';
 
 class DepartmentsDataSource {
   final Dio dio;
 
-  DepartmentsDataSource(this.dio) {
-    dio.options.baseUrl = ApiConstance.baseUrl;
-    dio.interceptors.add(DioInterceptors(dio).interceptor);
-    dio.options.connectTimeout = const Duration(seconds: 30);
-    dio.options.receiveTimeout = const Duration(seconds: 30);
-    dio.options.sendTimeout = const Duration(seconds: 30);
-  }
+  DepartmentsDataSource(this.dio);
 
   Future<List<DepartmentModel>> getDepartments() async {
     try {
