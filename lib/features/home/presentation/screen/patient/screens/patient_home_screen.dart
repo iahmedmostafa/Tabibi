@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/customCarouselSlider.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/custom_text_field.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/department_grid.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/widgets/notification_badge.dart';
 
 import '../../../../../../core/style/spacing/vertical_space.dart';
 import '../../../../../../core/utils/constants/app_colors.dart';
@@ -31,20 +31,7 @@ class PatientHomeScreen extends StatelessWidget {
                       "Location",
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: IconButton(
-                        onPressed: () {
-                          context.pushNamed(AppRoutes.notifications);
-                        },
-                        icon: const Icon(CupertinoIcons.bell_fill, size: 21),
-                      ),
-                    ),
+                    const NotificationBadge(),
                   ],
                 ),
                 VerticalSpace(height: AppHeight.h8),

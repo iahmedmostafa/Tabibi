@@ -2,6 +2,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart' as dot_env;
 
 class ApiConstance {
   ApiConstance._();
+  static const String serverUrl = "https://tabibi.runasp.net/hub";
   static const String baseUrl = "https://tabibi.runasp.net/";
   static const String signUp = "auth/register";
   static const String login = "auth/login";
@@ -24,6 +25,10 @@ class ApiConstance {
   static const String booking = "bookings";
   static const String mybooking = "bookings/my-bookings";
   static const String doctorReviews = "reviews/doctor/";
+  static const String notifications = "notifications";
+  static String markNotificationAsRead(String id) => "notifications/$id/read";
+  static const String markAllNotificationsAsRead = "notifications/read-all";
+  static const String unreadNotificationCount = "notifications/unread-count";
 
   //  static const String refreshToken = "auth/refresh";
   // static const String logout = "auth/logout";

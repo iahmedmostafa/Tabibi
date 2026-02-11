@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
+import 'package:tabibi/core/network/api_constance.dart';
+import 'package:tabibi/core/network/server_connection.dart';
+import 'package:tabibi/core/services/cache_helper.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/booking/presentation/controller/my_bookings_cubit.dart';
 import 'package:tabibi/features/booking/presentation/screens/my_bookings_screen.dart';
@@ -11,17 +14,23 @@ import 'package:tabibi/features/patient_profile/presentation/screens/profile_scr
 class BottomNavScreen extends StatefulWidget {
   const BottomNavScreen({super.key, this.initialIndex = 0});
   final int initialIndex;
-
   @override
   State<BottomNavScreen> createState() => _BottomNavScreenState();
 }
 
 class _BottomNavScreenState extends State<BottomNavScreen> {
   int _currentIndex = 0;
+  String? accessToken;
   @override
   void initState() {
     super.initState();
     _currentIndex = widget.initialIndex;
+    startServer();
+  }
+
+  void startServer() async {
+    accessToken = await CacheHelper.getData(key: ApiKeys.accessToken);
+    ServerConnection().connect(accessToken: accessToken!);
   }
 
   final List<Widget> _screens = [

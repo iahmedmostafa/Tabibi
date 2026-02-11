@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
+import 'package:tabibi/core/network/server_connection.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
@@ -89,6 +90,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       message: "Logged in successfully",
                       contentType: ContentType.success,
                       context: context,
+                    );
+                    await ServerConnection().connect(
+                      accessToken: state.logInEntity.accessToken,
                     );
                     if (state.role == '2') {
                       await _handleDoctorNavigation(context);

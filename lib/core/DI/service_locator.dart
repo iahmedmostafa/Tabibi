@@ -66,11 +66,15 @@ import 'package:tabibi/features/favorite/domain/usecases/get_favorites_use_case.
 import 'package:tabibi/features/favorite/presentation/controller/favorites_cubit.dart';
 import 'package:tabibi/features/home/data/datasources/doctors_remote_data_source.dart';
 import 'package:tabibi/features/home/data/repositories/doctor_repository.dart';
-import 'package:tabibi/features/home/data/repositories/notifications_repository_impl.dart';
-import 'package:tabibi/features/home/domain/repositories/notifications_repository.dart';
-import 'package:tabibi/features/home/domain/usecases/get_notifications_use_case.dart';
-import 'package:tabibi/features/home/presentation/cubit/notifications_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_cubit.dart';
+import 'package:tabibi/features/notifications/data/datasources/notifications_remote_data_source.dart';
+import 'package:tabibi/features/notifications/data/repositories/notifications_repository_impl.dart';
+import 'package:tabibi/features/notifications/domain/repositories/notifications_repository.dart';
+import 'package:tabibi/features/notifications/domain/usecases/get_notifications_use_case.dart';
+import 'package:tabibi/features/notifications/domain/usecases/get_unread_notification_count_use_case.dart';
+import 'package:tabibi/features/notifications/domain/usecases/mark_all_notifications_as_read_use_case.dart';
+import 'package:tabibi/features/notifications/domain/usecases/mark_notification_as_read_use_case.dart';
+import 'package:tabibi/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:tabibi/features/patient_profile/data/datasources/base_patient_profile_data_source.dart';
 import 'package:tabibi/features/patient_profile/data/datasources/patient_profile_data_source.dart';
 import 'package:tabibi/features/patient_profile/data/repositories/patient_profile_repository.dart';
@@ -140,6 +144,9 @@ Future<void> init() async {
   sl.registerLazySingleton<BaseBookingDataSource>(
     () => BookingDataSource(sl()),
   );
+  sl.registerLazySingleton<NotificationsRemoteDataSource>(
+    () => NotificationsRemoteDataSourceImpl(sl<Dio>()),
+  );
 
   /// REPOSITORY
   sl.registerLazySingleton<BaseAuthenticationRepository>(
@@ -167,6 +174,12 @@ Future<void> init() async {
     () => AppointmentRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<BaseBookingRepo>(() => BookingRepoImpl(sl()));
+  sl.registerLazySingleton<NotificationsRepository>(
+    () => NotificationsRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<FavoritesRepository>(
+    () => FavoritesRepositoryImpl(),
+  );
 
   /// USE CASE
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
@@ -188,6 +201,12 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CancelBookingUseCase(sl()));
   sl.registerLazySingleton(() => GetMyBookingsUseCase(sl()));
   sl.registerLazySingleton(() => LogOutUseCase(sl()));
+  sl.registerLazySingleton(() => GetNotificationsUseCase(sl()));
+  sl.registerLazySingleton(() => GetFavoritesUseCase(sl()));
+
+  sl.registerLazySingleton(() => MarkNotificationAsReadUseCase(sl()));
+  sl.registerLazySingleton(() => MarkAllNotificationsAsReadUseCase(sl()));
+  sl.registerLazySingleton(() => GetUnreadNotificationCountUseCase(sl()));
 
   /// CUBIT
   sl.registerFactory(() => SignUpCubit(sl()));
@@ -213,25 +232,11 @@ Future<void> init() async {
   sl.registerFactory(() => DoctorMapCubit(sl<DoctorMapRepository>()));
   sl.registerFactory(() => DoctorDetailsCubit(sl()));
   sl.registerFactory(() => ReviewsCubit(sl()));
-
-  // Profile (New)
+  sl.registerLazySingleton(
+    () => NotificationsCubit(sl(), sl(), sl(), sl(), sl()),
+  );
+  sl.registerFactory(() => FavoritesCubit(sl()));
   sl.registerFactory(
     () => ProfileCubit(logOutUseCase: sl(), getPatientProfileUseCase: sl()),
   );
-  // Notifications & Favorites Repositories
-  sl.registerLazySingleton<NotificationsRepository>(
-    () => NotificationsRepositoryImpl(),
-  );
-  sl.registerLazySingleton<FavoritesRepository>(
-    () => FavoritesRepositoryImpl(),
-  );
-
-  // UseCases
-  sl.registerLazySingleton(() => GetNotificationsUseCase(sl()));
-  sl.registerLazySingleton(() => GetFavoritesUseCase(sl()));
-
-  // Cubits
-  sl.registerFactory(() => NotificationsCubit(sl()));
-  sl.registerFactory(() => FavoritesCubit(sl()));
-  sl.registerFactory(() => DoctorMapCubit(sl()));
 }

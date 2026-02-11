@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
+import 'package:tabibi/core/network/server_connection.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
@@ -163,6 +164,7 @@ class ProfileScreen extends StatelessWidget {
                         context: context,
                         builder: (ctx) => LogoutDialog(
                           onLogout: () {
+                            ServerConnection().disconnect();
                             context.read<ProfileCubit>().logOut();
                           },
                         ),
