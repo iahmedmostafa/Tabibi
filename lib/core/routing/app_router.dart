@@ -27,8 +27,10 @@ import 'package:tabibi/features/authentication/modules/verify_code/presentation/
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/cubit/verify_code_state.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/pages/verify_code.dart';
 import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
+import 'package:tabibi/features/booking/presentation/controller/prescription_cubit.dart';
 import 'package:tabibi/features/booking/presentation/screens/book_appointment_screen.dart';
 import 'package:tabibi/features/booking/presentation/screens/my_bookings_screen.dart';
+import 'package:tabibi/features/booking/presentation/screens/prescription_screen.dart';
 import 'package:tabibi/features/doctor_details/data/models/doctor_details_model.dart';
 import 'package:tabibi/features/doctor_details/presentation/screens/doctor_details_screen.dart';
 import 'package:tabibi/features/doctor_details/presentation/screens/doctor_reviews_screen.dart';
@@ -287,6 +289,18 @@ final GoRouter router = GoRouter(
       builder: (context, state) {
         final doctorId = state.pathParameters['doctorId'] ?? '';
         return DoctorReviewsScreen(doctorId: doctorId);
+      },
+    ),
+    GoRoute(
+      path: '${AppRoutes.prescription}/:bookingId',
+      name: AppRoutes.prescription,
+      builder: (context, state) {
+        final bookingId = state.pathParameters['bookingId'] ?? '';
+        return BlocProvider(
+          create: (context) =>
+              sl<PrescriptionCubit>()..getPrescription(bookingId: bookingId),
+          child: const PrescriptionScreen(),
+        );
       },
     ),
   ],

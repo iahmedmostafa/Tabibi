@@ -27,4 +27,5 @@ class AppRoutes {
   static const favorites = '/favorites';
   static const homeScreen = '/homeScreen';
   static const doctorReviews = '/doctor_reviews';
+  static const prescription = '/prescription';
 }

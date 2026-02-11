@@ -31,17 +31,22 @@ import 'package:tabibi/features/authentication/modules/signup/presentation/cubit
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/cubit/verify_code_cubit.dart';
 import 'package:tabibi/features/booking/data/datasources/appointment_remote_data_source.dart';
 import 'package:tabibi/features/booking/data/datasources/booking_data_source.dart';
+import 'package:tabibi/features/booking/data/datasources/prescription_remote_data_source.dart';
 import 'package:tabibi/features/booking/data/repositories/appointment_repository_impl.dart';
 import 'package:tabibi/features/booking/data/repositories/booking_repo_impl.dart';
+import 'package:tabibi/features/booking/data/repositories/prescription_repository_impl.dart';
 import 'package:tabibi/features/booking/domain/repositories/appointment_repository.dart';
 import 'package:tabibi/features/booking/domain/repositories/base_booking_repo.dart';
+import 'package:tabibi/features/booking/domain/repositories/prescription_repository.dart';
 import 'package:tabibi/features/booking/domain/usecases/cancel_booking_use_case.dart';
 import 'package:tabibi/features/booking/domain/usecases/confirm_payment_use_case.dart';
 import 'package:tabibi/features/booking/domain/usecases/create_booking_use_case.dart';
 import 'package:tabibi/features/booking/domain/usecases/get_available_slots_use_case.dart';
 import 'package:tabibi/features/booking/domain/usecases/get_my_bookings.dart';
+import 'package:tabibi/features/booking/domain/usecases/get_prescription_use_case.dart';
 import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
 import 'package:tabibi/features/booking/presentation/controller/my_bookings_cubit.dart';
+import 'package:tabibi/features/booking/presentation/controller/prescription_cubit.dart';
 import 'package:tabibi/features/doctor_details/data/datasources/doctor_details_remote_data_source.dart';
 import 'package:tabibi/features/doctor_details/data/repositories/doctor_details_repository_impl.dart';
 import 'package:tabibi/features/doctor_details/domain/repositories/doctor_details_repository.dart';
@@ -140,6 +145,9 @@ Future<void> init() async {
   sl.registerLazySingleton<BaseBookingDataSource>(
     () => BookingDataSource(sl()),
   );
+  sl.registerLazySingleton<PrescriptionRemoteDataSource>(
+    () => PrescriptionRemoteDataSourceImpl(sl()),
+  );
 
   /// REPOSITORY
   sl.registerLazySingleton<BaseAuthenticationRepository>(
@@ -167,6 +175,9 @@ Future<void> init() async {
     () => AppointmentRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<BaseBookingRepo>(() => BookingRepoImpl(sl()));
+  sl.registerLazySingleton<PrescriptionRepository>(
+    () => PrescriptionRepositoryImpl(sl()),
+  );
 
   /// USE CASE
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
@@ -187,6 +198,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ConfirmPaymentUseCase(sl()));
   sl.registerLazySingleton(() => CancelBookingUseCase(sl()));
   sl.registerLazySingleton(() => GetMyBookingsUseCase(sl()));
+  sl.registerLazySingleton(() => GetPrescriptionUseCase(sl()));
   sl.registerLazySingleton(() => LogOutUseCase(sl()));
 
   /// CUBIT
@@ -210,6 +222,7 @@ Future<void> init() async {
   sl.registerFactory(() => DoctorsCubit(sl()));
   sl.registerFactory(() => AppointmentCubit(sl(), sl(), sl(), sl()));
   sl.registerLazySingleton(() => MyBookingsCubit(sl()));
+  sl.registerFactory(() => PrescriptionCubit(sl()));
   sl.registerFactory(() => DoctorMapCubit(sl<DoctorMapRepository>()));
   sl.registerFactory(() => DoctorDetailsCubit(sl()));
   sl.registerFactory(() => ReviewsCubit(sl()));
@@ -233,5 +246,4 @@ Future<void> init() async {
   // Cubits
   sl.registerFactory(() => NotificationsCubit(sl()));
   sl.registerFactory(() => FavoritesCubit(sl()));
-  sl.registerFactory(() => DoctorMapCubit(sl()));
 }
