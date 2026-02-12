@@ -12,8 +12,9 @@ import 'package:tabibi/features/booking/data/models/booking_model.dart';
 
 class BookingCard extends StatelessWidget {
   final BookingModel booking;
+  final BookingStatus status;
 
-  const BookingCard({super.key, required this.booking});
+  const BookingCard({super.key, required this.booking, required this.status});
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +116,7 @@ class BookingCard extends StatelessWidget {
   }
 
   Widget _buildActionButtons(BuildContext context) {
-    if (booking.status == BookingStatus.upcoming) {
+    if (status == BookingStatus.upcoming) {
       return Row(
         children: [
           Expanded(
@@ -127,19 +128,9 @@ class BookingCard extends StatelessWidget {
               () {},
             ),
           ),
-          SizedBox(width: 16.w),
-          Expanded(
-            child: _buildButton(
-              context,
-              "Reschedule",
-              AppColors.midnightBlue,
-              Colors.white,
-              () {},
-            ),
-          ),
         ],
       );
-    } else if (booking.status == BookingStatus.completed) {
+    } else {
       return Column(
         children: [
           Row(
@@ -184,18 +175,6 @@ class BookingCard extends StatelessWidget {
             ),
           ),
         ],
-      );
-    } else {
-      // Canceled - For now maybe just Re-Book? Or nothing per design
-      return SizedBox(
-        width: double.infinity,
-        child: _buildButton(
-          context,
-          "Re-Book",
-          AppColors.grey100,
-          AppColors.midnightBlue,
-          () {},
-        ),
       );
     }
   }
