@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:tabibi/features/patient_profile/domain/entities/patient_profile.dart';
 
 abstract class ProfileState extends Equatable {
   const ProfileState();
@@ -12,8 +13,11 @@ class ProfileInitial extends ProfileState {}
 class ProfileLoading extends ProfileState {}
 
 class ProfileLoaded extends ProfileState {
-  // Add user entity here if needed to display user info
-  const ProfileLoaded();
+  final PatientProfile patientProfile;
+  const ProfileLoaded(this.patientProfile);
+
+  @override
+  List<Object?> get props => [patientProfile];
 }
 
 class ProfileError extends ProfileState {

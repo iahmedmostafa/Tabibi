@@ -22,12 +22,12 @@ class ProfileCubit extends Cubit<ProfileState> {
     );
   }
 
-  // Future<void> getProfile() async {
-  //   emit(ProfileLoading());
-  //   final result = await getPatientProfileUseCase(const NoParameters());
-  //   result.fold(
-  //     (l) => emit(ProfileError(l.message)),
-  //     (r) => emit(ProfileLoaded()), // Pass data
-  //   );
-  // }
+  Future<void> getProfile() async {
+    emit(ProfileLoading());
+    final result = await getPatientProfileUseCase();
+    result.fold(
+      (l) => emit(ProfileError(l.message)),
+      (r) => emit(ProfileLoaded(r)),
+    );
+  }
 }
