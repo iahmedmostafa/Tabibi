@@ -16,19 +16,19 @@ class MyBookingsScreen extends StatefulWidget {
 }
 
 class _MyBookingsScreenState extends State<MyBookingsScreen> {
-    // ignore: unused_field
-    late MyBookingsCubit _cubit;
+  // ignore: unused_field
+  late MyBookingsCubit _cubit;
 
   @override
   void initState() {
     super.initState();
     _cubit = sl<MyBookingsCubit>()..getBookings();
-    
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-        value: _cubit,
+      value: _cubit,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -45,7 +45,9 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
         ),
         body: BlocBuilder<MyBookingsCubit, MyBookingsState>(
           buildWhen: (previous, current) {
-            return previous.selectedTab != current.selectedTab || previous.status != current.status || previous.allBookings != current.allBookings;
+            return previous.selectedTab != current.selectedTab ||
+                previous.status != current.status ||
+                previous.allBookings != current.allBookings;
           },
           builder: (context, state) {
             if (state.status == MyBookingsStatus.loading) {
@@ -56,7 +58,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
                 SizedBox(height: 16.h),
                 BookingTabFilter(
                   selectedTab: state.selectedTab,
-                  onTabSelected: (status) {            
+                  onTabSelected: (status) {
                     _cubit.getBookings(status: status);
                   },
                 ),
@@ -84,6 +86,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
                           itemBuilder: (context, index) {
                             return BookingCard(
                               booking: state.allBookings[index],
+                              status: state.selectedTab,
                             );
                           },
                         ),

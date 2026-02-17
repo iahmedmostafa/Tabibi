@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 
 class ProfileMenuItem extends StatelessWidget {
@@ -30,7 +29,9 @@ class ProfileMenuItem extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: isLogout ? AppColors.error : AppColors.grey600,
+              color: isLogout
+                  ? Theme.of(context).colorScheme.error
+                  : Theme.of(context).iconTheme.color,
               size: 24.sp,
             ),
             SizedBox(width: AppWidth.w16),
@@ -38,9 +39,9 @@ class ProfileMenuItem extends StatelessWidget {
               child: Text(
                 text,
                 style: isLogout
-                    ? Theme.of(
-                        context,
-                      ).textTheme.bodyMedium!.copyWith(color: AppColors.error)
+                    ? Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.error,
+                      )
                     : Theme.of(context).textTheme.bodyMedium,
               ),
             ),
@@ -48,7 +49,7 @@ class ProfileMenuItem extends StatelessWidget {
               Icon(
                 Icons.arrow_forward_ios,
                 size: 16.sp,
-                color: AppColors.grey400,
+                color: Theme.of(context).disabledColor,
               ),
           ],
         ),

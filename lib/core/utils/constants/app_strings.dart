@@ -115,4 +115,18 @@ class AppStrings {
   static const areYouSureRemoveFavorite =
       "Are you sure you want to remove this doctor from favorites?";
   static const yesRemove = "Yes, Remove";
+
+  // Prescription
+  static const prescription = "Prescription";
+  static const prescriptionDate = "Prescription Date";
+  static const diagnosis = "Diagnosis";
+  static const notes = "Notes";
+  static const medicines = "Medicines";
+  static const items = "items";
+  static const dosage = "Dosage";
+  static const frequency = "Frequency";
+  static const duration = "Duration";
+  static const instructions = "Instructions";
+  static const noPrescriptionFound =
+      "No prescription available for this booking";
 }

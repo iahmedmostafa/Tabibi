@@ -37,6 +37,8 @@ class ApiConstance {
 
   static String confirmPayment(String id) => "bookings/$id/confirm-payment";
   static String cancelBooking(String id) => "bookings/$id/cancel";
+  static String prescription(String bookingId) =>
+      "bookings/$bookingId/prescription";
 }
 
 class ApiKeys {

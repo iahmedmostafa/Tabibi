@@ -1,16 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/core/utils/formatters.dart/formatters.dart';
 import 'package:tabibi/features/booking/data/models/booking_model.dart';
 
 class BookingCard extends StatelessWidget {
   final BookingModel booking;
+  final BookingStatus status;
 
-  const BookingCard({super.key, required this.booking});
+  const BookingCard({super.key, required this.booking, required this.status});
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +116,7 @@ class BookingCard extends StatelessWidget {
   }
 
   Widget _buildActionButtons(BuildContext context) {
-    if (booking.status == BookingStatus.upcoming) {
+    if (status == BookingStatus.upcoming) {
       return Row(
         children: [
           Expanded(
@@ -124,32 +128,44 @@ class BookingCard extends StatelessWidget {
               () {},
             ),
           ),
-          SizedBox(width: 16.w),
-          Expanded(
-            child: _buildButton(
-              context,
-              "Reschedule",
-              AppColors.midnightBlue,
-              Colors.white,
-              () {},
-            ),
-          ),
         ],
       );
-    } else if (booking.status == BookingStatus.completed) {
-      return Row(
+    } else {
+      return Column(
         children: [
-          Expanded(
-            child: _buildButton(
-              context,
-              "Re-Book",
-              AppColors.grey100,
-              AppColors.midnightBlue,
-              () {},
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: _buildButton(
+                  context,
+                  "Re-Book",
+                  AppColors.grey100,
+                  AppColors.midnightBlue,
+                  () {},
+                ),
+              ),
+              if (booking.showPrescriptionButton == true) ...[
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: _buildButton(
+                    context,
+                    AppStrings.prescription,
+                    AppColors.midnightBlue,
+                    Colors.white,
+                    () {
+                      context.goNamed(
+                        AppRoutes.prescription,
+                        pathParameters: {'bookingId': booking.id},
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ],
           ),
-          SizedBox(width: 16.w),
-          Expanded(
+          SizedBox(height: 10.h),
+          SizedBox(
+            width: double.infinity,
             child: _buildButton(
               context,
               "Add Review",
@@ -159,18 +175,6 @@ class BookingCard extends StatelessWidget {
             ),
           ),
         ],
-      );
-    } else {
-      // Canceled - For now maybe just Re-Book? Or nothing per design
-      return SizedBox(
-        width: double.infinity,
-        child: _buildButton(
-          context,
-          "Re-Book",
-          AppColors.grey100,
-          AppColors.midnightBlue,
-          () {},
-        ),
       );
     }
   }
