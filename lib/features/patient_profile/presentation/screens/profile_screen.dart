@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
-import 'package:tabibi/core/network/server_connection.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';

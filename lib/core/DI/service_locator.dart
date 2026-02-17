@@ -252,13 +252,4 @@ Future<void> init() async {
   sl.registerFactory(
     () => ProfileCubit(logOutUseCase: sl(), getPatientProfileUseCase: sl()),
   );
-  // Notifications & Favorites Repositories
-
-  // UseCases
-  sl.registerLazySingleton(() => GetNotificationsUseCase(sl()));
-  sl.registerLazySingleton(() => GetFavoritesUseCase(sl()));
-
-  // Cubits
-  sl.registerFactory(() => NotificationsCubit(sl(), sl(), sl(), sl(), sl()));
-  sl.registerFactory(() => FavoritesCubit(sl()));
 }
