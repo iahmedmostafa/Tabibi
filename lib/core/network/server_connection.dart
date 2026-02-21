@@ -17,6 +17,11 @@ class ServerConnection {
   Stream<dynamic> get onNotificationReceived =>
       _notificationStreamController.stream;
 
+  // Stream for chat messages
+  final _chatMessageStreamController = StreamController<dynamic>.broadcast();
+  Stream<dynamic> get onChatMessageReceived =>
+      _chatMessageStreamController.stream;
+
   Future<void> connect({required String accessToken}) async {
     if (_hubConnection != null &&
         _hubConnection!.state == HubConnectionState.Connected) {
@@ -39,6 +44,13 @@ class ServerConnection {
       log("📩 Notification received: $data");
       if (data != null && data.isNotEmpty) {
         _notificationStreamController.add(data[0]);
+      }
+    });
+
+    _hubConnection!.on("ReceiveChatMessage", (data) {
+      log("💬 Chat message received: $data");
+      if (data != null && data.isNotEmpty) {
+        _chatMessageStreamController.add(data[0]);
       }
     });
 
@@ -69,5 +81,6 @@ class ServerConnection {
       log("🛑 SignalR disconnected");
     }
     await _notificationStreamController.close();
+    await _chatMessageStreamController.close();
   }
 }

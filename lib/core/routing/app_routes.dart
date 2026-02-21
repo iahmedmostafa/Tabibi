@@ -28,4 +28,5 @@ class AppRoutes {
   static const homeScreen = '/homeScreen';
   static const doctorReviews = '/doctor_reviews';
   static const prescription = '/prescription';
+  static const chat = '/chat';
 }

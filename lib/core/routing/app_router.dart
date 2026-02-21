@@ -31,6 +31,7 @@ import 'package:tabibi/features/booking/presentation/controller/prescription_cub
 import 'package:tabibi/features/booking/presentation/screens/book_appointment_screen.dart';
 import 'package:tabibi/features/booking/presentation/screens/my_bookings_screen.dart';
 import 'package:tabibi/features/booking/presentation/screens/prescription_screen.dart';
+import 'package:tabibi/features/chat_patient/presentation/pages/chat_screen.dart';
 import 'package:tabibi/features/doctor_details/data/models/doctor_details_model.dart';
 import 'package:tabibi/features/doctor_details/presentation/screens/doctor_details_screen.dart';
 import 'package:tabibi/features/doctor_details/presentation/screens/doctor_reviews_screen.dart';
@@ -301,6 +302,14 @@ final GoRouter router = GoRouter(
               sl<PrescriptionCubit>()..getPrescription(bookingId: bookingId),
           child: const PrescriptionScreen(),
         );
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.chat,
+      name: AppRoutes.chat,
+      builder: (context, state) {
+        final doctorId = state.extra as String? ?? '';
+        return ChatScreen(doctorId: doctorId);
       },
     ),
   ],

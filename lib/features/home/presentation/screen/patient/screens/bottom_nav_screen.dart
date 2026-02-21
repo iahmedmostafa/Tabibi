@@ -10,6 +10,7 @@ import 'package:tabibi/features/booking/presentation/screens/my_bookings_screen.
 import 'package:tabibi/features/doctors_map/presentation/screens/doctors_map_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/patient_home_screen.dart';
 import 'package:tabibi/features/patient_profile/presentation/screens/profile_screen.dart';
+import 'package:tabibi/features/chat_patient/presentation/pages/conversations_screen.dart';
 
 class BottomNavScreen extends StatefulWidget {
   const BottomNavScreen({super.key, this.initialIndex = 0});
@@ -37,6 +38,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     const PatientHomeScreen(),
     const DoctorsMapScreen(),
     const MyBookingsScreen(),
+    const ConversationsScreen(),
     const ProfileScreen(),
   ];
 
@@ -65,6 +67,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
             icon: Icon(Iconsax.calendar),
             label: 'Calendar',
           ),
+          BottomNavigationBarItem(icon: Icon(Iconsax.message), label: 'Chats'),
           BottomNavigationBarItem(icon: Icon(Iconsax.user), label: 'Profile'),
         ],
       ),

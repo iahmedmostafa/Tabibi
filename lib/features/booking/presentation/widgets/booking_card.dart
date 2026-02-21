@@ -34,13 +34,52 @@ class BookingCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            Formatter.formatIsoToDateTime(booking.appointmentDate),
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14.sp,
-              color: AppColors.midnightBlue,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                Formatter.formatIsoToDateTime(booking.appointmentDate),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14.sp,
+                  color: AppColors.midnightBlue,
+                ),
+              ),
+              status==BookingStatus.completed?
+                GestureDetector(
+                  onTap: () {
+                    context.goNamed(
+                      AppRoutes.chat,
+                      pathParameters: {'doctorId': booking.doctorId},
+                    );
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                    decoration: BoxDecoration(
+                      color: AppColors.midnightBlue,
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Iconsax.message,
+                          size: 14.sp,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 4.w),
+                        Text(
+                          "Chat",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12.sp,
+
+            ),                ),
+                      ],
+                    ),
+                  ),
+                )
+                :const SizedBox.shrink(),
+            ],
           ),
           SizedBox(height: 12.h),
           Container(height: 1, color: AppColors.grey100),

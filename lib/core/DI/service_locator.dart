@@ -88,6 +88,10 @@ import 'package:tabibi/features/patient_profile/domain/usecases/get_patient_prof
 import 'package:tabibi/features/patient_profile/domain/usecases/update_patient_profile_use_case.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/patient_profile_cubit.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/profile_cubit.dart';
+import 'package:tabibi/features/chat_patient/data/datasources/chat_remote_data_source.dart';
+import 'package:tabibi/features/chat_patient/data/repositories/chat_repository_impl.dart';
+import 'package:tabibi/features/chat_patient/domain/repositories/chat_repository.dart';
+import 'package:tabibi/features/chat_patient/domain/usecases/chat_usecases.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
@@ -155,6 +159,9 @@ Future<void> init() async {
   sl.registerLazySingleton<NotificationsRemoteDataSource>(
     () => NotificationsRemoteDataSourceImpl(sl<Dio>()),
   );
+  sl.registerLazySingleton<ChatRemoteDataSource>(
+    () => ChatRemoteDataSourceImpl(sl<Dio>()),
+  );
 
   /// REPOSITORY
   sl.registerLazySingleton<BaseAuthenticationRepository>(
@@ -191,6 +198,7 @@ Future<void> init() async {
   sl.registerLazySingleton<FavoritesRepository>(
     () => FavoritesRepositoryImpl(),
   );
+  sl.registerLazySingleton<ChatRepository>(() => ChatRepositoryImpl(sl()));
 
   /// USE CASE
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
@@ -219,6 +227,9 @@ Future<void> init() async {
   sl.registerLazySingleton(() => MarkNotificationAsReadUseCase(sl()));
   sl.registerLazySingleton(() => MarkAllNotificationsAsReadUseCase(sl()));
   sl.registerLazySingleton(() => GetUnreadNotificationCountUseCase(sl()));
+  sl.registerLazySingleton(() => GetConversationsUseCase(sl()));
+  sl.registerLazySingleton(() => GetChatMessagesUseCase(sl()));
+  sl.registerLazySingleton(() => SendChatMessageUseCase(sl()));
 
   /// CUBIT
   sl.registerFactory(() => SignUpCubit(sl()));
