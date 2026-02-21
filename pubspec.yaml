@@ -25,7 +25,6 @@ dependencies:
   flutter_bloc: ^9.1.1
   flutter_dotenv: ^6.0.0
   flutter_easyloading: ^3.0.5
-  flutter_native_splash: null
   flutter_screenutil: ^5.9.3
   flutter_secure_storage: ^9.2.4
   flutter_stripe: ^12.2.0
@@ -47,8 +46,13 @@ dependencies:
 
 dev_dependencies:
   flutter_lints: ^5.0.0
+  flutter_native_splash: ^2.4.1
   flutter_test:
     sdk: flutter
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/splash_icon.png
 
 flutter:
   uses-material-design: true
