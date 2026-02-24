@@ -148,6 +148,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     emit(AppointmentBookingLoading());
     final result = await cancelBookingUseCase.execute(bookingId: bookingId);
 
+
     result.fold(
       (failure) {
         emit(AppointmentFailure(failure.message));

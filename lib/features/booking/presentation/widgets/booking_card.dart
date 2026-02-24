@@ -45,40 +45,47 @@ class BookingCard extends StatelessWidget {
                   color: AppColors.midnightBlue,
                 ),
               ),
-              status==BookingStatus.completed?
-                GestureDetector(
-                  onTap: () {
-                    context.goNamed(
-                      AppRoutes.chat,
-                      pathParameters: {'doctorId': booking.doctorId},
-                    );
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                    decoration: BoxDecoration(
-                      color: AppColors.midnightBlue,
-                      borderRadius: BorderRadius.circular(20.r),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Iconsax.message,
-                          size: 14.sp,
-                          color: Colors.white,
+              status == BookingStatus.completed
+                  ? GestureDetector(
+                      onTap: () {
+                        context.pushNamed(
+                          AppRoutes.chat,
+                          extra: {
+                            'doctorId': booking.doctorId,
+                            'doctorName': booking.doctorName,
+                            'doctorImage': booking.doctorAvatar,
+                          },
+                        );
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12.w,
+                          vertical: 6.h,
                         ),
-                        SizedBox(width: 4.w),
-                        Text(
-                          "Chat",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12.sp,
-
-            ),                ),
-                      ],
-                    ),
-                  ),
-                )
-                :const SizedBox.shrink(),
+                        decoration: BoxDecoration(
+                          color: AppColors.midnightBlue,
+                          borderRadius: BorderRadius.circular(20.r),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Iconsax.message,
+                              size: 14.sp,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 4.w),
+                            Text(
+                              "Chat",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
             ],
           ),
           SizedBox(height: 12.h),

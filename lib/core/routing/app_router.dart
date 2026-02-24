@@ -308,8 +308,12 @@ final GoRouter router = GoRouter(
       path: AppRoutes.chat,
       name: AppRoutes.chat,
       builder: (context, state) {
-        final doctorId = state.extra as String? ?? '';
-        return ChatScreen(doctorId: doctorId);
+        final extra = state.extra as Map<String, dynamic>? ?? {};
+        return ChatScreen(
+          doctorId: extra['doctorId'] as String? ?? '',
+          doctorName: extra['doctorName'] as String? ?? '',
+          doctorImage: extra['doctorImage'] as String?,
+        );
       },
     ),
   ],

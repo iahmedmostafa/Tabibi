@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import '../../../../core/DI/service_locator.dart';
-import '../../../../core/routing/app_routes.dart';
+import '../../../../core/utils/constants/app_colors.dart';
 import '../../domain/entities/chat_entity.dart';
 import '../../domain/usecases/chat_usecases.dart';
+import '../widgets/conversation_list_tile.dart';
 
 class ConversationsScreen extends StatefulWidget {
   const ConversationsScreen({super.key});
@@ -21,11 +20,13 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
   @override
   void initState() {
     super.initState();
-    _loadConversations();
+    _refresh();
   }
 
-  void _loadConversations() {
-    _conversationsFuture = _getConversationsUseCase.call();
+  void _refresh() {
+    setState(() {
+      _conversationsFuture = _getConversationsUseCase.call();
+    });
   }
 
   @override
@@ -42,203 +43,94 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
         future: _conversationsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (snapshot.hasError) {
             return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error_outline, size: 60, color: Colors.red),
-                  SizedBox(height: 16.h),
-                  Text('Failed to load chats: ${snapshot.error}'),
-                  SizedBox(height: 16.h),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _loadConversations();
-                      });
-                    },
-                    child: const Text('Retry'),
-                  ),
-                ],
-              ),
+              child: CircularProgressIndicator(color: AppColors.midnightBlue),
             );
           }
 
-          final conversations = snapshot.data ?? [];
+          if (snapshot.hasError) return _buildErrorView(snapshot.error);
 
-          if (conversations.isEmpty) {
-            return _buildEmptyState();
-          }
+          final conversations = snapshot.data ?? [];
+          if (conversations.isEmpty) return _buildEmptyView();
 
           return RefreshIndicator(
-            onRefresh: () async {
-              setState(() {
-                _loadConversations();
-              });
-            },
-            child: ListView.separated(
-              itemCount: conversations.length,
-              separatorBuilder: (context, index) =>
-                  Divider(height: 1, indent: 80.w, color: Colors.grey[200]),
-              itemBuilder: (context, index) {
-                final chat = conversations[index];
-                return _buildConversationItem(chat);
-              },
-            ),
+            onRefresh: () async => _refresh(),
+            color: AppColors.midnightBlue,
+            child: _buildConversationList(conversations),
           );
         },
       ),
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildConversationList(List<ConversationEntity> conversations) {
+    return ListView.separated(
+      itemCount: conversations.length,
+      separatorBuilder: (_, __) =>
+          Divider(height: 1, indent: 80.w, color: AppColors.grey200),
+      itemBuilder: (context, index) => ConversationListTile(
+        conversation: conversations[index],
+        onNavigateBack: _refresh,
+      ),
+    );
+  }
+
+  Widget _buildEmptyView() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.chat_bubble_outline, size: 80.sp, color: Colors.grey[400]),
+          Icon(
+            Icons.chat_bubble_outline,
+            size: 80.sp,
+            color: AppColors.grey300,
+          ),
           SizedBox(height: 16.h),
           Text(
             'No messages yet',
             style: TextStyle(
               fontSize: 18.sp,
-              color: Colors.grey[600],
+              color: AppColors.grey600,
               fontWeight: FontWeight.w600,
             ),
           ),
           SizedBox(height: 8.h),
           Text(
             'Your conversations will appear here',
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey[500]),
+            style: TextStyle(fontSize: 14.sp, color: AppColors.grey500),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildConversationItem(ConversationEntity chat) {
-    return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      onTap: () {
-        context.pushNamed(AppRoutes.chat, extra: chat.otherUserId).then((_) {
-          // Refresh when coming back in case of new messages
-          setState(() {
-            _loadConversations();
-          });
-        });
-      },
-      leading: Stack(
+  Widget _buildErrorView(Object? error) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircleAvatar(
-            radius: 28.r,
-            backgroundColor: Colors.grey[200],
-            backgroundImage:
-                chat.otherUserImage != null && chat.otherUserImage!.isNotEmpty
-                ? NetworkImage(chat.otherUserImage!)
-                : null,
-            child: chat.otherUserImage == null || chat.otherUserImage!.isEmpty
-                ? Icon(Icons.person, size: 30.sp, color: Colors.grey[400])
-                : null,
-          ),
-        ],
-      ),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Text(
-              chat.otherUserName.isNotEmpty
-                  ? chat.otherUserName
-                  : 'Unknown Doctor',
-              style: TextStyle(
-                fontWeight: chat.unreadCount > 0
-                    ? FontWeight.bold
-                    : FontWeight.w600,
-                fontSize: 16.sp,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
+          Icon(Icons.error_outline, size: 60.sp, color: Colors.red),
+          SizedBox(height: 16.h),
           Text(
-            _formatChatTime(chat.lastMessageTime),
+            'Failed to load chats',
             style: TextStyle(
-              fontSize: 12.sp,
-              color: chat.unreadCount > 0
-                  ? Theme.of(context).primaryColor
-                  : Colors.grey[500],
-              fontWeight: chat.unreadCount > 0
-                  ? FontWeight.bold
-                  : FontWeight.normal,
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+              color: AppColors.grey700,
+            ),
+          ),
+          SizedBox(height: 16.h),
+          ElevatedButton.icon(
+            onPressed: _refresh,
+            icon: const Icon(Icons.refresh),
+            label: const Text('Retry'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.midnightBlue,
+              foregroundColor: Colors.white,
             ),
           ),
         ],
       ),
-      subtitle: Padding(
-        padding: EdgeInsets.only(top: 6.h),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                chat.lastMessage,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: chat.unreadCount > 0
-                      ? Colors.black87
-                      : Colors.grey[600],
-                  fontWeight: chat.unreadCount > 0
-                      ? FontWeight.w500
-                      : FontWeight.normal,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            if (chat.unreadCount > 0)
-              Container(
-                margin: EdgeInsets.only(left: 8.w),
-                padding: EdgeInsets.all(6.w),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Text(
-                    chat.unreadCount.toString(),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
     );
-  }
-
-  String _formatChatTime(DateTime time) {
-    final now = DateTime.now();
-    final difference = now.difference(time);
-
-    if (difference.inDays == 0 && now.day == time.day) {
-      // Today
-      return DateFormat('HH:mm').format(time);
-    } else if (difference.inDays == 1 ||
-        (difference.inDays == 0 && now.day != time.day)) {
-      // Yesterday
-      return 'Yesterday';
-    } else if (difference.inDays < 7) {
-      // Within last week
-      return DateFormat('EEEE').format(time);
-    } else {
-      // Older
-      return DateFormat('dd/MM/yyyy').format(time);
-    }
   }
 }

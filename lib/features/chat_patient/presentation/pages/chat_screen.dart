@@ -1,215 +1,167 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/DI/service_locator.dart';
+import '../../../../core/utils/constants/app_colors.dart';
 import '../../domain/entities/chat_entity.dart';
 import '../../domain/usecases/chat_usecases.dart';
+import '../widgets/chat_app_bar.dart';
+import '../widgets/chat_date_chip.dart';
+import '../widgets/chat_input_bar.dart';
+import '../widgets/chat_message_bubble.dart';
+import '../widgets/chat_states.dart';
 
 class ChatScreen extends StatefulWidget {
   final String doctorId;
-  const ChatScreen({required this.doctorId, super.key});
+  final String doctorName;
+  final String? doctorImage;
+
+  const ChatScreen({
+    required this.doctorId,
+    required this.doctorName,
+    this.doctorImage,
+    super.key,
+  });
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  late Stream<ChatResponseEntity> _chatStream;
+  late final Stream<ChatResponseEntity> _chatStream;
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  bool _hasText = false;
 
-  final getChatMessagesUseCase = sl<GetChatMessagesUseCase>();
-  final sendChatMessageUseCase = sl<SendChatMessageUseCase>();
+  final _getChatMessagesUseCase = sl<GetChatMessagesUseCase>();
+  final _sendChatMessageUseCase = sl<SendChatMessageUseCase>();
 
   @override
   void initState() {
     super.initState();
-    _chatStream = getChatMessagesUseCase.call(widget.doctorId);
+    _chatStream = _getChatMessagesUseCase.call(widget.doctorId);
+    _messageController.addListener(_onTextChanged);
+  }
+
+  void _onTextChanged() {
+    final hasText = _messageController.text.trim().isNotEmpty;
+    if (hasText != _hasText) setState(() => _hasText = hasText);
   }
 
   void _sendMessage() {
     if (_messageController.text.trim().isEmpty) return;
-
     final content = _messageController.text.trim();
     _messageController.clear();
-
-    sendChatMessageUseCase.call(receiverId: widget.doctorId, content: content);
-
+    _sendChatMessageUseCase.call(receiverId: widget.doctorId, content: content);
     _scrollToBottom();
   }
 
   void _scrollToBottom() {
-    if (_scrollController.hasClients) {
-      Future.delayed(const Duration(milliseconds: 100), () {
+    if (!_scrollController.hasClients) return;
+    Future.delayed(const Duration(milliseconds: 120), () {
+      if (_scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
+          duration: const Duration(milliseconds: 350),
+          curve: Curves.easeOutCubic,
         );
-      });
-    }
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Chat')),
+      backgroundColor: const Color(0xFFF0F4F8),
+      appBar: ChatAppBar(
+        doctorName: widget.doctorName,
+        doctorImage: widget.doctorImage,
+      ),
       body: Column(
         children: [
-          Expanded(
-            child: StreamBuilder<ChatResponseEntity>(
-              stream: _chatStream,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting &&
-                    !snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                }
-
-                if (!snapshot.hasData) {
-                  return const Center(child: Text('No messages yet'));
-                }
-
-                final chatResponse = snapshot.data!;
-                final messages = chatResponse.messages;
-
-                return Column(
-                  children: [
-                    if (!chatResponse.canChat)
-                      Container(
-                        padding: EdgeInsets.all(12.h),
-                        color: Colors.amber.withOpacity(0.2),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.info_outline, color: Colors.amber),
-                            SizedBox(width: 8.w),
-                            Expanded(
-                              child: Text(
-                                'The chat is currently unavailable. Chat is available only for 7 days after the appointment.',
-                                style: TextStyle(
-                                  color: Colors.amber[800],
-                                  fontSize: 14.sp,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    Expanded(
-                      child: ListView.builder(
-                        controller: _scrollController,
-                        itemCount: messages.length,
-                        itemBuilder: (context, index) {
-                          final msg = messages[index];
-                          final isMe = msg.isMe;
-
-                          return Align(
-                            alignment: isMe
-                                ? Alignment.centerRight
-                                : Alignment.centerLeft,
-                            child: Container(
-                              margin: EdgeInsets.symmetric(
-                                horizontal: 16.w,
-                                vertical: 4.h,
-                              ),
-                              padding: EdgeInsets.all(12.w),
-                              decoration: BoxDecoration(
-                                color: isMe
-                                    ? Theme.of(context).primaryColor
-                                    : Colors.grey[200],
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(12.r),
-                                  topRight: Radius.circular(12.r),
-                                  bottomLeft: isMe
-                                      ? Radius.circular(12.r)
-                                      : Radius.circular(0),
-                                  bottomRight: isMe
-                                      ? Radius.circular(0)
-                                      : Radius.circular(12.r),
-                                ),
-                              ),
-                              child: Text(
-                                msg.message,
-                                style: TextStyle(
-                                  color: isMe ? Colors.white : Colors.black87,
-                                  fontSize: 15.sp,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-          _buildMessageInput(),
+          Expanded(child: _buildBody()),
+          _buildBottomBar(),
         ],
       ),
     );
   }
 
-  Widget _buildMessageInput() {
+  Widget _buildBody() {
     return StreamBuilder<ChatResponseEntity>(
       stream: _chatStream,
       builder: (context, snapshot) {
-        final canChat = snapshot.data?.canChat ?? false;
+        if (snapshot.connectionState == ConnectionState.waiting &&
+            !snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: AppColors.midnightBlue,
+              strokeWidth: 2.5,
+            ),
+          );
+        }
 
-        if (!canChat) return const SizedBox.shrink();
+        if (snapshot.hasError) return const ChatErrorState();
+        if (!snapshot.hasData) return const ChatEmptyState();
 
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
-                blurRadius: 10,
-                offset: const Offset(0, -5),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _messageController,
-                  decoration: InputDecoration(
-                    hintText: 'Type a message...',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25.r),
-                      borderSide: BorderSide.none,
-                    ),
-                    filled: true,
-                    fillColor: Colors.grey[100],
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 20.w,
-                      vertical: 10.h,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 8.w),
-              CircleAvatar(
-                backgroundColor: Theme.of(context).primaryColor,
-                child: IconButton(
-                  icon: const Icon(Icons.send, color: Colors.white, size: 20),
-                  onPressed: _sendMessage,
-                ),
-              ),
-            ],
-          ),
+        final response = snapshot.data!;
+        WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+
+        return Column(
+          children: [
+            if (!response.canChat) const ChatExpiredBanner(),
+            Expanded(
+              child: response.messages.isEmpty
+                  ? const ChatEmptyState()
+                  : _buildMessagesList(response.messages),
+            ),
+          ],
         );
       },
     );
   }
 
+  Widget _buildMessagesList(List<MessageEntity> messages) {
+    return ListView.builder(
+      controller: _scrollController,
+      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+      itemCount: messages.length,
+      itemBuilder: (context, index) {
+        final msg = messages[index];
+        final prev = index > 0 ? messages[index - 1] : null;
+        final showDate = prev == null || !_isSameDay(msg.sentAt, prev.sentAt);
+        return Column(
+          children: [
+            if (showDate) ChatDateChip(date: msg.sentAt),
+            ChatMessageBubble(message: msg),
+          ],
+        );
+      },
+    );
+  }
+
+  /// Reacts to the stream to decide whether to show input or expired bar
+  Widget _buildBottomBar() {
+    return StreamBuilder<ChatResponseEntity>(
+      stream: _chatStream,
+      builder: (context, snapshot) {
+        if (snapshot.hasData && !snapshot.data!.canChat) {
+          return const ChatExpiredBar();
+        }
+        return ChatInputBar(
+          controller: _messageController,
+          hasText: _hasText,
+          onSend: _sendMessage,
+        );
+      },
+    );
+  }
+
+  bool _isSameDay(DateTime a, DateTime b) =>
+      a.year == b.year && a.month == b.month && a.day == b.day;
+
   @override
   void dispose() {
+    _messageController.removeListener(_onTextChanged);
     _messageController.dispose();
     _scrollController.dispose();
     super.dispose();
