@@ -49,13 +49,6 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                   color: Colors.white,
                 ),
               ),
-              Text(
-                'Your Doctor',
-                style: TextStyle(
-                  fontSize: 11.sp,
-                  color: Colors.white.withValues(alpha: 0.65),
-                ),
-              ),
             ],
           ),
         ],
