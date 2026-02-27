@@ -19,7 +19,14 @@ class ProfileMenuList extends StatelessWidget {
         ProfileMenuItem(
           icon: CupertinoIcons.person,
           text: AppStrings.editProfile,
-          onTap: () {},
+          onTap: () async {
+            final result = await context.pushNamed(AppRoutes.editProfile);
+            if (result == true) {
+              if (context.mounted) {
+                context.read<ProfileCubit>().getProfile();
+              }
+            }
+          },
         ),
         _buildDivider(context),
         ProfileMenuItem(

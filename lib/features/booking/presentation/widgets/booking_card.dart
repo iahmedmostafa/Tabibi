@@ -21,7 +21,7 @@ class BookingCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
@@ -42,7 +42,9 @@ class BookingCard extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14.sp,
-                  color: AppColors.midnightBlue,
+                  color:
+                      Theme.of(context).textTheme.bodyLarge?.color ??
+                      AppColors.midnightBlue,
                 ),
               ),
               status == BookingStatus.completed

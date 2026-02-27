@@ -29,4 +29,5 @@ class AppRoutes {
   static const doctorReviews = '/doctor_reviews';
   static const prescription = '/prescription';
   static const chat = '/chat';
+  static const editProfile = '/edit_profile';
 }

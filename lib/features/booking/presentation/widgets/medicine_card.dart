@@ -16,9 +16,9 @@ class MedicineCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: AppColors.grey200),
+        border: Border.all(color: Theme.of(context).dividerColor),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -44,7 +44,9 @@ class MedicineCard extends StatelessWidget {
                   child: Text(
                     '$index',
                     style: TextStyle(
-                      color: AppColors.midnightBlue,
+                      color:
+                          Theme.of(context).textTheme.bodyMedium?.color ??
+                          AppColors.midnightBlue,
                       fontWeight: FontWeight.bold,
                       fontSize: 14.sp,
                     ),
@@ -57,7 +59,6 @@ class MedicineCard extends StatelessWidget {
                   medicine.medicineName,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: AppColors.midnightBlue,
                     fontSize: 16.sp,
                   ),
                 ),
@@ -65,23 +66,26 @@ class MedicineCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 12.h),
-          Container(height: 1, color: AppColors.grey100),
+          Container(height: 1, color: Theme.of(context).dividerColor),
           SizedBox(height: 12.h),
 
           // Medicine Details Grid
           _buildDetailRow(
+            context: context,
             icon: Iconsax.weight,
             label: AppStrings.dosage,
             value: medicine.dosage,
           ),
           SizedBox(height: 10.h),
           _buildDetailRow(
+            context: context,
             icon: Iconsax.repeat,
             label: AppStrings.frequency,
             value: medicine.frequency,
           ),
           SizedBox(height: 10.h),
           _buildDetailRow(
+            context: context,
             icon: Iconsax.timer_1,
             label: AppStrings.duration,
             value: medicine.duration,
@@ -89,6 +93,7 @@ class MedicineCard extends StatelessWidget {
           if (medicine.instructions.isNotEmpty) ...[
             SizedBox(height: 10.h),
             _buildDetailRow(
+              context: context,
               icon: Iconsax.info_circle,
               label: AppStrings.instructions,
               value: medicine.instructions,
@@ -100,6 +105,7 @@ class MedicineCard extends StatelessWidget {
   }
 
   Widget _buildDetailRow({
+    required BuildContext context,
     required IconData icon,
     required String label,
     required String value,
@@ -125,7 +131,9 @@ class MedicineCard extends StatelessWidget {
           child: Text(
             value,
             style: TextStyle(
-              color: AppColors.grey700,
+              color:
+                  Theme.of(context).textTheme.bodyLarge?.color ??
+                  AppColors.grey700,
               fontSize: 14.sp,
               fontWeight: FontWeight.w500,
             ),

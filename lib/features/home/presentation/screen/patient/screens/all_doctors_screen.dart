@@ -55,28 +55,33 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
     return BlocProvider(
       create: (context) => sl<DepartmentsCubit>()..getDepartments(),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF9FAFB),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           title: Text(
             "All Doctors",
             style: TextStyle(
-              color: AppColors.midnightBlue,
+              color:
+                  Theme.of(context).textTheme.bodyLarge?.color ??
+                  AppColors.midnightBlue,
               fontSize: 20.sp,
               fontWeight: FontWeight.w700,
             ),
           ),
           centerTitle: true,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: AppColors.midnightBlue),
+            icon: Icon(
+              Icons.arrow_back,
+              color: Theme.of(context).iconTheme.color,
+            ),
             onPressed: () {
               GoRouter.of(context).go(AppRoutes.bottomNavScreen);
             },
           ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.map, color: AppColors.midnightBlue),
+              icon: Icon(Icons.map, color: Theme.of(context).iconTheme.color),
               onPressed: () {
                 GoRouter.of(context).push(AppRoutes.doctorsMapScreen);
               },

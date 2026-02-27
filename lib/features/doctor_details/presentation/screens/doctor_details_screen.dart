@@ -13,6 +13,7 @@ import 'package:tabibi/features/doctor_details/presentation/controller/doctor_de
 import 'package:tabibi/features/doctor_details/presentation/widgets/doctor_details_header.dart';
 import 'package:tabibi/features/doctor_details/presentation/widgets/doctor_stats.dart';
 import 'package:tabibi/features/doctor_details/presentation/widgets/review_item.dart';
+import 'package:tabibi/features/favorite/presentation/controller/favorites_cubit.dart';
 import 'package:tabibi/features/home/data/models/doctor_model.dart';
 
 class DoctorDetailsScreen extends StatelessWidget {
@@ -34,10 +35,26 @@ class DoctorDetailsScreen extends StatelessWidget {
             onPressed: () => context.pop(),
           ),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.favorite_border),
-              onPressed: () {
-                // Toggle favorite
+            // Reactive heart icon tied to the singleton FavoritesCubit
+            BlocBuilder<FavoritesCubit, FavoritesState>(
+              bloc: sl<FavoritesCubit>(),
+              builder: (context, favState) {
+                final isFav = favState.favoritedIds.contains(doctor.id);
+                return IconButton(
+                  icon: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    transitionBuilder: (child, animation) =>
+                        ScaleTransition(scale: animation, child: child),
+                    child: Icon(
+                      isFav ? Icons.favorite : Icons.favorite_border,
+                      key: ValueKey(isFav),
+                      color: isFav ? AppColors.error : null,
+                    ),
+                  ),
+                  onPressed: () {
+                    sl<FavoritesCubit>().toggleFavorite(doctor);
+                  },
+                );
               },
             ),
           ],

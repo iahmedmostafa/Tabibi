@@ -129,4 +129,19 @@ class AppStrings {
   static const instructions = "Instructions";
   static const noPrescriptionFound =
       "No prescription available for this booking";
+
+  // Edit Profile
+  static const saveChanges = "Save Changes";
+  static const fullName = "Full Name";
+  static const enterFullName = "Enter your full name";
+  static const selectGender = "Select Gender";
+  static const male = "Male";
+  static const female = "Female";
+  static const dateOfBirth = "Date of Birth";
+  static const city = "City";
+  static const profileUpdatedSuccess = "Profile updated successfully";
+  static const profilePicture = "Profile Picture";
+  static const changePhoto = "Change Photo";
+  static const nameRequired = "Name is required";
+  static const cityRequired = "City is required";
 }

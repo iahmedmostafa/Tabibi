@@ -27,7 +27,7 @@ class ProfileHeader extends StatelessWidget {
                   color: Colors.transparent,
                   child: Center(
                     child: GestureDetector(
-                      onTap: () {}, 
+                      onTap: () {},
                       child: Container(
                         width: 300.r,
                         height: 300.r,
@@ -53,7 +53,7 @@ class ProfileHeader extends StatelessWidget {
             width: 120.r,
             height: 120.r,
             decoration: BoxDecoration(
-              color: Theme.of(context).highlightColor, 
+              color: Theme.of(context).highlightColor,
               shape: BoxShape.circle,
               image: DecorationImage(
                 image: hasImage
@@ -70,6 +70,15 @@ class ProfileHeader extends StatelessWidget {
           profile?.name ?? "User",
           style: Theme.of(context).textTheme.headlineMedium,
         ),
+        if (profile?.city?.name.isNotEmpty == true) ...[
+          SizedBox(height: 4.h),
+          Text(
+            profile!.city!.name,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).disabledColor,
+            ),
+          ),
+        ],
       ],
     );
   }

@@ -18,7 +18,7 @@ class RemoveFavoriteDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).dialogBackgroundColor,
       child: Padding(
         padding: EdgeInsets.all(AppWidth.w20),
         child: Column(
@@ -31,7 +31,10 @@ class RemoveFavoriteDialog extends StatelessWidget {
               ).textTheme.headlineMedium?.copyWith(fontSize: 18.sp),
               textAlign: TextAlign.center,
             ),
-            Divider(color: AppColors.grey200, height: AppHeight.h32),
+            Divider(
+              color: Theme.of(context).dividerColor,
+              height: AppHeight.h32,
+            ),
             Text(
               AppStrings.areYouSureRemoveFavorite,
               style: Theme.of(
@@ -44,7 +47,9 @@ class RemoveFavoriteDialog extends StatelessWidget {
               doctorName,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: AppColors.midnightBlue,
+                color:
+                    Theme.of(context).textTheme.bodyLarge?.color ??
+                    AppColors.midnightBlue,
               ),
             ),
             SizedBox(height: AppHeight.h24),
@@ -63,7 +68,9 @@ class RemoveFavoriteDialog extends StatelessWidget {
                     child: Text(
                       AppStrings.cancel,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.midnightBlue,
+                        color:
+                            Theme.of(context).textTheme.bodyMedium?.color ??
+                            AppColors.midnightBlue,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

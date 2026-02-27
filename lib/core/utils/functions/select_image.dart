@@ -11,7 +11,7 @@ Future<void> selectImage(
   Function(File) onImagePicked,
   BuildContext context,
 ) async {
-  showBottomSheet(
+  showModalBottomSheet(
     context: context,
 
     builder: (context) {

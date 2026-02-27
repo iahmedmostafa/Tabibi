@@ -8,6 +8,7 @@ class DoctorModel {
   final String? department;
   final double? latitude;
   final double? longitude;
+  final bool isFavorited;
 
   DoctorModel({
     required this.id,
@@ -19,6 +20,7 @@ class DoctorModel {
     this.department,
     this.latitude,
     this.longitude,
+    this.isFavorited = false,
   });
 
   factory DoctorModel.fromJson(Map<String, dynamic> json) {
@@ -60,6 +62,7 @@ class DoctorModel {
       department: parseDepartment(json['department']),
       latitude: parseCoord(json['latitude']),
       longitude: parseCoord(json['longitude']),
+      isFavorited: json['isFavorited'] == true,
     );
   }
 }

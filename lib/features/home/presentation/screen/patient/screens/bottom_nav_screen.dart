@@ -8,6 +8,7 @@ import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/booking/presentation/controller/my_bookings_cubit.dart';
 import 'package:tabibi/features/booking/presentation/screens/my_bookings_screen.dart';
 import 'package:tabibi/features/doctors_map/presentation/screens/doctors_map_screen.dart';
+import 'package:tabibi/features/favorite/presentation/controller/favorites_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/patient_home_screen.dart';
 import 'package:tabibi/features/patient_profile/presentation/screens/profile_screen.dart';
 import 'package:tabibi/features/chat_patient/presentation/pages/conversations_screen.dart';
@@ -27,6 +28,8 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     super.initState();
     _currentIndex = widget.initialIndex;
     startServer();
+    // Pre-load favorites IDs so heart icons are correct from the start
+    sl<FavoritesCubit>().getFavorites();
   }
 
   void startServer() async {

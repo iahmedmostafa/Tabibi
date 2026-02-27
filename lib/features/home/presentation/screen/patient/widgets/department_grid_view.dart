@@ -90,7 +90,9 @@ class DepartmentGridView extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   fontSize: 12.sp,
-                  color: isDark ? AppColors.white : AppColors.black,
+                  color:
+                      Theme.of(context).textTheme.bodyMedium?.color ??
+                      (isDark ? AppColors.white : AppColors.black),
                 ),
                 textAlign: TextAlign.center,
               ),

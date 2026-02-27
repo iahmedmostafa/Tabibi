@@ -13,7 +13,7 @@ class LogoutDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).dialogBackgroundColor,
       child: Padding(
         padding: EdgeInsets.all(AppWidth.w20),
         child: Column(
@@ -23,7 +23,10 @@ class LogoutDialog extends StatelessWidget {
               AppStrings.logout,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            Divider(color: AppColors.grey200, height: AppHeight.h32),
+            Divider(
+              color: Theme.of(context).dividerColor,
+              height: AppHeight.h32,
+            ),
             Text(
               AppStrings.areYouSureLogout,
               style: Theme.of(
@@ -47,7 +50,9 @@ class LogoutDialog extends StatelessWidget {
                     child: Text(
                       AppStrings.cancel,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.midnightBlue,
+                        color:
+                            Theme.of(context).textTheme.bodyMedium?.color ??
+                            AppColors.midnightBlue,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

@@ -47,6 +47,7 @@ import 'package:tabibi/features/home/presentation/screen/patient/screens/patient
 import 'package:tabibi/features/notifications/presentation/screens/notifications_screen.dart';
 import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/patient_profile_cubit.dart';
+import 'package:tabibi/features/patient_profile/presentation/screens/edit_profile_screen.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
@@ -315,6 +316,20 @@ final GoRouter router = GoRouter(
           doctorImage: extra['doctorImage'] as String?,
         );
       },
+    ),
+    GoRoute(
+      path: AppRoutes.editProfile,
+      name: AppRoutes.editProfile,
+      builder: (context, state) => MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => sl<CitiesCubit>()..getCities()),
+          BlocProvider(create: (context) => sl<UploadImageCubit>()),
+          BlocProvider(
+            create: (context) => sl<PatientProfileCubit>()..getPatientProfile(),
+          ),
+        ],
+        child: const EditProfileScreen(),
+      ),
     ),
   ],
 );
