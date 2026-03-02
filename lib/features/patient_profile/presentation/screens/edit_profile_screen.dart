@@ -6,14 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:tabibi/core/utils/constants/app_dimensions.dart';
-import 'package:tabibi/core/utils/constants/app_padding.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/utils/functions/select_image.dart';
 import 'package:tabibi/core/utils/helper/helper_functions.dart';
-import 'package:tabibi/core/widgets/primary_button.dart';
-import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/cities_cubit.dart';
-import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/cities_state.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_state.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
@@ -21,10 +16,7 @@ import 'package:tabibi/features/patient_profile/data/models/patient_profile_mode
 import 'package:tabibi/features/patient_profile/data/models/update_patient_profile_params.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/patient_profile_cubit.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/patient_profile_state.dart';
-import 'package:tabibi/features/patient_profile/presentation/widgets/edit_profile_avatar.dart';
-import 'package:tabibi/features/patient_profile/presentation/widgets/edit_profile_date_field.dart';
-import 'package:tabibi/features/patient_profile/presentation/widgets/edit_profile_dropdown.dart';
-import 'package:tabibi/features/patient_profile/presentation/widgets/edit_profile_text_field.dart';
+import 'package:tabibi/features/patient_profile/presentation/widgets/edit_profile_form_body.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -52,9 +44,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   void _prefillFromState() {
     final profile = context.read<PatientProfileCubit>().state.profile;
-    if (profile != null) {
-      _prefillFromProfile(profile);
-    }
+    if (profile != null) _prefillFromProfile(profile);
   }
 
   void _prefillFromProfile(PatientProfileModel profile) {
@@ -73,9 +63,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   void _handleImageSelection() {
     selectImage((file) {
-      setState(() {
-        _localImageFile = file;
-      });
+      setState(() => _localImageFile = file);
       context.read<UploadImageCubit>().uploadImage(file);
     }, context);
   }
@@ -83,18 +71,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _submitForm() {
     if (!_formKey.currentState!.validate()) return;
 
-    final uploadCubit = context.read<UploadImageCubit>();
-    final avatarUrl = uploadCubit.uploadedImageUrl ?? _networkImageUrl;
+    final avatarUrl =
+        context.read<UploadImageCubit>().uploadedImageUrl ?? _networkImageUrl;
 
-    final params = UpdatePatientProfileParams(
-      name: _nameController.text.trim(),
-      dateOfBirth: _selectedBirthdate,
-      cityId: _selectedCityId,
-      avatarUrl: avatarUrl,
-      gender: _selectedGender,
+    context.read<PatientProfileCubit>().updatePatientProfile(
+      UpdatePatientProfileParams(
+        name: _nameController.text.trim(),
+        dateOfBirth: _selectedBirthdate,
+        cityId: _selectedCityId,
+        avatarUrl: avatarUrl,
+        gender: _selectedGender,
+      ),
     );
-
-    context.read<PatientProfileCubit>().updatePatientProfile(params);
   }
 
   @override
@@ -103,9 +91,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       listener: (context, state) {
         if (state.status == UploadImageStatus.success &&
             state.imageUrl != null) {
-          setState(() {
-            _networkImageUrl = state.imageUrl;
-          });
+          setState(() => _networkImageUrl = state.imageUrl);
         } else if (state.status == UploadImageStatus.failure) {
           AppHelperFunctions.showAwesomeSnackBar(
             title: 'Error',
@@ -128,7 +114,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               contentType: ContentType.success,
               context: context,
             );
-            // Pop and pass true so ProfileScreen knows to refresh
             context.pop(true);
           } else if (state.updateStatus == PatientProfileUpdateStatus.failure) {
             EasyLoading.dismiss();
@@ -163,144 +148,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   _nameController.text.isEmpty) {
                 _prefillFromProfile(profileState.profile!);
               }
-              return _buildBody(context);
+              return EditProfileFormBody(
+                formKey: _formKey,
+                nameController: _nameController,
+                selectedBirthdate: _selectedBirthdate,
+                selectedCityId: _selectedCityId,
+                selectedGender: _selectedGender,
+                networkImageUrl: _networkImageUrl,
+                localImageFile: _localImageFile,
+                onBirthdateChanged: (date) =>
+                    setState(() => _selectedBirthdate = date),
+                onCityChanged: (id) => setState(() => _selectedCityId = id),
+                onGenderChanged: (gender) =>
+                    setState(() => _selectedGender = gender),
+                onAvatarTap: _handleImageSelection,
+                onSubmit: _submitForm,
+              );
             },
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildBody(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: AppPadding.p24),
-        child: Column(
-          children: [
-            SizedBox(height: AppHeight.h24),
-
-            // Avatar
-            BlocBuilder<UploadImageCubit, UploadImageState>(
-              builder: (context, uploadState) {
-                return EditProfileAvatar(
-                  networkImageUrl: _networkImageUrl,
-                  localImageFile: _localImageFile,
-                  isUploading: uploadState.status == UploadImageStatus.loading,
-                  onTap: _handleImageSelection,
-                );
-              },
-            ),
-
-            SizedBox(height: AppHeight.h32),
-
-            // Name Field
-            EditProfileTextField(
-              controller: _nameController,
-              label: AppStrings.fullName,
-              hint: AppStrings.enterFullName,
-              prefixIcon: Iconsax.user,
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return AppStrings.nameRequired;
-                }
-                return null;
-              },
-            ),
-
-            SizedBox(height: AppHeight.h20),
-
-            // Gender Dropdown
-            EditProfileDropdown<int>(
-              label: AppStrings.selectGender,
-              hint: AppStrings.selectGender,
-              value: _selectedGender,
-              prefixIcon: Iconsax.user_edit,
-              items: const [
-                DropdownMenuItem(value: 1, child: Text(AppStrings.male)),
-                DropdownMenuItem(value: 2, child: Text(AppStrings.female)),
-              ],
-              onChanged: (value) {
-                setState(() {
-                  _selectedGender = value;
-                });
-              },
-            ),
-
-            SizedBox(height: AppHeight.h20),
-
-            // Date of Birth
-            EditProfileDateField(
-              label: AppStrings.dateOfBirth,
-              selectedDate: _selectedBirthdate,
-              onDateSelected: (date) {
-                setState(() {
-                  _selectedBirthdate = date;
-                });
-              },
-            ),
-
-            SizedBox(height: AppHeight.h20),
-
-            // City Dropdown
-            _buildCityDropdown(),
-
-            SizedBox(height: AppHeight.h40),
-
-            // Save Button
-            PrimaryButton(title: AppStrings.saveChanges, onPress: _submitForm),
-
-            SizedBox(height: AppHeight.h40),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCityDropdown() {
-    return BlocBuilder<CitiesCubit, CitiesState>(
-      builder: (context, citiesState) {
-        if (citiesState.status == CitiesStatus.loading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (citiesState.status == CitiesStatus.failure) {
-          return Text(
-            citiesState.errorMessage ?? 'Failed to load cities',
-            style: const TextStyle(color: Colors.red),
-          );
-        }
-
-        if (citiesState.cities.isEmpty) {
-          return const SizedBox.shrink();
-        }
-
-        return EditProfileDropdown<String>(
-          label: AppStrings.city,
-          hint: AppStrings.city,
-          value: _selectedCityId,
-          prefixIcon: Iconsax.location,
-          items: citiesState.cities
-              .map(
-                (city) => DropdownMenuItem<String>(
-                  value: city.id,
-                  child: Text(city.name),
-                ),
-              )
-              .toList(),
-          onChanged: (value) {
-            setState(() {
-              _selectedCityId = value;
-            });
-          },
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return AppStrings.cityRequired;
-            }
-            return null;
-          },
-        );
-      },
     );
   }
 }

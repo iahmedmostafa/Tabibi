@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:tabibi/core/utils/constants/app_border_radius.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
+import 'package:tabibi/core/utils/constants/app_input_decoration.dart';
 import 'package:tabibi/core/utils/helper/helper_functions.dart';
 
 class EditProfileDateField extends StatelessWidget {
@@ -58,16 +59,13 @@ class EditProfileDateField extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = AppHelperFunctions.isDarkMode(context);
     final hasDate = selectedDate != null && selectedDate!.isNotEmpty;
+    final borderColor = isDark ? AppColors.grey700 : AppColors.grey300;
+    final iconColor = isDark ? AppColors.grey400 : AppColors.grey500;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: Theme.of(
-            context,
-          ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
-        ),
+        Text(label, style: AppInputDecoration.labelStyle(context)),
         SizedBox(height: AppHeight.h8),
         GestureDetector(
           onTap: () => _openDatePicker(context),
@@ -79,17 +77,11 @@ class EditProfileDateField extends StatelessWidget {
             decoration: BoxDecoration(
               color: isDark ? AppColors.grey800 : AppColors.grey100,
               borderRadius: AppBorderRadius.r12,
-              border: Border.all(
-                color: isDark ? AppColors.grey700 : AppColors.grey300,
-              ),
+              border: Border.all(color: borderColor),
             ),
             child: Row(
               children: [
-                Icon(
-                  Iconsax.calendar,
-                  color: isDark ? AppColors.grey400 : AppColors.grey500,
-                  size: 20,
-                ),
+                Icon(Iconsax.calendar, color: iconColor, size: 20),
                 SizedBox(width: AppWidth.w12),
                 Expanded(
                   child: Text(
@@ -101,11 +93,7 @@ class EditProfileDateField extends StatelessWidget {
                     ),
                   ),
                 ),
-                Icon(
-                  Iconsax.arrow_down_1,
-                  color: isDark ? AppColors.grey400 : AppColors.grey500,
-                  size: 16,
-                ),
+                Icon(Iconsax.arrow_down_1, color: iconColor, size: 16),
               ],
             ),
           ),

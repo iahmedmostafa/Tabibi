@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tabibi/core/utils/constants/app_border_radius.dart';
-import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
+import 'package:tabibi/core/utils/constants/app_input_decoration.dart';
 import 'package:tabibi/core/utils/helper/helper_functions.dart';
 
 class EditProfileTextField extends StatelessWidget {
@@ -31,12 +30,7 @@ class EditProfileTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: Theme.of(
-            context,
-          ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
-        ),
+        Text(label, style: AppInputDecoration.labelStyle(context)),
         SizedBox(height: AppHeight.h8),
         TextFormField(
           controller: controller,
@@ -44,48 +38,11 @@ class EditProfileTextField extends StatelessWidget {
           keyboardType: keyboardType,
           maxLines: maxLines,
           style: Theme.of(context).textTheme.bodyMedium,
-          decoration: InputDecoration(
+          decoration: AppInputDecoration.build(
+            context,
+            isDark: isDark,
             hintText: hint,
-            hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: isDark ? AppColors.grey500 : AppColors.grey400,
-            ),
-            prefixIcon: prefixIcon != null
-                ? Icon(
-                    prefixIcon,
-                    color: isDark ? AppColors.grey400 : AppColors.grey500,
-                    size: 20,
-                  )
-                : null,
-            filled: true,
-            fillColor: isDark ? AppColors.grey800 : AppColors.grey100,
-            border: OutlineInputBorder(
-              borderRadius: AppBorderRadius.r12,
-              borderSide: BorderSide(
-                color: isDark ? AppColors.grey700 : AppColors.grey300,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: AppBorderRadius.r12,
-              borderSide: BorderSide(
-                color: isDark ? AppColors.grey700 : AppColors.grey300,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: AppBorderRadius.r12,
-              borderSide: const BorderSide(color: AppColors.primary, width: 2),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: AppBorderRadius.r12,
-              borderSide: const BorderSide(color: AppColors.error, width: 1.5),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: AppBorderRadius.r12,
-              borderSide: const BorderSide(color: AppColors.error, width: 2),
-            ),
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: AppWidth.w16,
-              vertical: AppHeight.h16,
-            ),
+            prefixIcon: prefixIcon,
           ),
         ),
       ],

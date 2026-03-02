@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
-import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/features/favorite/presentation/controller/favorites_cubit.dart';
-import 'package:tabibi/features/favorite/presentation/widgets/remove_favorite_dialog.dart';
-import 'package:tabibi/features/home/presentation/screen/patient/widgets/custom_doctor_cart.dart';
+import 'package:tabibi/features/favorite/presentation/widgets/favorite_doctor_card.dart';
+import 'package:tabibi/features/favorite/presentation/widgets/favorites_empty_state.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({super.key});
@@ -43,58 +42,14 @@ class FavoritesScreen extends StatelessWidget {
             }
 
             if (state is FavoritesLoaded) {
-              if (state.favorites.isEmpty) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.favorite_border,
-                        size: 72,
-                        color: AppColors.grey300,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        "No favorites yet.",
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: AppColors.grey500,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }
+              if (state.favorites.isEmpty) return const FavoritesEmptyState();
 
               return ListView.separated(
                 padding: EdgeInsets.all(AppWidth.w20),
                 itemCount: state.favorites.length,
-                separatorBuilder: (context, index) =>
-                    SizedBox(height: AppHeight.h16),
-                itemBuilder: (context, index) {
-                  final doctor = state.favorites[index];
-                  return GestureDetector(
-                    onTap: () {
-                      context.push(AppRoutes.doctorDetails, extra: doctor);
-                    },
-                    child: DoctorCard(
-                      doctor: doctor,
-                      isFavorite: true,
-                      onFavoriteTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (ctx) => RemoveFavoriteDialog(
-                            doctorName: doctor.name,
-                            onConfirm: () {
-                              context.read<FavoritesCubit>().toggleFavorite(
-                                doctor,
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
+                separatorBuilder: (_, __) => SizedBox(height: AppHeight.h16),
+                itemBuilder: (context, index) =>
+                    FavoriteDoctorCard(doctor: state.favorites[index]),
               );
             }
 
