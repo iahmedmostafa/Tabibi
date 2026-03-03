@@ -53,6 +53,20 @@ import '../../features/authentication/modules/doctor_fill_profile/cubit/departme
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
 import '../services/shared_prefs_service.dart';
 
+// Doctor feature imports
+import 'package:tabibi/features/doctor/appointments/presentation/pages/appointment_details_page.dart';
+import 'package:tabibi/features/doctor/availability/presentation/cubit/availability_cubit.dart';
+import 'package:tabibi/features/doctor/availability/presentation/pages/edit_availability_page.dart';
+import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart'
+    as doctor_entities;
+import 'package:tabibi/features/doctor/earnings/presentation/pages/earnings_page.dart';
+import 'package:tabibi/features/doctor/patients/domain/entities/patient.dart';
+import 'package:tabibi/features/doctor/patients/presentation/pages/patient_profile_page.dart';
+import 'package:tabibi/features/doctor/requests/presentation/pages/appointment_requests_page.dart';
+import 'package:tabibi/features/doctor/reviews/presentation/pages/reviews_page.dart';
+import 'package:tabibi/features/doctor/schedule/presentation/pages/my_schedule_page.dart';
+import 'package:tabibi/features/doctor/profile/presentation/pages/settings_page.dart';
+
 final GoRouter router = GoRouter(
   initialLocation: OnboardingServices.isFirstTime()
       ? AppRoutes.onboarding
@@ -330,6 +344,60 @@ final GoRouter router = GoRouter(
         ],
         child: const EditProfileScreen(),
       ),
+    ),
+
+    // ===== Doctor Feature Routes =====
+    GoRoute(
+      path: AppRoutes.doctorSchedule,
+      name: AppRoutes.doctorSchedule,
+      builder: (context, state) => BlocProvider(
+        create: (_) => AvailabilityCubit(),
+        child: const MySchedulePage(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.doctorAvailability,
+      name: AppRoutes.doctorAvailability,
+      builder: (context, state) => BlocProvider(
+        create: (_) => AvailabilityCubit(),
+        child: const EditAvailabilityPage(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.doctorRequests,
+      name: AppRoutes.doctorRequests,
+      builder: (context, state) => const AppointmentRequestsPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.doctorEarnings,
+      name: AppRoutes.doctorEarnings,
+      builder: (context, state) => const EarningsPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.doctorSettings,
+      name: AppRoutes.doctorSettings,
+      builder: (context, state) => const SettingsPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.doctorAppointmentDetails,
+      name: AppRoutes.doctorAppointmentDetails,
+      builder: (context, state) {
+        final appointment = state.extra as doctor_entities.Appointment;
+        return AppointmentDetailsPage(appointment: appointment);
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.doctorPatientProfile,
+      name: AppRoutes.doctorPatientProfile,
+      builder: (context, state) {
+        final patient = state.extra as Patient;
+        return PatientProfilePage(patient: patient);
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.doctorReviewsPage,
+      name: AppRoutes.doctorReviewsPage,
+      builder: (context, state) => const ReviewsPage(),
     ),
   ],
 );

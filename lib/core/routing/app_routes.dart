@@ -30,4 +30,15 @@ class AppRoutes {
   static const prescription = '/prescription';
   static const chat = '/chat';
   static const editProfile = '/edit_profile';
+
+  // ===== Doctor Feature Routes =====
+  static const doctorDashboard = '/doctor/dashboard';
+  static const doctorSchedule = '/doctor/schedule';
+  static const doctorAvailability = '/doctor/availability';
+  static const doctorRequests = '/doctor/requests';
+  static const doctorEarnings = '/doctor/earnings';
+  static const doctorSettings = '/doctor/settings';
+  static const doctorAppointmentDetails = '/doctor/appointment_details';
+  static const doctorPatientProfile = '/doctor/patient_profile';
+  static const doctorReviewsPage = '/doctor/reviews_page';
 }
