@@ -18,20 +18,22 @@ class PrescriptionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
           AppStrings.prescription,
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: AppColors.midnightBlue,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.midnightBlue),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).iconTheme.color,
+          ),
           onPressed: () => context.pop(),
         ),
       ),
@@ -107,14 +109,13 @@ class PrescriptionScreen extends StatelessWidget {
               Icon(
                 Iconsax.hospital,
                 size: 22.sp,
-                color: AppColors.midnightBlue,
+                color: Theme.of(context).iconTheme.color,
               ),
               SizedBox(width: 8.w),
               Text(
                 AppStrings.medicines,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: AppColors.midnightBlue,
                   fontSize: 18.sp,
                 ),
               ),
@@ -128,7 +129,9 @@ class PrescriptionScreen extends StatelessWidget {
                 child: Text(
                   '${prescription.medicines.length} ${AppStrings.items}',
                   style: TextStyle(
-                    color: AppColors.midnightBlue,
+                    color:
+                        Theme.of(context).textTheme.bodyMedium?.color ??
+                        AppColors.midnightBlue,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w600,
                   ),

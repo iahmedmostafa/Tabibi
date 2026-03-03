@@ -63,7 +63,9 @@ class AllDoctorsDepartmentsListView extends StatelessWidget {
                     vertical: 8.h,
                   ),
                   decoration: BoxDecoration(
-                    color: isSelected ? AppColors.midnightBlue : Colors.white,
+                    color: isSelected
+                        ? AppColors.midnightBlue
+                        : Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(24.r),
                     boxShadow: isSelected
                         ? [
@@ -85,7 +87,7 @@ class AllDoctorsDepartmentsListView extends StatelessWidget {
                     border: Border.all(
                       color: isSelected
                           ? AppColors.midnightBlue
-                          : Colors.grey.shade300,
+                          : Theme.of(context).dividerColor,
                     ),
                   ),
                   child: Center(
@@ -94,7 +96,8 @@ class AllDoctorsDepartmentsListView extends StatelessWidget {
                       style: TextStyle(
                         color: isSelected
                             ? Colors.white
-                            : AppColors.textSecondary,
+                            : Theme.of(context).textTheme.bodyMedium?.color ??
+                                  AppColors.textSecondary,
                         fontWeight: FontWeight.w600,
                         fontSize: 13.sp,
                       ),

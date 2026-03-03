@@ -29,6 +29,10 @@ class ApiConstance {
   static String markNotificationAsRead(String id) => "notifications/$id/read";
   static const String markAllNotificationsAsRead = "notifications/read-all";
   static const String unreadNotificationCount = "notifications/unread-count";
+
+  // Favorites
+  static const String favorites = "favorites";
+  static String removeFavorite(String doctorId) => "favorites/$doctorId";
   // Chat
   static const String conversations = "chat/conversations";
   static String chatMessages(String id) => "chat/messages/$id";

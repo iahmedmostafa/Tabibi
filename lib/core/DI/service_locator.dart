@@ -65,9 +65,12 @@ import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_pr
 import 'package:tabibi/features/doctors_map/data/datasources/doctor_map_remote_data_source.dart';
 import 'package:tabibi/features/doctors_map/data/repositories/doctor_map_repository.dart';
 import 'package:tabibi/features/doctors_map/presentation/controller/doctor_map_cubit.dart';
+import 'package:tabibi/features/favorite/data/datasources/favorite_remote_data_source.dart';
 import 'package:tabibi/features/favorite/data/repositories/favorites_repository_impl.dart';
 import 'package:tabibi/features/favorite/domain/repositories/favorites_repository.dart';
+import 'package:tabibi/features/favorite/domain/usecases/add_favorite_use_case.dart';
 import 'package:tabibi/features/favorite/domain/usecases/get_favorites_use_case.dart';
+import 'package:tabibi/features/favorite/domain/usecases/remove_favorite_use_case.dart';
 import 'package:tabibi/features/favorite/presentation/controller/favorites_cubit.dart';
 import 'package:tabibi/features/home/data/datasources/doctors_remote_data_source.dart';
 import 'package:tabibi/features/home/data/repositories/doctor_repository.dart';
@@ -162,6 +165,9 @@ Future<void> init() async {
   sl.registerLazySingleton<ChatRemoteDataSource>(
     () => ChatRemoteDataSourceImpl(sl<Dio>()),
   );
+  sl.registerLazySingleton<FavoriteRemoteDataSource>(
+    () => FavoriteRemoteDataSourceImpl(sl<Dio>()),
+  );
 
   /// REPOSITORY
   sl.registerLazySingleton<BaseAuthenticationRepository>(
@@ -196,7 +202,7 @@ Future<void> init() async {
     () => NotificationsRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<FavoritesRepository>(
-    () => FavoritesRepositoryImpl(),
+    () => FavoritesRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<ChatRepository>(() => ChatRepositoryImpl(sl()));
 
@@ -223,6 +229,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LogOutUseCase(sl()));
   sl.registerLazySingleton(() => GetNotificationsUseCase(sl()));
   sl.registerLazySingleton(() => GetFavoritesUseCase(sl()));
+  sl.registerLazySingleton(() => AddFavoriteUseCase(sl()));
+  sl.registerLazySingleton(() => RemoveFavoriteUseCase(sl()));
 
   sl.registerLazySingleton(() => MarkNotificationAsReadUseCase(sl()));
   sl.registerLazySingleton(() => MarkAllNotificationsAsReadUseCase(sl()));
@@ -259,7 +267,7 @@ Future<void> init() async {
   sl.registerLazySingleton(
     () => NotificationsCubit(sl(), sl(), sl(), sl(), sl()),
   );
-  sl.registerFactory(() => FavoritesCubit(sl()));
+  sl.registerLazySingleton(() => FavoritesCubit(sl(), sl(), sl()));
   sl.registerFactory(
     () => ProfileCubit(logOutUseCase: sl(), getPatientProfileUseCase: sl()),
   );

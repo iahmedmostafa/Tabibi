@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
+import 'package:tabibi/features/favorite/presentation/controller/favorites_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_state.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/custom_doctor_cart.dart';
@@ -22,7 +24,6 @@ class AllDoctorsBlocBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: BlocBuilder<DoctorsCubit, DoctorsState>(
-        buildWhen: (previous, current) => previous.doctors != current.doctors,
         builder: (context, state) {
           if (state.status == DoctorsStatus.loading) {
             return const Center(child: CircularProgressIndicator());
@@ -34,7 +35,7 @@ class AllDoctorsBlocBuilder extends StatelessWidget {
             );
           }
 
-          final doctors = state.doctors; // using new getter
+          final doctors = state.doctors;
 
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -51,7 +52,6 @@ class AllDoctorsBlocBuilder extends StatelessWidget {
                         color: AppColors.midnightBlue,
                       ),
                     ),
-                    // Keeps the "Default" sort UI but it's not functional yet
                     Row(
                       children: [
                         Text(
@@ -92,31 +92,48 @@ class AllDoctorsBlocBuilder extends StatelessWidget {
                             ),
                           ],
                         )
-                      : ListView.separated(
-                          controller: _scrollController,
-                          padding: EdgeInsets.only(bottom: 20.h),
-                          itemCount: state.hasReachedMax
-                              ? doctors.length
-                              : doctors.length + 1,
-                          separatorBuilder: (context, index) =>
-                              VerticalSpace(height: 16.h),
-                          itemBuilder: (context, index) {
-                            if (index >= doctors.length) {
-                              return const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: CircularProgressIndicator(),
-                                ),
-                              );
-                            }
-                            return GestureDetector(
-                              onTap: () {
-                                context.push(
-                                  AppRoutes.doctorDetails,
-                                  extra: doctors[index],
+                      : BlocBuilder<FavoritesCubit, FavoritesState>(
+                          bloc: sl<FavoritesCubit>(),
+                          builder: (context, favState) {
+                            return ListView.separated(
+                              controller: _scrollController,
+                              padding: EdgeInsets.only(bottom: 20.h),
+                              itemCount: state.hasReachedMax
+                                  ? doctors.length
+                                  : doctors.length + 1,
+                              separatorBuilder: (context, index) =>
+                                  VerticalSpace(height: 16.h),
+                              itemBuilder: (context, index) {
+                                if (index >= doctors.length) {
+                                  return const Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  );
+                                }
+                                final doctor = doctors[index];
+                                final isFav = favState.favoritedIds.contains(
+                                  doctor.id,
+                                );
+                                return GestureDetector(
+                                  onTap: () {
+                                    context.push(
+                                      AppRoutes.doctorDetails,
+                                      extra: doctor,
+                                    );
+                                  },
+                                  child: DoctorCard(
+                                    doctor: doctor,
+                                    isFavorite: isFav,
+                                    onFavoriteTap: () {
+                                      sl<FavoritesCubit>().toggleFavorite(
+                                        doctor,
+                                      );
+                                    },
+                                  ),
                                 );
                               },
-                              child: DoctorCard(doctor: doctors[index]),
                             );
                           },
                         ),
