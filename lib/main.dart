@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/network/api_constance.dart';
+import 'package:tabibi/core/services/notification_manager.dart';
 import 'package:tabibi/core/services/shared_prefs_service.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/notifications/presentation/cubit/notifications_cubit.dart';
@@ -20,6 +21,7 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await OnboardingServices.init();
   Stripe.publishableKey = ApiKeys.publishableKey;
+  await NotificationManager().init();
   init();
   runApp(const TabibiApp());
 }

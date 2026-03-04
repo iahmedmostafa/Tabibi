@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
@@ -32,6 +33,19 @@ import 'package:tabibi/features/booking/presentation/screens/book_appointment_sc
 import 'package:tabibi/features/booking/presentation/screens/my_bookings_screen.dart';
 import 'package:tabibi/features/booking/presentation/screens/prescription_screen.dart';
 import 'package:tabibi/features/chat_patient/presentation/pages/chat_screen.dart';
+// Doctor feature imports
+import 'package:tabibi/features/doctor/appointments/presentation/pages/appointment_details_page.dart';
+import 'package:tabibi/features/doctor/availability/presentation/cubit/availability_cubit.dart';
+import 'package:tabibi/features/doctor/availability/presentation/pages/edit_availability_page.dart';
+import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart'
+    as doctor_entities;
+import 'package:tabibi/features/doctor/earnings/presentation/pages/earnings_page.dart';
+import 'package:tabibi/features/doctor/patients/domain/entities/patient.dart';
+import 'package:tabibi/features/doctor/patients/presentation/pages/patient_profile_page.dart';
+import 'package:tabibi/features/doctor/profile/presentation/pages/settings_page.dart';
+import 'package:tabibi/features/doctor/requests/presentation/pages/appointment_requests_page.dart';
+import 'package:tabibi/features/doctor/reviews/presentation/pages/reviews_page.dart';
+import 'package:tabibi/features/doctor/schedule/presentation/pages/my_schedule_page.dart';
 import 'package:tabibi/features/doctor_details/data/models/doctor_details_model.dart';
 import 'package:tabibi/features/doctor_details/presentation/screens/doctor_details_screen.dart';
 import 'package:tabibi/features/doctor_details/presentation/screens/doctor_reviews_screen.dart';
@@ -53,21 +67,10 @@ import '../../features/authentication/modules/doctor_fill_profile/cubit/departme
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
 import '../services/shared_prefs_service.dart';
 
-// Doctor feature imports
-import 'package:tabibi/features/doctor/appointments/presentation/pages/appointment_details_page.dart';
-import 'package:tabibi/features/doctor/availability/presentation/cubit/availability_cubit.dart';
-import 'package:tabibi/features/doctor/availability/presentation/pages/edit_availability_page.dart';
-import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart'
-    as doctor_entities;
-import 'package:tabibi/features/doctor/earnings/presentation/pages/earnings_page.dart';
-import 'package:tabibi/features/doctor/patients/domain/entities/patient.dart';
-import 'package:tabibi/features/doctor/patients/presentation/pages/patient_profile_page.dart';
-import 'package:tabibi/features/doctor/requests/presentation/pages/appointment_requests_page.dart';
-import 'package:tabibi/features/doctor/reviews/presentation/pages/reviews_page.dart';
-import 'package:tabibi/features/doctor/schedule/presentation/pages/my_schedule_page.dart';
-import 'package:tabibi/features/doctor/profile/presentation/pages/settings_page.dart';
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 final GoRouter router = GoRouter(
+  navigatorKey: navigatorKey,
   initialLocation: OnboardingServices.isFirstTime()
       ? AppRoutes.onboarding
       : (OnboardingServices.isLoggedIn()

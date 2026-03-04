@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/sizes.dart';
 
@@ -9,6 +10,11 @@ class AppBarThemes {
     elevation: 0,
     centerTitle: true,
     backgroundColor: Colors.transparent,
+    scrolledUnderElevation: 0,
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+    ),
     iconTheme: IconThemeData(color: AppColors.dark, size: AppSizes.fontSizeLg),
     actionsIconTheme: IconThemeData(
       color: AppColors.dark,
@@ -19,6 +25,11 @@ class AppBarThemes {
     elevation: 0,
     centerTitle: true,
     backgroundColor: Colors.transparent,
+    scrolledUnderElevation: 0,
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+    ),
     iconTheme: IconThemeData(color: AppColors.white, size: AppSizes.fontSizeLg),
     actionsIconTheme: IconThemeData(
       color: AppColors.white,

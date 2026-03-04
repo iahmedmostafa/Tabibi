@@ -101,7 +101,6 @@ class RequestsCubit extends Cubit<RequestsState> {
         }).toList();
         break;
       case RequestFilter.all:
-      default:
         break;
     }
 
