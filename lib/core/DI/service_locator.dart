@@ -95,6 +95,22 @@ import 'package:tabibi/features/chat_patient/data/datasources/chat_remote_data_s
 import 'package:tabibi/features/chat_patient/data/repositories/chat_repository_impl.dart';
 import 'package:tabibi/features/chat_patient/domain/repositories/chat_repository.dart';
 import 'package:tabibi/features/chat_patient/domain/usecases/chat_usecases.dart';
+import 'package:tabibi/features/doctor/dashboard/data/datasources/dashboard_remote_data_source.dart';
+import 'package:tabibi/features/doctor/dashboard/data/repositories/dashboard_repository_impl.dart';
+import 'package:tabibi/features/doctor/dashboard/domain/repositories/dashboard_repository.dart';
+import 'package:tabibi/features/doctor/dashboard/domain/usecases/get_doctor_dashboard_use_case.dart';
+import 'package:tabibi/features/doctor/dashboard/presentation/cubit/dashboard_cubit.dart';
+
+import 'package:tabibi/features/doctor/schedule/data/datasources/schedule_remote_data_source.dart';
+import 'package:tabibi/features/doctor/schedule/data/repositories/schedule_repository_impl.dart';
+import 'package:tabibi/features/doctor/schedule/domain/repositories/schedule_repository.dart';
+import 'package:tabibi/features/doctor/schedule/domain/usecases/get_doctor_schedule_use_case.dart';
+import 'package:tabibi/features/doctor/schedule/presentation/cubit/schedule_cubit.dart';
+import 'package:tabibi/features/doctor/requests/data/datasources/requests_remote_data_source.dart';
+import 'package:tabibi/features/doctor/requests/data/repositories/requests_repository_impl.dart';
+import 'package:tabibi/features/doctor/requests/domain/repositories/requests_repository.dart';
+import 'package:tabibi/features/doctor/requests/domain/usecases/requests_usecases.dart';
+import 'package:tabibi/features/doctor/requests/presentation/cubit/requests_cubit.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
@@ -168,6 +184,15 @@ Future<void> init() async {
   sl.registerLazySingleton<FavoriteRemoteDataSource>(
     () => FavoriteRemoteDataSourceImpl(sl<Dio>()),
   );
+  sl.registerLazySingleton<DashboardRemoteDataSource>(
+    () => DashboardRemoteDataSourceImpl(sl<Dio>()),
+  );
+  sl.registerLazySingleton<ScheduleRemoteDataSource>(
+    () => ScheduleRemoteDataSourceImpl(sl<Dio>()),
+  );
+  sl.registerLazySingleton<RequestsRemoteDataSource>(
+    () => RequestsRemoteDataSourceImpl(sl<Dio>()),
+  );
 
   /// REPOSITORY
   sl.registerLazySingleton<BaseAuthenticationRepository>(
@@ -205,6 +230,9 @@ Future<void> init() async {
     () => FavoritesRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<ChatRepository>(() => ChatRepositoryImpl(sl()));
+  sl.registerLazySingleton<DashboardRepository>(() => DashboardRepositoryImpl(sl()));
+  sl.registerLazySingleton<ScheduleRepository>(() => ScheduleRepositoryImpl(sl()));
+  sl.registerLazySingleton<RequestsRepository>(() => RequestsRepositoryImpl(sl()));
 
   /// USE CASE
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
@@ -238,6 +266,11 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetConversationsUseCase(sl()));
   sl.registerLazySingleton(() => GetChatMessagesUseCase(sl()));
   sl.registerLazySingleton(() => SendChatMessageUseCase(sl()));
+  sl.registerLazySingleton(() => GetDoctorDashboardUseCase(sl()));
+  sl.registerLazySingleton(() => GetDoctorScheduleUseCase(sl()));
+  sl.registerLazySingleton(() => GetAppointmentRequestsUseCase(sl()));
+  sl.registerLazySingleton(() => ApproveAppointmentUseCase(sl()));
+  sl.registerLazySingleton(() => CancelAppointmentUseCase(sl()));
 
   /// CUBIT
   sl.registerFactory(() => SignUpCubit(sl()));
@@ -271,4 +304,7 @@ Future<void> init() async {
   sl.registerFactory(
     () => ProfileCubit(logOutUseCase: sl(), getPatientProfileUseCase: sl()),
   );
+  sl.registerFactory(() => DashboardCubit(sl()));
+  sl.registerFactory(() => ScheduleCubit(sl()));
+  sl.registerFactory(() => RequestsCubit(sl(), sl(), sl()));
 }

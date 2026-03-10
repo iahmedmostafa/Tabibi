@@ -174,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
             context.go(AppRoutes.doctorStatusHandler);
             break;
           case DoctorStatus.Approved:
-            context.go(AppRoutes.home);
+            context.go(AppRoutes.homeScreen);
             break;
           case DoctorStatus.Rejected:
             context.go(AppRoutes.rejected);

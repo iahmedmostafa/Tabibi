@@ -1,43 +1,34 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tabibi/core/usecase/base_use_case.dart';
 import 'package:tabibi/features/doctor/requests/domain/entities/appointment_request.dart';
+import 'package:tabibi/features/doctor/requests/domain/usecases/requests_usecases.dart';
 import 'requests_state.dart';
 
 class RequestsCubit extends Cubit<RequestsState> {
-  RequestsCubit() : super(const RequestsState()) {
-    _loadMockData();
+  final GetAppointmentRequestsUseCase getAppointmentRequestsUseCase;
+  final ApproveAppointmentUseCase approveAppointmentUseCase;
+  final CancelAppointmentUseCase cancelAppointmentUseCase;
+
+  RequestsCubit(
+    this.getAppointmentRequestsUseCase,
+    this.approveAppointmentUseCase,
+    this.cancelAppointmentUseCase,
+  ) : super(const RequestsState()) {
+    getRequests();
   }
 
-  void _loadMockData() {
-    final now = DateTime.now();
-    final mockRequests = [
-      AppointmentRequest(
-        id: '1',
-        patientName: 'Jennifer Smith',
-        dateTime: DateTime(now.year, now.month, now.day, 10, 0),
-        reason: 'Persistent headaches for the past week, need consultation',
-      ),
-      AppointmentRequest(
-        id: '2',
-        patientName: 'Robert Brown',
-        dateTime: DateTime(now.year, now.month, now.day, 14, 30),
-        reason: 'Follow-up for recent surgery, wound check required',
-      ),
-      AppointmentRequest(
-        id: '3',
-        patientName: 'Maria Garcia',
-        dateTime: DateTime(now.year, now.month, now.day + 1, 9, 15),
-        reason: 'Annual physical examination and blood work',
-      ),
-      AppointmentRequest(
-        id: '4',
-        patientName: 'David Wilson',
-        dateTime: DateTime(now.year, now.month, now.day + 2, 11, 0),
-        reason: 'Consultation regarding new medication side effects',
-      ),
-    ];
-
-    emit(
-      state.copyWith(allRequests: mockRequests, filteredRequests: mockRequests),
+  Future<void> getRequests() async {
+    emit(state.copyWith(isLoading: true, errorMessage: null));
+    final result = await getAppointmentRequestsUseCase(const NoParameters());
+    result.fold(
+      (failure) => emit(state.copyWith(isLoading: false, errorMessage: failure.message)),
+      (data) {
+        emit(state.copyWith(
+          isLoading: false,
+          allRequests: data,
+        ));
+        _applyFilters();
+      },
     );
   }
 
@@ -51,16 +42,38 @@ class RequestsCubit extends Cubit<RequestsState> {
     _applyFilters();
   }
 
-  void approveRequest(String id) {
-    final updatedList = state.allRequests.where((r) => r.id != id).toList();
-    emit(state.copyWith(allRequests: updatedList));
-    _applyFilters();
+  Future<void> approveRequest(String id, {Function? onSuccess, Function(String)? onError}) async {
+    emit(state.copyWith(isActionLoading: true, errorMessage: null));
+    final result = await approveAppointmentUseCase(id);
+    result.fold(
+      (failure) {
+        emit(state.copyWith(isActionLoading: false, errorMessage: failure.message));
+        if (onError != null) onError(failure.message);
+      },
+      (_) {
+        final updatedList = state.allRequests.where((r) => r.id != id).toList();
+        emit(state.copyWith(isActionLoading: false, allRequests: updatedList));
+        _applyFilters();
+        if (onSuccess != null) onSuccess();
+      },
+    );
   }
 
-  void rejectRequest(String id) {
-    final updatedList = state.allRequests.where((r) => r.id != id).toList();
-    emit(state.copyWith(allRequests: updatedList));
-    _applyFilters();
+  Future<void> rejectRequest(String id, {Function? onSuccess, Function(String)? onError}) async {
+    emit(state.copyWith(isActionLoading: true, errorMessage: null));
+    final result = await cancelAppointmentUseCase(id);
+    result.fold(
+      (failure) {
+        emit(state.copyWith(isActionLoading: false, errorMessage: failure.message));
+        if (onError != null) onError(failure.message);
+      },
+      (_) {
+        final updatedList = state.allRequests.where((r) => r.id != id).toList();
+        emit(state.copyWith(isActionLoading: false, allRequests: updatedList));
+        _applyFilters();
+        if (onSuccess != null) onSuccess();
+      },
+    );
   }
 
   void _applyFilters() {

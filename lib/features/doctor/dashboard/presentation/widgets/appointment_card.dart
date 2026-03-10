@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart';
 
@@ -11,6 +12,11 @@ class AppointmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cardColor = theme.cardColor != Colors.transparent
+        ? theme.cardColor
+        : theme.colorScheme.surface;
+
     return GestureDetector(
       onTap: () =>
           context.push(AppRoutes.doctorAppointmentDetails, extra: appointment),
@@ -18,11 +24,11 @@ class AppointmentCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: cardColor,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -31,13 +37,18 @@ class AppointmentCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Avatar Placeholder
+            // Avatar with initials fallback
             Container(
               width: 60,
               height: 60,
               decoration: BoxDecoration(
-                color: Colors.grey[200],
+                color: theme.colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                Icons.person_outline,
+                color: theme.colorScheme.onSurfaceVariant,
+                size: 28,
               ),
             ),
             const SizedBox(width: 16),
@@ -51,7 +62,7 @@ class AppointmentCard extends StatelessWidget {
                     children: [
                       Text(
                         appointment.patientName,
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style: theme.textTheme.titleMedium,
                       ),
                       if (appointment.isUpcoming)
                         Container(
@@ -71,6 +82,25 @@ class AppointmentCard extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                        )
+                      else
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppTheme.greenPastel,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Text(
+                            'Completed',
+                            style: TextStyle(
+                              color: AppTheme.greenIcon,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                     ],
                   ),
@@ -80,21 +110,21 @@ class AppointmentCard extends StatelessWidget {
                       const Icon(
                         Icons.access_time,
                         size: 16,
-                        color: Colors.grey,
+                        color: AppColors.grey400,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         '${appointment.time} • ${appointment.date}',
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: theme.textTheme.bodyMedium,
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
                   Text(
                     appointment.type,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: AppColors.grey500,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
