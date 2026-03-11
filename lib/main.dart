@@ -21,7 +21,7 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await OnboardingServices.init();
   Stripe.publishableKey = ApiKeys.publishableKey;
-  await NotificationManager().init();
+  await NotificationManager.instance.init();
   init();
   runApp(const TabibiApp());
 }

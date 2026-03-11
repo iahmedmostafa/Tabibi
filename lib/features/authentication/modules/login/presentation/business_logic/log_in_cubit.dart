@@ -48,6 +48,7 @@ class LogInCubit extends Cubit<LogInState> {
         } else {
           role = rawRole;
         }
+        log(rawRole ?? "raw is null");
       } catch (e) {
         log('Error decoding token: $e');
       }
@@ -55,6 +56,8 @@ class LogInCubit extends Cubit<LogInState> {
       role ??= await CacheHelper.getData(key: 'role');
 
       await OnboardingServices.setLoggedIn(true);
+      log(role ?? "raw is null");
+
       if (role != null) {
         await OnboardingServices.setRole(role);
       }

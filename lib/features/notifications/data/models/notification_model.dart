@@ -18,7 +18,7 @@ class NotificationModel extends NotificationEntity {
       message: json['message'] as String,
       type: NotificationType.fromInt(json['type'] as int),
       isRead: json['isRead'] as bool,
-      createdAt: DateTime.parse(json['createdAt'] as String),
+      createdAt: DateTime.parse('${json['createdAt']}Z').toLocal(),
       relatedEntityId: json['relatedEntityId'] as String?,
     );
   }

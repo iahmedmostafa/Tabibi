@@ -48,12 +48,15 @@ class Department {
   });
 
   factory Department.fromJson(Map<String, dynamic> json) {
+    final dateStr = json['createdAtUtc'] as String;
     return Department(
       id: json['id'] as String,
       name: json['name'] as String,
       description: json['description'] as String?,
       imageUrl: json['imageUrl'] as String?,
-      createdAtUtc: DateTime.parse(json['createdAtUtc']),
+      createdAtUtc: DateTime.parse(
+        dateStr.endsWith('Z') ? dateStr : '${dateStr}Z',
+      ).toLocal(),
     );
   }
 

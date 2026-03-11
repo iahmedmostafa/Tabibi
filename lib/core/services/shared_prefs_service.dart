@@ -30,4 +30,12 @@ class OnboardingServices {
   static Future<void> setRole(String role) async {
     await _sharedPref.setString('user_role', role);
   }
+
+  static bool isProfileFilled() {
+    return _sharedPref.getBool('is_profile_filled') ?? false;
+  }
+
+  static Future<void> setProfileFilled(bool value) async {
+    await _sharedPref.setBool('is_profile_filled', value);
+  }
 }

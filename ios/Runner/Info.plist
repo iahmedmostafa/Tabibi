@@ -50,5 +50,11 @@
 		<!-- Google Maps API key (optional, most logic is in AppDelegate) -->
 		<key>GMSApiKey</key>
 		<string>AIzaSyCvhznbM4Qe-mjCN91M9x6yoKAF1VpFNCQ</string>
+
+		<!-- Permissions for ZEGOCLOUD Video Call -->
+		<key>NSCameraUsageDescription</key>
+		<string>We need access to your camera for video calls to consult with your doctor.</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>We need access to your microphone for video calls to consult with your doctor.</string>
 	</dict>
 </plist>

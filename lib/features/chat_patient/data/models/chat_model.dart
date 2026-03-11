@@ -13,7 +13,11 @@ class MessageModel extends MessageEntity {
     return MessageModel(
       id: json['id'] ?? '',
       message: json['message'] ?? '',
-      sentAt: DateTime.tryParse(json['sentAt'] ?? '') ?? DateTime.now(),
+      sentAt: (() {
+        String s = json['sentAt'] ?? '';
+        if (s.isNotEmpty && !s.endsWith('Z')) s += 'Z';
+        return DateTime.tryParse(s)?.toLocal() ?? DateTime.now();
+      })(),
       isMe: json['isMe'] ?? false,
       isRead: json['isRead'] ?? false,
     );
@@ -51,8 +55,11 @@ class ConversationModel extends ConversationEntity {
       otherUserName: json['otherUserName'] ?? '',
       otherUserImage: json['otherUserImage'],
       lastMessage: json['lastMessage'] ?? '',
-      lastMessageTime:
-          DateTime.tryParse(json['lastMessageTime'] ?? '') ?? DateTime.now(),
+      lastMessageTime: (() {
+        String s = json['lastMessageTime'] ?? '';
+        if (s.isNotEmpty && !s.endsWith('Z')) s += 'Z';
+        return DateTime.tryParse(s)?.toLocal() ?? DateTime.now();
+      })(),
       unreadCount: json['unreadCount'] ?? 0,
     );
   }

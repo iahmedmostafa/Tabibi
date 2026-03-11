@@ -1,176 +1,218 @@
 import 'dart:async';
 import 'dart:developer';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/network/server_connection.dart';
 import 'package:tabibi/core/routing/app_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
+import 'package:tabibi/features/notifications/data/datasources/fcm_token_data_source.dart';
 import 'package:tabibi/features/notifications/domain/entities/notification_entity.dart';
+const _channelKey = 'tabibi_notifications';
+
+/// ───────────────── BACKGROUND HANDLER ─────────────────
+
+@pragma('vm:entry-point')
+Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
+  // If the server sent a 'notification' payload, Android will automatically show it
+  // using the default channel we just set in AndroidManifest (which creates a popup).
+  // We return here to avoid showing a DUPLICATE notification.
+  if (message.notification != null) return;
+
+  await _initNotifications();
+
+  final payload = _parsePayload(message.data);
+
+  await _showNotification(payload);
+}
+
+/// ───────────────── NOTIFICATION MANAGER ─────────────────
 
 class NotificationManager {
-  static final NotificationManager _instance = NotificationManager._internal();
-  factory NotificationManager() => _instance;
-  NotificationManager._internal();
+  NotificationManager._();
+  static final instance = NotificationManager._();
 
-  final FlutterLocalNotificationsPlugin _localNotifications =
-      FlutterLocalNotificationsPlugin();
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
-  StreamSubscription? _signalRSubscription;
+  StreamSubscription? _signalRSub;
+  StreamSubscription? _tokenRefreshSub;
 
-  // Android notification channel
-  static const String _channelId = 'tabibi_notifications';
-  static const String _channelName = 'Tabibi Notifications';
-  static const String _channelDescription =
-      'Notifications for appointments, messages, and updates';
-
-  /// Initialize the local notification plugin (call once in main)
+  /// INIT SYSTEM
   Future<void> init() async {
-    // Android settings
-    const androidSettings = AndroidInitializationSettings(
-      '@mipmap/ic_launcher',
-    );
-
-    // iOS settings
-    const iosSettings = DarwinInitializationSettings(
-      requestSoundPermission: true,
-      requestBadgePermission: true,
-      requestAlertPermission: true,
-    );
-
-    const initSettings = InitializationSettings(
-      android: androidSettings,
-      iOS: iosSettings,
-    );
-
-    await _localNotifications.initialize(
-      settings: initSettings,
-      onDidReceiveNotificationResponse: _onNotificationTap,
-    );
-
-    // Create the notification channel on Android
-    const androidChannel = AndroidNotificationChannel(
-      _channelId,
-      _channelName,
-      description: _channelDescription,
-      importance: Importance.high,
-      enableLights: true,
-      enableVibration: true,
-    );
-
-    final androidImpl = _localNotifications
-        .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin
-        >();
-
-    await androidImpl?.createNotificationChannel(androidChannel);
-
-    // Request permission for Android 13+
-    await androidImpl?.requestNotificationsPermission();
-
-    log('🔔 NotificationManager initialized');
+    await _initNotifications();
+    await _initFcm();
   }
 
-  /// Start listening to SignalR notification stream
-  void startListening() {
-    // Cancel any previous subscription to avoid duplicates
-    _signalRSubscription?.cancel();
-    _signalRSubscription = ServerConnection().onNotificationReceived.listen((
-      data,
-    ) {
-      log('🔔 NotificationManager received: $data');
-      if (data is Map<String, dynamic>) {
-        _showNotification(data);
-      } else if (data is Map) {
-        _showNotification(Map<String, dynamic>.from(data));
+  /// START LISTENING
+  void start(FcmTokenDataSource tokenSource) {
+    _listenSignalR();
+    _registerToken(tokenSource);
+  }
+
+  void stop() {
+    _signalRSub?.cancel();
+    _tokenRefreshSub?.cancel();
+  }
+
+  /// ───────────────── FCM SETUP ─────────────────
+
+  Future<void> _initFcm() async {
+    final settings = await _fcm.requestPermission();
+
+    if (settings.authorizationStatus == AuthorizationStatus.denied) return;
+
+    FirebaseMessaging.onBackgroundMessage(firebaseBackgroundHandler);
+
+    FirebaseMessaging.onMessage.listen(_handleForeground);
+
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleTap);
+
+    final initialMessage = await _fcm.getInitialMessage();
+    if (initialMessage != null) {
+      _handleTap(initialMessage);
+    }
+  }
+
+  /// FOREGROUND MESSAGE
+  void _handleForeground(RemoteMessage message) {
+    final payloadMap = <String, dynamic>{...message.data};
+
+    if (message.notification != null) {
+      if (message.notification!.title != null) {
+        payloadMap['title'] = message.notification!.title;
+      }
+      if (message.notification!.body != null) {
+        payloadMap['body'] = message.notification!.body;
+      }
+    }
+
+    final payload = _parsePayload(payloadMap);
+
+    _showNotification(payload);
+  }
+
+  /// TAP HANDLER
+  void _handleTap(RemoteMessage message) {
+    final type = int.tryParse(message.data['type'] ?? '0') ?? 0;
+    _navigate(type);
+  }
+
+  /// ───────────────── TOKEN REGISTRATION ─────────────────
+
+  Future<void> _registerToken(FcmTokenDataSource source) async {
+    final token = await _fcm.getToken();
+    if (token != null) {
+      await source.registerToken(token);
+      log("FCM Token: $token");
+    }
+
+    _tokenRefreshSub = _fcm.onTokenRefresh.listen(source.registerToken);
+  }
+
+  /// ───────────────── SIGNALR ─────────────────
+
+  void _listenSignalR() {
+    _signalRSub = ServerConnection().onNotificationReceived.listen((data) {
+      if (data is Map) {
+        final payload = _parsePayload(Map<String, dynamic>.from(data));
+        _showNotification(payload);
       }
     });
-    log('🔔 NotificationManager listening to SignalR notifications');
   }
 
-  /// Stop listening
-  void stopListening() {
-    _signalRSubscription?.cancel();
-    _signalRSubscription = null;
-  }
+  /// ───────────────── NAVIGATION ─────────────────
 
-  /// Show a local notification from SignalR data
-  Future<void> _showNotification(Map<String, dynamic> data) async {
-    final String title = data['title'] ?? 'Tabibi';
-    final String message = data['message'] ?? '';
-    final int type = data['type'] is int
-        ? data['type']
-        : int.tryParse(data['type']?.toString() ?? '0') ?? 0;
-    final String? relatedEntityId = data['relatedEntityId']?.toString();
-    final String? id = data['id']?.toString();
-
-    // Use hashCode of id as notification int id, or timestamp
-    final int notificationId = id?.hashCode ?? DateTime.now().millisecond;
-
-    const androidDetails = AndroidNotificationDetails(
-      _channelId,
-      _channelName,
-      channelDescription: _channelDescription,
-      importance: Importance.high,
-      priority: Priority.high,
-      icon: '@mipmap/ic_launcher',
-      enableVibration: true,
-      enableLights: true,
-      colorized: true,
-      color: Color(0xFF1A73E8),
-    );
-
-    const iosDetails = DarwinNotificationDetails(
-      presentSound: true,
-      presentBanner: true,
-      presentBadge: true,
-    );
-
-    const details = NotificationDetails(
-      android: androidDetails,
-      iOS: iosDetails,
-    );
-
-    // Encode type and relatedEntityId as payload
-    final String payload = '$type|${relatedEntityId ?? ''}';
-
-    await _localNotifications.show(
-      id: notificationId,
-      title: title,
-      body: message,
-      notificationDetails: details,
-      payload: payload,
-    );
-  }
-
-  /// Handle notification tap → navigate to the relevant screen
-  void _onNotificationTap(NotificationResponse response) {
-    final String? payload = response.payload;
-    if (payload == null || payload.isEmpty) return;
-
-    final parts = payload.split('|');
-    final int type = int.tryParse(parts[0]) ?? 0;
-    //final String relatedEntityId = parts.length > 1 ? parts[1] : '';
-
-    final notificationType = NotificationType.fromInt(type);
+  void _navigate(int type) {
     final context = navigatorKey.currentContext;
     if (context == null) return;
 
+    final notificationType = NotificationType.fromInt(type);
+
     switch (notificationType) {
       case NotificationType.bookingAlert:
-        GoRouter.of(context).push(AppRoutes.myBookings);
-        break;
-      case NotificationType.chatMessage:
-        // Navigate to notifications screen (can't open specific chat without full data)
-        GoRouter.of(context).push(AppRoutes.notifications);
-        break;
       case NotificationType.payment:
         GoRouter.of(context).push(AppRoutes.myBookings);
         break;
+
+      case NotificationType.chatMessage:
       case NotificationType.system:
         GoRouter.of(context).push(AppRoutes.notifications);
         break;
     }
+  }
+}
+
+/// ───────────────── HELPERS ─────────────────
+
+Future<void> _initNotifications() async {
+  await AwesomeNotifications().initialize(null, [
+    NotificationChannel(
+      channelKey: _channelKey,
+      channelName: 'Tabibi Notifications',
+      channelDescription: 'App notifications',
+      importance: NotificationImportance.Max,
+      playSound: true,
+      enableVibration: true,
+    ),
+  ]);
+
+  if (!await AwesomeNotifications().isNotificationAllowed()) {
+    await AwesomeNotifications().requestPermissionToSendNotifications();
+  }
+
+  AwesomeNotifications().setListeners(
+    onActionReceivedMethod: onNotificationActionReceived,
+  );
+}
+
+Map<String, String> _parsePayload(Map data) {
+  return {
+    "title": data['title'] ?? "Tabibi",
+    "body": data['body'] ?? "",
+    "type": data['type']?.toString() ?? "0",
+    "relatedEntityId": data['relatedEntityId']?.toString() ?? "",
+  };
+}
+
+Future<void> _showNotification(Map<String, String> payload) async {
+  await AwesomeNotifications().createNotification(
+    content: NotificationContent(
+      id: DateTime.now().millisecondsSinceEpoch.remainder(100000),
+      channelKey: _channelKey,
+      title: payload['title'],
+      body: payload['body'],
+      payload: payload,
+      notificationLayout: NotificationLayout.Default,
+    ),
+  );
+}
+
+/// ───────────────── TAP FROM AWESOME ─────────────────
+
+@pragma('vm:entry-point')
+Future<void> onNotificationActionReceived(ReceivedAction action) async {
+  final payload = action.payload;
+  if (payload == null) return;
+
+  final type = int.tryParse(payload['type'] ?? "0") ?? 0;
+
+  await Future.delayed(const Duration(milliseconds: 300));
+
+  final context = navigatorKey.currentContext;
+  if (context == null) return;
+
+  final notificationType = NotificationType.fromInt(type);
+
+  switch (notificationType) {
+    case NotificationType.bookingAlert:
+    case NotificationType.payment:
+  
+      GoRouter.of(context).push(AppRoutes.myBookings);
+      break;
+
+    case NotificationType.chatMessage:
+    case NotificationType.system:
+      GoRouter.of(context).push(AppRoutes.notifications);
+      break;
   }
 }

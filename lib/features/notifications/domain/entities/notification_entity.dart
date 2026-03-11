@@ -12,7 +12,7 @@ enum NotificationType {
   factory NotificationType.fromInt(int value) {
     return NotificationType.values.firstWhere(
       (e) => e.value == value,
-      orElse: () => NotificationType.bookingAlert,
+      orElse: () => NotificationType.system,
     );
   }
 }

@@ -62,7 +62,10 @@ class BookingSuccessDialog extends StatelessWidget {
             SizedBox(height: 12.h),
             TextButton(
               onPressed: () {
-                context.go(AppRoutes.bottomNavScreen, extra: 2); // Close dialog to edit
+                context.go(
+                  AppRoutes.bottomNavScreen,
+                  extra: 2,
+                ); // Close dialog to edit
               },
               child: Text(
                 AppStrings.editAppointment,

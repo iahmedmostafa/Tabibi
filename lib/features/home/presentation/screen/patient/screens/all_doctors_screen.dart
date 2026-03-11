@@ -95,7 +95,7 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: CustomTextField(
                 controller: _searchController,
-                isEnabled: true,
+              
                 onChanged: (query) {
                   context.read<DoctorsCubit>().getDoctors(
                     departmentId: selectedDepartmentId,

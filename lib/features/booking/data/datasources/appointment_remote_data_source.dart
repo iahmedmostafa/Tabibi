@@ -67,7 +67,7 @@ class AppointmentRemoteDataSourceImpl implements AppointmentRemoteDataSource {
           headers: {'Content-Type': 'application/json-patch+json'},
         ),
       );
-      log(response.data.toString());
+      log(response.statusCode.toString());
       if (response.statusCode == 200 || response.statusCode == 201) {
         return response.data;
       } else {

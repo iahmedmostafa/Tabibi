@@ -32,3 +32,6 @@
 -keep class com.stripe.android.pushProvisioning.PushProvisioningActivityStarter { *; }
 -keep class com.stripe.android.pushProvisioning.PushProvisioningEphemeralKeyProvider { *; }
 -keep class com.stripe.android.pushProvisioning.EphemeralKeyUpdateListener { *; }
+
+# Zego ProGuard Rules
+-keep class **.zego.** { *; }

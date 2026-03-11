@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   animated_dashed_circle: ^0.0.5
+  awesome_notifications: ^0.11.0
   awesome_snackbar_content: ^0.1.8
   bottom_picker: ^4.1.1
   cached_network_image: ^3.4.1
@@ -20,10 +21,11 @@ dependencies:
   easy_date_timeline: ^2.0.9
   equatable: ^2.0.7
   firebase_core: ^4.4.0
+  firebase_messaging: ^16.1.2
+  fl_chart: ^0.69.2
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
-  fl_chart: ^0.69.2
   flutter_dotenv: ^6.0.0
   flutter_easyloading: ^3.0.5
   flutter_screenutil: ^5.9.3
@@ -44,7 +46,7 @@ dependencies:
   shared_preferences: null
   signalr_netcore: ^1.4.4
   smooth_page_indicator: ^1.2.0
-  flutter_local_notifications: ^20.1.0
+  zego_uikit_prebuilt_call: ^4.22.3
 
 dev_dependencies:
   flutter_lints: ^5.0.0
@@ -65,7 +67,6 @@ flutter:
     - assets/logo/
     - assets/icons/
     - .env
-
   # fonts:
   #   - family: Schyler
   #     fonts:

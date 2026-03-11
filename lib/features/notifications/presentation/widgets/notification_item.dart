@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
+import 'package:tabibi/core/utils/extensions/date_time_extension.dart';
 import 'package:tabibi/core/utils/helper/helper_functions.dart';
 import 'package:tabibi/features/notifications/domain/entities/notification_entity.dart';
 import 'package:tabibi/features/notifications/presentation/cubit/notifications_cubit.dart';
@@ -69,7 +70,7 @@ class NotificationItem extends StatelessWidget {
                   ),
                   SizedBox(height: AppHeight.h4),
                   Text(
-                    notification.message,
+                    notification.message.toLocalTimeStrings(),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AppColors.grey500,
                       height: 1.4,
@@ -85,10 +86,12 @@ class NotificationItem extends StatelessWidget {
   }
 
   String _formatTime(DateTime createdAt) {
+    // Convert current time to the same timezone basis as createdAt to get accurate difference.
+    // Assuming createdAt has already been parsed and mapped to `toLocal()` in the Model.
     final now = DateTime.now();
     final diff = now.difference(createdAt);
 
-    if (diff.inMinutes < 1) return 'Now';
+    if (diff.inSeconds < 60) return 'Just now';
     if (diff.inMinutes < 60) return '${diff.inMinutes}m';
     if (diff.inHours < 24) return '${diff.inHours}h';
     if (diff.inDays < 7) return '${diff.inDays}d';
