@@ -28,15 +28,15 @@ class SettingsPage extends StatelessWidget {
           children: [
             _ProfileHeader(profile: profile),
             SizedBox(height: 24.h),
-            _AccountSection(),
+            const _AccountSection(),
             SizedBox(height: 24.h),
-            _SecuritySection(),
+            const _SecuritySection(),
             SizedBox(height: 24.h),
             _AvailabilitySection(profile: profile),
             SizedBox(height: 24.h),
-            _QuickActionsSection(),
+            const _QuickActionsSection(),
             SizedBox(height: 24.h),
-            _DangerZoneSection(),
+            const _DangerZoneSection(),
             SizedBox(height: 80.h), // Space for bottom nav
           ],
         ),
@@ -62,8 +62,8 @@ class _ProfileHeader extends StatelessWidget {
               Container(
                 width: 100.w,
                 height: 100.w,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF5F8D8F),
+                decoration: const BoxDecoration(
+                  color: Color(0xFF5F8D8F),
                   shape: BoxShape.circle,
                 ),
                 child: Center(
@@ -185,14 +185,14 @@ class _AccountSection extends StatelessWidget {
                 subtitle: 'Edit profile',
                 onTap: () {},
               ),
-              _Divider(),
+              const _Divider(),
               _SettingsItem(
                 icon: Icons.business_outlined,
                 title: 'Clinic Information',
                 subtitle: 'Medical Center',
                 onTap: () {},
               ),
-              _Divider(),
+              const _Divider(),
               _SettingsItem(
                 icon: Icons.star_outline,
                 title: 'Specialization',
@@ -236,7 +236,7 @@ class _SecuritySection extends StatelessWidget {
                 title: 'Change Password',
                 onTap: () {},
               ),
-              _Divider(),
+              const _Divider(),
               _SettingsItem(
                 icon: Icons.notifications_outlined,
                 title: 'Notifications',

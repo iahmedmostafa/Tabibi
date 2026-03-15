@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tabibi/features/doctor/availability/presentation/cubit/availability_cubit.dart';
+import 'package:tabibi/features/doctor/chat/presentation/pages/doctor_conversations_screen.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:tabibi/features/doctor/profile/presentation/pages/settings_page.dart';
 import 'package:tabibi/features/doctor/schedule/presentation/pages/my_schedule_page.dart';
@@ -33,6 +34,7 @@ class _DoctorBottomNavScreenState extends State<DoctorBottomNavScreen> {
           children: const [
             DashboardPage(showBottomNav: false),
             MySchedulePage(showBottomNav: false),
+            DoctorConversationsScreen(),
             SettingsPage(),
           ],
         ),
@@ -52,6 +54,11 @@ class _DoctorBottomNavScreenState extends State<DoctorBottomNavScreen> {
               icon: Icon(Icons.calendar_month_outlined),
               activeIcon: Icon(Icons.calendar_month),
               label: 'Schedule',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat_bubble_outline),
+              activeIcon: Icon(Icons.chat_bubble),
+              label: 'Chats',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_outlined),

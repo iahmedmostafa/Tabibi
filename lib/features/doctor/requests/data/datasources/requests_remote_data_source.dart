@@ -20,26 +20,43 @@ class RequestsRemoteDataSourceImpl implements RequestsRemoteDataSource {
     try {
       // NOTE: Using schedule endpoint as a fallback since specific "requests" endpoint doesn't exist
       // Will fetch schedule without date to get all and filter locally, or API might default to upcoming
-      final response = await dio.get(ApiConstance.doctorSchedule);
+      final response = await dio.get(ApiConstance.doctorHome);
 
       if (response.statusCode == 200) {
-        // Fetch only those that might be considered "requests"
-        // Let's assume status 0 is pending/request.
-        // We will map the schedule items to AppointmentRequestModel
-        final List data = response.data;
-        return data
-            .where((item) => item['status'] == 0 || item['status'] == 1) // Allow pending/scheduled
+        final Map<String, dynamic> data = response.data;
+        if (data['todayAppointments'] == null) return [];
+        final List appointmentsList = data['todayAppointments'];
+        
+        return appointmentsList
             .map((item) => AppointmentRequestModel.fromJson(item))
             .toList();
       } else {
+        final responseData = response.data;
+        if (responseData is String) {
+          throw ServerException(
+            errorMessageModel: ErrorMessageModel(
+              statusCode: response.statusCode ?? 400,
+              statusMessage: responseData.isNotEmpty ? responseData : 'Unknown error',
+            ),
+          );
+        }
         throw ServerException(
-          errorMessageModel: ErrorMessageModel.fromJson(response.data),
+          errorMessageModel: ErrorMessageModel.fromJson(responseData),
         );
       }
     } on DioException catch (e) {
       if (e.response != null) {
-         throw ServerException(
-          errorMessageModel: ErrorMessageModel.fromJson(e.response!.data),
+        final errorData = e.response!.data;
+        if (errorData is String) {
+          throw ServerException(
+            errorMessageModel: ErrorMessageModel(
+              statusCode: e.response!.statusCode ?? 400,
+              statusMessage: errorData.isNotEmpty ? errorData : 'An error occurred',
+            ),
+          );
+        }
+        throw ServerException(
+          errorMessageModel: ErrorMessageModel.fromJson(errorData),
         );
       } else {
         throw ServerException(
@@ -56,17 +73,35 @@ class RequestsRemoteDataSourceImpl implements RequestsRemoteDataSource {
   Future<void> completeAppointment(String id) async {
     try {
       final response = await dio.patch(
-        "\${ApiConstance.doctorAppointments}/$id/complete",
+        "${ApiConstance.doctorAppointments}/$id/complete",
       );
       if (response.statusCode != 200 && response.statusCode != 204) {
+        final responseData = response.data;
+        if (responseData is String) {
+          throw ServerException(
+            errorMessageModel: ErrorMessageModel(
+              statusCode: response.statusCode ?? 400,
+              statusMessage: responseData.isNotEmpty ? responseData : 'Unknown error',
+            ),
+          );
+        }
         throw ServerException(
-          errorMessageModel: ErrorMessageModel.fromJson(response.data),
+          errorMessageModel: ErrorMessageModel.fromJson(responseData),
         );
       }
     } on DioException catch (e) {
       if (e.response != null) {
-         throw ServerException(
-          errorMessageModel: ErrorMessageModel.fromJson(e.response!.data),
+        final errorData = e.response!.data;
+        if (errorData is String) {
+          throw ServerException(
+            errorMessageModel: ErrorMessageModel(
+              statusCode: e.response!.statusCode ?? 400,
+              statusMessage: errorData.isNotEmpty ? errorData : 'An error occurred',
+            ),
+          );
+        }
+        throw ServerException(
+          errorMessageModel: ErrorMessageModel.fromJson(errorData),
         );
       } else {
         throw ServerException(
@@ -83,17 +118,35 @@ class RequestsRemoteDataSourceImpl implements RequestsRemoteDataSource {
   Future<void> cancelAppointment(String id) async {
     try {
       final response = await dio.patch(
-        "\${ApiConstance.doctorAppointments}/$id/cancel",
+        "${ApiConstance.doctorAppointments}/$id/cancel",
       );
       if (response.statusCode != 200 && response.statusCode != 204) {
+        final responseData = response.data;
+        if (responseData is String) {
+          throw ServerException(
+            errorMessageModel: ErrorMessageModel(
+              statusCode: response.statusCode ?? 400,
+              statusMessage: responseData.isNotEmpty ? responseData : 'Unknown error',
+            ),
+          );
+        }
         throw ServerException(
-          errorMessageModel: ErrorMessageModel.fromJson(response.data),
+          errorMessageModel: ErrorMessageModel.fromJson(responseData),
         );
       }
     } on DioException catch (e) {
       if (e.response != null) {
-         throw ServerException(
-          errorMessageModel: ErrorMessageModel.fromJson(e.response!.data),
+        final errorData = e.response!.data;
+        if (errorData is String) {
+          throw ServerException(
+            errorMessageModel: ErrorMessageModel(
+              statusCode: e.response!.statusCode ?? 400,
+              statusMessage: errorData.isNotEmpty ? errorData : 'An error occurred',
+            ),
+          );
+        }
+        throw ServerException(
+          errorMessageModel: ErrorMessageModel.fromJson(errorData),
         );
       } else {
         throw ServerException(
