@@ -16,6 +16,7 @@ import 'package:tabibi/core/widgets/arrow_back.dart';
 import 'package:tabibi/core/widgets/drop_menu.dart/drop_menu.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
 import 'package:tabibi/core/widgets/success_dialog.dart';
+import 'package:tabibi/core/services/shared_prefs_service.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/city_dropdown.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/date_picker_field.dart';
@@ -134,6 +135,7 @@ class _FillProfileState extends State<FillProfile> {
                   } else if (state.updateStatus ==
                       PatientProfileUpdateStatus.success) {
                     EasyLoading.dismiss();
+                    OnboardingServices.setProfileFilled(true);
                     showDialog(
                       context: context,
                       barrierDismissible: false,

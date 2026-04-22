@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import '../../domain/entities/chat_entity.dart';
 import '../../domain/repositories/chat_repository.dart';
 import '../datasources/chat_remote_data_source.dart';
@@ -52,9 +53,11 @@ class ChatRepositoryImpl implements ChatRepository {
           final newMessage = MessageEntity(
             id: data['Id'] ?? data['id'] ?? '',
             message: data['Message'] ?? data['message'] ?? '',
-            sentAt:
-                DateTime.tryParse(data['SentAt'] ?? data['sentAt'] ?? '') ??
-                DateTime.now(),
+            sentAt: (() {
+              String s = data['SentAt'] ?? data['sentAt'] ?? '';
+              if (s.isNotEmpty && !s.endsWith('Z')) s += 'Z';
+              return DateTime.tryParse(s)?.toLocal() ?? DateTime.now();
+            })(),
             isMe: false,
             isRead: false,
           );

@@ -41,6 +41,12 @@ class ApiConstance {
   static String chatMessages(String id) => "chat/messages/$id";
   static const String sendChatMessage = "chat/send";
 
+  // Video Call
+  static String videoToken(String bookingId) => "video/token/$bookingId";
+
+  // FCM
+  static const String fcmToken = "notifications/fcm-token";
+
   //  static const String refreshToken = "auth/refresh";
   // static const String logout = "auth/logout";
   //  static const String activeCode = "auth/activate";

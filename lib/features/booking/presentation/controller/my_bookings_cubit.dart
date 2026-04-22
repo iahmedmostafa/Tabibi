@@ -28,5 +28,4 @@ class MyBookingsCubit extends Cubit<MyBookingsState> {
       ),
     );
   }
-
 }

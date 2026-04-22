@@ -12,4 +12,4 @@ enum DoctorStatus { New, Pending, Approved, Rejected }
 
 enum DoctorsStatus { initial, loading, success, failure }
 
-enum BookingStatus { upcoming, completed, }
+enum BookingStatus { upcoming, completed }

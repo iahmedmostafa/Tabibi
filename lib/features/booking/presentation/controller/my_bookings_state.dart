@@ -15,7 +15,6 @@ class MyBookingsState extends Equatable {
     this.errorMessage,
   });
 
-
   MyBookingsState copyWith({
     MyBookingsStatus? status,
     List<BookingModel>? allBookings,

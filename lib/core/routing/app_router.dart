@@ -62,6 +62,8 @@ import 'package:tabibi/features/notifications/presentation/screens/notifications
 import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/patient_profile_cubit.dart';
 import 'package:tabibi/features/patient_profile/presentation/screens/edit_profile_screen.dart';
+import 'package:tabibi/features/video_call/presentation/cubit/video_call_cubit.dart';
+import 'package:tabibi/features/video_call/presentation/screen/video_call_screen.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
@@ -75,8 +77,8 @@ final GoRouter router = GoRouter(
       ? AppRoutes.onboarding
       : (OnboardingServices.isLoggedIn()
             ? (OnboardingServices.getRole() == '2'
-                  ? AppRoutes.homeScreen
-                  : AppRoutes.bottomNavScreen)
+                  ? AppRoutes.homeDoctorScreen
+                  : (OnboardingServices.isProfileFilled() ? AppRoutes.bottomNavScreen : AppRoutes.fillProfile))
             : AppRoutes.login),
   routes: [
     GoRoute(
@@ -156,8 +158,8 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const BottomNavScreen(),
     ),
     GoRoute(
-      path: AppRoutes.homeScreen,
-      name: AppRoutes.homeScreen,
+      path: AppRoutes.homeDoctorScreen,
+      name: AppRoutes.homeDoctorScreen,
       builder: (context, state) => const HomeScreen(),
     ),
     GoRoute(
@@ -331,6 +333,17 @@ final GoRouter router = GoRouter(
           doctorId: extra['doctorId'] as String? ?? '',
           doctorName: extra['doctorName'] as String? ?? '',
           doctorImage: extra['doctorImage'] as String?,
+        );
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.callPage,
+      name: AppRoutes.callPage,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>? ?? {};
+        return BlocProvider(
+          create: (context) => sl<VideoCallCubit>(),
+          child: CallPage(bookingId: extra['bookingId'] as String? ?? ''),
         );
       },
     ),

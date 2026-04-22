@@ -80,6 +80,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     try {
       // 1. Create booking and get clientSecret
       final String appointmentDate;
+    
       if (selectedTime!.contains('T')) {
         // If selectedTime is already a full ISO string (e.g. from the API slots)
         appointmentDate = selectedTime!.endsWith('Z')
@@ -90,6 +91,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
         appointmentDate =
             "${DateFormat('yyyy-MM-dd').format(selectedDate!)}T$selectedTime:00.000Z";
       }
+        log(appointmentDate);
       final result = await createBookingUseCase.execute(
         appointmentDate: appointmentDate,
         doctorId: doctorId,
@@ -98,6 +100,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
 
       await result.fold(
         (failure) async {
+          log(failure.message);
           emit(AppointmentFailure(failure.message));
         },
         (data) async {
@@ -140,6 +143,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
       );
     } catch (e) {
       final errorMsg = "An error occurred: ${e.toString()}";
+    
       emit(AppointmentFailure(errorMsg));
     }
   }
@@ -148,13 +152,12 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     emit(AppointmentBookingLoading());
     final result = await cancelBookingUseCase.execute(bookingId: bookingId);
 
-
     result.fold(
       (failure) {
         emit(AppointmentFailure(failure.message));
       },
       (_) {
-      log("Booking cancelled successfully");
+        log("Booking cancelled successfully");
       },
     );
   }

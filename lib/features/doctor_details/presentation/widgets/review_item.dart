@@ -24,7 +24,8 @@ class ReviewItem extends StatelessWidget {
             children: [
               CircleAvatar(
                 backgroundImage: review.patientAvatar != null
-                    ? CachedNetworkImageProvider(review.patientAvatar!) as ImageProvider
+                    ? CachedNetworkImageProvider(review.patientAvatar!)
+                          as ImageProvider
                     : const AssetImage('assets/images/review_user.png'),
                 radius: 20.r,
                 backgroundColor: AppColors.grey200,

@@ -12,6 +12,7 @@ import 'package:tabibi/features/chat_patient/presentation/pages/conversations_sc
 import 'package:tabibi/features/doctors_map/presentation/screens/doctors_map_screen.dart';
 import 'package:tabibi/features/favorite/presentation/controller/favorites_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/patient_home_screen.dart';
+import 'package:tabibi/features/notifications/data/datasources/fcm_token_data_source.dart';
 import 'package:tabibi/features/patient_profile/presentation/screens/profile_screen.dart';
 
 class BottomNavScreen extends StatefulWidget {
@@ -29,14 +30,13 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     super.initState();
     _currentIndex = widget.initialIndex;
     startServer();
-    // Pre-load favorites IDs so heart icons are correct from the start
     sl<FavoritesCubit>().getFavorites();
   }
 
   void startServer() async {
     accessToken = await CacheHelper.getData(key: ApiKeys.accessToken);
     ServerConnection().connect(accessToken: accessToken!);
-    NotificationManager().startListening();
+    NotificationManager.instance.start(sl<FcmTokenDataSource>());
   }
 
   final List<Widget> _screens = [

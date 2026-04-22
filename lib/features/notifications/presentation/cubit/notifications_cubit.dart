@@ -49,8 +49,6 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     final result = await getNotificationsUseCase(
       const GetNotificationsParams(),
     );
-    // ... rest of method
-
     result.fold(
       (failure) => emit(
         state.copyWith(

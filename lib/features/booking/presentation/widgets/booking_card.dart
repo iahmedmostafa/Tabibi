@@ -173,7 +173,12 @@ class BookingCard extends StatelessWidget {
               "Cancel",
               AppColors.grey100,
               AppColors.midnightBlue,
-              () {},
+              () {
+                context.pushNamed(
+                  AppRoutes.callPage,
+                  extra: {'bookingId': booking.id},
+                );
+              },
             ),
           ),
         ],

@@ -34,7 +34,7 @@ class NotificationSectionHeader extends StatelessWidget {
             child: Text(
               AppStrings.markAllAsRead,
               style: TextStyle(
-                color: isDark?AppColors.white: AppColors.midnightBlue,
+                color: isDark ? AppColors.white : AppColors.midnightBlue,
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
               ),

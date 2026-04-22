@@ -25,11 +25,12 @@ class AppRoutes {
   static const bookingSuccess = '/booking_success';
   static const notifications = '/notifications';
   static const favorites = '/favorites';
-  static const homeScreen = '/homeScreen';
+  static const homeDoctorScreen = '/homeDocterScreen';
   static const doctorReviews = '/doctor_reviews';
   static const prescription = '/prescription';
   static const chat = '/chat';
   static const editProfile = '/edit_profile';
+  static const callPage = '/call_page';
 
   // ===== Doctor Feature Routes =====
   static const doctorDashboard = '/doctor/dashboard';

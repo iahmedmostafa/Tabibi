@@ -12,8 +12,9 @@ import 'package:tabibi/features/doctor_details/presentation/controller/doctor_de
 import 'package:tabibi/features/doctor_details/presentation/controller/doctor_details_state.dart';
 import 'package:tabibi/features/doctor_details/presentation/widgets/doctor_details_header.dart';
 import 'package:tabibi/features/doctor_details/presentation/widgets/doctor_stats.dart';
+import 'package:tabibi/features/doctor_details/presentation/widgets/fav_bloc_builder.dart';
+import 'package:tabibi/features/doctor_details/presentation/widgets/review_bloc_builder.dart';
 import 'package:tabibi/features/doctor_details/presentation/widgets/review_item.dart';
-import 'package:tabibi/features/favorite/presentation/controller/favorites_cubit.dart';
 import 'package:tabibi/features/home/data/models/doctor_model.dart';
 
 class DoctorDetailsScreen extends StatelessWidget {
@@ -36,27 +37,7 @@ class DoctorDetailsScreen extends StatelessWidget {
           ),
           actions: [
             // Reactive heart icon tied to the singleton FavoritesCubit
-            BlocBuilder<FavoritesCubit, FavoritesState>(
-              bloc: sl<FavoritesCubit>(),
-              builder: (context, favState) {
-                final isFav = favState.favoritedIds.contains(doctor.id);
-                return IconButton(
-                  icon: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 250),
-                    transitionBuilder: (child, animation) =>
-                        ScaleTransition(scale: animation, child: child),
-                    child: Icon(
-                      isFav ? Icons.favorite : Icons.favorite_border,
-                      key: ValueKey(isFav),
-                      color: isFav ? AppColors.error : null,
-                    ),
-                  ),
-                  onPressed: () {
-                    sl<FavoritesCubit>().toggleFavorite(doctor);
-                  },
-                );
-              },
-            ),
+            FavouriteBlocBuilder(doctor: doctor),
           ],
         ),
         body: BlocBuilder<DoctorDetailsCubit, DoctorDetailsState>(
@@ -106,7 +87,7 @@ class DoctorDetailsScreen extends StatelessWidget {
                     SizedBox(height: 8.h),
                     ...details.schedule.map(
                       (s) => Text(
-                        "${_getDayName(s.dayOfWeek)}: ${Formatter.formatTo12Hour(s.openTime)} - ${Formatter.formatTo12Hour(s.closeTime)}",
+                        "${Formatter.getDayName(s.dayOfWeek)}: ${Formatter.formatTo12Hour(s.openTime)} - ${Formatter.formatTo12Hour(s.closeTime)}",
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.grey500,
                         ),
@@ -126,24 +107,7 @@ class DoctorDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 24.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          AppStrings.reviews,
-                          style: Theme.of(context).textTheme.titleLarge
-                              ?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            context.push(
-                              '${AppRoutes.doctorReviews}/${details.id}',
-                            );
-                          },
-                          child: const Text(AppStrings.seeAll),
-                        ),
-                      ],
-                    ),
+                    ReviewBlocBuilder(details: details),
                     if (details.reviews.isEmpty)
                       const Text("No reviews yet")
                     else
@@ -169,26 +133,5 @@ class DoctorDetailsScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _getDayName(int day) {
-    switch (day) {
-      case 1:
-        return "Monday";
-      case 2:
-        return "Tuesday";
-      case 3:
-        return "Wednesday";
-      case 4:
-        return "Thursday";
-      case 5:
-        return "Friday";
-      case 6:
-        return "Saturday";
-      case 0:
-        return "Sunday";
-      default:
-        return "";
-    }
   }
 }

@@ -47,6 +47,10 @@ import 'package:tabibi/features/booking/domain/usecases/get_prescription_use_cas
 import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
 import 'package:tabibi/features/booking/presentation/controller/my_bookings_cubit.dart';
 import 'package:tabibi/features/booking/presentation/controller/prescription_cubit.dart';
+import 'package:tabibi/features/chat_patient/data/datasources/chat_remote_data_source.dart';
+import 'package:tabibi/features/chat_patient/data/repositories/chat_repository_impl.dart';
+import 'package:tabibi/features/chat_patient/domain/repositories/chat_repository.dart';
+import 'package:tabibi/features/chat_patient/domain/usecases/chat_usecases.dart';
 import 'package:tabibi/features/doctor_details/data/datasources/doctor_details_remote_data_source.dart';
 import 'package:tabibi/features/doctor_details/data/repositories/doctor_details_repository_impl.dart';
 import 'package:tabibi/features/doctor_details/domain/repositories/doctor_details_repository.dart';
@@ -111,6 +115,11 @@ import 'package:tabibi/features/doctor/requests/data/repositories/requests_repos
 import 'package:tabibi/features/doctor/requests/domain/repositories/requests_repository.dart';
 import 'package:tabibi/features/doctor/requests/domain/usecases/requests_usecases.dart';
 import 'package:tabibi/features/doctor/requests/presentation/cubit/requests_cubit.dart';
+import 'package:tabibi/features/video_call/data/datasources/video_call_remote_data_source.dart';
+import 'package:tabibi/features/video_call/data/repositories/video_call_repository_impl.dart';
+import 'package:tabibi/features/video_call/domain/repositories/video_call_repository.dart';
+import 'package:tabibi/features/video_call/domain/usecases/get_video_token_usecase.dart';
+import 'package:tabibi/features/video_call/presentation/cubit/video_call_cubit.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
@@ -193,6 +202,12 @@ Future<void> init() async {
   sl.registerLazySingleton<RequestsRemoteDataSource>(
     () => RequestsRemoteDataSourceImpl(sl<Dio>()),
   );
+  sl.registerLazySingleton<VideoCallRemoteDataSource>(
+    () => VideoCallRemoteDataSourceImpl(dio: sl<Dio>()),
+  );
+  sl.registerLazySingleton<FcmTokenDataSource>(
+    () => FcmTokenDataSourceImpl(dio: sl<Dio>()),
+  );
 
   /// REPOSITORY
   sl.registerLazySingleton<BaseAuthenticationRepository>(
@@ -230,6 +245,9 @@ Future<void> init() async {
     () => FavoritesRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<ChatRepository>(() => ChatRepositoryImpl(sl()));
+  sl.registerLazySingleton<VideoCallRepository>(
+    () => VideoCallRepositoryImpl(sl()),
+  );
   sl.registerLazySingleton<DashboardRepository>(() => DashboardRepositoryImpl(sl()));
   sl.registerLazySingleton<ScheduleRepository>(() => ScheduleRepositoryImpl(sl()));
   sl.registerLazySingleton<RequestsRepository>(() => RequestsRepositoryImpl(sl()));
@@ -271,6 +289,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetAppointmentRequestsUseCase(sl()));
   sl.registerLazySingleton(() => ApproveAppointmentUseCase(sl()));
   sl.registerLazySingleton(() => CancelAppointmentUseCase(sl()));
+  sl.registerLazySingleton(() => GetVideoTokenUseCase(sl()));
 
   /// CUBIT
   sl.registerFactory(() => SignUpCubit(sl()));
@@ -304,6 +323,7 @@ Future<void> init() async {
   sl.registerFactory(
     () => ProfileCubit(logOutUseCase: sl(), getPatientProfileUseCase: sl()),
   );
+  sl.registerFactory(() => VideoCallCubit(sl()));
   sl.registerFactory(() => DashboardCubit(sl()));
   sl.registerFactory(() => ScheduleCubit(sl()));
   sl.registerFactory(() => RequestsCubit(sl(), sl(), sl()));

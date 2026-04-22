@@ -22,6 +22,7 @@ import 'package:tabibi/features/authentication/modules/widgets/top_section.dart'
 import 'package:tabibi/features/doctor_profile/domain/usecases/doctor_status_use_case.dart';
 
 import '../../../../../../core/utils/validators/validation.dart';
+import '../../../../../../core/services/shared_prefs_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -97,7 +98,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (state.role == '2') {
                       await _handleDoctorNavigation(context);
                     } else {
-                      context.go(AppRoutes.fillProfile);
+                      if (OnboardingServices.isProfileFilled()) {
+                        context.go(AppRoutes.bottomNavScreen);
+                      } else {
+                        context.go(AppRoutes.fillProfile);
+                      }
                     }
                   }
                 },
@@ -174,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
             context.go(AppRoutes.doctorStatusHandler);
             break;
           case DoctorStatus.Approved:
-            context.go(AppRoutes.homeScreen);
+            context.go(AppRoutes.homeDoctorScreen);
             break;
           case DoctorStatus.Rejected:
             context.go(AppRoutes.rejected);

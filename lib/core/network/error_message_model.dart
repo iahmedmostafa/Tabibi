@@ -1,3 +1,5 @@
+import 'package:tabibi/core/utils/extensions/date_time_extension.dart';
+
 class ErrorMessageModel {
   final int statusCode;
   final String statusMessage;
@@ -5,9 +7,9 @@ class ErrorMessageModel {
 
   ErrorMessageModel({
     required this.statusCode,
-    required this.statusMessage,
+    required String statusMessage,
     this.errors,
-  });
+  }) : statusMessage = statusMessage.toLocalTimeStrings();
 
   factory ErrorMessageModel.fromJson(Map<String, dynamic> json) {
     Map<String, List<String>>? parsedErrors;
@@ -16,19 +18,22 @@ class ErrorMessageModel {
       json['errors'].forEach((key, value) {
         if (value is List) {
           parsedErrors![key] = List<String>.from(
-            value.map((e) => e.toString()),
+            value.map((e) => e.toString().toLocalTimeStrings()),
           );
         } else if (value is String) {
-          parsedErrors![key] = [value];
+          parsedErrors![key] = [value.toLocalTimeStrings()];
         } else {
-          parsedErrors![key] = [value.toString()];
+          parsedErrors![key] = [value.toString().toLocalTimeStrings()];
         }
       });
     }
 
     return ErrorMessageModel(
       statusCode: json['status'] ?? 400,
-      statusMessage: _formatErrors(parsedErrors) ?? json['detail'],
+      statusMessage:
+          (_formatErrors(parsedErrors) ??
+          json['detail']?.toString() ??
+          'Error'),
       errors: parsedErrors,
     );
   }

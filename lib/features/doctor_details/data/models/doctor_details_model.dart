@@ -51,11 +51,13 @@ class ReviewModel extends DoctorReview {
   });
 
   factory ReviewModel.fromJson(Map<String, dynamic> json) {
+    String dateStr = json['createdAt'] as String;
+    if (!dateStr.endsWith('Z')) dateStr += 'Z';
     return ReviewModel(
       id: json['id'],
       rating: (json['rating'] as num).toDouble(),
       comment: json['comment'],
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: DateTime.parse(dateStr).toLocal(),
       patientName: json['patientName'],
       patientAvatar: json['patientAvatar'],
     );
