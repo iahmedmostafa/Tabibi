@@ -32,6 +32,22 @@ import 'package:tabibi/features/booking/presentation/controller/prescription_cub
 import 'package:tabibi/features/booking/presentation/screens/book_appointment_screen.dart';
 import 'package:tabibi/features/booking/presentation/screens/my_bookings_screen.dart';
 import 'package:tabibi/features/booking/presentation/screens/prescription_screen.dart';
+import 'package:tabibi/features/chat_patient/presentation/pages/chat_screen.dart';
+import 'package:tabibi/features/doctor/chat/presentation/pages/doctor_chat_screen.dart';
+import 'package:tabibi/features/doctor/chat/presentation/pages/doctor_conversations_screen.dart';
+// Doctor feature imports
+import 'package:tabibi/features/doctor/appointments/presentation/pages/appointment_details_page.dart';
+import 'package:tabibi/features/doctor/availability/presentation/cubit/availability_cubit.dart';
+import 'package:tabibi/features/doctor/availability/presentation/pages/edit_availability_page.dart';
+import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart'
+    as doctor_entities;
+import 'package:tabibi/features/doctor/earnings/presentation/pages/earnings_page.dart';
+import 'package:tabibi/features/doctor/patients/domain/entities/patient.dart';
+import 'package:tabibi/features/doctor/patients/presentation/pages/patient_profile_page.dart';
+import 'package:tabibi/features/doctor/profile/presentation/pages/settings_page.dart';
+import 'package:tabibi/features/doctor/requests/presentation/pages/appointment_requests_page.dart';
+import 'package:tabibi/features/doctor/reviews/presentation/pages/reviews_page.dart';
+import 'package:tabibi/features/doctor/schedule/presentation/pages/my_schedule_page.dart';
 import 'package:tabibi/features/doctor_details/data/models/doctor_details_model.dart';
 import 'package:tabibi/features/doctor_details/presentation/screens/doctor_details_screen.dart';
 import 'package:tabibi/features/doctor_details/presentation/screens/doctor_reviews_screen.dart';
@@ -47,6 +63,9 @@ import 'package:tabibi/features/home/presentation/screen/patient/screens/patient
 import 'package:tabibi/features/notifications/presentation/screens/notifications_screen.dart';
 import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/patient_profile_cubit.dart';
+import 'package:tabibi/features/patient_profile/presentation/screens/edit_profile_screen.dart';
+import 'package:tabibi/features/video_call/presentation/cubit/video_call_cubit.dart';
+import 'package:tabibi/features/video_call/presentation/screen/video_call_screen.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
@@ -420,6 +439,113 @@ final GoRouter router = GoRouter(
               sl<PrescriptionCubit>()..getPrescription(bookingId: bookingId),
 
           child: const PrescriptionScreen(),
+        );
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.chat,
+      name: AppRoutes.chat,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>? ?? {};
+        return ChatScreen(
+          doctorId: extra['doctorId'] as String? ?? '',
+          doctorName: extra['doctorName'] as String? ?? '',
+          doctorImage: extra['doctorImage'] as String?,
+        );
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.callPage,
+      name: AppRoutes.callPage,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>? ?? {};
+        return BlocProvider(
+          create: (context) => sl<VideoCallCubit>(),
+          child: CallPage(bookingId: extra['bookingId'] as String? ?? ''),
+        );
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.editProfile,
+      name: AppRoutes.editProfile,
+      builder: (context, state) => MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => sl<CitiesCubit>()..getCities()),
+          BlocProvider(create: (context) => sl<UploadImageCubit>()),
+          BlocProvider(
+            create: (context) => sl<PatientProfileCubit>()..getPatientProfile(),
+          ),
+        ],
+        child: const EditProfileScreen(),
+      ),
+    ),
+
+    GoRoute(
+      path: AppRoutes.doctorSchedule,
+      name: AppRoutes.doctorSchedule,
+      builder: (context, state) => BlocProvider(
+        create: (_) => AvailabilityCubit(),
+        child: const MySchedulePage(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.doctorAvailability,
+      name: AppRoutes.doctorAvailability,
+      builder: (context, state) => BlocProvider(
+        create: (_) => AvailabilityCubit(),
+        child: const EditAvailabilityPage(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.doctorRequests,
+      name: AppRoutes.doctorRequests,
+      builder: (context, state) => const AppointmentRequestsPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.doctorEarnings,
+      name: AppRoutes.doctorEarnings,
+      builder: (context, state) => const EarningsPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.doctorSettings,
+      name: AppRoutes.doctorSettings,
+      builder: (context, state) => const SettingsPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.doctorAppointmentDetails,
+      name: AppRoutes.doctorAppointmentDetails,
+      builder: (context, state) {
+        final appointment = state.extra as doctor_entities.Appointment;
+        return AppointmentDetailsPage(appointment: appointment);
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.doctorPatientProfile,
+      name: AppRoutes.doctorPatientProfile,
+      builder: (context, state) {
+        final patient = state.extra as Patient;
+        return PatientProfilePage(patient: patient);
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.doctorReviewsPage,
+      name: AppRoutes.doctorReviewsPage,
+      builder: (context, state) => const ReviewsPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.doctorConversations,
+      name: AppRoutes.doctorConversations,
+      builder: (context, state) => const DoctorConversationsScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.doctorChat,
+      name: AppRoutes.doctorChat,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>? ?? {};
+        return DoctorChatScreen(
+          patientId: extra['patientId'] as String? ?? '',
+          patientName: extra['patientName'] as String? ?? '',
+          patientImage: extra['patientImage'] as String?,
         );
       },
     ),
