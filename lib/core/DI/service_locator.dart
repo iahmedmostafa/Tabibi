@@ -79,6 +79,7 @@ import 'package:tabibi/features/favorite/presentation/controller/favorites_cubit
 import 'package:tabibi/features/home/data/datasources/doctors_remote_data_source.dart';
 import 'package:tabibi/features/home/data/repositories/doctor_repository.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_cubit.dart';
+import 'package:tabibi/features/notifications/data/datasources/fcm_token_data_source.dart';
 import 'package:tabibi/features/notifications/data/datasources/notifications_remote_data_source.dart';
 import 'package:tabibi/features/notifications/data/repositories/notifications_repository_impl.dart';
 import 'package:tabibi/features/notifications/domain/repositories/notifications_repository.dart';
@@ -120,6 +121,11 @@ import 'package:tabibi/features/video_call/data/repositories/video_call_reposito
 import 'package:tabibi/features/video_call/domain/repositories/video_call_repository.dart';
 import 'package:tabibi/features/video_call/domain/usecases/get_video_token_usecase.dart';
 import 'package:tabibi/features/video_call/presentation/cubit/video_call_cubit.dart';
+import 'package:tabibi/features/doctor/appointments/data/datasources/appointments_remote_data_source.dart';
+import 'package:tabibi/features/doctor/appointments/data/repositories/appointments_repository_impl.dart';
+import 'package:tabibi/features/doctor/appointments/domain/repositories/appointments_repository.dart';
+import 'package:tabibi/features/doctor/appointments/domain/usecases/get_appointment_details_usecase.dart';
+import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_cubit.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
@@ -208,6 +214,9 @@ Future<void> init() async {
   sl.registerLazySingleton<FcmTokenDataSource>(
     () => FcmTokenDataSourceImpl(dio: sl<Dio>()),
   );
+  sl.registerLazySingleton<AppointmentsRemoteDataSource>(
+    () => AppointmentsRemoteDataSourceImpl(sl()),
+  );
 
   /// REPOSITORY
   sl.registerLazySingleton<BaseAuthenticationRepository>(
@@ -251,6 +260,9 @@ Future<void> init() async {
   sl.registerLazySingleton<DashboardRepository>(() => DashboardRepositoryImpl(sl()));
   sl.registerLazySingleton<ScheduleRepository>(() => ScheduleRepositoryImpl(sl()));
   sl.registerLazySingleton<RequestsRepository>(() => RequestsRepositoryImpl(sl()));
+  sl.registerLazySingleton<AppointmentsRepository>(
+    () => AppointmentsRepositoryImpl(sl()),
+  );
 
   /// USE CASE
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
@@ -289,9 +301,11 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetAppointmentRequestsUseCase(sl()));
   sl.registerLazySingleton(() => ApproveAppointmentUseCase(sl()));
   sl.registerLazySingleton(() => CancelAppointmentUseCase(sl()));
+  sl.registerLazySingleton(() => GetAppointmentDetailsUseCase(sl()));
   sl.registerLazySingleton(() => GetVideoTokenUseCase(sl()));
 
   /// CUBIT
+  sl.registerFactory(() => AppointmentDetailsCubit(sl()));
   sl.registerFactory(() => SignUpCubit(sl()));
   sl.registerFactory(() => ForgotPasswordCubit(sl()));
   sl.registerFactory(() => VerifyCodeCubit(sl(), sl(), sl()));

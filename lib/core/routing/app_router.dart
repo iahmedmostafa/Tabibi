@@ -33,6 +33,8 @@ import 'package:tabibi/features/booking/presentation/screens/book_appointment_sc
 import 'package:tabibi/features/booking/presentation/screens/my_bookings_screen.dart';
 import 'package:tabibi/features/booking/presentation/screens/prescription_screen.dart';
 import 'package:tabibi/features/chat_patient/presentation/pages/chat_screen.dart';
+import 'package:tabibi/features/doctor/chat/presentation/pages/doctor_chat_screen.dart';
+import 'package:tabibi/features/doctor/chat/presentation/pages/doctor_conversations_screen.dart';
 // Doctor feature imports
 import 'package:tabibi/features/doctor/appointments/presentation/pages/appointment_details_page.dart';
 import 'package:tabibi/features/doctor/availability/presentation/cubit/availability_cubit.dart';
@@ -362,7 +364,6 @@ final GoRouter router = GoRouter(
       ),
     ),
 
-    // ===== Doctor Feature Routes =====
     GoRoute(
       path: AppRoutes.doctorSchedule,
       name: AppRoutes.doctorSchedule,
@@ -414,6 +415,23 @@ final GoRouter router = GoRouter(
       path: AppRoutes.doctorReviewsPage,
       name: AppRoutes.doctorReviewsPage,
       builder: (context, state) => const ReviewsPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.doctorConversations,
+      name: AppRoutes.doctorConversations,
+      builder: (context, state) => const DoctorConversationsScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.doctorChat,
+      name: AppRoutes.doctorChat,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>? ?? {};
+        return DoctorChatScreen(
+          patientId: extra['patientId'] as String? ?? '',
+          patientName: extra['patientName'] as String? ?? '',
+          patientImage: extra['patientImage'] as String?,
+        );
+      },
     ),
   ],
 );
