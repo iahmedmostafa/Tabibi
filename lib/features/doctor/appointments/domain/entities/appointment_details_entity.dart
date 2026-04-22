@@ -64,7 +64,7 @@ class PrescriptionEntity extends Equatable {
   final String diagnosis;
   final String? notes;
   final DateTime createdAt;
-  final List<dynamic> medicines; // You can create MedicineEntity later if needed
+  final List<dynamic> medicines; 
 
   const PrescriptionEntity({
     required this.id,
