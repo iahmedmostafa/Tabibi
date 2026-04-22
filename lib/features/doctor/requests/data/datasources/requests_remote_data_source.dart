@@ -18,8 +18,6 @@ class RequestsRemoteDataSourceImpl implements RequestsRemoteDataSource {
   @override
   Future<List<AppointmentRequestModel>> getAppointmentRequests() async {
     try {
-      // NOTE: Using schedule endpoint as a fallback since specific "requests" endpoint doesn't exist
-      // Will fetch schedule without date to get all and filter locally, or API might default to upcoming
       final response = await dio.get(ApiConstance.doctorHome);
 
       if (response.statusCode == 200) {

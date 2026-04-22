@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/features/doctor/requests/domain/entities/appointment_request.dart';
 
-enum RequestFilter { all, today, upcoming }
+
 
 class RequestsState extends Equatable {
   final List<AppointmentRequest> allRequests;

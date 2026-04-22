@@ -11,7 +11,7 @@ class AppointmentRequestModel extends AppointmentRequest {
   });
 
   factory AppointmentRequestModel.fromJson(Map<String, dynamic> json) {
-    // Determine status from integer (Assuming 0 = pending, 1 = scheduled, etc.)
+    // Determine status from integer (Assuming 0 = pending, 1 = scheduled, etc.) 3ashan mesh aref mohammed 3amel7a eh ya hamed ya a5oya😂
     String mappedStatus = 'pending';
     if (json['status'] == 1) mappedStatus = 'approved';
     if (json['status'] == 2) mappedStatus = 'completed';
@@ -24,7 +24,6 @@ class AppointmentRequestModel extends AppointmentRequest {
       dateTime: json['appointmentDate'] != null
           ? DateTime.tryParse(json['appointmentDate']) ?? DateTime.now()
           : DateTime.now(),
-      // Use 'type' as reason or placeholder if null
       reason: json['type']?.toString() ?? 'Consultation',
       status: mappedStatus,
     );
