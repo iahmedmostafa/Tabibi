@@ -16,17 +16,17 @@ class AppointmentRequestsPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => sl<RequestsCubit>(),
       child: Scaffold(
-        backgroundColor: Colors.grey[50],
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
           title: Text(
             'Appointment Requests',
-            style: TextStyle(fontSize: 20.sp),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
           ),
           centerTitle: true,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
+            icon: Icon(Icons.arrow_back, size: 24.sp, color: Theme.of(context).colorScheme.onSurface),
             onPressed: () => context.pop(),
           ),
         ),
@@ -35,7 +35,7 @@ class AppointmentRequestsPage extends StatelessWidget {
             return Column(
               children: [
                 Container(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                   padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
                   child: Column(
                     children: [
@@ -77,7 +77,7 @@ class AppointmentRequestsPage extends StatelessWidget {
             Text(
               state.errorMessage!,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+              style: TextStyle(fontSize: 14.sp, color: Theme.of(context).colorScheme.onSurfaceVariant),
             ),
             SizedBox(height: 16.h),
             ElevatedButton(
@@ -97,14 +97,14 @@ class AppointmentRequestsPage extends StatelessWidget {
             Icon(
               Icons.search_off,
               size: 64.sp,
-              color: Colors.grey[300],
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
             SizedBox(height: 16.h),
             Text(
               'No requests found',
               style: TextStyle(
                 fontSize: 16.sp,
-                color: Colors.grey[500],
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ],
@@ -183,10 +183,10 @@ class _SearchBar extends StatelessWidget {
       onChanged: (query) => context.read<RequestsCubit>().search(query),
       decoration: InputDecoration(
         hintText: 'Search patients...',
-        hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14.sp),
-        prefixIcon: Icon(Icons.search, color: Colors.grey[400], size: 20.sp),
+        hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 14.sp),
+        prefixIcon: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 20.sp),
         filled: true,
-        fillColor: Colors.grey[100],
+        fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
           borderSide: BorderSide.none,
@@ -215,10 +215,7 @@ class _FilterChips extends StatelessWidget {
         }).length;
 
         final upcomingCount = state.allRequests.where((r) {
-          final now = DateTime.now();
-          final today = DateTime(now.year, now.month, now.day);
-          final rDate = DateTime(r.dateTime.year, r.dateTime.month, r.dateTime.day);
-          return rDate.isAfter(today);
+          return r.dateTime.isAfter(DateTime.now());
         }).length;
 
         return Row(
@@ -264,16 +261,16 @@ class _FilterChips extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         decoration: BoxDecoration(
-          color: isSelected ? AppTheme.primaryColor : Colors.white,
+          color: isSelected ? AppTheme.primaryColor : Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20.r),
           border: Border.all(
-            color: isSelected ? AppTheme.primaryColor : Colors.grey[300]!,
+            color: isSelected ? AppTheme.primaryColor : Theme.of(context).dividerColor,
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black87,
+            color: isSelected ? Colors.white : Theme.of(context).colorScheme.onSurface,
             fontSize: 14.sp,
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
           ),

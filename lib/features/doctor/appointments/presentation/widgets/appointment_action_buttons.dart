@@ -49,8 +49,8 @@ class AppointmentActionButtons extends StatelessWidget {
                 icon: Icon(Icons.calendar_today, size: 18.sp),
                 label: const Text('Reschedule'),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.black87,
-                  side: BorderSide(color: Colors.grey[300]!),
+                  foregroundColor: Theme.of(context).colorScheme.onSurface,
+                  side: BorderSide(color: Theme.of(context).dividerColor),
                   padding: EdgeInsets.symmetric(vertical: 14.h),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.r),
@@ -92,8 +92,8 @@ class AppointmentActionButtons extends StatelessWidget {
             icon: Icon(Icons.chat_bubble_outline, size: 20.sp),
             label: const Text('Message Patient'),
             style: TextButton.styleFrom(
-              foregroundColor: Colors.grey[700],
-              backgroundColor: Colors.grey[100],
+              foregroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
+              backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
               padding: EdgeInsets.symmetric(vertical: 16.h),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.r),

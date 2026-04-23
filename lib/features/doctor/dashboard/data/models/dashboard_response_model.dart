@@ -54,9 +54,13 @@ class DashboardAppointmentModel extends DashboardAppointment {
       patientName: json['patientName'] ?? '',
       patientAvatarUrl: json['patientAvatarUrl'],
       appointmentDate: json['appointmentDate'] != null
-          ? DateTime.tryParse(json['appointmentDate']) ?? DateTime.now()
+          ? DateTime.tryParse(json['appointmentDate'].toString() + (json['appointmentDate'].toString().endsWith('Z') ? '' : 'Z'))?.toLocal() ?? DateTime.now()
           : DateTime.now(),
-      type: json['type'],
+      type: (json['type'] == 1 || json['type'] == '1')
+          ? 'Consultation'
+          : (json['type'] == 2 || json['type'] == '2')
+              ? 'Follow-up'
+              : json['type']?.toString() ?? 'Consultation',
       status: json['status'],
     );
   }

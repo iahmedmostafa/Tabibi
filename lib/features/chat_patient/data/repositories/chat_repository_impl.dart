@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 import '../../domain/entities/chat_entity.dart';
 import '../../domain/repositories/chat_repository.dart';
 import '../datasources/chat_remote_data_source.dart';
@@ -44,16 +46,32 @@ class ChatRepositoryImpl implements ChatRepository {
     _signalRSubscription = remoteDataSource.onChatMessageReceived.listen((
       data,
     ) {
+      log("ChatRepo received from SignalR: $data");
+      Map<String, dynamic>? decodedData;
+      try {
+        if (data is Map) {
+          decodedData = Map<String, dynamic>.from(data);
+        } else if (data is String) {
+          decodedData = jsonDecode(data);
+        }
+      } catch (e) {
+        log("Error decoding SignalR data: $e");
+      }
+
       // Decode data into MessageEntity (SendChatMessageDto format: Id, SenderId, Message, SentAt)
-      if (data is Map) {
+      if (decodedData != null) {
         // handle Signalr capitalized keys or camelCase keys
-        final senderId = data['SenderId'] ?? data['senderId'];
-        if (senderId == otherUserId) {
+        final senderId = decodedData['SenderId']?.toString() ?? decodedData['senderId']?.toString();
+        log("Parsed SenderId: $senderId, Expected otherUserId: $otherUserId");
+        
+        // We add the message if it belongs to this conversation (either from the other person or ourself if not duplicated)
+        // Wait, if it's from us, it was already added optimistically. 
+        if (senderId != null && senderId.toLowerCase() == otherUserId.toLowerCase()) {
           final newMessage = MessageEntity(
-            id: data['Id'] ?? data['id'] ?? '',
-            message: data['Message'] ?? data['message'] ?? '',
+            id: decodedData['Id']?.toString() ?? decodedData['id']?.toString() ?? DateTime.now().toString(),
+            message: decodedData['Message'] ?? decodedData['message'] ?? '',
             sentAt:
-                DateTime.tryParse(data['SentAt'] ?? data['sentAt'] ?? '') ??
+                DateTime.tryParse(decodedData['SentAt'] ?? decodedData['sentAt'] ?? '') ??
                 DateTime.now(),
             isMe: false,
             isRead: false,

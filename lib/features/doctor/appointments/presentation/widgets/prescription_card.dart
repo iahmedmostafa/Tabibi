@@ -15,23 +15,23 @@ class PrescriptionCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Prescription / Diagnosis', style: tt.titleLarge?.copyWith(color: AppColors.grey800)),
+          Text('Prescription / Diagnosis', style: tt.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface)),
           SizedBox(height: 16.h),
           _buildRow(context, 'Diagnosis', prescription.diagnosis),
-          Divider(height: 24.h, color: Colors.grey[200]),
+          Divider(height: 24.h, color: Theme.of(context).dividerColor),
           _buildRow(
             context,
             'Notes',
             prescription.notes?.isNotEmpty == true ? prescription.notes! : 'None',
           ),
           if (prescription.medicines.isNotEmpty) ...[
-            Divider(height: 24.h, color: Colors.grey[200]),
+            Divider(height: 24.h, color: Theme.of(context).dividerColor),
             _buildRow(
               context,
               'Medicines',
@@ -49,12 +49,12 @@ class PrescriptionCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(child: Text(label, style: tt.labelSmall?.copyWith(color: AppColors.grey500))),
+        Expanded(child: Text(label, style: tt.labelSmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant))),
         SizedBox(width: 8.w),
         Expanded(
           child: Text(
             value,
-            style: tt.bodyMedium?.copyWith(color: AppColors.grey800),
+            style: tt.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurface),
             textAlign: TextAlign.end,
           ),
         ),

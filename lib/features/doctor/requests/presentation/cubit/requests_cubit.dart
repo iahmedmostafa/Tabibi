@@ -51,7 +51,7 @@ class RequestsCubit extends Cubit<RequestsState> {
         if (onError != null) onError(failure.message);
       },
       (_) {
-        final updatedList = state.allRequests.where((r) => r.id != id).toList();
+        final updatedList = state.allRequests.map((r) => r.id == id ? r.copyWith(status: 'approved') : r).toList();
         emit(state.copyWith(isActionLoading: false, allRequests: updatedList));
         _applyFilters();
         if (onSuccess != null) onSuccess();
@@ -68,7 +68,7 @@ class RequestsCubit extends Cubit<RequestsState> {
         if (onError != null) onError(failure.message);
       },
       (_) {
-        final updatedList = state.allRequests.where((r) => r.id != id).toList();
+        final updatedList = state.allRequests.map((r) => r.id == id ? r.copyWith(status: 'rejected') : r).toList();
         emit(state.copyWith(isActionLoading: false, allRequests: updatedList));
         _applyFilters();
         if (onSuccess != null) onSuccess();
@@ -105,12 +105,7 @@ class RequestsCubit extends Cubit<RequestsState> {
         break;
       case RequestFilter.upcoming:
         filtered = filtered.where((r) {
-          final rDate = DateTime(
-            r.dateTime.year,
-            r.dateTime.month,
-            r.dateTime.day,
-          );
-          return rDate.isAfter(today);
+          return r.dateTime.isAfter(DateTime.now());
         }).toList();
         break;
       case RequestFilter.all:
