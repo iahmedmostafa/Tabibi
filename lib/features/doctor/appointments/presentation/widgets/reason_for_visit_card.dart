@@ -17,15 +17,15 @@ class ReasonForVisitCard extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Reason for Visit', style: tt.titleLarge?.copyWith(color: AppColors.grey800)),
+          Text('Reason for Visit', style: tt.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface)),
           SizedBox(height: 12.h),
-          Text(typeLabel, style: tt.bodyMedium?.copyWith(height: 1.5, color: AppColors.grey700)),
+          Text(typeLabel, style: tt.bodyMedium?.copyWith(height: 1.5, color: Theme.of(context).colorScheme.onSurfaceVariant)),
         ],
       ),
     );

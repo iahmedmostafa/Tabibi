@@ -22,9 +22,14 @@ class AppointmentRequestModel extends AppointmentRequest {
       patientName: json['patientName'] ?? 'Unknown Patient',
       imageUrl: json['patientAvatarUrl'] ?? '',
       dateTime: json['appointmentDate'] != null
-          ? DateTime.tryParse(json['appointmentDate']) ?? DateTime.now()
+          ? DateTime.tryParse(json['appointmentDate'].toString() + (json['appointmentDate'].toString().endsWith('Z') ? '' : 'Z'))?.toLocal() ?? DateTime.now()
           : DateTime.now(),
-      reason: json['type']?.toString() ?? 'Consultation',
+      // Use 'type' as reason or placeholder if null
+      reason: (json['type'] == 1 || json['type'] == '1')
+          ? 'Consultation'
+          : (json['type'] == 2 || json['type'] == '2')
+              ? 'Follow-up'
+              : json['type']?.toString() ?? 'Consultation',
       status: mappedStatus,
     );
   }

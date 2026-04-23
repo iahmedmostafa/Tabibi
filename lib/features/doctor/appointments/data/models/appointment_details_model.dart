@@ -14,7 +14,7 @@ class AppointmentDetailsModel extends AppointmentDetailsEntity {
     return AppointmentDetailsModel(
       id: json['id'] ?? '',
       appointmentDate: json['appointmentDate'] != null
-          ? DateTime.parse(json['appointmentDate'])
+          ? DateTime.parse(json['appointmentDate'].toString() + (json['appointmentDate'].toString().endsWith('Z') ? '' : 'Z')).toLocal()
           : DateTime.now(),
       type: json['type'] ?? 0,
       status: json['status'] ?? 0,

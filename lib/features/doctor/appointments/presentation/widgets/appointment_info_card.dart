@@ -6,8 +6,9 @@ import 'package:tabibi/features/doctor/appointments/domain/entities/appointment_
 
 class AppointmentInfoCard extends StatelessWidget {
   final AppointmentDetailsEntity details;
+  final bool isUpcoming;
 
-  const AppointmentInfoCard({super.key, required this.details});
+  const AppointmentInfoCard({super.key, required this.details, required this.isUpcoming});
 
   @override
   Widget build(BuildContext context) {
@@ -17,16 +18,20 @@ class AppointmentInfoCard extends StatelessWidget {
     final statusColor = _statusColor(details.status);
     final statusBg = _statusBg(details.status);
 
+final isUpcoming = details.appointmentDate.isAfter(
+                DateTime.now(),
+              );
+
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Appointment Information', style: tt.titleLarge?.copyWith(color: AppColors.grey800)),
+          Text('Appointment Information', style: tt.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface)),
           SizedBox(height: 16.h),
           _buildInfoRow(
             context: context,
@@ -69,7 +74,7 @@ class AppointmentInfoCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Status', style: tt.labelSmall?.copyWith(color: AppColors.grey500)),
+                  Text('Status', style: tt.labelSmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
                   SizedBox(height: 4.h),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
@@ -78,7 +83,7 @@ class AppointmentInfoCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: Text(
-                      statusLabel,
+                      isUpcoming ? 'Upcoming' : 'Completed',
                       style: tt.bodySmall?.copyWith(color: statusColor),
                     ),
                   ),
@@ -116,9 +121,9 @@ class AppointmentInfoCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: tt.labelSmall?.copyWith(color: AppColors.grey500)),
+              Text(label, style: tt.labelSmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
               SizedBox(height: 4.h),
-              Text(value, style: tt.bodyMedium?.copyWith(height: 1.4, color: AppColors.grey800)),
+              Text(value, style: tt.bodyMedium?.copyWith(height: 1.4, color: Theme.of(context).colorScheme.onSurface)),
             ],
           ),
         ),

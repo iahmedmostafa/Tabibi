@@ -25,7 +25,7 @@ class AppointmentPatientInfoCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
@@ -42,7 +42,7 @@ class AppointmentPatientInfoCard extends StatelessWidget {
             width: 64.w,
             height: 64.w,
             decoration: BoxDecoration(
-              color: Colors.grey[200],
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: hasImage
@@ -55,10 +55,10 @@ class AppointmentPatientInfoCard extends StatelessWidget {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       ),
                       errorWidget: (_, __, ___) =>
-                          Icon(Icons.person, size: 32.sp, color: Colors.grey[400]),
+                          Icon(Icons.person, size: 32.sp, color: Theme.of(context).colorScheme.onSurfaceVariant),
                     ),
                   )
-                : Icon(Icons.person, size: 32.sp, color: Colors.grey[400]),
+                : Icon(Icons.person, size: 32.sp, color: Theme.of(context).colorScheme.onSurfaceVariant),
           ),
           SizedBox(width: 16.w),
           // Info
@@ -68,7 +68,7 @@ class AppointmentPatientInfoCard extends StatelessWidget {
               children: [
                 Text(
                   patient.name,
-                  style: tt.bodyLarge?.copyWith(color: Colors.black),
+                  style: tt.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -76,7 +76,7 @@ class AppointmentPatientInfoCard extends StatelessWidget {
                   SizedBox(height: 4.h),
                   Text(
                     patient.email!,
-                    style: tt.labelSmall?.copyWith(color: Colors.grey[600]),
+                    style: tt.labelSmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
