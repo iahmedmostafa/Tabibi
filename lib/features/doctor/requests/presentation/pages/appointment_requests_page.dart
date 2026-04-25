@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tabibi/core/DI/service_locator.dart';
+import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/doctor/requests/presentation/cubit/requests_cubit.dart';
 import 'package:tabibi/features/doctor/requests/presentation/cubit/requests_state.dart';
@@ -13,100 +15,161 @@ class AppointmentRequestsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => RequestsCubit(),
+      create: (context) => sl<RequestsCubit>(),
       child: Scaffold(
-        backgroundColor: Colors.grey[50],
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
           title: Text(
             'Appointment Requests',
-            style: TextStyle(fontSize: 20.sp),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
           ),
           centerTitle: true,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
+            icon: Icon(Icons.arrow_back, size: 24.sp, color: Theme.of(context).colorScheme.onSurface),
             onPressed: () => context.pop(),
           ),
         ),
-        body: Column(
-          children: [
-            Container(
-              color: Colors.white,
-              padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
-              child: Column(
-                children: [
-                  const _SearchBar(),
-                  SizedBox(height: 16.h),
-                  const _FilterChips(),
-                ],
-              ),
-            ),
-            Expanded(
-              child: BlocBuilder<RequestsCubit, RequestsState>(
-                builder: (context, state) {
-                  if (state.filteredRequests.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.search_off,
-                            size: 64.sp,
-                            color: Colors.grey[300],
-                          ),
-                          SizedBox(height: 16.h),
-                          Text(
-                            'No requests found',
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              color: Colors.grey[500],
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
+        body: BlocBuilder<RequestsCubit, RequestsState>(
+          builder: (context, state) {
+            return Column(
+              children: [
+                Container(
+                  color: Theme.of(context).colorScheme.surface,
+                  padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
+                  child: Column(
+                    children: [
+                      const _SearchBar(),
+                      SizedBox(height: 16.h),
+                      const _FilterChips(),
+                    ],
+                  ),
+                ),
+                // Loading bar indicator on top of content
+                if (state.isActionLoading)
+                  LinearProgressIndicator(
+                    color: AppTheme.primaryColor,
+                    backgroundColor: AppTheme.primaryColor.withAlpha(40),
+                  ),
+                Expanded(
+                  child: _buildBody(context, state),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
 
-                  return ListView.builder(
-                    padding: EdgeInsets.all(16.w),
-                    itemCount: state.filteredRequests.length,
-                    itemBuilder: (context, index) {
-                      final request = state.filteredRequests[index];
-                      return RequestCard(
-                        request: request,
-                        onApprove: () {
-                          context.read<RequestsCubit>().approveRequest(
-                            request.id,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'Request approved for ${request.patientName}',
-                              ),
-                            ),
-                          );
-                        },
-                        onReject: () {
-                          context.read<RequestsCubit>().rejectRequest(
-                            request.id,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'Request rejected for ${request.patientName}',
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
+  Widget _buildBody(BuildContext context, RequestsState state) {
+    if (state.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (state.errorMessage != null && state.allRequests.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error_outline, size: 64.sp, color: Colors.red[300]),
+            SizedBox(height: 16.h),
+            Text(
+              state.errorMessage!,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 14.sp, color: Theme.of(context).colorScheme.onSurfaceVariant),
+            ),
+            SizedBox(height: 16.h),
+            ElevatedButton(
+              onPressed: () => context.read<RequestsCubit>().getRequests(),
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (state.filteredRequests.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.search_off,
+              size: 64.sp,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+            SizedBox(height: 16.h),
+            Text(
+              'No requests found',
+              style: TextStyle(
+                fontSize: 16.sp,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ],
         ),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: () => context.read<RequestsCubit>().getRequests(),
+      child: ListView.builder(
+        padding: EdgeInsets.all(16.w),
+        itemCount: state.filteredRequests.length,
+        itemBuilder: (context, index) {
+          final request = state.filteredRequests[index];
+          return RequestCard(
+            request: request,
+            onApprove: () {
+              context.read<RequestsCubit>().approveRequest(
+                request.id,
+                onSuccess: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        '✓ Appointment approved for ${request.patientName}',
+                      ),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                },
+                onError: (error) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Failed: $error'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                },
+              );
+            },
+            onReject: () {
+              context.read<RequestsCubit>().rejectRequest(
+                request.id,
+                onSuccess: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        '✗ Appointment cancelled for ${request.patientName}',
+                      ),
+                      backgroundColor: Colors.orange,
+                    ),
+                  );
+                },
+                onError: (error) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Failed: $error'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        },
       ),
     );
   }
@@ -121,10 +184,10 @@ class _SearchBar extends StatelessWidget {
       onChanged: (query) => context.read<RequestsCubit>().search(query),
       decoration: InputDecoration(
         hintText: 'Search patients...',
-        hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14.sp),
-        prefixIcon: Icon(Icons.search, color: Colors.grey[400], size: 20.sp),
+        hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 14.sp),
+        prefixIcon: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 20.sp),
         filled: true,
-        fillColor: Colors.grey[100],
+        fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
           borderSide: BorderSide.none,
@@ -141,7 +204,21 @@ class _FilterChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RequestsCubit, RequestsState>(
+      buildWhen: (prev, curr) =>
+          prev.selectedFilter != curr.selectedFilter ||
+          prev.allRequests.length != curr.allRequests.length,
       builder: (context, state) {
+        final todayCount = state.allRequests.where((r) {
+          final now = DateTime.now();
+          final today = DateTime(now.year, now.month, now.day);
+          final rDate = DateTime(r.dateTime.year, r.dateTime.month, r.dateTime.day);
+          return rDate.isAtSameMomentAs(today);
+        }).length;
+
+        final upcomingCount = state.allRequests.where((r) {
+          return r.dateTime.isAfter(DateTime.now());
+        }).length;
+
         return Row(
           children: [
             _buildChip(
@@ -154,7 +231,7 @@ class _FilterChips extends StatelessWidget {
             SizedBox(width: 8.w),
             _buildChip(
               context,
-              label: 'Today',
+              label: 'Today ($todayCount)',
               isSelected: state.selectedFilter == RequestFilter.today,
               onTap: () =>
                   context.read<RequestsCubit>().setFilter(RequestFilter.today),
@@ -162,7 +239,7 @@ class _FilterChips extends StatelessWidget {
             SizedBox(width: 8.w),
             _buildChip(
               context,
-              label: 'Upcoming',
+              label: 'Upcoming ($upcomingCount)',
               isSelected: state.selectedFilter == RequestFilter.upcoming,
               onTap: () => context.read<RequestsCubit>().setFilter(
                 RequestFilter.upcoming,
@@ -185,16 +262,16 @@ class _FilterChips extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         decoration: BoxDecoration(
-          color: isSelected ? AppTheme.primaryColor : Colors.white,
+          color: isSelected ? AppTheme.primaryColor : Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20.r),
           border: Border.all(
-            color: isSelected ? AppTheme.primaryColor : Colors.grey[300]!,
+            color: isSelected ? AppTheme.primaryColor : Theme.of(context).dividerColor,
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black87,
+            color: isSelected ? Colors.white : Theme.of(context).colorScheme.onSurface,
             fontSize: 14.sp,
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
           ),

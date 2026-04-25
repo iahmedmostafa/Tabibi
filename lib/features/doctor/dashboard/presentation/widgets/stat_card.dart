@@ -18,15 +18,20 @@ class StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cardColor = theme.cardColor != Colors.transparent
+        ? theme.cardColor
+        : theme.colorScheme.surface;
+
     return Expanded(
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: cardColor,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -34,7 +39,7 @@ class StatCard extends StatelessWidget {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min, // 👈 مهم عشان ما يحاولش يتمد على طول
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               padding: const EdgeInsets.all(8),
@@ -44,10 +49,10 @@ class StatCard extends StatelessWidget {
               ),
               child: Icon(icon, color: iconColor, size: 24),
             ),
-            const SizedBox(height: 12), // 👈 بدل Spacer
-            Text(label, style: Theme.of(context).textTheme.bodyMedium),
+            const SizedBox(height: 12),
+            Text(label, style: theme.textTheme.bodyMedium),
             const SizedBox(height: 4),
-            Text(value, style: Theme.of(context).textTheme.headlineMedium),
+            Text(value, style: theme.textTheme.headlineMedium),
           ],
         ),
       ),

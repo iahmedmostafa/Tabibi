@@ -1,26 +1,35 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
-import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart';
-import 'package:tabibi/features/doctor/patients/data/mock_patient_data.dart';
+import 'package:tabibi/features/doctor/appointments/domain/entities/appointment_details_entity.dart';
 
 class AppointmentPatientInfoCard extends StatelessWidget {
-  final Appointment appointment;
+  final PatientEntity patient;
+  final bool isUpcoming;
 
-  const AppointmentPatientInfoCard({super.key, required this.appointment});
+  const AppointmentPatientInfoCard({
+    super.key,
+    required this.patient,
+    required this.isUpcoming,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final tt = Theme.of(context).textTheme;
+    final hasImage = patient.avatarUrl != null && patient.avatarUrl!.isNotEmpty;
+    final statusLabel = isUpcoming ? 'Upcoming' : 'Completed';
+    final statusColor = isUpcoming ? AppTheme.blueIcon : AppTheme.greenIcon;
+    final statusBg = isUpcoming ? AppTheme.bluePastel : AppTheme.greenPastel;
+
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -28,73 +37,61 @@ class AppointmentPatientInfoCard extends StatelessWidget {
       ),
       child: Row(
         children: [
+          // Avatar
           Container(
             width: 64.w,
             height: 64.w,
             decoration: BoxDecoration(
-              color: Colors.grey[200],
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(12.r),
             ),
-            child: Icon(Icons.person, size: 32.sp, color: Colors.grey[400]),
+            child: hasImage
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: CachedNetworkImage(
+                      imageUrl: patient.avatarUrl!,
+                      fit: BoxFit.cover,
+                      placeholder: (_, __) => const Center(
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                      errorWidget: (_, __, ___) =>
+                          Icon(Icons.person, size: 32.sp, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                    ),
+                  )
+                : Icon(Icons.person, size: 32.sp, color: Theme.of(context).colorScheme.onSurfaceVariant),
           ),
           SizedBox(width: 16.w),
+          // Info
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  appointment.patientName,
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  patient.name,
+                  style: tt.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: 4.h),
-                Text(
-                  'Patient ID: ${appointment.patientId}',
-                  style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
-                ),
+                if (patient.email != null && patient.email!.isNotEmpty) ...[
+                  SizedBox(height: 4.h),
+                  Text(
+                    patient.email!,
+                    style: tt.labelSmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
                 SizedBox(height: 8.h),
-                Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 8.w,
-                        vertical: 4.h,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppTheme.bluePastel,
-                        borderRadius: BorderRadius.circular(4.r),
-                      ),
-                      child: Text(
-                        'Upcoming',
-                        style: TextStyle(
-                          color: AppTheme.blueIcon,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        context.push(
-                          AppRoutes.doctorPatientProfile,
-                          extra: MockPatientData.getSarahJohnson(),
-                        );
-                      },
-                      child: Text(
-                        'View Profile →',
-                        style: TextStyle(
-                          color: AppTheme.primaryColor,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  decoration: BoxDecoration(
+                    color: statusBg,
+                    borderRadius: BorderRadius.circular(4.r),
+                  ),
+                  child: Text(
+                    statusLabel,
+                    style: tt.bodySmall?.copyWith(color: statusColor),
+                  ),
                 ),
               ],
             ),

@@ -18,17 +18,22 @@ class QuickActionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cardColor = theme.cardColor != Colors.transparent
+        ? theme.cardColor
+        : theme.colorScheme.surface;
+
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: cardColor,
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -48,7 +53,7 @@ class QuickActionItem extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 label,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: theme.textTheme.titleMedium?.copyWith(
                   fontSize: 13,
                   fontWeight: FontWeight.w500,
                 ),

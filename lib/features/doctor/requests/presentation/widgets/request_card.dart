@@ -22,11 +22,11 @@ class RequestCard extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 16.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -41,10 +41,10 @@ class RequestCard extends StatelessWidget {
                 width: 48.w,
                 height: 48.w,
                 decoration: BoxDecoration(
-                  color: Colors.grey[200],
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(12.r),
                 ),
-                child: Icon(Icons.person, color: Colors.grey[400], size: 24.sp),
+                child: Icon(Icons.person, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 24.sp),
               ),
               SizedBox(width: 12.w),
               Expanded(
@@ -56,7 +56,7 @@ class RequestCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black87,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     SizedBox(height: 4.h),
@@ -65,14 +65,14 @@ class RequestCard extends StatelessWidget {
                         Icon(
                           Icons.access_time,
                           size: 14.sp,
-                          color: Colors.grey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                         SizedBox(width: 4.w),
                         Text(
-                          '${DateFormat('hh:mm a').format(request.dateTime)} • ${DateFormat('MMM d, yyyy').format(request.dateTime)}',
+                          '${DateFormat('hh:mm a').format(request.dateTime.toLocal())} • ${DateFormat('MMM d, yyyy').format(request.dateTime.toLocal())}',
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: Colors.grey[600],
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],
@@ -87,46 +87,64 @@ class RequestCard extends StatelessWidget {
             request.reason,
             style: TextStyle(
               fontSize: 14.sp,
-              color: Colors.grey[700],
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               height: 1.4,
             ),
           ),
           SizedBox(height: 16.h),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: onReject,
-                  icon: Icon(Icons.close, size: 18.sp),
-                  label: Text('Reject', style: TextStyle(fontSize: 14.sp)),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppTheme.redIcon,
-                    side: const BorderSide(color: AppTheme.redPastel),
-                    padding: EdgeInsets.symmetric(vertical: 12.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
+          if (request.status == 'pending')
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: onReject,
+                    icon: Icon(Icons.close, size: 18.sp),
+                    label: Text('Reject', style: TextStyle(fontSize: 14.sp)),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppTheme.redIcon,
+                      side: const BorderSide(color: AppTheme.redPastel),
+                      padding: EdgeInsets.symmetric(vertical: 12.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: onApprove,
-                  icon: Icon(Icons.check, size: 18.sp),
-                  label: Text('Approve', style: TextStyle(fontSize: 14.sp)),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primaryColor,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 12.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: onApprove,
+                    icon: Icon(Icons.check, size: 18.sp),
+                    label: Text('Approve', style: TextStyle(fontSize: 14.sp)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.primaryColor,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(vertical: 12.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
                     ),
                   ),
                 ),
+              ],
+            )
+          else
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 12.h),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: request.status == 'approved' ? AppTheme.greenPastel : AppTheme.redPastel,
+                borderRadius: BorderRadius.circular(8.r),
               ),
-            ],
-          ),
+              child: Text(
+                request.status == 'approved' ? 'Approved' : 'Cancelled',
+                style: TextStyle(
+                  color: request.status == 'approved' ? AppTheme.greenIcon : AppTheme.redIcon,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14.sp,
+                ),
+              ),
+            ),
         ],
       ),
     );

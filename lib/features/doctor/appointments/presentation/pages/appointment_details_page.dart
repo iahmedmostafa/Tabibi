@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tabibi/core/DI/service_locator.dart';
+import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_cubit.dart';
+import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_state.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/widgets/appointment_action_buttons.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/widgets/appointment_info_card.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/widgets/appointment_patient_info_card.dart';
+import 'package:tabibi/features/doctor/appointments/presentation/widgets/prescription_card.dart';
+import 'package:tabibi/features/doctor/appointments/presentation/widgets/reason_for_visit_card.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart';
 
 class AppointmentDetailsPage extends StatelessWidget {
@@ -13,136 +19,102 @@ class AppointmentDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        title: Text('Appointment Details', style: TextStyle(fontSize: 20.sp)),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
-          onPressed: () => context.pop(),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.description_outlined,
-              size: 24.sp,
-              color: Colors.black,
-            ),
-            onPressed: () {},
+    return BlocProvider(
+      create: (context) =>
+          sl<AppointmentDetailsCubit>()..getAppointmentDetails(appointment.id),
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        appBar: AppBar(
+          title: Text(
+            'Appointment Details',
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(color: Colors.black),
           ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
-          children: [
-            AppointmentPatientInfoCard(appointment: appointment),
-            SizedBox(height: 16.h),
-            AppointmentInfoCard(appointment: appointment),
-            SizedBox(height: 16.h),
-            _ReasonForVisitCard(appointment: appointment),
-            SizedBox(height: 16.h),
-            _MedicalHistoryCard(appointment: appointment),
-            SizedBox(height: 24.h),
-            const AppointmentActionButtons(),
-            SizedBox(height: 24.h),
-          ],
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
+            onPressed: () => context.pop(),
+          ),
+        ),
+        body: BlocBuilder<AppointmentDetailsCubit, AppointmentDetailsState>(
+          builder: (context, state) {
+            if (state is AppointmentDetailsLoading ||
+                state is AppointmentDetailsInitial) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (state is AppointmentDetailsError) {
+              return _AppointmentDetailsError(
+                message: state.message,
+                onRetry: () => context
+                    .read<AppointmentDetailsCubit>()
+                    .getAppointmentDetails(appointment.id),
+              );
+            }
+            if (state is AppointmentDetailsLoaded) {
+              final details = state.appointmentDetails;
+              final isUpcoming = details.appointmentDate.isAfter(
+                DateTime.now(),
+              );
+
+              return SingleChildScrollView(
+                padding: EdgeInsets.all(16.w),
+                child: Column(
+                  children: [
+                    AppointmentPatientInfoCard(
+                      patient: details.patient,
+                      isUpcoming: isUpcoming,
+                    ),
+                    SizedBox(height: 16.h),
+                    AppointmentInfoCard(details: details,isUpcoming: isUpcoming,),
+                    SizedBox(height: 16.h),
+                    ReasonForVisitCard(details: details),
+                    if (details.prescription != null) ...[
+                      SizedBox(height: 16.h),
+                      PrescriptionCard(prescription: details.prescription!),
+                    ],
+                    SizedBox(height: 24.h),
+                    if (isUpcoming)
+                      AppointmentActionButtons(
+                        patientId: details.patient.id,
+                        patientName: details.patient.name,
+                        patientImage: details.patient.avatarUrl,
+                      ),
+                    SizedBox(height: 24.h),
+                  ],
+                ),
+              );
+            }
+            return const SizedBox();
+          },
         ),
       ),
     );
   }
 }
 
-class _ReasonForVisitCard extends StatelessWidget {
-  final Appointment appointment;
+class _AppointmentDetailsError extends StatelessWidget {
+  final String message;
+  final VoidCallback onRetry;
 
-  const _ReasonForVisitCard({required this.appointment});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Reason for Visit',
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-          ),
-          SizedBox(height: 12.h),
-          Text(
-            appointment.type,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.grey[700],
-              height: 1.5,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MedicalHistoryCard extends StatelessWidget {
-  final Appointment appointment;
-
-  const _MedicalHistoryCard({required this.appointment});
+  const _AppointmentDetailsError({
+    required this.message,
+    required this.onRetry,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-      ),
+    return Center(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            'Medical History',
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-          ),
+          Text(message),
           SizedBox(height: 16.h),
-          _buildHistoryRow('Last Visit', appointment.lastVisit),
-          Divider(height: 24.h, color: Colors.grey[200]),
-          _buildHistoryRow('Allergies', appointment.allergies),
-          Divider(height: 24.h, color: Colors.grey[200]),
-          _buildHistoryRow('Current Medications', appointment.medications),
+          ElevatedButton(onPressed: onRetry, child: const Text('Retry')),
         ],
       ),
-    );
-  }
-
-  Widget _buildHistoryRow(String label, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Text(
-            label,
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
-          ),
-        ),
-        SizedBox(width: 8.w),
-        Expanded(
-          child: Text(
-            value,
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
-            textAlign: TextAlign.end,
-          ),
-        ),
-      ],
     );
   }
 }
