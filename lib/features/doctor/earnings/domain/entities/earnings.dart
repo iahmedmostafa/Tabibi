@@ -1,58 +1,103 @@
 import 'package:equatable/equatable.dart';
 
+enum EarningsPeriod { week, month, year }
+
 class EarningsSummary extends Equatable {
-  final double totalEarnings;
-  final double percentageChange;
-  final double thisMonth;
+  final double totalLifetimeEarnings;
+  final double thisMonthEarnings;
   final double appCommission;
-  final int consultations;
-  final double avgPerVisit;
+  final double growthPercentage;
+  final int totalConsultations;
+  final double averagePerVisit;
+  final List<ChartDataPoint> weeklyChartData;
 
   const EarningsSummary({
-    required this.totalEarnings,
-    required this.percentageChange,
-    required this.thisMonth,
+    required this.totalLifetimeEarnings,
+    required this.thisMonthEarnings,
     required this.appCommission,
-    required this.consultations,
-    required this.avgPerVisit,
+    required this.growthPercentage,
+    required this.totalConsultations,
+    required this.averagePerVisit,
+    required this.weeklyChartData,
   });
 
   @override
   List<Object?> get props => [
-    totalEarnings,
-    percentageChange,
-    thisMonth,
+    totalLifetimeEarnings,
+    thisMonthEarnings,
     appCommission,
-    consultations,
-    avgPerVisit,
+    growthPercentage,
+    totalConsultations,
+    averagePerVisit,
+    weeklyChartData,
   ];
 }
 
-class Transaction extends Equatable {
-  final String id;
-  final String patientName;
-  final String type; // Consultation, Procedure
-  final DateTime date;
+class ChartDataPoint extends Equatable {
+  final String label;
   final double amount;
 
-  const Transaction({
+  const ChartDataPoint({required this.label, required this.amount});
+
+  @override
+  List<Object?> get props => [label, amount];
+}
+
+class EarningsTransaction extends Equatable {
+  final String id;
+  final String patientName;
+  final String? patientAvatarUrl;
+  final DateTime date;
+  final double pricePaid;
+  final String type;
+
+  const EarningsTransaction({
     required this.id,
     required this.patientName,
-    required this.type,
+    this.patientAvatarUrl,
     required this.date,
-    required this.amount,
+    required this.pricePaid,
+    required this.type,
   });
 
   @override
-  List<Object?> get props => [id, patientName, type, date, amount];
+  List<Object?> get props => [
+    id,
+    patientName,
+    patientAvatarUrl,
+    date,
+    pricePaid,
+    type,
+  ];
 }
 
-class ChartDataPoint extends Equatable {
-  final String label; // Week 1, Week 2, etc.
-  final double value;
+class EarningsTransactionsPage extends Equatable {
+  final List<EarningsTransaction> items;
+  final int page;
+  final int pageSize;
+  final int totalCount;
+  final int totalPages;
+  final bool hasPreviousPage;
+  final bool hasNextPage;
 
-  const ChartDataPoint({required this.label, required this.value});
+  const EarningsTransactionsPage({
+    required this.items,
+    required this.page,
+    required this.pageSize,
+    required this.totalCount,
+    required this.totalPages,
+    required this.hasPreviousPage,
+    required this.hasNextPage,
+  });
 
   @override
-  List<Object?> get props => [label, value];
+  List<Object?> get props => [
+    items,
+    page,
+    pageSize,
+    totalCount,
+    totalPages,
+    hasPreviousPage,
+    hasNextPage,
+  ];
 }

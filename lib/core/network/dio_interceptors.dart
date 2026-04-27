@@ -131,12 +131,11 @@ class DioInterceptors {
 
   Future<void> _forceLogout() async {
     log("🔒 Force logout: clearing tokens and redirecting to login");
-    await CacheHelper.deleteData(key: ApiKeys.accessToken);
-    await CacheHelper.deleteData(key: ApiKeys.refreshToken);
-    await OnboardingServices.setLoggedIn(false);
+    await CacheHelper.clearAuthSession();
+    await OnboardingServices.clearSession();
 
     final context = navigatorKey.currentContext;
-    if (context != null) {
+    if (context != null && context.mounted) {
       GoRouter.of(context).go(AppRoutes.login);
     }
   }

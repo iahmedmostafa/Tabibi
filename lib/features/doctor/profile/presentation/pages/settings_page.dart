@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/doctor/profile/data/mock_doctor_data.dart';
 import 'package:tabibi/features/doctor/profile/domain/entities/doctor_profile.dart';
+import 'package:tabibi/features/doctor/profile/presentation/cubit/doctor_logout_cubit.dart';
+import 'package:tabibi/features/doctor/profile/presentation/cubit/doctor_logout_state.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -13,33 +17,59 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final profile = MockDoctorData.getDoctorProfile();
 
-    return Scaffold(
-      backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        title: Text('Settings', style: TextStyle(fontSize: 20.sp)),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _ProfileHeader(profile: profile),
-            SizedBox(height: 24.h),
-            const _AccountSection(),
-            SizedBox(height: 24.h),
-            const _SecuritySection(),
-            SizedBox(height: 24.h),
-            _AvailabilitySection(profile: profile),
-            SizedBox(height: 24.h),
-            const _QuickActionsSection(),
-            SizedBox(height: 24.h),
-            const _DangerZoneSection(),
-            SizedBox(height: 80.h), // Space for bottom nav
-          ],
-        ),
+    return BlocProvider(
+      create: (context) => sl<DoctorLogoutCubit>(),
+      child: BlocConsumer<DoctorLogoutCubit, DoctorLogoutState>(
+        listener: (context, state) {
+          if (state is DoctorLogoutSuccess) {
+            context.goNamed(AppRoutes.login);
+          }
+          if (state is DoctorLogoutError) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
+          }
+        },
+        builder: (context, state) {
+          return Stack(
+            children: [
+              Scaffold(
+                backgroundColor: Colors.grey[50],
+                appBar: AppBar(
+                  title: Text('Settings', style: TextStyle(fontSize: 20.sp)),
+                  centerTitle: true,
+                  backgroundColor: Colors.white,
+                  elevation: 0,
+                  automaticallyImplyLeading: false,
+                ),
+                body: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _ProfileHeader(profile: profile),
+                      SizedBox(height: 24.h),
+                      const _AccountSection(),
+                      SizedBox(height: 24.h),
+                      const _SecuritySection(),
+                      SizedBox(height: 24.h),
+                      _AvailabilitySection(profile: profile),
+                      SizedBox(height: 24.h),
+                      const _QuickActionsSection(),
+                      SizedBox(height: 24.h),
+                      const _DangerZoneSection(),
+                      SizedBox(height: 80.h), // Space for bottom nav
+                    ],
+                  ),
+                ),
+              ),
+              if (state is DoctorLogoutLoading)
+                Container(
+                  color: Colors.black.withValues(alpha: 0.18),
+                  child: const Center(child: CircularProgressIndicator()),
+                ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -391,20 +421,21 @@ class _DangerZoneSection extends StatelessWidget {
   }
 
   void _showLogoutDialog(BuildContext context) {
+    final parentContext = context;
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('Log Out'),
         content: const Text('Are you sure you want to log out?'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(context);
-              // Add logout logic here
+              Navigator.pop(dialogContext);
+              parentContext.read<DoctorLogoutCubit>().logOut();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.primaryColor,

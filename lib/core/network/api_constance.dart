@@ -24,6 +24,10 @@ class ApiConstance {
   static const String doctorHome = "doctor-system/home";
   static const String doctorSchedule = "doctor-system/schedule";
   static const String doctorAppointments = "doctor-system/appointments";
+  static const String doctorEarningsSummary = "doctor-system/earnings/summary";
+  static const String doctorEarningsAnalytics =
+      "doctor-system/earnings/analytics";
+  static const String doctorTransactions = "doctor-system/transactions";
   static const String availableSlots = "bookings/available-slots";
   static const String booking = "bookings";
   static const String mybooking = "bookings/my-bookings";

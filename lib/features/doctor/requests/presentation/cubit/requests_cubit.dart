@@ -22,12 +22,10 @@ class RequestsCubit extends Cubit<RequestsState> {
     emit(state.copyWith(isLoading: true, errorMessage: null));
     final result = await getAppointmentRequestsUseCase(const NoParameters());
     result.fold(
-      (failure) => emit(state.copyWith(isLoading: false, errorMessage: failure.message)),
+      (failure) =>
+          emit(state.copyWith(isLoading: false, errorMessage: failure.message)),
       (data) {
-        emit(state.copyWith(
-          isLoading: false,
-          allRequests: data,
-        ));
+        emit(state.copyWith(isLoading: false, allRequests: data));
         _applyFilters();
       },
     );
@@ -43,35 +41,47 @@ class RequestsCubit extends Cubit<RequestsState> {
     _applyFilters();
   }
 
-  Future<void> approveRequest(String id, {Function? onSuccess, Function(String)? onError}) async {
+  Future<void> approveRequest(
+    String id, {
+    Function? onSuccess,
+    Function(String)? onError,
+  }) async {
     emit(state.copyWith(isActionLoading: true, errorMessage: null));
+
     final result = await approveAppointmentUseCase(id);
+
     result.fold(
       (failure) {
-        emit(state.copyWith(isActionLoading: false, errorMessage: failure.message));
+        emit(
+          state.copyWith(isActionLoading: false, errorMessage: failure.message),
+        );
         if (onError != null) onError(failure.message);
       },
-      (_) {
-        final updatedList = state.allRequests.map((r) => r.id == id ? r.copyWith(status: 'approved') : r).toList();
-        emit(state.copyWith(isActionLoading: false, allRequests: updatedList));
-        _applyFilters();
+      (_) async {
+        await getRequests();
         if (onSuccess != null) onSuccess();
       },
     );
   }
 
-  Future<void> rejectRequest(String id, {Function? onSuccess, Function(String)? onError}) async {
+  Future<void> rejectRequest(
+    String id, {
+    Function? onSuccess,
+    Function(String)? onError,
+  }) async {
     emit(state.copyWith(isActionLoading: true, errorMessage: null));
+
     final result = await cancelAppointmentUseCase(id);
+
     result.fold(
       (failure) {
-        emit(state.copyWith(isActionLoading: false, errorMessage: failure.message));
+        emit(
+          state.copyWith(isActionLoading: false, errorMessage: failure.message),
+        );
         if (onError != null) onError(failure.message);
       },
-      (_) {
-        final updatedList = state.allRequests.map((r) => r.id == id ? r.copyWith(status: 'rejected') : r).toList();
-        emit(state.copyWith(isActionLoading: false, allRequests: updatedList));
-        _applyFilters();
+      (_) async {
+        await getRequests();
         if (onSuccess != null) onSuccess();
       },
     );

@@ -44,6 +44,9 @@ import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dar
 import 'package:tabibi/features/doctor/earnings/presentation/pages/earnings_page.dart';
 import 'package:tabibi/features/doctor/patients/domain/entities/patient.dart';
 import 'package:tabibi/features/doctor/patients/presentation/pages/patient_profile_page.dart';
+import 'package:tabibi/features/doctor/prescription/presentation/cubit/create_prescription_cubit.dart';
+import 'package:tabibi/features/doctor/prescription/presentation/pages/create_prescription_args.dart';
+import 'package:tabibi/features/doctor/prescription/presentation/pages/create_prescription_page.dart';
 import 'package:tabibi/features/doctor/profile/presentation/pages/settings_page.dart';
 import 'package:tabibi/features/doctor/requests/presentation/pages/appointment_requests_page.dart';
 import 'package:tabibi/features/doctor/reviews/presentation/pages/reviews_page.dart';
@@ -66,6 +69,7 @@ import 'package:tabibi/features/patient_profile/presentation/controller/patient_
 import 'package:tabibi/features/patient_profile/presentation/screens/edit_profile_screen.dart';
 import 'package:tabibi/features/video_call/presentation/cubit/video_call_cubit.dart';
 import 'package:tabibi/features/video_call/presentation/screen/video_call_screen.dart';
+import 'package:tabibi/core/utils/enums/enums.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
@@ -383,7 +387,13 @@ final GoRouter router = GoRouter(
 
       name: AppRoutes.myBookings,
 
-      builder: (context, state) => const MyBookingsScreen(),
+      builder: (context, state) {
+        final initialStatus = state.extra is BookingStatus
+            ? state.extra as BookingStatus
+            : BookingStatus.upcoming;
+
+        return MyBookingsScreen(initialStatus: initialStatus);
+      },
     ),
 
     GoRoute(
@@ -523,8 +533,27 @@ final GoRouter router = GoRouter(
       path: AppRoutes.doctorPatientProfile,
       name: AppRoutes.doctorPatientProfile,
       builder: (context, state) {
-        final patient = state.extra as Patient;
-        return PatientProfilePage(patient: patient);
+        final extra = state.extra;
+        if (extra is Map<String, dynamic>) {
+          return PatientProfilePage(
+            patient: extra['patient'] as Patient,
+            appointmentId: extra['appointmentId'] as String?,
+            canWritePrescription:
+                extra['canWritePrescription'] as bool? ?? true,
+          );
+        }
+        return PatientProfilePage(patient: extra as Patient);
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.doctorCreatePrescription,
+      name: AppRoutes.doctorCreatePrescription,
+      builder: (context, state) {
+        final args = state.extra as CreatePrescriptionArgs;
+        return BlocProvider(
+          create: (context) => sl<CreatePrescriptionCubit>(),
+          child: CreatePrescriptionPage(args: args),
+        );
       },
     ),
     GoRoute(

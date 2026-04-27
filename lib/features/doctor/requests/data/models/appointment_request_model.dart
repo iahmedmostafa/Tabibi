@@ -11,26 +11,32 @@ class AppointmentRequestModel extends AppointmentRequest {
   });
 
   factory AppointmentRequestModel.fromJson(Map<String, dynamic> json) {
-    // Determine status from integer (Assuming 0 = pending, 1 = scheduled, etc.) 3ashan mesh aref mohammed 3amel7a eh ya hamed ya a5oya😂
-    String mappedStatus = 'pending';
-    if (json['status'] == 1) mappedStatus = 'approved';
-    if (json['status'] == 2) mappedStatus = 'completed';
-    if (json['status'] == 3) mappedStatus = 'rejected';
+  final statusValue = json['status']?.toString();
 
-    return AppointmentRequestModel(
-      id: json['id'] ?? '',
-      patientName: json['patientName'] ?? 'Unknown Patient',
-      imageUrl: json['patientAvatarUrl'] ?? '',
-      dateTime: json['appointmentDate'] != null
-          ? DateTime.tryParse(json['appointmentDate'].toString() + (json['appointmentDate'].toString().endsWith('Z') ? '' : 'Z'))?.toLocal() ?? DateTime.now()
-          : DateTime.now(),
-      // Use 'type' as reason or placeholder if null
-      reason: (json['type'] == 1 || json['type'] == '1')
-          ? 'Consultation'
-          : (json['type'] == 2 || json['type'] == '2')
-              ? 'Follow-up'
-              : json['type']?.toString() ?? 'Consultation',
-      status: mappedStatus,
-    );
-  }
+  String mappedStatus = 'pending';
+
+  if (statusValue == '1') mappedStatus = 'approved';
+  if (statusValue == '2') mappedStatus = 'completed';
+  if (statusValue == '3') mappedStatus = 'rejected';
+
+  return AppointmentRequestModel(
+    id: json['id'] ?? '',
+    patientName: json['patientName'] ?? 'Unknown Patient',
+    imageUrl: json['patientAvatarUrl'] ?? '',
+    dateTime: json['appointmentDate'] != null
+        ? DateTime.tryParse(
+              json['appointmentDate'].toString().endsWith('Z')
+                  ? json['appointmentDate'].toString()
+                  : '${json['appointmentDate']}Z',
+            )?.toLocal() ??
+            DateTime.now()
+        : DateTime.now(),
+    reason: (json['type'] == 1 || json['type'] == '1')
+        ? 'Consultation'
+        : (json['type'] == 2 || json['type'] == '2')
+            ? 'Follow-up'
+            : json['type']?.toString() ?? 'Consultation',
+    status: mappedStatus,
+  );
+}
 }

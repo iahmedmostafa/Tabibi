@@ -1,4 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:tabibi/core/network/api_constance.dart';
 
 class CacheHelper {
   static final storage = const FlutterSecureStorage();
@@ -16,5 +17,15 @@ class CacheHelper {
 
   static Future<void> deleteData({required String key}) async {
     await storage.delete(key: key);
+  }
+
+  static Future<void> clearAuthSession() async {
+    await Future.wait([
+      deleteData(key: ApiKeys.accessToken),
+      deleteData(key: ApiKeys.refreshToken),
+      deleteData(key: ApiKeys.resetToken),
+      deleteData(key: ApiKeys.role),
+      deleteData(key: 'role'),
+    ]);
   }
 }

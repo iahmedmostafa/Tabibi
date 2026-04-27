@@ -4,12 +4,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/features/booking/presentation/controller/my_bookings_cubit.dart';
 import 'package:tabibi/features/booking/presentation/widgets/booking_card.dart';
 import 'package:tabibi/features/booking/presentation/widgets/booking_tab_filter.dart';
 
 class MyBookingsScreen extends StatefulWidget {
-  const MyBookingsScreen({super.key});
+  final BookingStatus initialStatus;
+
+  const MyBookingsScreen({
+    super.key,
+    this.initialStatus = BookingStatus.upcoming,
+  });
 
   @override
   State<MyBookingsScreen> createState() => _MyBookingsScreenState();
@@ -22,7 +28,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
   @override
   void initState() {
     super.initState();
-    _cubit = sl<MyBookingsCubit>()..getBookings();
+    _cubit = sl<MyBookingsCubit>()..getBookings(status: widget.initialStatus);
   }
 
   @override

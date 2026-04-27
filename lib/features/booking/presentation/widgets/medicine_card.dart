@@ -14,40 +14,37 @@ class MedicineCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.r),
+      padding: EdgeInsets.all(18.w),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: Theme.of(context).dividerColor),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18.r),
+        border: Border.all(color: AppColors.grey200),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+            color: Colors.black.withValues(alpha: 0.045),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Medicine Name Header
           Row(
             children: [
               Container(
-                width: 32.w,
-                height: 32.w,
+                width: 38.w,
+                height: 38.w,
                 decoration: BoxDecoration(
-                  color: AppColors.midnightBlue.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8.r),
+                  color: AppColors.teal.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Center(
                   child: Text(
                     '$index',
                     style: TextStyle(
-                      color:
-                          Theme.of(context).textTheme.bodyMedium?.color ??
-                          AppColors.midnightBlue,
-                      fontWeight: FontWeight.bold,
+                      color: AppColors.teal,
+                      fontWeight: FontWeight.w800,
                       fontSize: 14.sp,
                     ),
                   ),
@@ -58,34 +55,30 @@ class MedicineCard extends StatelessWidget {
                 child: Text(
                   medicine.medicineName,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    color: AppColors.grey900,
+                    fontWeight: FontWeight.w800,
                     fontSize: 16.sp,
                   ),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 12.h),
-          Container(height: 1, color: Theme.of(context).dividerColor),
-          SizedBox(height: 12.h),
-
-          // Medicine Details Grid
+          SizedBox(height: 14.h),
+          Container(height: 1, color: AppColors.grey100),
+          SizedBox(height: 14.h),
           _buildDetailRow(
-            context: context,
             icon: Iconsax.weight,
             label: AppStrings.dosage,
             value: medicine.dosage,
           ),
           SizedBox(height: 10.h),
           _buildDetailRow(
-            context: context,
             icon: Iconsax.repeat,
             label: AppStrings.frequency,
             value: medicine.frequency,
           ),
           SizedBox(height: 10.h),
           _buildDetailRow(
-            context: context,
             icon: Iconsax.timer_1,
             label: AppStrings.duration,
             value: medicine.duration,
@@ -93,7 +86,6 @@ class MedicineCard extends StatelessWidget {
           if (medicine.instructions.isNotEmpty) ...[
             SizedBox(height: 10.h),
             _buildDetailRow(
-              context: context,
               icon: Iconsax.info_circle,
               label: AppStrings.instructions,
               value: medicine.instructions,
@@ -105,7 +97,6 @@ class MedicineCard extends StatelessWidget {
   }
 
   Widget _buildDetailRow({
-    required BuildContext context,
     required IconData icon,
     required String label,
     required String value,
@@ -113,30 +104,39 @@ class MedicineCard extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 16.sp, color: AppColors.grey400),
-        SizedBox(width: 8.w),
-        SizedBox(
-          width: 85.w,
-          child: Text(
-            label,
-            style: TextStyle(
-              color: AppColors.grey500,
-              fontSize: 13.sp,
-              fontWeight: FontWeight.w500,
-            ),
+        Container(
+          width: 30.w,
+          height: 30.w,
+          decoration: BoxDecoration(
+            color: AppColors.grey100,
+            borderRadius: BorderRadius.circular(9.r),
           ),
+          child: Icon(icon, size: 15.sp, color: AppColors.grey500),
         ),
-        SizedBox(width: 8.w),
+        SizedBox(width: 10.w),
         Expanded(
-          child: Text(
-            value,
-            style: TextStyle(
-              color:
-                  Theme.of(context).textTheme.bodyLarge?.color ??
-                  AppColors.grey700,
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w500,
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  color: AppColors.grey500,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: 2.h),
+              Text(
+                value,
+                style: TextStyle(
+                  color: AppColors.grey800,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w700,
+                  height: 1.35,
+                ),
+              ),
+            ],
           ),
         ),
       ],

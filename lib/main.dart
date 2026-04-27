@@ -14,6 +14,7 @@ import 'package:tabibi/features/notifications/presentation/cubit/notifications_c
 import 'package:tabibi/firebase_options.dart';
 import 'core/routing/app_router.dart';
 
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dot_env.dotenv.load(fileName: ".env");
