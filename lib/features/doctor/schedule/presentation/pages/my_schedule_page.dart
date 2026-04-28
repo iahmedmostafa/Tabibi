@@ -27,7 +27,8 @@ class _MySchedulePageState extends State<MySchedulePage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          sl<ScheduleCubit>()..getDoctorSchedule(_selectedDate.toIso8601String()),
+          sl<ScheduleCubit>()
+            ..getDoctorSchedule(_selectedDate.toIso8601String()),
       child: Scaffold(
         appBar: AppBar(
           title: Text('My Schedule', style: TextStyle(fontSize: 20.sp)),
@@ -69,11 +70,14 @@ class _MySchedulePageState extends State<MySchedulePage> {
                           child: appointments.isEmpty
                               ? const ScheduleEmptyState()
                               : ListView.builder(
-                                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                                  itemCount: appointments.length,
-                                  itemBuilder: (context, index) => AppointmentCard(
-                                    appointment: appointments[index],
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
                                   ),
+                                  itemCount: appointments.length,
+                                  itemBuilder: (context, index) =>
+                                      AppointmentCard(
+                                        appointment: appointments[index],
+                                      ),
                                 ),
                         ),
                       ],
@@ -91,17 +95,22 @@ class _MySchedulePageState extends State<MySchedulePage> {
 
   List<Appointment> _mapAppointments(ScheduleLoaded state) {
     return state.appointments.map((apt) {
-      final h = apt.appointmentDate.hour;
-      final m = apt.appointmentDate.minute;
-      final hour = h > 12 ? h - 12 : h == 0 ? 12 : h;
+      final localDateTime = apt.appointmentDate.toLocal();
+      final h = localDateTime.hour;
+      final m = localDateTime.minute;
+      final hour = h > 12
+          ? h - 12
+          : h == 0
+          ? 12
+          : h;
       final period = h >= 12 ? 'PM' : 'AM';
       return Appointment(
         id: apt.id,
         patientName: apt.patientName,
         time: '$hour:${m.toString().padLeft(2, '0')} $period',
-        date: DateFormat('MMM dd, yyyy').format(apt.appointmentDate),
+        date: DateFormat('MMM dd, yyyy').format(localDateTime),
         type: apt.type?.toString() ?? 'Consultation',
-        isUpcoming: apt.appointmentDate.isAfter(DateTime.now()),
+        isUpcoming: apt.appointmentDate.toUtc().isAfter(DateTime.now().toUtc()),
       );
     }).toList();
   }

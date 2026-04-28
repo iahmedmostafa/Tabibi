@@ -50,8 +50,9 @@ class AppointmentDetailsPage extends StatelessWidget {
             }
             if (state is AppointmentDetailsLoaded) {
               final details = state.appointmentDetails;
-              final isUpcoming =
-                  details.appointmentDate.isAfter(DateTime.now());
+              final isUpcoming = details.appointmentDate.toUtc().isAfter(
+                DateTime.now().toUtc(),
+              );
 
               return SingleChildScrollView(
                 padding: EdgeInsets.all(16.w),
@@ -73,6 +74,7 @@ class AppointmentDetailsPage extends StatelessWidget {
                     if (isUpcoming)
                       AppointmentActionButtons(
                         patientId: details.patient.id,
+                        bookingId: details.id,
                         patientName: details.patient.name,
                         patientImage: details.patient.avatarUrl,
                       ),

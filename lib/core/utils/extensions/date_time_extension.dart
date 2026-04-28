@@ -1,8 +1,15 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tabibi/core/utils/backend_date_time.dart';
 
 extension DateTimeParsing on String {
-  /// Converts ISO 8601 strings and embedded time formatted strings from UTC to Local time.
-  /// Handles both raw ISO dates ("2024-03-06T11:30:00") and text ("Time: 11:30 AM").
+  static final RegExp _backendSlashDateRegex = RegExp(
+    r'\b\d{1,2}\/\d{1,2}\/\d{4}\s+\d{1,2}:\d{2}\s*(?:AM|PM|am|pm)\b',
+  );
+
+  /// Converts ISO 8601 UTC strings from backend to Local time for display.
+  /// Backend sends true UTC; .toLocal() converts to device timezone.
+  /// Handles both raw ISO dates ("2024-03-06T11:30:00Z") and text ("Time: 11:30 AM").
   String toLocalTimeStrings() {
     String result = this;
 
@@ -13,16 +20,14 @@ extension DateTimeParsing on String {
     result = result.replaceAllMapped(isoRegex, (match) {
       try {
         final isoString = match.group(0)!;
-        final date = DateTime.parse(
-          isoString.endsWith('Z') ? isoString : '${isoString}Z',
-        ).toLocal();
+        final date = BackendDateTime.parseUtc(isoString).toLocal();
         return DateFormat('MMM dd, yyyy - hh:mm a').format(date);
       } catch (e) {
         return match.group(0)!;
       }
     });
 
-    // 2. Convert standard 12-hour or 24-hour time patterns (e.g., "11:30 AM", "14:30")
+    // 2. Normalize standalone time strings without changing timezone semantics.
     final timeRegex = RegExp(r'\b(\d{1,2}):(\d{2})\s*(AM|PM|am|pm)?\b');
     result = result.replaceAllMapped(timeRegex, (match) {
       try {
@@ -33,17 +38,15 @@ extension DateTimeParsing on String {
         final format = DateFormat(formatStr);
         final parsedTime = format.parse(timeString.trim().toUpperCase());
 
-        // Assume the time belongs to today's UTC context
-        final nowUtc = DateTime.now().toUtc();
-        final utcDateTime = DateTime.utc(
-          nowUtc.year,
-          nowUtc.month,
-          nowUtc.day,
+        final now = DateTime.now();
+        final localDateTime = DateTime(
+          now.year,
+          now.month,
+          now.day,
           parsedTime.hour,
           parsedTime.minute,
         );
 
-        final localDateTime = utcDateTime.toLocal();
         return format.format(localDateTime);
       } catch (e) {
         return match.group(0)!;
@@ -51,5 +54,42 @@ extension DateTimeParsing on String {
     });
 
     return result;
+  }
+
+  String formatNotificationMessageTime() {
+    return replaceAllMapped(_backendSlashDateRegex, (match) {
+      try {
+        final utcDateTime = BackendDateTime.parseBackendUsDateUtc(
+          match.group(0)!,
+        );
+        return DateFormat('M/d/yyyy h:mm a').format(utcDateTime.toLocal());
+      } catch (_) {
+        return match.group(0)!;
+      }
+    });
+  }
+
+  String formatVideoCallErrorMessage(BuildContext context) {
+    final message = this;
+    final RegExp backendTimeRegex = RegExp(
+      r'\bTime:\s*(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm))\b',
+    );
+    return message.replaceAllMapped(backendTimeRegex, (match) {
+      final rawTime = match.group(1);
+      if (rawTime == null) return match.group(0)!;
+
+      try {
+        final nowUtc = DateTime.now().toUtc();
+        final parsedTime = BackendDateTime.parseBackendUsDateUtc(
+          '${nowUtc.month}/${nowUtc.day}/${nowUtc.year} $rawTime',
+        );
+        final localTime = MaterialLocalizations.of(
+          context,
+        ).formatTimeOfDay(TimeOfDay.fromDateTime(parsedTime.toLocal()));
+        return 'Time: $localTime';
+      } catch (_) {
+        return match.group(0)!;
+      }
+    });
   }
 }

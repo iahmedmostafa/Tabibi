@@ -127,16 +127,18 @@ class AppointmentInfoCard extends StatelessWidget {
   }
 
   String _formatDate(DateTime dt) {
+    final localDateTime = dt.toLocal();
     const months = [
       'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
-    return '${months[dt.month - 1]} ${dt.day.toString().padLeft(2, '0')}, ${dt.year}';
+    return '${months[localDateTime.month - 1]} ${localDateTime.day.toString().padLeft(2, '0')}, ${localDateTime.year}';
   }
 
   String _formatTime(DateTime dt) {
-    final h = dt.hour;
-    final m = dt.minute.toString().padLeft(2, '0');
+    final localDateTime = dt.toLocal();
+    final h = localDateTime.hour;
+    final m = localDateTime.minute.toString().padLeft(2, '0');
     final hour = h > 12 ? h - 12 : h == 0 ? 12 : h;
     final period = h >= 12 ? 'PM' : 'AM';
     return '$hour:$m $period';

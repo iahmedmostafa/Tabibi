@@ -5,10 +5,12 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_images.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/core/utils/formatters.dart/formatters.dart';
 import 'package:tabibi/features/booking/data/models/booking_model.dart';
+import 'package:tabibi/features/home/data/models/doctor_model.dart';
 
 class BookingCard extends StatelessWidget {
   final BookingModel booking;
@@ -102,7 +104,10 @@ class BookingCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.r),
                   color: AppColors.grey100,
                   image: DecorationImage(
-                    image: CachedNetworkImageProvider(booking.doctorAvatar!),
+                    image: booking.doctorAvatar != null
+                        ? CachedNetworkImageProvider(booking.doctorAvatar!)
+                        : const AssetImage(AppImages.onboarding3)
+                              as ImageProvider,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -168,18 +173,26 @@ class BookingCard extends StatelessWidget {
       return Row(
         children: [
           Expanded(
-            child: _buildButton(
-              context,
-              "Cancel",
-              AppColors.grey100,
-              AppColors.midnightBlue,
-              () {
-                context.pushNamed(
-                  AppRoutes.callPage,
-                  extra: {'bookingId': booking.id},
-                );
-              },
-            ),
+            child: booking.type == 0
+                ? _buildButton(
+                    context,
+                    "Go to Clinic",
+                    AppColors.grey100,
+                    AppColors.midnightBlue,
+                    () {},
+                  )
+                : _buildButton(
+                    context,
+                    "Start Call",
+                    AppColors.grey100,
+                    AppColors.midnightBlue,
+                    () {
+                      context.pushNamed(
+                        AppRoutes.callPage,
+                        extra: {'bookingId': booking.id},
+                      );
+                    },
+                  ),
           ),
         ],
       );
@@ -194,7 +207,22 @@ class BookingCard extends StatelessWidget {
                   "Re-Book",
                   AppColors.grey100,
                   AppColors.midnightBlue,
-                  () {},
+                  () {
+                    context.pushNamed(
+                      AppRoutes.doctorDetails,
+                      extra: DoctorModel(
+                        id: booking.doctorId,
+                        name: booking.doctorName,
+                        avatarUrl: booking.doctorAvatar,
+                        address: booking.address,
+                        department: booking.department,
+                        consultationFee:
+                            200, //don't carry this not affect in doctor details
+                        yearsOfExperience:
+                            0, //,//don't carry this not affect in doctor details
+                      ),
+                    );
+                  },
                 ),
               ),
               if (booking.showPrescriptionButton == true) ...[

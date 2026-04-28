@@ -46,7 +46,10 @@ dependencies:
   shared_preferences: null
   signalr_netcore: ^1.4.4
   smooth_page_indicator: ^1.2.0
-  zego_uikit_prebuilt_call: ^4.22.3
+  zego_uikit_prebuilt_call: any
+
+dependency_overrides:
+  zego_zim: 2.27.0
 
 dev_dependencies:
   flutter_lints: ^5.0.0

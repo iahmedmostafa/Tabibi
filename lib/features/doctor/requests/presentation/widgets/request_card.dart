@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tabibi/core/routing/app_routes.dart';
+import 'package:tabibi/core/utils/formatters.dart/formatters.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/doctor/requests/domain/entities/appointment_request.dart';
 
@@ -69,7 +71,7 @@ class RequestCard extends StatelessWidget {
                         ),
                         SizedBox(width: 4.w),
                         Text(
-                          '${DateFormat('hh:mm a').format(request.dateTime)} • ${DateFormat('MMM d, yyyy').format(request.dateTime)}',
+                          '${Formatter.formatDateForDoctor(request.dateTime)} - ${Formatter.formatTimeForDoctor(request.dateTime)}',
                           style: TextStyle(
                             fontSize: 12.sp,
                             color: Colors.grey[600],
@@ -79,6 +81,20 @@ class RequestCard extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.videocam,
+                  color: AppTheme.primaryColor,
+                  size: 28.sp,
+                ),
+                onPressed: () {
+                  // Navigate to Video Call Screen with the booking/request ID
+                  // Note: Assuming AppRoutes.callPage expects bookingId
+                  context.push(AppRoutes.callPage, extra: {
+                    'bookingId': request.id,
+                  });
+                },
               ),
             ],
           ),

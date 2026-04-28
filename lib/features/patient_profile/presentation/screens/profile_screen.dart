@@ -67,7 +67,6 @@ class ProfileScreen extends StatelessWidget {
                   // Profile Header
                   ProfileHeader(profile: profile),
                   SizedBox(height: AppHeight.h32),
-
                   // Menu Items
                   const ProfileMenuList(),
                   SizedBox(height: AppHeight.h40),

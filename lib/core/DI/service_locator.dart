@@ -51,6 +51,26 @@ import 'package:tabibi/features/chat_patient/data/datasources/chat_remote_data_s
 import 'package:tabibi/features/chat_patient/data/repositories/chat_repository_impl.dart';
 import 'package:tabibi/features/chat_patient/domain/repositories/chat_repository.dart';
 import 'package:tabibi/features/chat_patient/domain/usecases/chat_usecases.dart';
+import 'package:tabibi/features/doctor/appointments/data/datasources/appointments_remote_data_source.dart';
+import 'package:tabibi/features/doctor/appointments/data/repositories/appointments_repository_impl.dart';
+import 'package:tabibi/features/doctor/appointments/domain/repositories/appointments_repository.dart';
+import 'package:tabibi/features/doctor/appointments/domain/usecases/get_appointment_details_usecase.dart';
+import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_cubit.dart';
+import 'package:tabibi/features/doctor/dashboard/data/datasources/dashboard_remote_data_source.dart';
+import 'package:tabibi/features/doctor/dashboard/data/repositories/dashboard_repository_impl.dart';
+import 'package:tabibi/features/doctor/dashboard/domain/repositories/dashboard_repository.dart';
+import 'package:tabibi/features/doctor/dashboard/domain/usecases/get_doctor_dashboard_use_case.dart';
+import 'package:tabibi/features/doctor/dashboard/presentation/cubit/dashboard_cubit.dart';
+import 'package:tabibi/features/doctor/requests/data/datasources/requests_remote_data_source.dart';
+import 'package:tabibi/features/doctor/requests/data/repositories/requests_repository_impl.dart';
+import 'package:tabibi/features/doctor/requests/domain/repositories/requests_repository.dart';
+import 'package:tabibi/features/doctor/requests/domain/usecases/requests_usecases.dart';
+import 'package:tabibi/features/doctor/requests/presentation/cubit/requests_cubit.dart';
+import 'package:tabibi/features/doctor/schedule/data/datasources/schedule_remote_data_source.dart';
+import 'package:tabibi/features/doctor/schedule/data/repositories/schedule_repository_impl.dart';
+import 'package:tabibi/features/doctor/schedule/domain/repositories/schedule_repository.dart';
+import 'package:tabibi/features/doctor/schedule/domain/usecases/get_doctor_schedule_use_case.dart';
+import 'package:tabibi/features/doctor/schedule/presentation/cubit/schedule_cubit.dart';
 import 'package:tabibi/features/doctor_details/data/datasources/doctor_details_remote_data_source.dart';
 import 'package:tabibi/features/doctor_details/data/repositories/doctor_details_repository_impl.dart';
 import 'package:tabibi/features/doctor_details/domain/repositories/doctor_details_repository.dart';
@@ -96,36 +116,11 @@ import 'package:tabibi/features/patient_profile/domain/usecases/get_patient_prof
 import 'package:tabibi/features/patient_profile/domain/usecases/update_patient_profile_use_case.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/patient_profile_cubit.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/profile_cubit.dart';
-import 'package:tabibi/features/chat_patient/data/datasources/chat_remote_data_source.dart';
-import 'package:tabibi/features/chat_patient/data/repositories/chat_repository_impl.dart';
-import 'package:tabibi/features/chat_patient/domain/repositories/chat_repository.dart';
-import 'package:tabibi/features/chat_patient/domain/usecases/chat_usecases.dart';
-import 'package:tabibi/features/doctor/dashboard/data/datasources/dashboard_remote_data_source.dart';
-import 'package:tabibi/features/doctor/dashboard/data/repositories/dashboard_repository_impl.dart';
-import 'package:tabibi/features/doctor/dashboard/domain/repositories/dashboard_repository.dart';
-import 'package:tabibi/features/doctor/dashboard/domain/usecases/get_doctor_dashboard_use_case.dart';
-import 'package:tabibi/features/doctor/dashboard/presentation/cubit/dashboard_cubit.dart';
-
-import 'package:tabibi/features/doctor/schedule/data/datasources/schedule_remote_data_source.dart';
-import 'package:tabibi/features/doctor/schedule/data/repositories/schedule_repository_impl.dart';
-import 'package:tabibi/features/doctor/schedule/domain/repositories/schedule_repository.dart';
-import 'package:tabibi/features/doctor/schedule/domain/usecases/get_doctor_schedule_use_case.dart';
-import 'package:tabibi/features/doctor/schedule/presentation/cubit/schedule_cubit.dart';
-import 'package:tabibi/features/doctor/requests/data/datasources/requests_remote_data_source.dart';
-import 'package:tabibi/features/doctor/requests/data/repositories/requests_repository_impl.dart';
-import 'package:tabibi/features/doctor/requests/domain/repositories/requests_repository.dart';
-import 'package:tabibi/features/doctor/requests/domain/usecases/requests_usecases.dart';
-import 'package:tabibi/features/doctor/requests/presentation/cubit/requests_cubit.dart';
 import 'package:tabibi/features/video_call/data/datasources/video_call_remote_data_source.dart';
 import 'package:tabibi/features/video_call/data/repositories/video_call_repository_impl.dart';
 import 'package:tabibi/features/video_call/domain/repositories/video_call_repository.dart';
 import 'package:tabibi/features/video_call/domain/usecases/get_video_token_usecase.dart';
 import 'package:tabibi/features/video_call/presentation/cubit/video_call_cubit.dart';
-import 'package:tabibi/features/doctor/appointments/data/datasources/appointments_remote_data_source.dart';
-import 'package:tabibi/features/doctor/appointments/data/repositories/appointments_repository_impl.dart';
-import 'package:tabibi/features/doctor/appointments/domain/repositories/appointments_repository.dart';
-import 'package:tabibi/features/doctor/appointments/domain/usecases/get_appointment_details_usecase.dart';
-import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_cubit.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
@@ -257,9 +252,15 @@ Future<void> init() async {
   sl.registerLazySingleton<VideoCallRepository>(
     () => VideoCallRepositoryImpl(sl()),
   );
-  sl.registerLazySingleton<DashboardRepository>(() => DashboardRepositoryImpl(sl()));
-  sl.registerLazySingleton<ScheduleRepository>(() => ScheduleRepositoryImpl(sl()));
-  sl.registerLazySingleton<RequestsRepository>(() => RequestsRepositoryImpl(sl()));
+  sl.registerLazySingleton<DashboardRepository>(
+    () => DashboardRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<ScheduleRepository>(
+    () => ScheduleRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<RequestsRepository>(
+    () => RequestsRepositoryImpl(sl()),
+  );
   sl.registerLazySingleton<AppointmentsRepository>(
     () => AppointmentsRepositoryImpl(sl()),
   );

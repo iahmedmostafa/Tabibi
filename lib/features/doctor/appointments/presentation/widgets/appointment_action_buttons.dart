@@ -8,12 +8,14 @@ class AppointmentActionButtons extends StatelessWidget {
   final String patientId;
   final String patientName;
   final String? patientImage;
+  final String bookingId;
 
   const AppointmentActionButtons({
     super.key,
     required this.patientId,
     required this.patientName,
     this.patientImage,
+    required this.bookingId,
   });
 
   @override
@@ -23,7 +25,11 @@ class AppointmentActionButtons extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              context.push(AppRoutes.callPage, extra: {
+                    'bookingId': bookingId,
+                  });
+            },
             icon: const Icon(Icons.videocam_outlined),
             label: const Text('Start Consultation'),
             style: ElevatedButton.styleFrom(

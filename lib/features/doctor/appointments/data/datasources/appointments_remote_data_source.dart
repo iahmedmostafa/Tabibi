@@ -50,7 +50,8 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsRemoteDataSource {
         throw ServerException(
           errorMessageModel: ErrorMessageModel.fromJson(errorData),
         );
-      } else {
+      }
+       else {
         throw ServerException(
           errorMessageModel: ErrorMessageModel(
             statusMessage: e.message ?? "Unknown Error",

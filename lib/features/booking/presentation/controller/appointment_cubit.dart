@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:tabibi/core/network/api_constance.dart';
 import 'package:tabibi/core/services/payment_manager.dart';
+import 'package:tabibi/core/utils/backend_date_time.dart';
 import 'package:tabibi/features/booking/domain/entities/available_slot.dart';
 import 'package:tabibi/features/booking/domain/usecases/cancel_booking_use_case.dart';
 import 'package:tabibi/features/booking/domain/usecases/confirm_payment_use_case.dart';
@@ -78,20 +79,26 @@ class AppointmentCubit extends Cubit<AppointmentState> {
 
     emit(AppointmentBookingLoading());
     try {
-      // 1. Create booking and get clientSecret
       final String appointmentDate;
-    
+
       if (selectedTime!.contains('T')) {
-        // If selectedTime is already a full ISO string (e.g. from the API slots)
-        appointmentDate = selectedTime!.endsWith('Z')
-            ? selectedTime!
-            : "${selectedTime!}Z";
+        // Slot values returned by the backend already represent UTC instants.
+        appointmentDate = BackendDateTime.parseUtc(
+          selectedTime!,
+        ).toIso8601String();
       } else {
-        // Fallback for simple time strings
-        appointmentDate =
-            "${DateFormat('yyyy-MM-dd').format(selectedDate!)}T$selectedTime:00.000Z";
+        // Manual fallback for local time-only values.
+        final localDateTime = DateTime(
+          selectedDate!.year,
+          selectedDate!.month,
+          selectedDate!.day,
+          int.parse(selectedTime!.split(':')[0]),
+          int.parse(selectedTime!.split(':')[1]),
+        );
+        final utcDateTime = localDateTime.toUtc();
+        appointmentDate = utcDateTime.toIso8601String();
       }
-        log(appointmentDate);
+      log("Sending appointment in UTC: $appointmentDate");
       final result = await createBookingUseCase.execute(
         appointmentDate: appointmentDate,
         doctorId: doctorId,
@@ -143,7 +150,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
       );
     } catch (e) {
       final errorMsg = "An error occurred: ${e.toString()}";
-    
+
       emit(AppointmentFailure(errorMsg));
     }
   }

@@ -69,10 +69,7 @@ class _DashboardError extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: onRetry,
-              child: const Text('Retry'),
-            ),
+            ElevatedButton(onPressed: onRetry, child: const Text('Retry')),
           ],
         ),
       ),
@@ -87,9 +84,14 @@ class _DashboardContent extends StatelessWidget {
 
   List<Appointment> _mapAppointments(DashboardResponse data) {
     return data.todayAppointments.map((apt) {
-      final h = apt.appointmentDate.hour;
-      final m = apt.appointmentDate.minute;
-      final hour = h > 12 ? h - 12 : h == 0 ? 12 : h;
+      final localDateTime = apt.appointmentDate.toLocal();
+      final h = localDateTime.hour;
+      final m = localDateTime.minute;
+      final hour = h > 12
+          ? h - 12
+          : h == 0
+          ? 12
+          : h;
       final period = h >= 12 ? 'PM' : 'AM';
       return Appointment(
         id: apt.id,
@@ -97,7 +99,7 @@ class _DashboardContent extends StatelessWidget {
         time: '$hour:${m.toString().padLeft(2, '0')} $period',
         date: 'Today',
         type: apt.type?.toString() ?? 'Consultation',
-        isUpcoming: apt.appointmentDate.isAfter(DateTime.now()),
+        isUpcoming: apt.appointmentDate.toUtc().isAfter(DateTime.now().toUtc()),
       );
     }).toList();
   }
@@ -107,8 +109,7 @@ class _DashboardContent extends StatelessWidget {
     final appointments = _mapAppointments(data);
 
     return RefreshIndicator(
-      onRefresh: () =>
-          context.read<DashboardCubit>().getDoctorDashboard(),
+      onRefresh: () => context.read<DashboardCubit>().getDoctorDashboard(),
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(24.0),

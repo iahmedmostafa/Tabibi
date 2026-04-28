@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tabibi/features/doctor/availability/presentation/cubit/availability_cubit.dart';
+import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/features/doctor/chat/presentation/pages/doctor_conversations_screen.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:tabibi/features/doctor/profile/presentation/pages/settings_page.dart';
 import 'package:tabibi/features/doctor/schedule/presentation/pages/my_schedule_page.dart';
+import 'package:tabibi/features/patient_profile/presentation/controller/profile_cubit.dart';
 
 class DoctorBottomNavScreen extends StatefulWidget {
   final int initialIndex;
-
   const DoctorBottomNavScreen({super.key, this.initialIndex = 0});
-
   @override
   State<DoctorBottomNavScreen> createState() => _DoctorBottomNavScreenState();
 }
@@ -27,7 +26,7 @@ class _DoctorBottomNavScreenState extends State<DoctorBottomNavScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AvailabilityCubit(),
+      create: (_) => sl<ProfileCubit>(),
       child: Scaffold(
         body: IndexedStack(
           index: _currentIndex,

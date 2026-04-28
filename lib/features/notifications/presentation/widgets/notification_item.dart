@@ -70,7 +70,9 @@ class NotificationItem extends StatelessWidget {
                   ),
                   SizedBox(height: AppHeight.h4),
                   Text(
-                    notification.message.toLocalTimeStrings(),
+                    notification.message
+                        .formatNotificationMessageTime()
+                        .toLocalTimeStrings(),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AppColors.grey500,
                       height: 1.4,

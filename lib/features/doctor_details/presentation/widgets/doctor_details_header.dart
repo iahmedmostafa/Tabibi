@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_images.dart';
 import 'package:tabibi/features/doctor_details/domain/entities/doctor_details_entity.dart';
 
 class DoctorDetailsHeader extends StatelessWidget {
@@ -26,7 +27,7 @@ class DoctorDetailsHeader extends StatelessWidget {
                   )
                 : const DecorationImage(
                     image: AssetImage(
-                      'assets/images/doctor_placeholder.png',
+                    AppImages.onboarding3,
                     ), // Fallback
                     fit: BoxFit.cover,
                   ),

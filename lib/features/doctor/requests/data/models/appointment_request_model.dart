@@ -1,3 +1,4 @@
+import 'package:tabibi/core/utils/backend_date_time.dart';
 import 'package:tabibi/features/doctor/requests/domain/entities/appointment_request.dart';
 
 class AppointmentRequestModel extends AppointmentRequest {
@@ -22,8 +23,9 @@ class AppointmentRequestModel extends AppointmentRequest {
       patientName: json['patientName'] ?? 'Unknown Patient',
       imageUrl: json['patientAvatarUrl'] ?? '',
       dateTime: json['appointmentDate'] != null
-          ? DateTime.tryParse(json['appointmentDate']) ?? DateTime.now()
-          : DateTime.now(),
+          ? BackendDateTime.tryParseUtc(json['appointmentDate'] as String) ??
+                DateTime.now().toUtc()
+          : DateTime.now().toUtc(),
       reason: json['type']?.toString() ?? 'Consultation',
       status: mappedStatus,
     );

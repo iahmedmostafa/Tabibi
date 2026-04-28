@@ -33,12 +33,12 @@ import 'package:tabibi/features/booking/presentation/screens/book_appointment_sc
 import 'package:tabibi/features/booking/presentation/screens/my_bookings_screen.dart';
 import 'package:tabibi/features/booking/presentation/screens/prescription_screen.dart';
 import 'package:tabibi/features/chat_patient/presentation/pages/chat_screen.dart';
-import 'package:tabibi/features/doctor/chat/presentation/pages/doctor_chat_screen.dart';
-import 'package:tabibi/features/doctor/chat/presentation/pages/doctor_conversations_screen.dart';
 // Doctor feature imports
 import 'package:tabibi/features/doctor/appointments/presentation/pages/appointment_details_page.dart';
 import 'package:tabibi/features/doctor/availability/presentation/cubit/availability_cubit.dart';
 import 'package:tabibi/features/doctor/availability/presentation/pages/edit_availability_page.dart';
+import 'package:tabibi/features/doctor/chat/presentation/pages/doctor_chat_screen.dart';
+import 'package:tabibi/features/doctor/chat/presentation/pages/doctor_conversations_screen.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart'
     as doctor_entities;
 import 'package:tabibi/features/doctor/earnings/presentation/pages/earnings_page.dart';
@@ -63,6 +63,7 @@ import 'package:tabibi/features/home/presentation/screen/patient/screens/patient
 import 'package:tabibi/features/notifications/presentation/screens/notifications_screen.dart';
 import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/patient_profile_cubit.dart';
+import 'package:tabibi/features/patient_profile/presentation/controller/profile_cubit.dart';
 import 'package:tabibi/features/patient_profile/presentation/screens/edit_profile_screen.dart';
 import 'package:tabibi/features/video_call/presentation/cubit/video_call_cubit.dart';
 import 'package:tabibi/features/video_call/presentation/screen/video_call_screen.dart';
@@ -509,7 +510,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppRoutes.doctorSettings,
       name: AppRoutes.doctorSettings,
-      builder: (context, state) => const SettingsPage(),
+      builder: (context, state) => BlocProvider(
+        create: (context) => sl<ProfileCubit>(),
+        child: const SettingsPage(),
+      ),
     ),
     GoRoute(
       path: AppRoutes.doctorAppointmentDetails,

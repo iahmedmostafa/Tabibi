@@ -1,3 +1,4 @@
+import 'package:tabibi/core/utils/backend_date_time.dart';
 import 'package:tabibi/features/doctor/appointments/domain/entities/appointment_details_entity.dart';
 
 class AppointmentDetailsModel extends AppointmentDetailsEntity {
@@ -14,8 +15,9 @@ class AppointmentDetailsModel extends AppointmentDetailsEntity {
     return AppointmentDetailsModel(
       id: json['id'] ?? '',
       appointmentDate: json['appointmentDate'] != null
-          ? DateTime.parse(json['appointmentDate'])
-          : DateTime.now(),
+          ? BackendDateTime.tryParseUtc(json['appointmentDate'] as String) ??
+                DateTime.now().toUtc()
+          : DateTime.now().toUtc(),
       type: json['type'] ?? 0,
       status: json['status'] ?? 0,
       patient: PatientModel.fromJson(json['patient'] ?? {}),
@@ -67,7 +69,8 @@ class PrescriptionModel extends PrescriptionEntity {
       diagnosis: json['diagnosis'] ?? '',
       notes: json['notes'],
       createdAt: json['createdAt'] != null
-          ? DateTime.tryParse(json['createdAt']) ?? DateTime.now()
+          ? BackendDateTime.tryParseUtc(json['createdAt'] as String) ??
+                DateTime.now().toUtc()
           : DateTime.now(),
       medicines: json['medicines'] ?? [],
     );

@@ -55,7 +55,7 @@ class ApprovedPage extends StatelessWidget {
               const VerticalSpace(height: 40),
               PrimaryButton(
                 onPress: () {
-                  context.goNamed(AppRoutes.home);
+                  context.goNamed(AppRoutes.homeDoctorScreen);
                 },
                 title: 'Go to Home',
               ),

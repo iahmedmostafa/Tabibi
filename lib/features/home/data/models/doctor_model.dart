@@ -67,6 +67,4 @@ class DoctorModel {
   }
 }
 
-extension DoctorX on DoctorModel {
-  String get departmentName => department ?? '';
-}
+
