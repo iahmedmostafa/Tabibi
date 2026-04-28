@@ -3,20 +3,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 
 class PrescriptionTextField extends StatelessWidget {
-  final TextEditingController controller;
+  final TextEditingController? controller;
+  final String? initialValue;
   final String label;
   final String hintText;
   final IconData icon;
   final int maxLines;
+  final ValueChanged<String>? onChanged;
   final String? Function(String?)? validator;
 
   const PrescriptionTextField({
     super.key,
-    required this.controller,
+    this.controller,
+    this.initialValue,
     required this.label,
     required this.hintText,
     required this.icon,
     this.maxLines = 1,
+    this.onChanged,
     this.validator,
   });
 
@@ -37,6 +41,8 @@ class PrescriptionTextField extends StatelessWidget {
         SizedBox(height: 8.h),
         TextFormField(
           controller: controller,
+          initialValue: controller == null ? initialValue : null,
+          onChanged: onChanged,
           validator: validator,
           maxLines: maxLines,
           autovalidateMode: AutovalidateMode.onUserInteraction,

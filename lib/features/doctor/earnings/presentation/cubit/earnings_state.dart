@@ -36,6 +36,25 @@ class EarningsState extends Equatable {
     this.transactionsErrorMessage,
   });
 
+  bool get isInitialDashboardLoading =>
+      status == EarningsLoadStatus.loading && summary == null;
+
+  bool get hasInitialDashboardFailure =>
+      status == EarningsLoadStatus.failure && summary == null;
+
+  bool get isAnalyticsLoading => analyticsStatus == EarningsLoadStatus.loading;
+
+  bool get hasAnalyticsFailure =>
+      analyticsStatus == EarningsLoadStatus.failure;
+
+  bool get isTransactionsLoading =>
+      transactionsStatus == EarningsLoadStatus.loading;
+
+  bool get hasInitialTransactionsFailure =>
+      transactionsStatus == EarningsLoadStatus.failure && transactions.isEmpty;
+
+  bool get canLoadMoreTransactions => hasNextPage && !isLoadingMore;
+
   EarningsState copyWith({
     EarningsLoadStatus? status,
     EarningsLoadStatus? analyticsStatus,

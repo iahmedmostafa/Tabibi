@@ -8,30 +8,122 @@ import 'package:tabibi/features/doctor/prescription/presentation/cubit/create_pr
 class CreatePrescriptionCubit extends Cubit<CreatePrescriptionState> {
   final CreatePrescriptionUseCase createPrescriptionUseCase;
   final CompleteAppointmentUseCase completeAppointmentUseCase;
+  int _medicineIdSeed = 1;
 
   CreatePrescriptionCubit(
     this.createPrescriptionUseCase,
     this.completeAppointmentUseCase,
   ) : super(const CreatePrescriptionState());
 
-  Future<void> createPrescription({
+  void initialize({
     required String appointmentId,
-    required String diagnosis,
-    String? notes,
-    required List<PrescriptionMedicine> medicines,
-  }) async {
+    DateTime? appointmentDate,
+  }) {
+    emit(
+      state.copyWith(
+        appointmentId: appointmentId,
+        appointmentDate: appointmentDate,
+      ),
+    );
+  }
+
+  void diagnosisChanged(String value) {
+    emit(state.copyWith(diagnosis: value, errorMessage: null));
+  }
+
+  void notesChanged(String value) {
+    emit(state.copyWith(notes: value, errorMessage: null));
+  }
+
+  void addMedicine() {
+    emit(
+      state.copyWith(
+        medicines: [
+          ...state.medicines,
+          PrescriptionMedicineFormInput(id: 'medicine-${_medicineIdSeed++}'),
+        ],
+        errorMessage: null,
+      ),
+    );
+  }
+
+  void removeMedicine(int index) {
+    if (!state.canRemoveMedicine || index < 0 || index >= state.medicines.length) {
+      return;
+    }
+
+    final medicines = [...state.medicines]..removeAt(index);
+    emit(state.copyWith(medicines: medicines, errorMessage: null));
+  }
+
+  void medicineChanged(
+    int index, {
+    String? medicineName,
+    String? dosage,
+    String? frequency,
+    String? duration,
+    String? instructions,
+  }) {
+    if (index < 0 || index >= state.medicines.length) return;
+
+    final medicines = [...state.medicines];
+    medicines[index] = medicines[index].copyWith(
+      medicineName: medicineName,
+      dosage: dosage,
+      frequency: frequency,
+      duration: duration,
+      instructions: instructions,
+    );
+    emit(state.copyWith(medicines: medicines, errorMessage: null));
+  }
+
+  Future<void> submit() async {
     if (state.status == CreatePrescriptionStatus.loading) return;
+    if (!state.isAppointmentAvailable) {
+      emit(
+        state.copyWith(
+          status: CreatePrescriptionStatus.unavailable,
+          errorMessage:
+              'Prescription can be written only after the appointment time is reached.',
+        ),
+      );
+      return;
+    }
+    if (!state.canSubmit) {
+      emit(
+        state.copyWith(
+          status: CreatePrescriptionStatus.validationFailure,
+          errorMessage: 'Please complete diagnosis and all medicine fields.',
+        ),
+      );
+      return;
+    }
+
+    final medicines = state.medicines
+        .map(
+          (medicine) => PrescriptionMedicine(
+            medicineName: medicine.medicineName.trim(),
+            dosage: medicine.dosage.trim(),
+            frequency: medicine.frequency.trim(),
+            duration: medicine.duration.trim(),
+            instructions: medicine.instructions.trim(),
+          ),
+        )
+        .toList();
 
     emit(
-      const CreatePrescriptionState(status: CreatePrescriptionStatus.loading),
+      state.copyWith(
+        status: CreatePrescriptionStatus.loading,
+        errorMessage: null,
+      ),
     );
 
     final result = await createPrescriptionUseCase(
       CreatePrescriptionParameters(
-        appointmentId: appointmentId,
+        appointmentId: state.appointmentId,
         request: CreatePrescriptionRequest(
-          diagnosis: diagnosis.trim(),
-          notes: notes?.trim().isEmpty ?? true ? null : notes!.trim(),
+          diagnosis: state.diagnosis.trim(),
+          notes: state.notes.trim().isEmpty ? null : state.notes.trim(),
           medicines: medicines,
         ),
       ),
@@ -39,17 +131,19 @@ class CreatePrescriptionCubit extends Cubit<CreatePrescriptionState> {
 
     await result.fold(
       (failure) async => emit(
-        CreatePrescriptionState(
+        state.copyWith(
           status: CreatePrescriptionStatus.failure,
           errorMessage: failure.message,
         ),
       ),
       (_) async {
-        final completeResult = await completeAppointmentUseCase(appointmentId);
+        final completeResult = await completeAppointmentUseCase(
+          state.appointmentId,
+        );
 
         completeResult.fold(
           (failure) => emit(
-            CreatePrescriptionState(
+            state.copyWith(
               status: CreatePrescriptionStatus.completionFailure,
               errorMessage:
                   'Prescription was saved, but appointment completion failed: ${failure.message}',

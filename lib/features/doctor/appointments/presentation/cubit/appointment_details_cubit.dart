@@ -20,4 +20,13 @@ class AppointmentDetailsCubit extends Cubit<AppointmentDetailsState> {
       emit(const AppointmentDetailsError('Failed to fetch appointment details.'));
     }
   }
+
+  Future<void> handlePatientProfileRouteResult({
+    required String appointmentId,
+    required Object? result,
+  }) async {
+    if (result == true) {
+      await getAppointmentDetails(appointmentId);
+    }
+  }
 }

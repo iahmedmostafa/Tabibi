@@ -47,6 +47,7 @@ import 'package:tabibi/features/doctor/patients/presentation/pages/patient_profi
 import 'package:tabibi/features/doctor/prescription/presentation/cubit/create_prescription_cubit.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/pages/create_prescription_args.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/pages/create_prescription_page.dart';
+import 'package:tabibi/features/doctor/prescription/presentation/policies/prescription_write_policy.dart';
 import 'package:tabibi/features/doctor/profile/presentation/pages/settings_page.dart';
 import 'package:tabibi/features/doctor/requests/presentation/pages/appointment_requests_page.dart';
 import 'package:tabibi/features/doctor/reviews/presentation/pages/reviews_page.dart';
@@ -538,8 +539,10 @@ final GoRouter router = GoRouter(
           return PatientProfilePage(
             patient: extra['patient'] as Patient,
             appointmentId: extra['appointmentId'] as String?,
-            canWritePrescription:
-                extra['canWritePrescription'] as bool? ?? true,
+            appointmentDate: extra['appointmentDate'] as DateTime?,
+            prescriptionWritePolicy:
+                extra['prescriptionWritePolicy'] as PrescriptionWritePolicy? ??
+                    const PrescriptionWritePolicy.allowed(),
           );
         }
         return PatientProfilePage(patient: extra as Patient);
@@ -551,7 +554,11 @@ final GoRouter router = GoRouter(
       builder: (context, state) {
         final args = state.extra as CreatePrescriptionArgs;
         return BlocProvider(
-          create: (context) => sl<CreatePrescriptionCubit>(),
+          create: (context) =>
+              sl<CreatePrescriptionCubit>()..initialize(
+                appointmentId: args.appointmentId,
+                appointmentDate: args.appointmentDate,
+              ),
           child: CreatePrescriptionPage(args: args),
         );
       },

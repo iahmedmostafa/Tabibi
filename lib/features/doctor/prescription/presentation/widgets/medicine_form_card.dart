@@ -2,35 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/features/doctor/prescription/presentation/cubit/create_prescription_state.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/widgets/prescription_text_field.dart';
 
-class MedicineFormControllers {
-  final TextEditingController medicineName = TextEditingController();
-  final TextEditingController dosage = TextEditingController();
-  final TextEditingController frequency = TextEditingController();
-  final TextEditingController duration = TextEditingController();
-  final TextEditingController instructions = TextEditingController();
-
-  void dispose() {
-    medicineName.dispose();
-    dosage.dispose();
-    frequency.dispose();
-    duration.dispose();
-    instructions.dispose();
-  }
-}
-
 class MedicineFormCard extends StatelessWidget {
-  final MedicineFormControllers controllers;
+  final PrescriptionMedicineFormInput medicine;
   final int index;
   final bool canRemove;
+  final ValueChanged<String> onMedicineNameChanged;
+  final ValueChanged<String> onDosageChanged;
+  final ValueChanged<String> onFrequencyChanged;
+  final ValueChanged<String> onDurationChanged;
+  final ValueChanged<String> onInstructionsChanged;
   final VoidCallback onRemove;
 
   const MedicineFormCard({
     super.key,
-    required this.controllers,
+    required this.medicine,
     required this.index,
     required this.canRemove,
+    required this.onMedicineNameChanged,
+    required this.onDosageChanged,
+    required this.onFrequencyChanged,
+    required this.onDurationChanged,
+    required this.onInstructionsChanged,
     required this.onRemove,
   });
 
@@ -111,7 +106,8 @@ class MedicineFormCard extends StatelessWidget {
           ),
           SizedBox(height: 18.h),
           PrescriptionTextField(
-            controller: controllers.medicineName,
+            initialValue: medicine.medicineName,
+            onChanged: onMedicineNameChanged,
             label: 'Medicine Name',
             hintText: 'e.g. Amoxicillin',
             icon: Iconsax.hospital,
@@ -122,7 +118,8 @@ class MedicineFormCard extends StatelessWidget {
             children: [
               Expanded(
                 child: PrescriptionTextField(
-                  controller: controllers.dosage,
+                  initialValue: medicine.dosage,
+                  onChanged: onDosageChanged,
                   label: 'Dosage',
                   hintText: '500 mg',
                   icon: Iconsax.health,
@@ -132,7 +129,8 @@ class MedicineFormCard extends StatelessWidget {
               SizedBox(width: 12.w),
               Expanded(
                 child: PrescriptionTextField(
-                  controller: controllers.frequency,
+                  initialValue: medicine.frequency,
+                  onChanged: onFrequencyChanged,
                   label: 'Frequency',
                   hintText: 'Twice daily',
                   icon: Iconsax.clock,
@@ -143,7 +141,8 @@ class MedicineFormCard extends StatelessWidget {
           ),
           SizedBox(height: 14.h),
           PrescriptionTextField(
-            controller: controllers.duration,
+            initialValue: medicine.duration,
+            onChanged: onDurationChanged,
             label: 'Duration',
             hintText: '7 days',
             icon: Iconsax.calendar,
@@ -151,7 +150,8 @@ class MedicineFormCard extends StatelessWidget {
           ),
           SizedBox(height: 14.h),
           PrescriptionTextField(
-            controller: controllers.instructions,
+            initialValue: medicine.instructions,
+            onChanged: onInstructionsChanged,
             label: 'Instructions',
             hintText: 'After meals, avoid dairy products',
             icon: Iconsax.note_1,

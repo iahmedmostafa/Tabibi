@@ -31,10 +31,12 @@ class EarningsCubit extends Cubit<EarningsState> {
 
     await Future.wait([
       _loadSummary(),
-      loadAnalytics(state.selectedPeriod),
+      _loadAnalytics(state.selectedPeriod),
       refreshTransactions(),
     ]);
   }
+
+  Future<void> retryDashboard() => loadDashboard();
 
   Future<void> _loadSummary() async {
     final result = await getSummaryUseCase(const NoParameters());
@@ -57,7 +59,17 @@ class EarningsCubit extends Cubit<EarningsState> {
     );
   }
 
-  Future<void> loadAnalytics(EarningsPeriod period) async {
+  Future<void> selectAnalyticsPeriod(EarningsPeriod period) async {
+    if (state.selectedPeriod == period &&
+        state.analyticsStatus == EarningsLoadStatus.success) {
+      return;
+    }
+    await _loadAnalytics(period);
+  }
+
+  Future<void> retryAnalytics() => _loadAnalytics(state.selectedPeriod);
+
+  Future<void> _loadAnalytics(EarningsPeriod period) async {
     emit(
       state.copyWith(
         selectedPeriod: period,
@@ -96,6 +108,8 @@ class EarningsCubit extends Cubit<EarningsState> {
 
     await _loadTransactionsPage(1);
   }
+
+  Future<void> retryTransactions() => refreshTransactions();
 
   Future<void> loadMoreTransactions() async {
     if (!state.hasNextPage || state.isLoadingMore) return;
