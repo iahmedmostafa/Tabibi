@@ -23,9 +23,14 @@ class AppointmentDetailsPage extends StatelessWidget {
       create: (context) =>
           sl<AppointmentDetailsCubit>()..getAppointmentDetails(appointment.id),
       child: Scaffold(
-        backgroundColor: Colors.grey[50],
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
-          title: Text('Appointment Details', style: TextStyle(fontSize: 20.sp)),
+          title: Text(
+            'Appointment Details',
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(color: Colors.black),
+          ),
           centerTitle: true,
           backgroundColor: Colors.white,
           elevation: 0,
@@ -63,7 +68,7 @@ class AppointmentDetailsPage extends StatelessWidget {
                       isUpcoming: isUpcoming,
                     ),
                     SizedBox(height: 16.h),
-                    AppointmentInfoCard(details: details),
+                    AppointmentInfoCard(details: details,isUpcoming: isUpcoming,),
                     SizedBox(height: 16.h),
                     ReasonForVisitCard(details: details),
                     if (details.prescription != null) ...[
