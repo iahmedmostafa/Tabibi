@@ -165,6 +165,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
       },
       (_) {
         log("Booking cancelled successfully");
+        emit(AppointmentCancelSuccess());
       },
     );
   }

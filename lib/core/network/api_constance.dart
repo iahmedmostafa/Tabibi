@@ -27,6 +27,8 @@ class ApiConstance {
   static const String availableSlots = "bookings/available-slots";
   static const String booking = "bookings";
   static const String mybooking = "bookings/my-bookings";
+  static const String reviews = "reviews";
+  static const String myReviews = "reviews/me";
   static const String doctorReviews = "reviews/doctor/";
   static const String notifications = "notifications";
   static String markNotificationAsRead(String id) => "notifications/$id/read";
@@ -47,9 +49,6 @@ class ApiConstance {
   // FCM
   static const String fcmToken = "notifications/fcm-token";
 
-  //  static const String refreshToken = "auth/refresh";
-  // static const String logout = "auth/logout";
-  //  static const String activeCode = "auth/activate";
   static const String generateNewAccessToken = "auth/refresh";
 
   static String confirmPayment(String id) => "bookings/$id/confirm-payment";

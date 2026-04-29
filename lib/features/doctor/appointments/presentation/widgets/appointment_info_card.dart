@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/appointments/domain/entities/appointment_details_entity.dart';
 
 class AppointmentInfoCard extends StatelessWidget {
   final AppointmentDetailsEntity details;
-  final bool isUpcoming;
 
-  const AppointmentInfoCard({super.key, required this.details, required this.isUpcoming});
+  const AppointmentInfoCard({
+    super.key,
+    required this.details,
+  });
 
   @override
   Widget build(BuildContext context) {
     final tt = Theme.of(context).textTheme;
-    final typeLabel = details.type == 1 ? 'Consultation' : 'Follow-up';
-    final statusLabel = _statusLabel(details.status);
+    final typeLabel = details.type == 1 ? 'Video Call' : 'Consultation';
     final statusColor = _statusColor(details.status);
     final statusBg = _statusBg(details.status);
-
-final isUpcoming = details.appointmentDate.isAfter(
-                DateTime.now(),
-              );
 
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -31,7 +28,12 @@ final isUpcoming = details.appointmentDate.isAfter(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Appointment Information', style: tt.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface)),
+          Text(
+            'Appointment Information',
+            style: tt.titleLarge?.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
           SizedBox(height: 16.h),
           _buildInfoRow(
             context: context,
@@ -68,22 +70,34 @@ final isUpcoming = details.appointmentDate.isAfter(
                   color: statusBg,
                   borderRadius: BorderRadius.circular(12.r),
                 ),
-                child: Icon(Icons.info_outline, color: statusColor, size: 20.sp),
+                child: Icon(
+                  Icons.info_outline,
+                  color: statusColor,
+                  size: 20.sp,
+                ),
               ),
               SizedBox(width: 16.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Status', style: tt.labelSmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+                  Text(
+                    'Status',
+                    style: tt.labelSmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
                   SizedBox(height: 4.h),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10.w,
+                      vertical: 3.h,
+                    ),
                     decoration: BoxDecoration(
                       color: statusBg,
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: Text(
-                      isUpcoming ? 'Upcoming' : 'Completed',
+                      DoctorAppointmentStatus.label(details.status),
                       style: tt.bodySmall?.copyWith(color: statusColor),
                     ),
                   ),
@@ -121,9 +135,20 @@ final isUpcoming = details.appointmentDate.isAfter(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: tt.labelSmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+              Text(
+                label,
+                style: tt.labelSmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              ),
               SizedBox(height: 4.h),
-              Text(value, style: tt.bodyMedium?.copyWith(height: 1.4, color: Theme.of(context).colorScheme.onSurface)),
+              Text(
+                value,
+                style: tt.bodyMedium?.copyWith(
+                  height: 1.4,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
             ],
           ),
         ),
@@ -134,8 +159,18 @@ final isUpcoming = details.appointmentDate.isAfter(
   String _formatDate(DateTime dt) {
     final localDateTime = dt.toLocal();
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return '${months[localDateTime.month - 1]} ${localDateTime.day.toString().padLeft(2, '0')}, ${localDateTime.year}';
   }
@@ -144,38 +179,38 @@ final isUpcoming = details.appointmentDate.isAfter(
     final localDateTime = dt.toLocal();
     final h = localDateTime.hour;
     final m = localDateTime.minute.toString().padLeft(2, '0');
-    final hour = h > 12 ? h - 12 : h == 0 ? 12 : h;
+    final hour = h > 12
+        ? h - 12
+        : h == 0
+        ? 12
+        : h;
     final period = h >= 12 ? 'PM' : 'AM';
     return '$hour:$m $period';
   }
 
-  String _statusLabel(int status) {
-    switch (status) {
-      case 1: return 'Pending';
-      case 2: return 'Approved';
-      case 3: return 'Completed';
-      case 4: return 'Cancelled';
-      default: return 'Unknown';
-    }
-  }
-
   Color _statusColor(int status) {
     switch (status) {
-      case 1: return AppTheme.blueIcon;
-      case 2: return AppTheme.greenIcon;
-      case 3: return AppTheme.purpleIcon;
-      case 4: return AppTheme.redIcon;
-      default: return Colors.grey;
+      case DoctorAppointmentStatus.upcoming:
+        return AppTheme.blueIcon;
+      case DoctorAppointmentStatus.completed:
+        return AppTheme.greenIcon;
+      case DoctorAppointmentStatus.refunded:
+        return AppTheme.redIcon;
+      default:
+        return Colors.grey;
     }
   }
 
   Color _statusBg(int status) {
     switch (status) {
-      case 1: return AppTheme.bluePastel;
-      case 2: return AppTheme.greenPastel;
-      case 3: return AppTheme.purplePastel;
-      case 4: return AppTheme.redPastel;
-      default: return Colors.grey.shade100;
+      case DoctorAppointmentStatus.upcoming:
+        return AppTheme.bluePastel;
+      case DoctorAppointmentStatus.completed:
+        return AppTheme.greenPastel;
+      case DoctorAppointmentStatus.refunded:
+        return AppTheme.redPastel;
+      default:
+        return Colors.grey.shade100;
     }
   }
 }

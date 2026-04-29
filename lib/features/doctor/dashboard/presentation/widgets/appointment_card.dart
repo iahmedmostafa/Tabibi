@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart';
 
 class AppointmentCard extends StatelessWidget {
@@ -16,6 +17,8 @@ class AppointmentCard extends StatelessWidget {
     final cardColor = theme.cardColor != Colors.transparent
         ? theme.cardColor
         : theme.colorScheme.surface;
+    final statusColor = _statusColor(appointment.status);
+    final statusBg = _statusBg(appointment.status);
 
     return GestureDetector(
       onTap: () =>
@@ -64,44 +67,24 @@ class AppointmentCard extends StatelessWidget {
                         appointment.patientName,
                         style: theme.textTheme.titleMedium,
                       ),
-                      if (appointment.isUpcoming)
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppTheme.bluePastel,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Text(
-                            'Upcoming',
-                            style: TextStyle(
-                              color: AppTheme.blueIcon,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        )
-                      else
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppTheme.greenPastel,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Text(
-                            'Completed',
-                            style: TextStyle(
-                              color: AppTheme.greenIcon,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: statusBg,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          appointment.statusLabel,
+                          style: TextStyle(
+                            color: statusColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -119,15 +102,6 @@ class AppointmentCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    appointment.type,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: AppColors.grey500,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
                 ],
               ),
             ),
@@ -135,5 +109,31 @@ class AppointmentCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Color _statusColor(int status) {
+    switch (status) {
+      case DoctorAppointmentStatus.upcoming:
+        return AppTheme.blueIcon;
+      case DoctorAppointmentStatus.completed:
+        return AppTheme.greenIcon;
+      case DoctorAppointmentStatus.refunded:
+        return AppTheme.redIcon;
+      default:
+        return AppColors.grey400;
+    }
+  }
+
+  Color _statusBg(int status) {
+    switch (status) {
+      case DoctorAppointmentStatus.upcoming:
+        return AppTheme.bluePastel;
+      case DoctorAppointmentStatus.completed:
+        return AppTheme.greenPastel;
+      case DoctorAppointmentStatus.refunded:
+        return AppTheme.redPastel;
+      default:
+        return Colors.grey.shade200;
+    }
   }
 }

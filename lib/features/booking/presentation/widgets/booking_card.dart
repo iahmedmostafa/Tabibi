@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
@@ -9,7 +11,11 @@ import 'package:tabibi/core/utils/constants/app_images.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/core/utils/formatters.dart/formatters.dart';
+import 'package:tabibi/core/widgets/confirmation_dialog.dart';
 import 'package:tabibi/features/booking/data/models/booking_model.dart';
+import 'package:tabibi/features/booking/presentation/controller/add_review_cubit.dart';
+import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
+import 'package:tabibi/features/booking/presentation/controller/my_bookings_cubit.dart';
 import 'package:tabibi/features/home/data/models/doctor_model.dart';
 
 class BookingCard extends StatelessWidget {
@@ -49,8 +55,7 @@ class BookingCard extends StatelessWidget {
                       AppColors.midnightBlue,
                 ),
               ),
-              status == BookingStatus.completed
-                  ? GestureDetector(
+             GestureDetector(
                       onTap: () {
                         context.pushNamed(
                           AppRoutes.chat,
@@ -89,7 +94,7 @@ class BookingCard extends StatelessWidget {
                         ),
                       ),
                     )
-                  : const SizedBox.shrink(),
+                
             ],
           ),
           SizedBox(height: 12.h),
@@ -170,8 +175,21 @@ class BookingCard extends StatelessWidget {
 
   Widget _buildActionButtons(BuildContext context) {
     if (status == BookingStatus.upcoming) {
+      final canCancel = booking.status == 1;
       return Row(
         children: [
+          if (canCancel) ...[
+            Expanded(
+              child: _buildButton(
+                context,
+                "Cancel",
+                AppColors.grey100,
+                AppColors.midnightBlue,
+                () => _showCancelBookingDialog(context),
+              ),
+            ),
+            SizedBox(width: 12.w),
+          ],
           Expanded(
             child: booking.type == 0
                 ? _buildButton(
@@ -244,20 +262,61 @@ class BookingCard extends StatelessWidget {
               ],
             ],
           ),
-          SizedBox(height: 10.h),
-          SizedBox(
-            width: double.infinity,
-            child: _buildButton(
-              context,
-              "Add Review",
-              AppColors.midnightBlue,
-              Colors.white,
-              () {},
+          if (booking.showReviewButton != false) ...[
+            SizedBox(height: 10.h),
+            SizedBox(
+              width: double.infinity,
+              child: _buildButton(
+                context,
+                "Add Review",
+                AppColors.midnightBlue,
+                Colors.white,
+                () => _showAddReviewDialog(context),
+              ),
             ),
-          ),
+          ],
         ],
       );
     }
+  }
+
+  void _showCancelBookingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return BlocProvider(
+          create: (_) => sl<AppointmentCubit>(),
+          child: _CancelBookingDialog(
+            bookingId: booking.id,
+            doctorName: booking.doctorName,
+            onCancelled: () {
+              context
+                  .read<MyBookingsCubit>()
+                  .getBookings(status: BookingStatus.upcoming);
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  void _showAddReviewDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return BlocProvider(
+          create: (_) => sl<AddReviewCubit>(),
+          child: _AddReviewDialog(
+            booking: booking,
+            onSubmitted: () {
+              context
+                  .read<MyBookingsCubit>()
+                  .getBookings(status: BookingStatus.completed);
+            },
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildButton(
@@ -286,6 +345,155 @@ class BookingCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _AddReviewDialog extends StatefulWidget {
+  final BookingModel booking;
+  final VoidCallback onSubmitted;
+
+  const _AddReviewDialog({
+    required this.booking,
+    required this.onSubmitted,
+  });
+
+  @override
+  State<_AddReviewDialog> createState() => _AddReviewDialogState();
+}
+
+class _AddReviewDialogState extends State<_AddReviewDialog> {
+  final _commentController = TextEditingController();
+  int _rating = 5;
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<AddReviewCubit, AddReviewState>(
+      listener: (context, state) {
+        if (state.status == AddReviewStatus.success) {
+          final messenger = ScaffoldMessenger.of(context);
+          Navigator.of(context).pop();
+          widget.onSubmitted();
+          messenger.showSnackBar(
+            const SnackBar(content: Text('Review added successfully')),
+          );
+        } else if (state.status == AddReviewStatus.failure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.errorMessage ?? 'Failed to add review')),
+          );
+        }
+      },
+      builder: (context, state) {
+        final isLoading = state.status == AddReviewStatus.loading;
+        return AlertDialog(
+          title: Text('Review ${widget.booking.doctorName}'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  5,
+                  (index) => IconButton(
+                    onPressed: isLoading
+                        ? null
+                        : () => setState(() => _rating = index + 1),
+                    icon: Icon(
+                      index < _rating ? Icons.star : Icons.star_border,
+                      color: const Color(0xFFFFB74D),
+                    ),
+                  ),
+                ),
+              ),
+              TextField(
+                controller: _commentController,
+                minLines: 3,
+                maxLines: 5,
+                enabled: !isLoading,
+                decoration: const InputDecoration(
+                  hintText: 'Write your review',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: isLoading ? null : () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: isLoading
+                  ? null
+                  : () => context.read<AddReviewCubit>().submit(
+                        bookingId: widget.booking.id,
+                        rating: _rating,
+                        comment: _commentController.text,
+                      ),
+              child: isLoading
+                  ? SizedBox(
+                      width: 18.w,
+                      height: 18.w,
+                      child: const CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Text('Submit'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _CancelBookingDialog extends StatelessWidget {
+  final String bookingId;
+  final String doctorName;
+  final VoidCallback onCancelled;
+
+  const _CancelBookingDialog({
+    required this.bookingId,
+    required this.doctorName,
+    required this.onCancelled,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<AppointmentCubit, AppointmentState>(
+      listener: (context, state) {
+        if (state is AppointmentCancelSuccess) {
+          final messenger = ScaffoldMessenger.of(context);
+          Navigator.of(context).pop();
+          onCancelled();
+          messenger.showSnackBar(
+            const SnackBar(content: Text('Booking cancelled successfully')),
+          );
+        } else if (state is AppointmentFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message)),
+          );
+        }
+      },
+      builder: (context, state) {
+        final isLoading = state is AppointmentBookingLoading;
+        return ConfirmationDialog(
+          title: 'Cancel booking',
+          message: 'Cancel your appointment with Dr $doctorName?',
+          cancelText: 'Keep',
+          confirmText: 'Cancel Booking',
+          icon: Icons.event_busy_outlined,
+          closeOnConfirm: false,
+          isLoading: isLoading,
+          onConfirm: () => context
+              .read<AppointmentCubit>()
+              .cancelBooking(bookingId: bookingId),
+        );
+      },
     );
   }
 }

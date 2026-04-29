@@ -42,6 +42,8 @@ class AppointmentBookingLoading extends AppointmentState {}
 
 class AppointmentBookingSuccess extends AppointmentState {}
 
+class AppointmentCancelSuccess extends AppointmentState {}
+
 class AppointmentSlotsLoading extends AppointmentState {}
 
 class AppointmentSlotsSuccess extends AppointmentState {

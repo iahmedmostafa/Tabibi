@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tabibi/core/usecase/base_use_case.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/requests/domain/entities/appointment_request.dart';
 import 'package:tabibi/features/doctor/requests/domain/usecases/requests_usecases.dart';
 import 'requests_state.dart';
@@ -52,7 +53,11 @@ class RequestsCubit extends Cubit<RequestsState> {
         if (onError != null) onError(failure.message);
       },
       (_) {
-        final updatedList = state.allRequests.map((r) => r.id == id ? r.copyWith(status: 'approved') : r).toList();
+        final updatedList = state.allRequests
+            .map((r) => r.id == id
+                ? r.copyWith(status: DoctorAppointmentStatus.completed)
+                : r)
+            .toList();
         emit(state.copyWith(isActionLoading: false, allRequests: updatedList));
         _applyFilters();
         if (onSuccess != null) onSuccess();
@@ -69,7 +74,11 @@ class RequestsCubit extends Cubit<RequestsState> {
         if (onError != null) onError(failure.message);
       },
       (_) {
-        final updatedList = state.allRequests.map((r) => r.id == id ? r.copyWith(status: 'rejected') : r).toList();
+        final updatedList = state.allRequests
+            .map((r) => r.id == id
+                ? r.copyWith(status: DoctorAppointmentStatus.refunded)
+                : r)
+            .toList();
         emit(state.copyWith(isActionLoading: false, allRequests: updatedList));
         _applyFilters();
         if (onSuccess != null) onSuccess();
@@ -96,18 +105,17 @@ class RequestsCubit extends Cubit<RequestsState> {
     switch (state.selectedFilter) {
       case RequestFilter.today:
         filtered = filtered.where((r) {
+          if (!r.isUpcoming) return false;
           final rDate = DateTime(
-            r.dateTime.year,
-            r.dateTime.month,
-            r.dateTime.day,
+            r.dateTime.toLocal().year,
+            r.dateTime.toLocal().month,
+            r.dateTime.toLocal().day,
           );
           return rDate.isAtSameMomentAs(today);
         }).toList();
         break;
       case RequestFilter.upcoming:
-        filtered = filtered.where((r) {
-          return r.dateTime.isAfter(DateTime.now());
-        }).toList();
+        filtered = filtered.where((r) => r.isUpcoming).toList();
         break;
       case RequestFilter.all:
         break;

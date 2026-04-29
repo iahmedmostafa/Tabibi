@@ -2,25 +2,26 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/appointments/domain/entities/appointment_details_entity.dart';
 
 class AppointmentPatientInfoCard extends StatelessWidget {
   final PatientEntity patient;
-  final bool isUpcoming;
+  final int status;
 
   const AppointmentPatientInfoCard({
     super.key,
     required this.patient,
-    required this.isUpcoming,
+    required this.status,
   });
 
   @override
   Widget build(BuildContext context) {
     final tt = Theme.of(context).textTheme;
     final hasImage = patient.avatarUrl != null && patient.avatarUrl!.isNotEmpty;
-    final statusLabel = isUpcoming ? 'Upcoming' : 'Completed';
-    final statusColor = isUpcoming ? AppTheme.blueIcon : AppTheme.greenIcon;
-    final statusBg = isUpcoming ? AppTheme.bluePastel : AppTheme.greenPastel;
+    final statusLabel = DoctorAppointmentStatus.label(status);
+    final statusColor = _statusColor(status);
+    final statusBg = _statusBg(status);
 
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -99,5 +100,31 @@ class AppointmentPatientInfoCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Color _statusColor(int status) {
+    switch (status) {
+      case DoctorAppointmentStatus.upcoming:
+        return AppTheme.blueIcon;
+      case DoctorAppointmentStatus.completed:
+        return AppTheme.greenIcon;
+      case DoctorAppointmentStatus.refunded:
+        return AppTheme.redIcon;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  Color _statusBg(int status) {
+    switch (status) {
+      case DoctorAppointmentStatus.upcoming:
+        return AppTheme.bluePastel;
+      case DoctorAppointmentStatus.completed:
+        return AppTheme.greenPastel;
+      case DoctorAppointmentStatus.refunded:
+        return AppTheme.redPastel;
+      default:
+        return Colors.grey.shade100;
+    }
   }
 }

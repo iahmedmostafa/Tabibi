@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_cubit.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_state.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/widgets/appointment_action_buttons.dart';
@@ -55,9 +56,13 @@ class AppointmentDetailsPage extends StatelessWidget {
             }
             if (state is AppointmentDetailsLoaded) {
               final details = state.appointmentDetails;
-              final isUpcoming = details.appointmentDate.toUtc().isAfter(
-                DateTime.now().toUtc(),
+              final isUpcoming = DoctorAppointmentStatus.isUpcoming(
+                details.status,
               );
+              final isCompleted = DoctorAppointmentStatus.isCompleted(
+                details.status,
+              );
+            
 
               return SingleChildScrollView(
                 padding: EdgeInsets.all(16.w),
@@ -65,10 +70,10 @@ class AppointmentDetailsPage extends StatelessWidget {
                   children: [
                     AppointmentPatientInfoCard(
                       patient: details.patient,
-                      isUpcoming: isUpcoming,
+                      status: details.status,
                     ),
                     SizedBox(height: 16.h),
-                    AppointmentInfoCard(details: details,isUpcoming: isUpcoming,),
+                    AppointmentInfoCard(details: details),
                     SizedBox(height: 16.h),
                     ReasonForVisitCard(details: details),
                     if (details.prescription != null) ...[
@@ -76,7 +81,7 @@ class AppointmentDetailsPage extends StatelessWidget {
                       PrescriptionCard(prescription: details.prescription!),
                     ],
                     SizedBox(height: 24.h),
-                    if (isUpcoming)
+                    if (isUpcoming||isCompleted)
                       AppointmentActionButtons(
                         patientId: details.patient.id,
                         bookingId: details.id,

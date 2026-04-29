@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/features/doctor/reviews/domain/entities/review.dart';
 import 'package:tabibi/features/doctor/reviews/presentation/cubit/reviews_cubit.dart';
 import 'package:tabibi/features/doctor/reviews/presentation/cubit/reviews_state.dart';
@@ -13,7 +14,7 @@ class ReviewsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ReviewsCubit(),
+      create: (context) => sl<ReviewsCubit>()..getReviews(),
       child: Scaffold(
         backgroundColor: Colors.grey[50],
         appBar: AppBar(
@@ -32,18 +33,33 @@ class ReviewsPage extends StatelessWidget {
             ),
           ],
         ),
-        body: const SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _RatingSummaryCard(),
-              SizedBox(height: 16),
-              _FilterChips(),
-              SizedBox(height: 16),
-              _ReviewsList(),
-              SizedBox(height: 80), // Space for bottom nav
-            ],
-          ),
+        body: BlocBuilder<ReviewsCubit, ReviewsState>(
+          builder: (context, state) {
+            if (state.status == ReviewsStatus.loading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (state.status == ReviewsStatus.failure) {
+              return Center(
+                child: Padding(
+                  padding: EdgeInsets.all(24.w),
+                  child: Text(state.errorMessage ?? 'Failed to load reviews'),
+                ),
+              );
+            }
+            return const SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _RatingSummaryCard(),
+                  SizedBox(height: 16),
+                  _FilterChips(),
+                  SizedBox(height: 16),
+                  _ReviewsList(),
+                  SizedBox(height: 80),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );

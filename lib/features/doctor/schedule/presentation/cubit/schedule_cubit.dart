@@ -7,12 +7,13 @@ class ScheduleCubit extends Cubit<ScheduleState> {
 
   ScheduleCubit(this.getDoctorScheduleUseCase) : super(ScheduleInitial());
 
-  Future<void> getDoctorSchedule(String date) async {
+  Future<void> getDoctorSchedule(String dateTime) async {
     emit(ScheduleLoading());
-    final result = await getDoctorScheduleUseCase(date);
-    result.fold(
-      (failure) => emit(ScheduleError(message: failure.message)),
-      (data) => emit(ScheduleLoaded(appointments: data)),
-    );
+    final result = await getDoctorScheduleUseCase(dateTime);
+    result.fold((failure) => emit(ScheduleError(message: failure.message)), (
+      data,
+    ) {
+      emit(ScheduleLoaded(appointments: data));
+    });
   }
 }

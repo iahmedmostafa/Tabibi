@@ -32,18 +32,23 @@ import 'package:tabibi/features/authentication/modules/verify_code/presentation/
 import 'package:tabibi/features/booking/data/datasources/appointment_remote_data_source.dart';
 import 'package:tabibi/features/booking/data/datasources/booking_data_source.dart';
 import 'package:tabibi/features/booking/data/datasources/prescription_remote_data_source.dart';
+import 'package:tabibi/features/booking/data/datasources/review_remote_data_source.dart';
 import 'package:tabibi/features/booking/data/repositories/appointment_repository_impl.dart';
 import 'package:tabibi/features/booking/data/repositories/booking_repo_impl.dart';
 import 'package:tabibi/features/booking/data/repositories/prescription_repository_impl.dart';
+import 'package:tabibi/features/booking/data/repositories/review_repository_impl.dart';
 import 'package:tabibi/features/booking/domain/repositories/appointment_repository.dart';
 import 'package:tabibi/features/booking/domain/repositories/base_booking_repo.dart';
 import 'package:tabibi/features/booking/domain/repositories/prescription_repository.dart';
+import 'package:tabibi/features/booking/domain/repositories/review_repository.dart';
 import 'package:tabibi/features/booking/domain/usecases/cancel_booking_use_case.dart';
 import 'package:tabibi/features/booking/domain/usecases/confirm_payment_use_case.dart';
 import 'package:tabibi/features/booking/domain/usecases/create_booking_use_case.dart';
+import 'package:tabibi/features/booking/domain/usecases/create_review_use_case.dart';
 import 'package:tabibi/features/booking/domain/usecases/get_available_slots_use_case.dart';
 import 'package:tabibi/features/booking/domain/usecases/get_my_bookings.dart';
 import 'package:tabibi/features/booking/domain/usecases/get_prescription_use_case.dart';
+import 'package:tabibi/features/booking/presentation/controller/add_review_cubit.dart';
 import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
 import 'package:tabibi/features/booking/presentation/controller/my_bookings_cubit.dart';
 import 'package:tabibi/features/booking/presentation/controller/prescription_cubit.dart';
@@ -66,6 +71,12 @@ import 'package:tabibi/features/doctor/requests/data/repositories/requests_repos
 import 'package:tabibi/features/doctor/requests/domain/repositories/requests_repository.dart';
 import 'package:tabibi/features/doctor/requests/domain/usecases/requests_usecases.dart';
 import 'package:tabibi/features/doctor/requests/presentation/cubit/requests_cubit.dart';
+import 'package:tabibi/features/doctor/reviews/data/datasources/doctor_reviews_remote_data_source.dart';
+import 'package:tabibi/features/doctor/reviews/data/repositories/doctor_reviews_repository_impl.dart';
+import 'package:tabibi/features/doctor/reviews/domain/repositories/doctor_reviews_repository.dart';
+import 'package:tabibi/features/doctor/reviews/domain/usecases/get_my_reviews_use_case.dart';
+import 'package:tabibi/features/doctor/reviews/presentation/cubit/reviews_cubit.dart'
+    as doctor_reviews;
 import 'package:tabibi/features/doctor/schedule/data/datasources/schedule_remote_data_source.dart';
 import 'package:tabibi/features/doctor/schedule/data/repositories/schedule_repository_impl.dart';
 import 'package:tabibi/features/doctor/schedule/domain/repositories/schedule_repository.dart';
@@ -185,6 +196,9 @@ Future<void> init() async {
   sl.registerLazySingleton<PrescriptionRemoteDataSource>(
     () => PrescriptionRemoteDataSourceImpl(sl()),
   );
+  sl.registerLazySingleton<ReviewRemoteDataSource>(
+    () => ReviewRemoteDataSourceImpl(sl<Dio>()),
+  );
   sl.registerLazySingleton<NotificationsRemoteDataSource>(
     () => NotificationsRemoteDataSourceImpl(sl<Dio>()),
   );
@@ -202,6 +216,9 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<RequestsRemoteDataSource>(
     () => RequestsRemoteDataSourceImpl(sl<Dio>()),
+  );
+  sl.registerLazySingleton<DoctorReviewsRemoteDataSource>(
+    () => DoctorReviewsRemoteDataSourceImpl(sl<Dio>()),
   );
   sl.registerLazySingleton<VideoCallRemoteDataSource>(
     () => VideoCallRemoteDataSourceImpl(dio: sl<Dio>()),
@@ -242,6 +259,9 @@ Future<void> init() async {
   sl.registerLazySingleton<PrescriptionRepository>(
     () => PrescriptionRepositoryImpl(sl()),
   );
+  sl.registerLazySingleton<ReviewRepository>(
+    () => ReviewRepositoryImpl(sl()),
+  );
   sl.registerLazySingleton<NotificationsRepository>(
     () => NotificationsRepositoryImpl(sl()),
   );
@@ -260,6 +280,9 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<RequestsRepository>(
     () => RequestsRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<DoctorReviewsRepository>(
+    () => DoctorReviewsRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<AppointmentsRepository>(
     () => AppointmentsRepositoryImpl(sl()),
@@ -285,6 +308,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CancelBookingUseCase(sl()));
   sl.registerLazySingleton(() => GetMyBookingsUseCase(sl()));
   sl.registerLazySingleton(() => GetPrescriptionUseCase(sl()));
+  sl.registerLazySingleton(() => CreateReviewUseCase(sl()));
   sl.registerLazySingleton(() => LogOutUseCase(sl()));
   sl.registerLazySingleton(() => GetNotificationsUseCase(sl()));
   sl.registerLazySingleton(() => GetFavoritesUseCase(sl()));
@@ -302,6 +326,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetAppointmentRequestsUseCase(sl()));
   sl.registerLazySingleton(() => ApproveAppointmentUseCase(sl()));
   sl.registerLazySingleton(() => CancelAppointmentUseCase(sl()));
+  sl.registerLazySingleton(() => GetMyReviewsUseCase(sl()));
   sl.registerLazySingleton(() => GetAppointmentDetailsUseCase(sl()));
   sl.registerLazySingleton(() => GetVideoTokenUseCase(sl()));
 
@@ -326,6 +351,7 @@ Future<void> init() async {
   sl.registerFactory(() => ClinicLocationCubit(sl<LocationServices>()));
   sl.registerFactory(() => DoctorsCubit(sl()));
   sl.registerFactory(() => AppointmentCubit(sl(), sl(), sl(), sl()));
+  sl.registerFactory(() => AddReviewCubit(sl()));
   sl.registerLazySingleton(() => MyBookingsCubit(sl()));
   sl.registerFactory(() => PrescriptionCubit(sl()));
   sl.registerFactory(() => DoctorMapCubit(sl<DoctorMapRepository>()));
@@ -342,4 +368,5 @@ Future<void> init() async {
   sl.registerFactory(() => DashboardCubit(sl()));
   sl.registerFactory(() => ScheduleCubit(sl()));
   sl.registerFactory(() => RequestsCubit(sl(), sl(), sl()));
+  sl.registerFactory(() => doctor_reviews.ReviewsCubit(sl()));
 }

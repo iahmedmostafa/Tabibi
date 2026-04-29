@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/formatters.dart/formatters.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/requests/domain/entities/appointment_request.dart';
 
 class RequestCard extends StatelessWidget {
@@ -46,7 +47,11 @@ class RequestCard extends StatelessWidget {
                   color: Theme.of(context).colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(12.r),
                 ),
-                child: Icon(Icons.person, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 24.sp),
+                child: Icon(
+                  Icons.person,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  size: 24.sp,
+                ),
               ),
               SizedBox(width: 12.w),
               Expanded(
@@ -74,7 +79,9 @@ class RequestCard extends StatelessWidget {
                           '${Formatter.formatDateForDoctor(request.dateTime)} - ${Formatter.formatTimeForDoctor(request.dateTime)}',
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],
@@ -89,11 +96,11 @@ class RequestCard extends StatelessWidget {
                   size: 28.sp,
                 ),
                 onPressed: () {
-                  // Navigate to Video Call Screen with the booking/request ID
-                  // Note: Assuming AppRoutes.callPage expects bookingId
-                  context.push(AppRoutes.callPage, extra: {
-                    'bookingId': request.id,
-                  });
+                  
+                  context.push(
+                    AppRoutes.callPage,
+                    extra: {'bookingId': request.id},
+                  );
                 },
               ),
             ],
@@ -108,7 +115,7 @@ class RequestCard extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16.h),
-          if (request.status == 'pending')
+          if (request.isUpcoming)
             Row(
               children: [
                 Expanded(
@@ -149,13 +156,13 @@ class RequestCard extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 12.h),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: request.status == 'approved' ? AppTheme.greenPastel : AppTheme.redPastel,
+                color: _statusBackgroundColor(),
                 borderRadius: BorderRadius.circular(8.r),
               ),
               child: Text(
-                request.status == 'approved' ? 'Approved' : 'Cancelled',
+                _statusLabel(),
                 style: TextStyle(
-                  color: request.status == 'approved' ? AppTheme.greenIcon : AppTheme.redIcon,
+                  color: _statusTextColor(),
                   fontWeight: FontWeight.w600,
                   fontSize: 14.sp,
                 ),
@@ -164,5 +171,35 @@ class RequestCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _statusLabel() {
+    return request.statusLabel;
+  }
+
+  Color _statusBackgroundColor() {
+    switch (request.status) {
+      case DoctorAppointmentStatus.refunded:
+        return AppTheme.redPastel;
+      case DoctorAppointmentStatus.completed:
+        return AppTheme.greenPastel;
+      case DoctorAppointmentStatus.upcoming:
+        return AppTheme.bluePastel;
+      default:
+        return Colors.grey.shade200;
+    }
+  }
+
+  Color _statusTextColor() {
+    switch (request.status) {
+      case DoctorAppointmentStatus.refunded:
+        return AppTheme.redIcon;
+      case DoctorAppointmentStatus.completed:
+        return AppTheme.greenIcon;
+      case DoctorAppointmentStatus.upcoming:
+        return AppTheme.blueIcon;
+      default:
+        return Colors.grey.shade700;
+    }
   }
 }

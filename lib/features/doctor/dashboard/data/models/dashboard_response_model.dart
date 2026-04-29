@@ -1,4 +1,5 @@
 import 'package:tabibi/core/utils/backend_date_time.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/dashboard_response.dart';
 
 class DashboardResponseModel extends DashboardResponse {
@@ -59,7 +60,7 @@ class DashboardAppointmentModel extends DashboardAppointment {
                 DateTime.now().toUtc()
           : DateTime.now().toUtc(),
       type: json['type'],
-      status: json['status'],
+      status: DoctorAppointmentStatus.fromJson(json['status']),
     );
   }
 }

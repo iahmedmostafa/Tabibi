@@ -11,6 +11,10 @@ class ConfirmationDialog extends StatelessWidget {
   final String confirmText;
   final String cancelText;
   final VoidCallback onConfirm;
+  final bool isLoading;
+  final bool closeOnConfirm;
+  final IconData? icon;
+  final Color? confirmColor;
 
   const ConfirmationDialog({
     super.key,
@@ -19,46 +23,80 @@ class ConfirmationDialog extends StatelessWidget {
     required this.confirmText,
     required this.onConfirm,
     this.cancelText = AppStrings.cancel,
+    this.isLoading = false,
+    this.closeOnConfirm = true,
+    this.icon,
+    this.confirmColor,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final actionColor = confirmColor ?? AppColors.midnightBlue;
+
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      child: Padding(
-        padding: EdgeInsets.all(AppWidth.w20),
+      insetPadding: EdgeInsets.symmetric(horizontal: 24.w),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28.r)),
+      backgroundColor: theme.dialogBackgroundColor,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: 360.w),
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 20.h),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(title, style: Theme.of(context).textTheme.headlineMedium),
-            Divider(
-              color: Theme.of(context).dividerColor,
-              height: AppHeight.h32,
+              if (icon != null) ...[
+                Container(
+                  width: 48.w,
+                  height: 48.w,
+                  decoration: BoxDecoration(
+                    color: actionColor.withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(icon, color: actionColor, size: 24.sp),
+                ),
+                SizedBox(height: 16.h),
+              ],
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+              SizedBox(height: 12.h),
+              Container(
+                width: double.infinity,
+                height: 1,
+                color: theme.dividerColor.withValues(alpha: 0.55),
             ),
+              SizedBox(height: 16.h),
             Text(
               message,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: AppColors.grey700),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: AppColors.grey700,
+                  height: 1.45,
+                ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: AppHeight.h24),
+              SizedBox(height: 24.h),
             Row(
               children: [
                 Expanded(
                   child: TextButton(
-                    onPressed: () => Navigator.pop(context),
+                      onPressed: isLoading ? null : () => Navigator.pop(context),
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.transparent,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24.r),
+                          borderRadius: BorderRadius.circular(22.r),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: AppHeight.h12),
+                        minimumSize: Size(0, 44.h),
+                        padding: EdgeInsets.symmetric(vertical: AppHeight.h12),
                     ),
                     child: Text(
                       cancelText,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        style: theme.textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -67,23 +105,40 @@ class ConfirmationDialog extends StatelessWidget {
                 SizedBox(width: AppWidth.w12),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      onConfirm();
-                    },
+                      onPressed: isLoading
+                          ? null
+                          : () {
+                              if (closeOnConfirm) Navigator.pop(context);
+                              onConfirm();
+                            },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.midnightBlue,
+                        backgroundColor: actionColor,
+                        disabledBackgroundColor: actionColor.withValues(
+                          alpha: 0.65,
+                        ),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24.r),
+                          borderRadius: BorderRadius.circular(22.r),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: AppHeight.h12),
+                        elevation: 0,
+                        minimumSize: Size(0, 44.h),
+                        padding: EdgeInsets.symmetric(vertical: AppHeight.h12),
                     ),
-                    child: Text(
-                      confirmText,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      child: isLoading
+                          ? SizedBox(
+                              width: 18.w,
+                              height: 18.w,
+                              child: const CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : Text(
+                              confirmText,
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                              ),
                     ),
                   ),
                 ),
@@ -91,6 +146,7 @@ class ConfirmationDialog extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

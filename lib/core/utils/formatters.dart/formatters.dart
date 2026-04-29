@@ -62,14 +62,14 @@ class Formatter {
     }
   }
 
-  /// Formats a DateTime (already local) to 12-hour time string.
+  /// Formats an appointment DateTime for doctor-facing UIs in local time.
   static String formatDateForDoctor(DateTime date) {
-    return DateFormat('hh:mm a').format(date);
+    return DateFormat('hh:mm a').format(date.toLocal());
   }
 
-  /// Formats a DateTime to "MMM dd" date string.
+  /// Formats an appointment date for doctor-facing UIs in local time.
   static String formatTimeForDoctor(DateTime date) {
-    return DateFormat('MMM dd').format(date);
+    return DateFormat('MMM dd').format(date.toLocal());
   }
 
   /// Converts a UTC ISO 8601 date string to local date+time for display.

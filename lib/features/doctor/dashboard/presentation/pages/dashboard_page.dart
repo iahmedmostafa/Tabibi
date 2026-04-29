@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/dashboard_response.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/cubit/dashboard_cubit.dart';
@@ -99,7 +100,7 @@ class _DashboardContent extends StatelessWidget {
         time: '$hour:${m.toString().padLeft(2, '0')} $period',
         date: 'Today',
         type: apt.type?.toString() ?? 'Consultation',
-        isUpcoming: apt.appointmentDate.toUtc().isAfter(DateTime.now().toUtc()),
+        status: DoctorAppointmentStatus.fromJson(apt.status),
       );
     }).toList();
   }
@@ -107,7 +108,7 @@ class _DashboardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appointments = _mapAppointments(data);
-
+    
     return RefreshIndicator(
       onRefresh: () => context.read<DashboardCubit>().getDoctorDashboard(),
       child: SingleChildScrollView(

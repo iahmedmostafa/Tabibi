@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/widgets/appointment_card.dart';
 import 'package:tabibi/features/doctor/schedule/presentation/cubit/schedule_cubit.dart';
@@ -110,7 +111,7 @@ class _MySchedulePageState extends State<MySchedulePage> {
         time: '$hour:${m.toString().padLeft(2, '0')} $period',
         date: DateFormat('MMM dd, yyyy').format(localDateTime),
         type: apt.type?.toString() ?? 'Consultation',
-        isUpcoming: apt.appointmentDate.toUtc().isAfter(DateTime.now().toUtc()),
+        status: DoctorAppointmentStatus.fromJson(apt.status),
       );
     }).toList();
   }

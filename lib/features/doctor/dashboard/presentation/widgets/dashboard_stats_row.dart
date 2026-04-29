@@ -29,7 +29,7 @@ class DashboardStatsRow extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         StatCard(
-          label: 'Cancelled',
+          label: 'Refunded',
           value: stats.cancelledCount.toString(),
           icon: Icons.cancel_outlined,
           iconColor: AppTheme.redIcon,

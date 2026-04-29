@@ -1,4 +1,5 @@
 import 'package:tabibi/core/utils/backend_date_time.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/appointments/domain/entities/appointment_details_entity.dart';
 
 class AppointmentDetailsModel extends AppointmentDetailsEntity {
@@ -19,7 +20,7 @@ class AppointmentDetailsModel extends AppointmentDetailsEntity {
                 DateTime.now().toUtc()
           : DateTime.now().toUtc(),
       type: json['type'] ?? 0,
-      status: json['status'] ?? 0,
+      status: DoctorAppointmentStatus.fromJson(json['status']),
       patient: PatientModel.fromJson(json['patient'] ?? {}),
       prescription: json['prescription'] != null
           ? PrescriptionModel.fromJson(json['prescription'])

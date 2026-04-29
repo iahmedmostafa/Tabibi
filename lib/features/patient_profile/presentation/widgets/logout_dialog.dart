@@ -13,6 +13,7 @@ class LogoutDialog extends StatelessWidget {
       title: AppStrings.logout,
       message: AppStrings.areYouSureLogout,
       confirmText: AppStrings.yesLogout,
+      icon: Icons.logout,
       onConfirm: onLogout,
     );
   }

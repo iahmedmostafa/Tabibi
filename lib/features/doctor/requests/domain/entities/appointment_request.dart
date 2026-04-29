@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 
 class AppointmentRequest extends Equatable {
   final String id;
@@ -6,7 +7,7 @@ class AppointmentRequest extends Equatable {
   final String imageUrl; // For placeholder or real image
   final DateTime dateTime;
   final String reason;
-  final String status; // 'pending', 'approved', 'rejected'
+  final int status;
 
   const AppointmentRequest({
     required this.id,
@@ -14,8 +15,13 @@ class AppointmentRequest extends Equatable {
     this.imageUrl = '',
     required this.dateTime,
     required this.reason,
-    this.status = 'pending',
+    this.status = DoctorAppointmentStatus.upcoming,
   });
+
+  bool get isUpcoming => DoctorAppointmentStatus.isUpcoming(status);
+  bool get isCompleted => DoctorAppointmentStatus.isCompleted(status);
+  bool get isRefunded => DoctorAppointmentStatus.isRefunded(status);
+  String get statusLabel => DoctorAppointmentStatus.label(status);
 
   AppointmentRequest copyWith({
     String? id,
@@ -23,7 +29,7 @@ class AppointmentRequest extends Equatable {
     String? imageUrl,
     DateTime? dateTime,
     String? reason,
-    String? status,
+    int? status,
   }) {
     return AppointmentRequest(
       id: id ?? this.id,
