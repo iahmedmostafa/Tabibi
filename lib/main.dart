@@ -12,8 +12,8 @@ import 'package:tabibi/core/services/shared_prefs_service.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:tabibi/firebase_options.dart';
-
 import 'core/routing/app_router.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +40,7 @@ class TabibiApp extends StatelessWidget {
           child: MaterialApp.router(
             debugShowCheckedModeBanner: false,
             routerConfig: router,
-            themeMode: ThemeMode.system,
+            themeMode: ThemeMode.light,
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             builder: EasyLoading.init(),

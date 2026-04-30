@@ -252,7 +252,7 @@ class BookingCard extends StatelessWidget {
                     AppColors.midnightBlue,
                     Colors.white,
                     () {
-                      context.goNamed(
+                      context.pushNamed(
                         AppRoutes.prescription,
                         pathParameters: {'bookingId': booking.id},
                       );

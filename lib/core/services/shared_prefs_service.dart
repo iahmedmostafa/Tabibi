@@ -38,4 +38,12 @@ class OnboardingServices {
   static Future<void> setProfileFilled(bool value) async {
     await _sharedPref.setBool('is_profile_filled', value);
   }
+
+  static Future<void> clearSession() async {
+    await Future.wait([
+      _sharedPref.setBool('is_logged_in', false),
+      _sharedPref.remove('user_role'),
+      _sharedPref.remove('is_profile_filled'),
+    ]);
+  }
 }

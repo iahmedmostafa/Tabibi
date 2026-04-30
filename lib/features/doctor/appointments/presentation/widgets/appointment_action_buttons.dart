@@ -26,9 +26,7 @@ class AppointmentActionButtons extends StatelessWidget {
           width: double.infinity,
           child: ElevatedButton.icon(
             onPressed: () {
-              context.push(AppRoutes.callPage, extra: {
-                    'bookingId': bookingId,
-                  });
+              context.push(AppRoutes.callPage, extra: {'bookingId': bookingId});
             },
             icon: const Icon(Icons.videocam_outlined),
             label: const Text('Start Consultation'),
@@ -57,6 +55,7 @@ class AppointmentActionButtons extends StatelessWidget {
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Theme.of(context).colorScheme.onSurface,
                   side: BorderSide(color: Theme.of(context).dividerColor),
+
                   padding: EdgeInsets.symmetric(vertical: 14.h),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.r),
@@ -95,11 +94,15 @@ class AppointmentActionButtons extends StatelessWidget {
                 'patientImage': patientImage,
               },
             ),
+
             icon: Icon(Icons.chat_bubble_outline, size: 20.sp),
             label: const Text('Message Patient'),
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
-              backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+              backgroundColor: Theme.of(
+                context,
+              ).colorScheme.surfaceContainerHighest,
+
               padding: EdgeInsets.symmetric(vertical: 16.h),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.r),

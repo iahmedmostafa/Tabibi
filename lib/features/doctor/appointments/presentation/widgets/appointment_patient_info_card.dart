@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
@@ -39,6 +40,7 @@ class AppointmentPatientInfoCard extends StatelessWidget {
       child: Row(
         children: [
           // Avatar
+          // Avatar
           Container(
             width: 64.w,
             height: 64.w,
@@ -60,8 +62,9 @@ class AppointmentPatientInfoCard extends StatelessWidget {
                     ),
                   )
                 : Icon(Icons.person, size: 32.sp, color: Theme.of(context).colorScheme.onSurfaceVariant),
-          ),
+                      ),
           SizedBox(width: 16.w),
+          // Info
           // Info
           Expanded(
             child: Column(
@@ -70,7 +73,7 @@ class AppointmentPatientInfoCard extends StatelessWidget {
                 Text(
                   patient.name,
                   style: tt.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                  maxLines: 1,
+                          maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 if (patient.email != null && patient.email!.isNotEmpty) ...[
@@ -82,6 +85,7 @@ class AppointmentPatientInfoCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
+              
                 SizedBox(height: 8.h),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
@@ -93,7 +97,7 @@ class AppointmentPatientInfoCard extends StatelessWidget {
                     statusLabel,
                     style: tt.bodySmall?.copyWith(color: statusColor),
                   ),
-                ),
+                )
               ],
             ),
           ),

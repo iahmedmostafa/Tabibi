@@ -1,109 +1,160 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tabibi/core/usecase/base_use_case.dart';
 import 'package:tabibi/features/doctor/earnings/domain/entities/earnings.dart';
-import 'earnings_state.dart';
+import 'package:tabibi/features/doctor/earnings/domain/usecases/earnings_usecases.dart';
+import 'package:tabibi/features/doctor/earnings/presentation/cubit/earnings_state.dart';
 
 class EarningsCubit extends Cubit<EarningsState> {
-  EarningsCubit()
-    : super(
-        EarningsState(
-          summary: const EarningsSummary(
-            totalEarnings: 12500,
-            percentageChange: 18.5,
-            thisMonth: 4200,
-            appCommission: 420,
-            consultations: 48,
-            avgPerVisit: 156,
-          ),
-          transactions: _mockTransactions,
-          chartData: _mockMonthChartData,
+  final GetEarningsSummaryUseCase getSummaryUseCase;
+  final GetEarningsAnalyticsUseCase getAnalyticsUseCase;
+  final GetEarningsTransactionsUseCase getTransactionsUseCase;
+
+  static const int _pageSize = 10;
+
+  EarningsCubit(
+    this.getSummaryUseCase,
+    this.getAnalyticsUseCase,
+    this.getTransactionsUseCase,
+  ) : super(const EarningsState());
+
+  Future<void> loadDashboard() async {
+    emit(
+      state.copyWith(
+        status: EarningsLoadStatus.loading,
+        analyticsStatus: EarningsLoadStatus.loading,
+        transactionsStatus: EarningsLoadStatus.loading,
+        errorMessage: null,
+        analyticsErrorMessage: null,
+        transactionsErrorMessage: null,
+      ),
+    );
+
+    await Future.wait([
+      _loadSummary(),
+      _loadAnalytics(state.selectedPeriod),
+      refreshTransactions(),
+    ]);
+  }
+
+  Future<void> retryDashboard() => loadDashboard();
+
+  Future<void> _loadSummary() async {
+    final result = await getSummaryUseCase(const NoParameters());
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          status: EarningsLoadStatus.failure,
+          errorMessage: failure.message,
         ),
-      );
+      ),
+      (summary) => emit(
+        state.copyWith(
+          status: EarningsLoadStatus.success,
+          summary: summary,
+          chartData: state.chartData.isEmpty
+              ? summary.weeklyChartData
+              : state.chartData,
+        ),
+      ),
+    );
+  }
 
-  static final List<Transaction> _mockTransactions = [
-    Transaction(
-      id: '1',
-      patientName: 'Sarah Johnson',
-      type: 'Consultation',
-      date: DateTime(2025, 11, 21),
-      amount: 150,
-    ),
-    Transaction(
-      id: '2',
-      patientName: 'Michael Chen',
-      type: 'Consultation',
-      date: DateTime(2025, 11, 21),
-      amount: 120,
-    ),
-    Transaction(
-      id: '3',
-      patientName: 'Emily Parker',
-      type: 'Procedure',
-      date: DateTime(2025, 11, 20),
-      amount: 200,
-    ),
-    Transaction(
-      id: '4',
-      patientName: 'James Wilson',
-      type: 'Consultation',
-      date: DateTime(2025, 11, 20),
-      amount: 150,
-    ),
-    Transaction(
-      id: '5',
-      patientName: 'Lisa Anderson',
-      type: 'Consultation',
-      date: DateTime(2025, 11, 19),
-      amount: 180,
-    ),
-  ];
-
-  static const List<ChartDataPoint> _mockWeekChartData = [
-    ChartDataPoint(label: 'Mon', value: 200),
-    ChartDataPoint(label: 'Tue', value: 350),
-    ChartDataPoint(label: 'Wed', value: 280),
-    ChartDataPoint(label: 'Thu', value: 420),
-    ChartDataPoint(label: 'Fri', value: 380),
-    ChartDataPoint(label: 'Sat', value: 150),
-    ChartDataPoint(label: 'Sun', value: 100),
-  ];
-
-  static const List<ChartDataPoint> _mockMonthChartData = [
-    ChartDataPoint(label: 'Week 1', value: 2500),
-    ChartDataPoint(label: 'Week 2', value: 3200),
-    ChartDataPoint(label: 'Week 3', value: 2800),
-    ChartDataPoint(label: 'Week 4', value: 4200),
-  ];
-
-  static const List<ChartDataPoint> _mockYearChartData = [
-    ChartDataPoint(label: 'Jan', value: 8500),
-    ChartDataPoint(label: 'Feb', value: 9200),
-    ChartDataPoint(label: 'Mar', value: 10500),
-    ChartDataPoint(label: 'Apr', value: 9800),
-    ChartDataPoint(label: 'May', value: 11200),
-    ChartDataPoint(label: 'Jun', value: 10800),
-    ChartDataPoint(label: 'Jul', value: 12000),
-    ChartDataPoint(label: 'Aug', value: 11500),
-    ChartDataPoint(label: 'Sep', value: 13000),
-    ChartDataPoint(label: 'Oct', value: 12200),
-    ChartDataPoint(label: 'Nov', value: 12500),
-    ChartDataPoint(label: 'Dec', value: 14000),
-  ];
-
-  void setFilter(EarningsFilter filter) {
-    List<ChartDataPoint> newChartData;
-
-    switch (filter) {
-      case EarningsFilter.week:
-        newChartData = _mockWeekChartData;
-        break;
-      case EarningsFilter.month:
-        newChartData = _mockMonthChartData;
-        break;
-      case EarningsFilter.year:
-        newChartData = _mockYearChartData;
-        break;
+  Future<void> selectAnalyticsPeriod(EarningsPeriod period) async {
+    if (state.selectedPeriod == period &&
+        state.analyticsStatus == EarningsLoadStatus.success) {
+      return;
     }
+    await _loadAnalytics(period);
+  }
 
-    emit(state.copyWith(selectedFilter: filter, chartData: newChartData));
+  Future<void> retryAnalytics() => _loadAnalytics(state.selectedPeriod);
+
+  Future<void> _loadAnalytics(EarningsPeriod period) async {
+    emit(
+      state.copyWith(
+        selectedPeriod: period,
+        analyticsStatus: EarningsLoadStatus.loading,
+        analyticsErrorMessage: null,
+      ),
+    );
+
+    final result = await getAnalyticsUseCase(period);
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          analyticsStatus: EarningsLoadStatus.failure,
+          analyticsErrorMessage: failure.message,
+        ),
+      ),
+      (data) => emit(
+        state.copyWith(
+          analyticsStatus: EarningsLoadStatus.success,
+          chartData: data,
+        ),
+      ),
+    );
+  }
+
+  Future<void> refreshTransactions() async {
+    emit(
+      state.copyWith(
+        transactionsStatus: EarningsLoadStatus.loading,
+        transactionsErrorMessage: null,
+        transactions: const [],
+        currentPage: 0,
+        hasNextPage: false,
+      ),
+    );
+
+    await _loadTransactionsPage(1);
+  }
+
+  Future<void> retryTransactions() => refreshTransactions();
+
+  Future<void> loadMoreTransactions() async {
+    if (!state.hasNextPage || state.isLoadingMore) return;
+
+    emit(state.copyWith(isLoadingMore: true, transactionsErrorMessage: null));
+    await _loadTransactionsPage(state.currentPage + 1, append: true);
+  }
+
+  Future<void> _loadTransactionsPage(int page, {bool append = false}) async {
+    final result = await getTransactionsUseCase(
+      const EarningsTransactionsParams(
+        page: 1,
+        pageSize: _pageSize,
+      ).copyWith(page: page),
+    );
+
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          transactionsStatus: EarningsLoadStatus.failure,
+          isLoadingMore: false,
+          transactionsErrorMessage: failure.message,
+        ),
+      ),
+      (pageResult) => emit(
+        state.copyWith(
+          transactionsStatus: EarningsLoadStatus.success,
+          transactions: append
+              ? [...state.transactions, ...pageResult.items]
+              : pageResult.items,
+          currentPage: pageResult.page,
+          totalPages: pageResult.totalPages,
+          hasNextPage: pageResult.hasNextPage,
+          isLoadingMore: false,
+        ),
+      ),
+    );
+  }
+}
+
+extension on EarningsTransactionsParams {
+  EarningsTransactionsParams copyWith({int? page, int? pageSize}) {
+    return EarningsTransactionsParams(
+      page: page ?? this.page,
+      pageSize: pageSize ?? this.pageSize,
+    );
   }
 }

@@ -177,6 +177,7 @@ class AppointmentRequestsPage extends StatelessWidget {
             },
           );
         },
+    
       ),
     );
   }
@@ -221,6 +222,7 @@ class _FilterChips extends StatelessWidget {
       buildWhen: (prev, curr) =>
           prev.selectedFilter != curr.selectedFilter ||
           prev.allRequests.length != curr.allRequests.length,
+    
       builder: (context, state) {
         final todayCount = state.allRequests.where((r) {
           if (!r.isUpcoming) return false;

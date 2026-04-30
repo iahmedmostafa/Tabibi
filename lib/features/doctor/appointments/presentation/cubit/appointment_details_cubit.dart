@@ -7,7 +7,7 @@ class AppointmentDetailsCubit extends Cubit<AppointmentDetailsState> {
   final GetAppointmentDetailsUseCase getAppointmentDetailsUseCase;
 
   AppointmentDetailsCubit(this.getAppointmentDetailsUseCase)
-      : super(AppointmentDetailsInitial());
+    : super(AppointmentDetailsInitial());
 
   Future<void> getAppointmentDetails(String id) async {
     emit(AppointmentDetailsLoading());
@@ -17,7 +17,18 @@ class AppointmentDetailsCubit extends Cubit<AppointmentDetailsState> {
     } on ServerException catch (e) {
       emit(AppointmentDetailsError(e.errorMessageModel.statusMessage));
     } catch (e) {
-      emit(const AppointmentDetailsError('Failed to fetch appointment details.'));
+      emit(
+        const AppointmentDetailsError('Failed to fetch appointment details.'),
+      );
+    }
+  }
+
+  Future<void> handlePatientProfileRouteResult({
+    required String appointmentId,
+    required Object? result,
+  }) async {
+    if (result == true) {
+      await getAppointmentDetails(appointmentId);
     }
   }
 }

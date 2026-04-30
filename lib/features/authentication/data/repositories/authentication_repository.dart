@@ -121,9 +121,8 @@ class AuthenticationRepositoryImpl extends BaseAuthenticationRepository {
   @override
   Future<Either<Failure, void>> logOut() async {
     try {
-      await CacheHelper.deleteData(key: ApiKeys.accessToken);
-      await CacheHelper.deleteData(key: ApiKeys.refreshToken);
-      await OnboardingServices.setLoggedIn(false);
+      await CacheHelper.clearAuthSession();
+      await OnboardingServices.clearSession();
       return const Right(null);
     } catch (e) {
       return Left(CacheFailure(e.toString()));

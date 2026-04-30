@@ -59,6 +59,7 @@ class _DoctorBottomNavScreenState extends State<DoctorBottomNavScreen> {
               activeIcon: Icon(Icons.chat_bubble),
               label: 'Chats',
             ),
+          
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_outlined),
               activeIcon: Icon(Icons.settings),

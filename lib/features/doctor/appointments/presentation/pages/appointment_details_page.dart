@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
@@ -7,6 +8,7 @@ import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_cubit.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_state.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/widgets/appointment_action_buttons.dart';
+import 'package:tabibi/features/doctor/appointments/presentation/widgets/appointment_details_error_view.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/widgets/appointment_info_card.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/widgets/appointment_patient_info_card.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/widgets/prescription_card.dart';

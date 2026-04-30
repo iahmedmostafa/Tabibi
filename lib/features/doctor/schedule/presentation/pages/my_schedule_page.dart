@@ -11,6 +11,11 @@ import 'package:tabibi/features/doctor/schedule/presentation/cubit/schedule_stat
 import 'package:tabibi/features/doctor/schedule/presentation/widgets/schedule_appointments_header.dart';
 import 'package:tabibi/features/doctor/schedule/presentation/widgets/schedule_date_timeline.dart';
 import 'package:tabibi/features/doctor/schedule/presentation/widgets/schedule_empty_state.dart';
+import 'package:tabibi/features/doctor/schedule/presentation/cubit/schedule_cubit.dart';
+import 'package:tabibi/features/doctor/schedule/presentation/cubit/schedule_state.dart';
+import 'package:tabibi/features/doctor/schedule/presentation/widgets/schedule_appointments_header.dart';
+import 'package:tabibi/features/doctor/schedule/presentation/widgets/schedule_date_timeline.dart';
+import 'package:tabibi/features/doctor/schedule/presentation/widgets/schedule_empty_state.dart';
 
 class MySchedulePage extends StatefulWidget {
   final bool showBottomNav;
@@ -23,6 +28,7 @@ class MySchedulePage extends StatefulWidget {
 
 class _MySchedulePageState extends State<MySchedulePage> {
   DateTime _selectedDate = DateTime.now();
+
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +122,8 @@ class _MySchedulePageState extends State<MySchedulePage> {
     }).toList();
   }
 }
+
+
 
 class _ScheduleError extends StatelessWidget {
   final String message;

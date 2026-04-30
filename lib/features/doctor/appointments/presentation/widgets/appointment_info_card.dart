@@ -42,11 +42,13 @@ class AppointmentInfoCard extends StatelessWidget {
             bgIconColor: AppTheme.bluePastel,
             label: 'Date',
             value: _formatDate(details.appointmentDate),
+            
           ),
           SizedBox(height: 16.h),
           _buildInfoRow(
             context: context,
             icon: Icons.access_time,
+          
             iconColor: AppTheme.orangeIcon,
             bgIconColor: AppTheme.orangePastel,
             label: 'Time',

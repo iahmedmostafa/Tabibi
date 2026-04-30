@@ -1,35 +1,109 @@
 import 'package:equatable/equatable.dart';
 import 'package:tabibi/features/doctor/earnings/domain/entities/earnings.dart';
 
-enum EarningsFilter { week, month, year }
+enum EarningsLoadStatus { initial, loading, success, failure }
 
 class EarningsState extends Equatable {
-  final EarningsSummary summary;
-  final List<Transaction> transactions;
+  final EarningsLoadStatus status;
+  final EarningsLoadStatus analyticsStatus;
+  final EarningsLoadStatus transactionsStatus;
+  final EarningsSummary? summary;
   final List<ChartDataPoint> chartData;
-  final EarningsFilter selectedFilter;
+  final EarningsPeriod selectedPeriod;
+  final List<EarningsTransaction> transactions;
+  final int currentPage;
+  final int totalPages;
+  final bool hasNextPage;
+  final bool isLoadingMore;
+  final String? errorMessage;
+  final String? analyticsErrorMessage;
+  final String? transactionsErrorMessage;
 
   const EarningsState({
-    required this.summary,
-    required this.transactions,
-    required this.chartData,
-    this.selectedFilter = EarningsFilter.month,
+    this.status = EarningsLoadStatus.initial,
+    this.analyticsStatus = EarningsLoadStatus.initial,
+    this.transactionsStatus = EarningsLoadStatus.initial,
+    this.summary,
+    this.chartData = const [],
+    this.selectedPeriod = EarningsPeriod.week,
+    this.transactions = const [],
+    this.currentPage = 0,
+    this.totalPages = 0,
+    this.hasNextPage = false,
+    this.isLoadingMore = false,
+    this.errorMessage,
+    this.analyticsErrorMessage,
+    this.transactionsErrorMessage,
   });
 
+  bool get isInitialDashboardLoading =>
+      status == EarningsLoadStatus.loading && summary == null;
+
+  bool get hasInitialDashboardFailure =>
+      status == EarningsLoadStatus.failure && summary == null;
+
+  bool get isAnalyticsLoading => analyticsStatus == EarningsLoadStatus.loading;
+
+  bool get hasAnalyticsFailure =>
+      analyticsStatus == EarningsLoadStatus.failure;
+
+  bool get isTransactionsLoading =>
+      transactionsStatus == EarningsLoadStatus.loading;
+
+  bool get hasInitialTransactionsFailure =>
+      transactionsStatus == EarningsLoadStatus.failure && transactions.isEmpty;
+
+  bool get canLoadMoreTransactions => hasNextPage && !isLoadingMore;
+
   EarningsState copyWith({
+    EarningsLoadStatus? status,
+    EarningsLoadStatus? analyticsStatus,
+    EarningsLoadStatus? transactionsStatus,
     EarningsSummary? summary,
-    List<Transaction>? transactions,
     List<ChartDataPoint>? chartData,
-    EarningsFilter? selectedFilter,
+    EarningsPeriod? selectedPeriod,
+    List<EarningsTransaction>? transactions,
+    int? currentPage,
+    int? totalPages,
+    bool? hasNextPage,
+    bool? isLoadingMore,
+    String? errorMessage,
+    String? analyticsErrorMessage,
+    String? transactionsErrorMessage,
   }) {
     return EarningsState(
+      status: status ?? this.status,
+      analyticsStatus: analyticsStatus ?? this.analyticsStatus,
+      transactionsStatus: transactionsStatus ?? this.transactionsStatus,
       summary: summary ?? this.summary,
-      transactions: transactions ?? this.transactions,
       chartData: chartData ?? this.chartData,
-      selectedFilter: selectedFilter ?? this.selectedFilter,
+      selectedPeriod: selectedPeriod ?? this.selectedPeriod,
+      transactions: transactions ?? this.transactions,
+      currentPage: currentPage ?? this.currentPage,
+      totalPages: totalPages ?? this.totalPages,
+      hasNextPage: hasNextPage ?? this.hasNextPage,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      errorMessage: errorMessage,
+      analyticsErrorMessage: analyticsErrorMessage,
+      transactionsErrorMessage: transactionsErrorMessage,
     );
   }
 
   @override
-  List<Object?> get props => [summary, transactions, chartData, selectedFilter];
+  List<Object?> get props => [
+    status,
+    analyticsStatus,
+    transactionsStatus,
+    summary,
+    chartData,
+    selectedPeriod,
+    transactions,
+    currentPage,
+    totalPages,
+    hasNextPage,
+    isLoadingMore,
+    errorMessage,
+    analyticsErrorMessage,
+    transactionsErrorMessage,
+  ];
 }

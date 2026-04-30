@@ -41,6 +41,7 @@ class AppRoutes {
   static const doctorSettings = '/doctor/settings';
   static const doctorAppointmentDetails = '/doctor/appointment_details';
   static const doctorPatientProfile = '/doctor/patient_profile';
+  static const doctorCreatePrescription = '/doctor/create_prescription';
   static const doctorReviewsPage = '/doctor/reviews_page';
   static const doctorConversations = '/doctor/conversations';
   static const doctorChat = '/doctor/chat';

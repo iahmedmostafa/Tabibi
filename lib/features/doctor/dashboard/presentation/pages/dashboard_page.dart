@@ -12,6 +12,14 @@ import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_
 import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_requests_banner.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_stats_row.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_today_appointments.dart';
+import 'package:tabibi/features/doctor/dashboard/domain/entities/dashboard_response.dart';
+import 'package:tabibi/features/doctor/dashboard/presentation/cubit/dashboard_cubit.dart';
+import 'package:tabibi/features/doctor/dashboard/presentation/cubit/dashboard_state.dart';
+import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_header.dart';
+import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_quick_actions.dart';
+import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_requests_banner.dart';
+import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_stats_row.dart';
+import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_today_appointments.dart';
 
 class DashboardPage extends StatelessWidget {
   final bool showBottomNav;
