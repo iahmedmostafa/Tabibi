@@ -7,7 +7,7 @@ class GetMyBookingsUseCase {
   final BaseBookingRepo baseBookingRepo;
 
   GetMyBookingsUseCase(this.baseBookingRepo);
-  Future<Either<Failure, List<BookingModel>>> getMyBookings(String type) async {
-    return await baseBookingRepo.getMyBooking(type);
+  Future<Either<Failure, List<BookingModel>>> getMyBookings(int status) async {
+    return await baseBookingRepo.getMyBooking(status);
   }
 }

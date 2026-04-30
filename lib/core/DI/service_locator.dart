@@ -66,6 +66,18 @@ import 'package:tabibi/features/doctor/dashboard/data/repositories/dashboard_rep
 import 'package:tabibi/features/doctor/dashboard/domain/repositories/dashboard_repository.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/usecases/get_doctor_dashboard_use_case.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/cubit/dashboard_cubit.dart';
+import 'package:tabibi/features/doctor/earnings/data/datasources/earnings_remote_data_source.dart';
+import 'package:tabibi/features/doctor/earnings/data/repositories/earnings_repository_impl.dart';
+import 'package:tabibi/features/doctor/earnings/domain/repositories/earnings_repository.dart';
+import 'package:tabibi/features/doctor/earnings/domain/usecases/earnings_usecases.dart';
+import 'package:tabibi/features/doctor/earnings/presentation/cubit/earnings_cubit.dart';
+import 'package:tabibi/features/doctor/prescription/data/datasources/doctor_prescription_remote_data_source.dart';
+import 'package:tabibi/features/doctor/prescription/data/repositories/doctor_prescription_repository_impl.dart';
+import 'package:tabibi/features/doctor/prescription/domain/repositories/doctor_prescription_repository.dart';
+import 'package:tabibi/features/doctor/prescription/domain/usecases/complete_appointment_use_case.dart';
+import 'package:tabibi/features/doctor/prescription/domain/usecases/create_prescription_use_case.dart';
+import 'package:tabibi/features/doctor/prescription/presentation/cubit/create_prescription_cubit.dart';
+import 'package:tabibi/features/doctor/profile/presentation/cubit/doctor_logout_cubit.dart';
 import 'package:tabibi/features/doctor/requests/data/datasources/requests_remote_data_source.dart';
 import 'package:tabibi/features/doctor/requests/data/repositories/requests_repository_impl.dart';
 import 'package:tabibi/features/doctor/requests/domain/repositories/requests_repository.dart';
@@ -127,44 +139,11 @@ import 'package:tabibi/features/patient_profile/domain/usecases/get_patient_prof
 import 'package:tabibi/features/patient_profile/domain/usecases/update_patient_profile_use_case.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/patient_profile_cubit.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/profile_cubit.dart';
-import 'package:tabibi/features/doctor/dashboard/data/datasources/dashboard_remote_data_source.dart';
-import 'package:tabibi/features/doctor/dashboard/data/repositories/dashboard_repository_impl.dart';
-import 'package:tabibi/features/doctor/dashboard/domain/repositories/dashboard_repository.dart';
-import 'package:tabibi/features/doctor/dashboard/domain/usecases/get_doctor_dashboard_use_case.dart';
-import 'package:tabibi/features/doctor/dashboard/presentation/cubit/dashboard_cubit.dart';
-import 'package:tabibi/features/doctor/earnings/data/datasources/earnings_remote_data_source.dart';
-import 'package:tabibi/features/doctor/earnings/data/repositories/earnings_repository_impl.dart';
-import 'package:tabibi/features/doctor/earnings/domain/repositories/earnings_repository.dart';
-import 'package:tabibi/features/doctor/earnings/domain/usecases/earnings_usecases.dart';
-import 'package:tabibi/features/doctor/earnings/presentation/cubit/earnings_cubit.dart';
-
-import 'package:tabibi/features/doctor/schedule/data/datasources/schedule_remote_data_source.dart';
-import 'package:tabibi/features/doctor/schedule/data/repositories/schedule_repository_impl.dart';
-import 'package:tabibi/features/doctor/schedule/domain/repositories/schedule_repository.dart';
-import 'package:tabibi/features/doctor/schedule/domain/usecases/get_doctor_schedule_use_case.dart';
-import 'package:tabibi/features/doctor/schedule/presentation/cubit/schedule_cubit.dart';
-import 'package:tabibi/features/doctor/requests/data/datasources/requests_remote_data_source.dart';
-import 'package:tabibi/features/doctor/requests/data/repositories/requests_repository_impl.dart';
-import 'package:tabibi/features/doctor/requests/domain/repositories/requests_repository.dart';
-import 'package:tabibi/features/doctor/requests/domain/usecases/requests_usecases.dart';
-import 'package:tabibi/features/doctor/requests/presentation/cubit/requests_cubit.dart';
 import 'package:tabibi/features/video_call/data/datasources/video_call_remote_data_source.dart';
 import 'package:tabibi/features/video_call/data/repositories/video_call_repository_impl.dart';
 import 'package:tabibi/features/video_call/domain/repositories/video_call_repository.dart';
 import 'package:tabibi/features/video_call/domain/usecases/get_video_token_usecase.dart';
 import 'package:tabibi/features/video_call/presentation/cubit/video_call_cubit.dart';
-import 'package:tabibi/features/doctor/appointments/data/datasources/appointments_remote_data_source.dart';
-import 'package:tabibi/features/doctor/appointments/data/repositories/appointments_repository_impl.dart';
-import 'package:tabibi/features/doctor/appointments/domain/repositories/appointments_repository.dart';
-import 'package:tabibi/features/doctor/appointments/domain/usecases/get_appointment_details_usecase.dart';
-import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_cubit.dart';
-import 'package:tabibi/features/doctor/prescription/data/datasources/doctor_prescription_remote_data_source.dart';
-import 'package:tabibi/features/doctor/prescription/data/repositories/doctor_prescription_repository_impl.dart';
-import 'package:tabibi/features/doctor/prescription/domain/repositories/doctor_prescription_repository.dart';
-import 'package:tabibi/features/doctor/prescription/domain/usecases/complete_appointment_use_case.dart';
-import 'package:tabibi/features/doctor/prescription/domain/usecases/create_prescription_use_case.dart';
-import 'package:tabibi/features/doctor/prescription/presentation/cubit/create_prescription_cubit.dart';
-import 'package:tabibi/features/doctor/profile/presentation/cubit/doctor_logout_cubit.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
@@ -253,15 +232,6 @@ Future<void> init() async {
   sl.registerLazySingleton<RequestsRemoteDataSource>(
     () => RequestsRemoteDataSourceImpl(sl<Dio>()),
   );
-  sl.registerLazySingleton<DashboardRemoteDataSource>(
-    () => DashboardRemoteDataSourceImpl(sl<Dio>()),
-  );
-  sl.registerLazySingleton<ScheduleRemoteDataSource>(
-    () => ScheduleRemoteDataSourceImpl(sl<Dio>()),
-  );
-  sl.registerLazySingleton<RequestsRemoteDataSource>(
-    () => RequestsRemoteDataSourceImpl(sl<Dio>()),
-  );
   sl.registerLazySingleton<DoctorReviewsRemoteDataSource>(
     () => DoctorReviewsRemoteDataSourceImpl(sl<Dio>()),
   );
@@ -276,9 +246,6 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<DoctorPrescriptionRemoteDataSource>(
     () => DoctorPrescriptionRemoteDataSourceImpl(sl()),
-  );
-  sl.registerLazySingleton<AppointmentsRemoteDataSource>(
-    () => AppointmentsRemoteDataSourceImpl(sl()),
   );
 
   /// REPOSITORY
@@ -310,9 +277,7 @@ Future<void> init() async {
   sl.registerLazySingleton<PrescriptionRepository>(
     () => PrescriptionRepositoryImpl(sl()),
   );
-  sl.registerLazySingleton<ReviewRepository>(
-    () => ReviewRepositoryImpl(sl()),
-  );
+  sl.registerLazySingleton<ReviewRepository>(() => ReviewRepositoryImpl(sl()));
   sl.registerLazySingleton<NotificationsRepository>(
     () => NotificationsRepositoryImpl(sl()),
   );
@@ -341,20 +306,8 @@ Future<void> init() async {
   sl.registerLazySingleton<DoctorPrescriptionRepository>(
     () => DoctorPrescriptionRepositoryImpl(sl()),
   );
-  sl.registerLazySingleton<DashboardRepository>(
-    () => DashboardRepositoryImpl(sl()),
-  );
-  sl.registerLazySingleton<ScheduleRepository>(
-    () => ScheduleRepositoryImpl(sl()),
-  );
-  sl.registerLazySingleton<RequestsRepository>(
-    () => RequestsRepositoryImpl(sl()),
-  );
   sl.registerLazySingleton<DoctorReviewsRepository>(
     () => DoctorReviewsRepositoryImpl(sl()),
-  );
-  sl.registerLazySingleton<AppointmentsRepository>(
-    () => AppointmentsRepositoryImpl(sl()),
   );
 
   /// USE CASE
@@ -396,16 +349,10 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetEarningsTransactionsUseCase(sl()));
   sl.registerLazySingleton(() => GetDoctorScheduleUseCase(sl()));
   sl.registerLazySingleton(() => GetAppointmentRequestsUseCase(sl()));
-  sl.registerLazySingleton(() => ApproveAppointmentUseCase(sl()));
-  sl.registerLazySingleton(() => CancelAppointmentUseCase(sl()));
   sl.registerLazySingleton(() => GetAppointmentDetailsUseCase(sl()));
-  sl.registerLazySingleton(() => GetDoctorDashboardUseCase(sl()));
-  sl.registerLazySingleton(() => GetDoctorScheduleUseCase(sl()));
-  sl.registerLazySingleton(() => GetAppointmentRequestsUseCase(sl()));
   sl.registerLazySingleton(() => ApproveAppointmentUseCase(sl()));
   sl.registerLazySingleton(() => CancelAppointmentUseCase(sl()));
   sl.registerLazySingleton(() => GetMyReviewsUseCase(sl()));
-  sl.registerLazySingleton(() => GetAppointmentDetailsUseCase(sl()));
   sl.registerLazySingleton(() => GetVideoTokenUseCase(sl()));
   sl.registerLazySingleton(() => CreatePrescriptionUseCase(sl()));
   sl.registerLazySingleton(() => CompleteAppointmentUseCase(sl()));
@@ -413,7 +360,6 @@ Future<void> init() async {
   /// CUBIT
   sl.registerFactory(() => AppointmentDetailsCubit(sl()));
   sl.registerFactory(() => CreatePrescriptionCubit(sl(), sl()));
-  sl.registerFactory(() => AppointmentDetailsCubit(sl()));
   sl.registerFactory(() => SignUpCubit(sl()));
   sl.registerFactory(() => ForgotPasswordCubit(sl()));
   sl.registerFactory(() => VerifyCodeCubit(sl(), sl(), sl()));
@@ -450,9 +396,6 @@ Future<void> init() async {
   sl.registerFactory(() => DashboardCubit(sl()));
   sl.registerFactory(() => EarningsCubit(sl(), sl(), sl()));
   sl.registerFactory(() => DoctorLogoutCubit(sl()));
-  sl.registerFactory(() => ScheduleCubit(sl()));
-  sl.registerFactory(() => RequestsCubit(sl(), sl(), sl()));
-  sl.registerFactory(() => DashboardCubit(sl()));
   sl.registerFactory(() => ScheduleCubit(sl()));
   sl.registerFactory(() => RequestsCubit(sl(), sl(), sl()));
   sl.registerFactory(() => doctor_reviews.ReviewsCubit(sl()));

@@ -1,10 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
-import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/appointments/domain/entities/appointment_details_entity.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 
 class AppointmentPatientInfoCard extends StatelessWidget {
   final PatientEntity patient;
@@ -39,8 +38,6 @@ class AppointmentPatientInfoCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Avatar
-          // Avatar
           Container(
             width: 64.w,
             height: 64.w,
@@ -57,35 +54,44 @@ class AppointmentPatientInfoCard extends StatelessWidget {
                       placeholder: (_, __) => const Center(
                         child: CircularProgressIndicator(strokeWidth: 2),
                       ),
-                      errorWidget: (_, __, ___) =>
-                          Icon(Icons.person, size: 32.sp, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                      errorWidget: (_, __, ___) => Icon(
+                        Icons.person,
+                        size: 32.sp,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
                     ),
                   )
-                : Icon(Icons.person, size: 32.sp, color: Theme.of(context).colorScheme.onSurfaceVariant),
-                      ),
+                : Icon(
+                    Icons.person,
+                    size: 32.sp,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+          ),
           SizedBox(width: 16.w),
-          // Info
-          // Info
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   patient.name,
-                  style: tt.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                          maxLines: 1,
+                  style: tt.bodyLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 if (patient.email != null && patient.email!.isNotEmpty) ...[
                   SizedBox(height: 4.h),
                   Text(
                     patient.email!,
-                    style: tt.labelSmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                    style: tt.labelSmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
-              
+
                 SizedBox(height: 8.h),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
@@ -97,7 +103,7 @@ class AppointmentPatientInfoCard extends StatelessWidget {
                     statusLabel,
                     style: tt.bodySmall?.copyWith(color: statusColor),
                   ),
-                )
+                ),
               ],
             ),
           ),

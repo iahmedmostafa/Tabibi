@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
-import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_cubit.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_state.dart';
+import 'package:tabibi/features/doctor/appointments/presentation/mappers/appointment_patient_mapper.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/widgets/appointment_action_buttons.dart';
-import 'package:tabibi/features/doctor/appointments/presentation/widgets/appointment_details_error_view.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/widgets/appointment_info_card.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/widgets/appointment_patient_info_card.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/widgets/prescription_card.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/widgets/reason_for_visit_card.dart';
+import 'package:tabibi/features/doctor/appointments/presentation/widgets/view_patient_profile_button.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 
 class AppointmentDetailsPage extends StatelessWidget {
   final Appointment appointment;
@@ -64,7 +64,6 @@ class AppointmentDetailsPage extends StatelessWidget {
               final isCompleted = DoctorAppointmentStatus.isCompleted(
                 details.status,
               );
-            
 
               return SingleChildScrollView(
                 padding: EdgeInsets.all(16.w),
@@ -75,6 +74,15 @@ class AppointmentDetailsPage extends StatelessWidget {
                       status: details.status,
                     ),
                     SizedBox(height: 16.h),
+                    ViewPatientProfileButton(
+                      appointmentId: details.id,
+                      patient: AppointmentPatientMapper.toDoctorPatient(
+                        details.patient,
+                      ),
+                      appointmentDate: details.appointmentDate,
+                      prescriptionWritePolicy: state.prescriptionWritePolicy,
+                    ),
+                    SizedBox(height: 16.h),
                     AppointmentInfoCard(details: details),
                     SizedBox(height: 16.h),
                     ReasonForVisitCard(details: details),
@@ -83,7 +91,7 @@ class AppointmentDetailsPage extends StatelessWidget {
                       PrescriptionCard(prescription: details.prescription!),
                     ],
                     SizedBox(height: 24.h),
-                    if (isUpcoming||isCompleted)
+                    if (isUpcoming || isCompleted)
                       AppointmentActionButtons(
                         patientId: details.patient.id,
                         bookingId: details.id,

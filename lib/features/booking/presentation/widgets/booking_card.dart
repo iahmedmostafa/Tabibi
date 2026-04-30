@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_images.dart';
@@ -55,46 +55,38 @@ class BookingCard extends StatelessWidget {
                       AppColors.midnightBlue,
                 ),
               ),
-             GestureDetector(
-                      onTap: () {
-                        context.pushNamed(
-                          AppRoutes.chat,
-                          extra: {
-                            'doctorId': booking.doctorId,
-                            'doctorName': booking.doctorName,
-                            'doctorImage': booking.doctorAvatar,
-                          },
-                        );
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12.w,
-                          vertical: 6.h,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.midnightBlue,
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Iconsax.message,
-                              size: 14.sp,
-                              color: Colors.white,
-                            ),
-                            SizedBox(width: 4.w),
-                            Text(
-                              "Chat",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12.sp,
-                              ),
-                            ),
-                          ],
-                        ),
+              GestureDetector(
+                onTap: () {
+                  context.pushNamed(
+                    AppRoutes.chat,
+                    extra: {
+                      'doctorId': booking.doctorId,
+                      'doctorName': booking.doctorName,
+                      'doctorImage': booking.doctorAvatar,
+                    },
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.w,
+                    vertical: 6.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.midnightBlue,
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Iconsax.message, size: 14.sp, color: Colors.white),
+                      SizedBox(width: 4.w),
+                      Text(
+                        "Chat",
+                        style: TextStyle(color: Colors.white, fontSize: 12.sp),
                       ),
-                    )
-                
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
           SizedBox(height: 12.h),
@@ -202,8 +194,8 @@ class BookingCard extends StatelessWidget {
                 : _buildButton(
                     context,
                     "Start Call",
-                    AppColors.grey100,
-                    AppColors.midnightBlue,
+                    AppColors.primary,
+                    AppColors.white,
                     () {
                       context.pushNamed(
                         AppRoutes.callPage,
@@ -214,7 +206,7 @@ class BookingCard extends StatelessWidget {
           ),
         ],
       );
-    } else {
+    } else if (status == BookingStatus.completed) {
       return Column(
         children: [
           Row(
@@ -277,6 +269,33 @@ class BookingCard extends StatelessWidget {
           ],
         ],
       );
+    } else {
+      return Row(
+        children: [
+          Expanded(
+            child: _buildButton(
+              context,
+              "Re-Book",
+              AppColors.grey100,
+              AppColors.midnightBlue,
+              () {
+                context.pushNamed(
+                  AppRoutes.doctorDetails,
+                  extra: DoctorModel(
+                    id: booking.doctorId,
+                    name: booking.doctorName,
+                    avatarUrl: booking.doctorAvatar,
+                    address: booking.address,
+                    department: booking.department,
+                    consultationFee: 200,
+                    yearsOfExperience: 0,
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      );
     }
   }
 
@@ -290,9 +309,9 @@ class BookingCard extends StatelessWidget {
             bookingId: booking.id,
             doctorName: booking.doctorName,
             onCancelled: () {
-              context
-                  .read<MyBookingsCubit>()
-                  .getBookings(status: BookingStatus.upcoming);
+              context.read<MyBookingsCubit>().getBookings(
+                status: BookingStatus.upcoming,
+              );
             },
           ),
         );
@@ -309,9 +328,9 @@ class BookingCard extends StatelessWidget {
           child: _AddReviewDialog(
             booking: booking,
             onSubmitted: () {
-              context
-                  .read<MyBookingsCubit>()
-                  .getBookings(status: BookingStatus.completed);
+              context.read<MyBookingsCubit>().getBookings(
+                status: BookingStatus.completed,
+              );
             },
           ),
         );
@@ -353,10 +372,7 @@ class _AddReviewDialog extends StatefulWidget {
   final BookingModel booking;
   final VoidCallback onSubmitted;
 
-  const _AddReviewDialog({
-    required this.booking,
-    required this.onSubmitted,
-  });
+  const _AddReviewDialog({required this.booking, required this.onSubmitted});
 
   @override
   State<_AddReviewDialog> createState() => _AddReviewDialogState();
@@ -385,7 +401,9 @@ class _AddReviewDialogState extends State<_AddReviewDialog> {
           );
         } else if (state.status == AddReviewStatus.failure) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errorMessage ?? 'Failed to add review')),
+            SnackBar(
+              content: Text(state.errorMessage ?? 'Failed to add review'),
+            ),
           );
         }
       },
@@ -432,10 +450,10 @@ class _AddReviewDialogState extends State<_AddReviewDialog> {
               onPressed: isLoading
                   ? null
                   : () => context.read<AddReviewCubit>().submit(
-                        bookingId: widget.booking.id,
-                        rating: _rating,
-                        comment: _commentController.text,
-                      ),
+                      bookingId: widget.booking.id,
+                      rating: _rating,
+                      comment: _commentController.text,
+                    ),
               child: isLoading
                   ? SizedBox(
                       width: 18.w,
@@ -474,9 +492,9 @@ class _CancelBookingDialog extends StatelessWidget {
             const SnackBar(content: Text('Booking cancelled successfully')),
           );
         } else if (state is AppointmentFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       builder: (context, state) {
@@ -489,9 +507,9 @@ class _CancelBookingDialog extends StatelessWidget {
           icon: Icons.event_busy_outlined,
           closeOnConfirm: false,
           isLoading: isLoading,
-          onConfirm: () => context
-              .read<AppointmentCubit>()
-              .cancelBooking(bookingId: bookingId),
+          onConfirm: () => context.read<AppointmentCubit>().cancelBooking(
+            bookingId: bookingId,
+          ),
         );
       },
     );

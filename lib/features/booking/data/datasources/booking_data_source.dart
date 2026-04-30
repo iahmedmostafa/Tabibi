@@ -4,7 +4,7 @@ import 'package:tabibi/core/network/api_constance.dart';
 import 'package:tabibi/features/booking/data/models/booking_model.dart';
 
 abstract class BaseBookingDataSource {
-  Future<List<BookingModel>> getMyBooking(String type);
+  Future<List<BookingModel>> getMyBooking(int status);
 }
 
 class BookingDataSource implements BaseBookingDataSource {
@@ -12,11 +12,11 @@ class BookingDataSource implements BaseBookingDataSource {
 
   BookingDataSource(this.dio);
   @override
-  Future<List<BookingModel>> getMyBooking(String type) async {
+  Future<List<BookingModel>> getMyBooking(int status) async {
     try {
       final response = await dio.get(
         ApiConstance.mybooking,
-        queryParameters: {"type": type},
+        queryParameters: {"status": status},
       );
       return (response.data as List)
           .map((e) => BookingModel.fromJson(e))

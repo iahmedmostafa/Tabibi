@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
-import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/dashboard_response.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/cubit/dashboard_cubit.dart';
@@ -12,14 +11,7 @@ import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_
 import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_requests_banner.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_stats_row.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_today_appointments.dart';
-import 'package:tabibi/features/doctor/dashboard/domain/entities/dashboard_response.dart';
-import 'package:tabibi/features/doctor/dashboard/presentation/cubit/dashboard_cubit.dart';
-import 'package:tabibi/features/doctor/dashboard/presentation/cubit/dashboard_state.dart';
-import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_header.dart';
-import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_quick_actions.dart';
-import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_requests_banner.dart';
-import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_stats_row.dart';
-import 'package:tabibi/features/doctor/dashboard/presentation/widgets/dashboard_today_appointments.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 
 class DashboardPage extends StatelessWidget {
   final bool showBottomNav;
@@ -116,7 +108,7 @@ class _DashboardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appointments = _mapAppointments(data);
-    
+
     return RefreshIndicator(
       onRefresh: () => context.read<DashboardCubit>().getDoctorDashboard(),
       child: SingleChildScrollView(

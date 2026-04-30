@@ -3,14 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
-import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/widgets/appointment_card.dart';
-import 'package:tabibi/features/doctor/schedule/presentation/cubit/schedule_cubit.dart';
-import 'package:tabibi/features/doctor/schedule/presentation/cubit/schedule_state.dart';
-import 'package:tabibi/features/doctor/schedule/presentation/widgets/schedule_appointments_header.dart';
-import 'package:tabibi/features/doctor/schedule/presentation/widgets/schedule_date_timeline.dart';
-import 'package:tabibi/features/doctor/schedule/presentation/widgets/schedule_empty_state.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/schedule/presentation/cubit/schedule_cubit.dart';
 import 'package:tabibi/features/doctor/schedule/presentation/cubit/schedule_state.dart';
 import 'package:tabibi/features/doctor/schedule/presentation/widgets/schedule_appointments_header.dart';
@@ -28,7 +23,6 @@ class MySchedulePage extends StatefulWidget {
 
 class _MySchedulePageState extends State<MySchedulePage> {
   DateTime _selectedDate = DateTime.now();
-
 
   @override
   Widget build(BuildContext context) {
@@ -122,8 +116,6 @@ class _MySchedulePageState extends State<MySchedulePage> {
     }).toList();
   }
 }
-
-
 
 class _ScheduleError extends StatelessWidget {
   final String message;

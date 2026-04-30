@@ -4,6 +4,7 @@ import 'package:tabibi/core/utils/backend_date_time.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/features/booking/data/models/booking_model.dart';
 import 'package:tabibi/features/booking/domain/usecases/get_my_bookings.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 
 part 'my_bookings_state.dart';
 
@@ -13,7 +14,9 @@ class MyBookingsCubit extends Cubit<MyBookingsState> {
 
   void getBookings({BookingStatus status = BookingStatus.upcoming}) async {
     emit(state.copyWith(status: MyBookingsStatus.loading));
-    final result = await getMyBookingsUseCase.getMyBookings(status.name);
+    final result = await getMyBookingsUseCase.getMyBookings(
+      _bookingStatusValue(status),
+    );
     result.fold(
       (failure) => emit(
         state.copyWith(
@@ -47,5 +50,16 @@ class MyBookingsCubit extends Cubit<MyBookingsState> {
         );
       },
     );
+  }
+
+  int _bookingStatusValue(BookingStatus status) {
+    switch (status) {
+      case BookingStatus.upcoming:
+        return DoctorAppointmentStatus.upcoming;
+      case BookingStatus.completed:
+        return DoctorAppointmentStatus.completed;
+      case BookingStatus.cancelled:
+        return DoctorAppointmentStatus.refunded;
+    }
   }
 }

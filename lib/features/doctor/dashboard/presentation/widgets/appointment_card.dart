@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
-import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
-import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 
 class AppointmentCard extends StatelessWidget {
   final Appointment appointment;

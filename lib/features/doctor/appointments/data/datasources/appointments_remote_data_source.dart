@@ -16,9 +16,7 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsRemoteDataSource {
   @override
   Future<AppointmentDetailsModel> getAppointmentDetails(String id) async {
     try {
-      final response = await dio.get(
-        "${ApiConstance.doctorAppointments}/$id",
-      );
+      final response = await dio.get("${ApiConstance.doctorAppointments}/$id");
 
       if (response.statusCode == 200) {
         return AppointmentDetailsModel.fromJson(response.data);
@@ -28,7 +26,9 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsRemoteDataSource {
           throw ServerException(
             errorMessageModel: ErrorMessageModel(
               statusCode: response.statusCode ?? 400,
-              statusMessage: responseData.isNotEmpty ? responseData : 'Unknown error',
+              statusMessage: responseData.isNotEmpty
+                  ? responseData
+                  : 'Unknown error',
             ),
           );
         }
@@ -43,15 +43,16 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsRemoteDataSource {
           throw ServerException(
             errorMessageModel: ErrorMessageModel(
               statusCode: e.response!.statusCode ?? 400,
-              statusMessage: errorData.isNotEmpty ? errorData : 'An error occurred',
+              statusMessage: errorData.isNotEmpty
+                  ? errorData
+                  : 'An error occurred',
             ),
           );
         }
         throw ServerException(
           errorMessageModel: ErrorMessageModel.fromJson(errorData),
         );
-      }
-       else {
+      } else {
         throw ServerException(
           errorMessageModel: ErrorMessageModel(
             statusMessage: e.message ?? "Unknown Error",

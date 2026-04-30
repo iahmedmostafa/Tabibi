@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 
 class BookingModel extends Equatable {
   final String id;
@@ -37,7 +38,9 @@ class BookingModel extends Equatable {
       address: json['address'],
       appointmentDate: json['appointmentDate'],
       type: json['type'],
-      status: json['status'],
+      status: json['status'] == null
+          ? null
+          : DoctorAppointmentStatus.fromJson(json['status']),
       showReviewButton: json['showReviewButton'],
       showPrescriptionButton: json['showPrescriptionButton'],
     );
