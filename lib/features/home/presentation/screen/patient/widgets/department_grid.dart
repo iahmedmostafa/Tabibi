@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
-import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/cubit/departments_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/department_grid_view.dart';
 
 class DepartmentsGrid extends StatelessWidget {
@@ -26,10 +26,13 @@ class DepartmentsGrid extends StatelessWidget {
             );
           } else if (state.departmentsStatus == DepartmentsStatus.success) {
             final departments = state.departments;
-            if (departments.isEmpty) {
+            if (departments?.isEmpty ?? true) {
               return const Center(child: Text("No categories found"));
             }
-            return DepartmentGridView(departments: departments, isDark: isDark);
+            return DepartmentGridView(
+              departments: departments!,
+              isDark: isDark,
+            );
           }
           return const SizedBox.shrink();
         },

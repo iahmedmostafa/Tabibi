@@ -229,7 +229,11 @@ class BookingCard extends StatelessWidget {
                         consultationFee:
                             200, //don't carry this not affect in doctor details
                         yearsOfExperience:
-                            0, //,//don't carry this not affect in doctor details
+                            0, 
+                          rating: 0,
+                          reviewCount: 0
+
+                            //,//don't carry this not affect in doctor details
                       ),
                     );
                   },

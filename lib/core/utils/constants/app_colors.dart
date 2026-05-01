@@ -45,6 +45,9 @@ class AppColors {
   // Background colors
   static const Color lightBackground = Color(0xFFFFFFFF);
   static const Color darkBackground = Color(0xFF02040A);
+  static const Color darkSurface = Color(0xFF0C1320);
+  static const Color homeBackground = Color(0xFFF7FAFF);
+  static const Color borderLight = Color(0xFFE9EEF8);
 
   // -- Social Button Colors
   static const Color googleBackgroundColor = Color(0xFFDFEFFF);
@@ -91,21 +94,31 @@ class AppColors {
   // Greens
   static const Color green = Color(0xFF93C19E);
   static const Color paleGreen = Color(0xFFDEF7E4);
+  static const Color successLight = Color(0xFFE9F9EF);
+  static const Color successDark = Color(0xFF15803D);
+  static const Color actionGreenLight = Color(0xFFEAFBF0);
+  static const Color actionGreen = Color(0xFF22C55E);
 
   // Reds / Pinks
   static const Color darkRed = Color(0xFF771D1D);
   static const Color deepPink = Color(0xFFDC8497);
   static const Color pink = Color(0xFFDEB8B5);
   static const Color lightPink = Color(0xFFFDE8E8);
+  static const Color actionPinkLight = Color(0xFFF7EAFE);
 
   // Purples
   static const Color lightPurple = Color(0xFFACACD1);
   static const Color purple = Color(0xFF352261);
+  static const Color actionPurple = Color(0xFFA855F7);
 
   // Blues
   static const Color blue = Color(0xFF1C64F2);
   static const Color paleBlue = Color(0xFF89CCDB);
+  static const Color paleBlueLight = Color(0xFFEAF4FF);
+  static const Color cardImageBackground = Color(0xFFF5F8FE);
 
   // Orange
   static const Color orange = Color(0xFFF5AD7E);
+  static const Color actionOrangeLight = Color(0xFFFFF2E5);
+  static const Color actionAmber = Color(0xFFF59E0B);
 }

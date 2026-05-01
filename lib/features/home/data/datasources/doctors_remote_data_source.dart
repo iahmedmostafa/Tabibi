@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:tabibi/core/network/api_constance.dart';
+import 'package:tabibi/features/home/data/models/doctors_filter_params.dart';
 import '../models/doctors_response_model.dart';
 
 abstract class DoctorsRemoteDataSource {
@@ -9,6 +10,11 @@ abstract class DoctorsRemoteDataSource {
     int pageSize = 10,
     String? departmentId,
     String? query,
+    int? gender,
+    String? cityId,
+    String? sort,
+    String? fields,
+    DoctorsFilterParams? filters,
   });
 }
 
@@ -23,23 +29,28 @@ class DoctorsRemoteDataSourceImpl implements DoctorsRemoteDataSource {
     int pageSize = 10,
     String? departmentId,
     String? query,
+    int? gender,
+    String? cityId,
+    String? sort,
+    String? fields,
+    DoctorsFilterParams? filters,
   }) async {
     try {
-      final Map<String, dynamic> queryParams = {
-        'Page': page,
-        'PageSize': pageSize,
-      };
-
-      if (departmentId != null) {
-        queryParams['DepartmentId'] = departmentId;
-      }
-      if (query != null && query.isNotEmpty) {
-        queryParams['q'] = query;
-      }
+      final activeFilters =
+          filters ??
+          DoctorsFilterParams(
+            query: query,
+            gender: gender,
+            cityId: cityId,
+            departmentId: departmentId,
+            sort: sort,
+            fields: fields,
+            pageSize: pageSize,
+          );
 
       final response = await dio.get(
         ApiConstance.doctors,
-        queryParameters: queryParams,
+        queryParameters: activeFilters.toQueryParameters(page: page),
       );
 
       return DoctorsResponseModel.fromJson(response.data);

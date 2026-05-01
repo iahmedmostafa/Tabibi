@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_images.dart';
 import 'package:tabibi/features/doctor_details/domain/entities/doctor_details_entity.dart';
 
 class ReviewItem extends StatelessWidget {
@@ -11,10 +12,11 @@ class ReviewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: AppColors.grey50,
+        color: isDark ? AppColors.darkTeal : AppColors.grey100,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
@@ -26,7 +28,7 @@ class ReviewItem extends StatelessWidget {
                 backgroundImage: review.patientAvatar != null
                     ? CachedNetworkImageProvider(review.patientAvatar!)
                           as ImageProvider
-                    : const AssetImage('assets/images/review_user.png'),
+                    : const AssetImage(AppImages.person),
                 radius: 20.r,
                 backgroundColor: AppColors.grey200,
               ),
@@ -64,7 +66,7 @@ class ReviewItem extends StatelessWidget {
               review.comment!,
               style: Theme.of(
                 context,
-              ).textTheme.bodyMedium?.copyWith(color: AppColors.grey600),
+              ).textTheme.headlineSmall,
             ),
           ],
         ],

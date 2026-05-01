@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
+import 'package:tabibi/features/home/data/models/doctors_filter_params.dart';
 import 'package:tabibi/features/home/data/repositories/doctor_repository.dart';
 import 'doctors_state.dart';
 
@@ -7,13 +8,35 @@ class DoctorsCubit extends Cubit<DoctorsState> {
   DoctorsCubit(this.repository) : super(const DoctorsState());
 
   final DoctorsRepository repository;
-  String? _currentDepartmentId;
-  String? _currentQuery;
+  DoctorsFilterParams _currentFilters = const DoctorsFilterParams();
 
   /// Fetches the first page of doctors with optional filters
-  Future<void> getDoctors({String? departmentId, String? query}) async {
-    _currentDepartmentId = departmentId;
-    _currentQuery = query;
+  Future<void> getDoctors({
+    String? departmentId,
+    String? query,
+    int? gender,
+    String? cityId,
+    String? sort,
+    String? fields,
+    int? pageSize,
+    DoctorsFilterParams? filters,
+  }) async {
+    _currentFilters =
+        filters ??
+        _currentFilters.copyWith(
+          departmentId: departmentId,
+          query: query,
+          gender: gender,
+          cityId: cityId,
+          sort: sort,
+          fields: fields,
+          pageSize: pageSize,
+          clearDepartment: departmentId == null,
+          clearQuery: query == null || query.trim().isEmpty,
+          clearGender: gender == null,
+          clearCity: cityId == null,
+          clearSort: sort == null,
+        );
 
     emit(
       state.copyWith(
@@ -26,8 +49,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
 
     final result = await repository.getDoctors(
       page: 1,
-      departmentId: departmentId,
-      query: query,
+      filters: _currentFilters,
     );
 
     result.fold(
@@ -59,8 +81,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
     final nextPage = state.page + 1;
     final result = await repository.getDoctors(
       page: nextPage,
-      departmentId: _currentDepartmentId,
-      query: _currentQuery,
+      filters: _currentFilters,
     );
 
     result.fold((failure) => emit(state.copyWith(isMoreLoading: false)), (
@@ -79,6 +100,13 @@ class DoctorsCubit extends Cubit<DoctorsState> {
 
   /// Filters doctors by department ID
   void filterByDepartmentId(String? departmentId) {
-    getDoctors(departmentId: departmentId);
+    getDoctors(
+      filters: _currentFilters.copyWith(
+        departmentId: departmentId,
+        clearDepartment: departmentId == null,
+      ),
+    );
   }
+
+  DoctorsFilterParams get currentFilters => _currentFilters;
 }

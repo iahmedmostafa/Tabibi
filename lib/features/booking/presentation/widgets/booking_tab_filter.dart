@@ -22,7 +22,7 @@ class BookingTabFilter extends StatelessWidget {
         children: [
           _buildTabItem(context, "Upcoming", BookingStatus.upcoming),
           _buildTabItem(context, "Completed", BookingStatus.completed),
-          _buildTabItem(context, "Cancelled", BookingStatus.cancelled),
+          _buildTabItem(context, "Refunded", BookingStatus.cancelled),
         ],
       ),
     );

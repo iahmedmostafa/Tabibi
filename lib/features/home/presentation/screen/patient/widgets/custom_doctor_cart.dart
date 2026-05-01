@@ -131,7 +131,7 @@ class DoctorCard extends StatelessWidget {
                     const Icon(Icons.star, color: AppColors.warning, size: 16),
                     const HorizentalSpace(width: 4),
                     Text(
-                      "5.0", // Mock rating
+                      doctor.rating!.toStringAsFixed(1),
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w700,
@@ -142,10 +142,43 @@ class DoctorCard extends StatelessWidget {
                     Container(height: 12, width: 1, color: AppColors.grey300),
                     const HorizentalSpace(width: 8),
                     Text(
-                      "${doctor.yearsOfExperience * 10 + 5} Reviews", // Mock reviews
+                      "${doctor.reviewCount} Reviews",
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: AppColors.grey500,
+                      ),
+                    ),
+                  ],
+                ),
+                VerticalSpace(height: 8.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'EGP ${doctor.consultationFee.toStringAsFixed(0)}',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.blue600,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const HorizentalSpace(width: 8),
+                    Container(height: 12, width: 1, color: AppColors.grey300),
+                    const HorizentalSpace(width: 8),
+                    Expanded(
+                      child: Text(
+                        '${doctor.yearsOfExperience} Years Exp',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: AppColors.grey500,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.end,
                       ),
                     ),
                   ],

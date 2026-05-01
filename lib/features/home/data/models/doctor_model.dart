@@ -4,6 +4,8 @@ class DoctorModel {
   final String? avatarUrl;
   final double consultationFee;
   final int yearsOfExperience;
+  final double? rating;
+  final int? reviewCount;
   final String? address;
   final String? department;
   final double? latitude;
@@ -16,6 +18,8 @@ class DoctorModel {
     this.avatarUrl,
     required this.consultationFee,
     required this.yearsOfExperience,
+    this.rating,
+    this.reviewCount,
     this.address,
     this.department,
     this.latitude,
@@ -58,6 +62,8 @@ class DoctorModel {
       avatarUrl: json['avatarUrl']?.toString(),
       consultationFee: parseDouble(json['consultationFee']),
       yearsOfExperience: parseInt(json['yearsOfExperience']),
+      rating: parseDouble(json['rating']),
+      reviewCount: parseInt(json['reviewCount']),
       address: json['address']?.toString(),
       department: parseDepartment(json['department']),
       latitude: parseCoord(json['latitude']),
@@ -66,5 +72,3 @@ class DoctorModel {
     );
   }
 }
-
-

@@ -30,6 +30,7 @@ import 'package:tabibi/features/authentication/modules/verify_code/presentation/
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/pages/verify_code.dart';
 import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
 import 'package:tabibi/features/booking/presentation/controller/prescription_cubit.dart';
+import 'package:tabibi/features/booking/presentation/controller/upcoming_booking_cubit.dart';
 import 'package:tabibi/features/booking/presentation/screens/book_appointment_screen.dart';
 import 'package:tabibi/features/booking/presentation/screens/my_bookings_screen.dart';
 import 'package:tabibi/features/booking/presentation/screens/prescription_screen.dart';
@@ -60,8 +61,10 @@ import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_pr
 import 'package:tabibi/features/doctors_map/presentation/screens/doctors_map_screen.dart';
 import 'package:tabibi/features/favorite/presentation/screens/favorites_screen.dart';
 import 'package:tabibi/features/home/data/models/doctor_model.dart';
+import 'package:tabibi/features/home/data/models/doctors_filter_params.dart';
 import 'package:tabibi/features/home/presentation/screen/doctor/home_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_cubit.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/screens/all_departments_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/all_doctors_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/bottom_nav_screen.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/screens/patient_home_screen.dart';
@@ -73,8 +76,11 @@ import 'package:tabibi/features/patient_profile/presentation/screens/edit_profil
 import 'package:tabibi/features/video_call/presentation/cubit/video_call_cubit.dart';
 import 'package:tabibi/features/video_call/presentation/screen/video_call_screen.dart';
 
-import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
+import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart'
+    as doctor_profile_departments;
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
+import '../../features/home/presentation/screen/patient/cubit/departments_cubit.dart'
+    as patient_departments;
 import '../services/shared_prefs_service.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -90,9 +96,7 @@ final GoRouter router = GoRouter(
                   : (OnboardingServices.isProfileFilled()
                         ? AppRoutes.bottomNavScreen
                         : AppRoutes.fillProfile))
-            : (OnboardingServices.isProfileFilled()
-                  ? AppRoutes.bottomNavScreen
-                  : AppRoutes.fillProfile)),
+            : AppRoutes.login),
 
   routes: [
     GoRoute(
@@ -204,7 +208,28 @@ final GoRouter router = GoRouter(
 
       name: AppRoutes.home,
 
-      builder: (context, state) => const BottomNavScreen(),
+      builder: (context, state) => MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => sl<ProfileCubit>()..getProfile()),
+          BlocProvider(
+            create: (_) =>
+                sl<patient_departments.DepartmentsCubit>()..getDepartments(),
+          ),
+          BlocProvider(
+            create: (_) => sl<DoctorsCubit>()
+              ..getDoctors(
+                filters: const DoctorsFilterParams(
+                  pageSize: 10,
+                  sort: 'YearsOfExperience desc',
+                ),
+              ),
+          ),
+          BlocProvider(
+            create: (_) => sl<UpcomingBookingCubit>()..loadUpcomingBooking(),
+          ),
+        ],
+        child: const BottomNavScreen(),
+      ),
     ),
 
     GoRoute(
@@ -249,7 +274,9 @@ final GoRouter router = GoRouter(
           BlocProvider(create: (context) => sl<CitiesCubit>()..getCities()),
 
           BlocProvider(
-            create: (context) => sl<DepartmentsCubit>()..getDepartments(),
+            create: (context) =>
+                sl<doctor_profile_departments.DepartmentsCubit>()
+                  ..getDepartments(),
           ),
 
           BlocProvider(create: (context) => sl<CredentialUploadImageCubit>()),
@@ -337,7 +364,28 @@ final GoRouter router = GoRouter(
       builder: (context, state) {
         final initialIndex = state.extra as int? ?? 0;
 
-        return BottomNavScreen(initialIndex: initialIndex);
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (_) => sl<ProfileCubit>()..getProfile()),
+            BlocProvider(
+              create: (_) =>
+                  sl<patient_departments.DepartmentsCubit>()..getDepartments(),
+            ),
+            BlocProvider(
+              create: (_) => sl<DoctorsCubit>()
+                ..getDoctors(
+                  filters: const DoctorsFilterParams(
+                    pageSize: 10,
+                    sort: 'YearsOfExperience desc',
+                  ),
+                ),
+            ),
+            BlocProvider(
+              create: (_) => sl<UpcomingBookingCubit>()..loadUpcomingBooking(),
+            ),
+          ],
+          child: BottomNavScreen(initialIndex: initialIndex),
+        );
       },
     ),
 
@@ -349,13 +397,34 @@ final GoRouter router = GoRouter(
       builder: (context, state) {
         final departmentId = state.extra as String?;
 
-        return BlocProvider(
-          create: (context) =>
-              sl<DoctorsCubit>()..getDoctors(departmentId: departmentId),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) =>
+                  sl<DoctorsCubit>()..getDoctors(departmentId: departmentId),
+            ),
+            BlocProvider(create: (context) => sl<CitiesCubit>()..getCities()),
+            BlocProvider(
+              create: (context) =>
+                  sl<patient_departments.DepartmentsCubit>()..getDepartments(),
+            ),
+          ],
 
           child: AllDoctorsScreen(initialDepartmentId: departmentId),
         );
       },
+    ),
+
+    GoRoute(
+      path: AppRoutes.allDepartments,
+
+      name: AppRoutes.allDepartments,
+
+      builder: (context, state) => BlocProvider(
+        create: (context) =>
+            sl<patient_departments.DepartmentsCubit>()..getDepartments(),
+        child: const AllDepartmentsScreen(),
+      ),
     ),
 
     GoRoute(

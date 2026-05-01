@@ -47,11 +47,13 @@ import 'package:tabibi/features/booking/domain/usecases/create_booking_use_case.
 import 'package:tabibi/features/booking/domain/usecases/create_review_use_case.dart';
 import 'package:tabibi/features/booking/domain/usecases/get_available_slots_use_case.dart';
 import 'package:tabibi/features/booking/domain/usecases/get_my_bookings.dart';
+import 'package:tabibi/features/booking/domain/usecases/get_next_upcoming_booking_use_case.dart';
 import 'package:tabibi/features/booking/domain/usecases/get_prescription_use_case.dart';
 import 'package:tabibi/features/booking/presentation/controller/add_review_cubit.dart';
 import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
 import 'package:tabibi/features/booking/presentation/controller/my_bookings_cubit.dart';
 import 'package:tabibi/features/booking/presentation/controller/prescription_cubit.dart';
+import 'package:tabibi/features/booking/presentation/controller/upcoming_booking_cubit.dart';
 import 'package:tabibi/features/chat_patient/data/datasources/chat_remote_data_source.dart';
 import 'package:tabibi/features/chat_patient/data/repositories/chat_repository_impl.dart';
 import 'package:tabibi/features/chat_patient/domain/repositories/chat_repository.dart';
@@ -329,6 +331,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ConfirmPaymentUseCase(sl()));
   sl.registerLazySingleton(() => CancelBookingUseCase(sl()));
   sl.registerLazySingleton(() => GetMyBookingsUseCase(sl()));
+  sl.registerLazySingleton(() => GetNextUpcomingBookingUseCase(sl()));
   sl.registerLazySingleton(() => GetPrescriptionUseCase(sl()));
   sl.registerLazySingleton(() => CreateReviewUseCase(sl()));
   sl.registerLazySingleton(() => LogOutUseCase(sl()));
@@ -381,6 +384,7 @@ Future<void> init() async {
   sl.registerFactory(() => AppointmentCubit(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => AddReviewCubit(sl()));
   sl.registerLazySingleton(() => MyBookingsCubit(sl()));
+  sl.registerLazySingleton(() => UpcomingBookingCubit(sl()));
   sl.registerFactory(() => PrescriptionCubit(sl()));
   sl.registerFactory(() => DoctorMapCubit(sl<DoctorMapRepository>()));
   sl.registerFactory(() => DoctorDetailsCubit(sl()));

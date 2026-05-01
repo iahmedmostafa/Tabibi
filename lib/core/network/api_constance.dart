@@ -31,6 +31,7 @@ class ApiConstance {
   static const String availableSlots = "bookings/available-slots";
   static const String booking = "bookings";
   static const String mybooking = "bookings/my-bookings";
+  static const String nextUpcomingBooking = "bookings/next-upcoming";
   static const String reviews = "reviews";
   static const String myReviews = "reviews/me";
   static const String doctorReviews = "reviews/doctor/";
