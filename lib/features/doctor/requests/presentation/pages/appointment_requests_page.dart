@@ -9,6 +9,7 @@ import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/doctor/requests/presentation/cubit/requests_cubit.dart';
 import 'package:tabibi/features/doctor/requests/presentation/cubit/requests_state.dart';
 import 'package:tabibi/features/doctor/requests/presentation/widgets/request_card.dart';
+import 'package:tabibi/core/animations/fade_in_slide.dart';
 
 class AppointmentRequestsPage extends StatelessWidget {
   const AppointmentRequestsPage({super.key});
@@ -128,54 +129,57 @@ class AppointmentRequestsPage extends StatelessWidget {
         itemCount: state.filteredRequests.length,
         itemBuilder: (context, index) {
           final request = state.filteredRequests[index];
-          return RequestCard(
-            request: request,
-            onApprove: () {
-              context.read<RequestsCubit>().approveRequest(
-                request.id,
-                onSuccess: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        '✓ Appointment approved for ${request.patientName}',
+          return FadeInSlide(
+            delay: Duration(milliseconds: 100 * index),
+            child: RequestCard(
+              request: request,
+              onApprove: () {
+                context.read<RequestsCubit>().approveRequest(
+                  request.id,
+                  onSuccess: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          '✓ Appointment approved for ${request.patientName}',
+                        ),
+                        backgroundColor: Colors.green,
                       ),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-                },
-                onError: (error) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Failed: $error'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                },
-              );
-            },
-            onReject: () {
-              context.read<RequestsCubit>().rejectRequest(
-                request.id,
-                onSuccess: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        '✗ Appointment cancelled for ${request.patientName}',
+                    );
+                  },
+                  onError: (error) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Failed: $error'),
+                        backgroundColor: Colors.red,
                       ),
-                      backgroundColor: Colors.orange,
-                    ),
-                  );
-                },
-                onError: (error) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Failed: $error'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                },
-              );
-            },
+                    );
+                  },
+                );
+              },
+              onReject: () {
+                context.read<RequestsCubit>().rejectRequest(
+                  request.id,
+                  onSuccess: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          '✗ Appointment cancelled for ${request.patientName}',
+                        ),
+                        backgroundColor: Colors.orange,
+                      ),
+                    );
+                  },
+                  onError: (error) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Failed: $error'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
           );
         },
     

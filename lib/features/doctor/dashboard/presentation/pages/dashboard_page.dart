@@ -126,7 +126,7 @@ class _DashboardContent extends StatelessWidget {
             DashboardTodayAppointments(appointments: appointments),
             const SizedBox(height: 16),
             const DashboardRequestsBanner(),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
           ],
         ),
       ),

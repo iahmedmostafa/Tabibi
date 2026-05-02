@@ -14,14 +14,15 @@ class CreatePrescriptionSubmitBar extends StatelessWidget {
     return BlocBuilder<CreatePrescriptionCubit, CreatePrescriptionState>(
       builder: (context, state) {
         final isLoading = state.isLoading;
+        final theme = Theme.of(context);
 
         return Container(
           padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: theme.cardColor != Colors.transparent ? theme.cardColor : theme.colorScheme.surface,
             boxShadow: [
               BoxShadow(
-                color: AppColors.midnightBlue.withValues(alpha: 0.08),
+                color: Colors.black.withValues(alpha: 0.08),
                 blurRadius: 18,
                 offset: const Offset(0, -8),
               ),
@@ -50,7 +51,7 @@ class CreatePrescriptionSubmitBar extends StatelessWidget {
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.midnightBlue,
-                  disabledBackgroundColor: AppColors.grey400,
+                  disabledBackgroundColor: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
                   foregroundColor: Colors.white,
                   padding: EdgeInsets.symmetric(vertical: 16.h),
                   shape: RoundedRectangleBorder(

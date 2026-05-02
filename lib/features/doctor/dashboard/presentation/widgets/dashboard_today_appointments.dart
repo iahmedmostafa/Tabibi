@@ -6,6 +6,7 @@ import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/widgets/appointment_card.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
+import 'package:tabibi/core/animations/fade_in_slide.dart';
 
 class DashboardTodayAppointments extends StatelessWidget {
   final List<Appointment> appointments;
@@ -56,8 +57,11 @@ class DashboardTodayAppointments extends StatelessWidget {
             ),
           )
         else
-          ...appointments.map(
-            (apt) => AppointmentCard(appointment: apt),
+          ...appointments.asMap().entries.map(
+            (entry) => FadeInSlide(
+              delay: Duration(milliseconds: 100 * entry.key),
+              child: AppointmentCard(appointment: entry.value),
+            ),
           ),
       ],
     );

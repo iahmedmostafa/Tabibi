@@ -9,18 +9,24 @@ class PreviousVisitsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(color: theme.dividerColor),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Previous Visits',
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+              color: theme.colorScheme.onSurface,
+            ),
           ),
           SizedBox(height: 16.h),
           ...patient.previousVisits.map(
@@ -31,13 +37,13 @@ class PreviousVisitsCard extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(10.w),
                     decoration: BoxDecoration(
-                      color: Colors.grey[100],
+                      color: theme.colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Icon(
                       Icons.calendar_today,
                       size: 20.sp,
-                      color: Colors.grey[600],
+                      color: theme.colorScheme.onSurfaceVariant,
                     ),
                   ),
                   SizedBox(width: 16.w),
@@ -50,6 +56,7 @@ class PreviousVisitsCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w500,
+                            color: theme.colorScheme.onSurface,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -59,16 +66,21 @@ class PreviousVisitsCard extends StatelessWidget {
                           visit.date,
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: Colors.grey[600],
+                            color: theme.colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Icon(
-                    Icons.description_outlined,
-                    size: 20.sp,
-                    color: Colors.grey[400],
+                  IconButton(
+                    icon: Icon(
+                      Icons.description_outlined,
+                      size: 20.sp,
+                      color: theme.colorScheme.primary,
+                    ),
+                    onPressed: () {
+                      // Navigate to prescription or document viewer
+                    },
                   ),
                 ],
               ),

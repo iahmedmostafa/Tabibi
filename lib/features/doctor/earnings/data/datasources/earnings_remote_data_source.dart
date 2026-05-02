@@ -23,7 +23,10 @@ class EarningsRemoteDataSourceImpl implements EarningsRemoteDataSource {
   @override
   Future<EarningsSummaryModel> getSummary() async {
     try {
-      final response = await dio.get(ApiConstance.doctorEarningsSummary);
+      final response = await dio.get(
+        ApiConstance.doctorEarningsSummary,
+        queryParameters: {'status': 3},
+      );
       if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
         return EarningsSummaryModel.fromJson(response.data);
       }
@@ -39,7 +42,7 @@ class EarningsRemoteDataSourceImpl implements EarningsRemoteDataSource {
     try {
       final response = await dio.get(
         ApiConstance.doctorEarningsAnalytics,
-        queryParameters: {'period': period.name},
+        queryParameters: {'period': period.name, 'status': 3},
       );
       if (response.statusCode == 200 && response.data is List) {
         return (response.data as List)
@@ -62,7 +65,7 @@ class EarningsRemoteDataSourceImpl implements EarningsRemoteDataSource {
     try {
       final response = await dio.get(
         ApiConstance.doctorTransactions,
-        queryParameters: {'page': page, 'pageSize': pageSize},
+        queryParameters: {'page': page, 'pageSize': pageSize, 'status': 3},
       );
       if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
         return EarningsTransactionsPageModel.fromJson(response.data);

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
-import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/earnings/presentation/cubit/earnings_cubit.dart';
 import 'package:tabibi/features/doctor/earnings/presentation/cubit/earnings_state.dart';
 import 'package:tabibi/features/doctor/earnings/presentation/widgets/earnings_analytics_section.dart';
@@ -19,21 +18,17 @@ class EarningsPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => sl<EarningsCubit>()..loadDashboard(),
       child: Scaffold(
-        backgroundColor: AppColors.grey50,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           title: Text(
             'Earnings',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: AppColors.grey900,
               fontWeight: FontWeight.w800,
             ),
           ),
           centerTitle: true,
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-          elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
+            icon: Icon(Icons.arrow_back, size: 24.sp),
             onPressed: () => context.pop(),
           ),
         ),

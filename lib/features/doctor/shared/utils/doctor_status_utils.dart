@@ -15,20 +15,20 @@ class DoctorStatusUtils {
       case DoctorAppointmentStatus.refunded:
         return AppTheme.redIcon;
       default:
-        return AppColors.grey400;
+        return AppColors.grey500;
     }
   }
 
   static Color getStatusBackgroundColor(int status) {
     switch (status) {
       case DoctorAppointmentStatus.upcoming:
-        return AppTheme.bluePastel;
+        return AppTheme.blueIcon.withValues(alpha: 0.15);
       case DoctorAppointmentStatus.completed:
-        return AppTheme.greenPastel;
+        return AppTheme.greenIcon.withValues(alpha: 0.15);
       case DoctorAppointmentStatus.refunded:
-        return AppTheme.redPastel;
+        return AppTheme.redIcon.withValues(alpha: 0.15);
       default:
-        return Colors.grey.shade200;
+        return AppColors.grey500.withValues(alpha: 0.15);
     }
   }
 }

@@ -40,7 +40,7 @@ class SettingsPage extends StatelessWidget {
             const QuickActionsSection(),
             SizedBox(height: 24.h),
             const DangerZoneSection(),
-            SizedBox(height: 80.h), // Space for bottom nav
+            SizedBox(height: 24.h),
           ],
         ),
       ),

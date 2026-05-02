@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tabibi/core/utils/constants/app_colors.dart';
 
 class EarningsDashboardCard extends StatelessWidget {
   final Widget child;
@@ -13,9 +12,9 @@ class EarningsDashboardCard extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(18.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(color: AppColors.grey200),
+        border: Border.all(color: Theme.of(context).dividerColor),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.045),

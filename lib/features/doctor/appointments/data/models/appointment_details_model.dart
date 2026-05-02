@@ -73,7 +73,30 @@ class PrescriptionModel extends PrescriptionEntity {
           ? BackendDateTime.tryParseUtc(json['createdAt'] as String) ??
                 DateTime.now().toUtc()
           : DateTime.now(),
-      medicines: json['medicines'] ?? [],
+      medicines: (json['medicines'] as List?)
+              ?.map((e) => MedicineDetailsModel.fromJson(e))
+              .toList() ??
+          [],
+    );
+  }
+}
+
+class MedicineDetailsModel extends MedicineEntity {
+  const MedicineDetailsModel({
+    required super.medicineName,
+    required super.dosage,
+    required super.frequency,
+    required super.duration,
+    required super.instructions,
+  });
+
+  factory MedicineDetailsModel.fromJson(Map<String, dynamic> json) {
+    return MedicineDetailsModel(
+      medicineName: json['medicineName'] ?? '',
+      dosage: json['dosage'] ?? '',
+      frequency: json['frequency'] ?? '',
+      duration: json['duration'] ?? '',
+      instructions: json['instructions'] ?? '',
     );
   }
 }

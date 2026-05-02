@@ -6,13 +6,8 @@ import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/features/doctor/patients/domain/entities/patient.dart';
 import 'package:tabibi/features/doctor/patients/presentation/cubit/patient_profile_flow_cubit.dart';
-import 'package:tabibi/features/doctor/patients/presentation/widgets/allergies_card.dart';
-import 'package:tabibi/features/doctor/patients/presentation/widgets/contact_information_card.dart';
-import 'package:tabibi/features/doctor/patients/presentation/widgets/documents_card.dart';
-import 'package:tabibi/features/doctor/patients/presentation/widgets/medical_history_card.dart';
 import 'package:tabibi/features/doctor/patients/presentation/widgets/patient_header_card.dart';
 import 'package:tabibi/features/doctor/patients/presentation/widgets/prescription_entry_card.dart';
-import 'package:tabibi/features/doctor/patients/presentation/widgets/previous_visits_card.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/policies/prescription_write_policy.dart';
 
 class PatientProfilePage extends StatelessWidget {
@@ -92,7 +87,8 @@ class PatientProfilePage extends StatelessWidget {
                         PatientProfileFlowState
                       >(
                         builder: (context, flowState) {
-                          if (flowState.prescriptionCompleted) {
+                          if (flowState.prescriptionCompleted || 
+                              prescriptionWritePolicy.restriction == PrescriptionWriteRestriction.prescriptionExists) {
                             return const SizedBox.shrink();
                           }
 
@@ -111,16 +107,7 @@ class PatientProfilePage extends StatelessWidget {
                             ],
                           );
                         },
-                      ),
-                    ContactInformationCard(patient: patient),
-                    SizedBox(height: 16.h),
-                    MedicalHistoryCard(patient: patient),
-                    SizedBox(height: 16.h),
-                    AllergiesCard(patient: patient),
-                    SizedBox(height: 16.h),
-                    PreviousVisitsCard(patient: patient),
-                    SizedBox(height: 16.h),
-                    const DocumentsCard(),
+                    ),
                     SizedBox(height: 24.h),
                   ],
                 ),
