@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/formatters.dart/formatters.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
-import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/requests/domain/entities/appointment_request.dart';
+import 'package:tabibi/features/doctor/shared/utils/doctor_status_utils.dart';
 
 class RequestCard extends StatelessWidget {
   final AppointmentRequest request;
@@ -48,9 +48,9 @@ class RequestCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Icon(
-                  Icons.person,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  size: 24.sp,
+                  Icons.person_rounded,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                  size: 28.sp,
                 ),
               ),
               SizedBox(width: 12.w),
@@ -70,7 +70,7 @@ class RequestCard extends StatelessWidget {
                     Row(
                       children: [
                         Icon(
-                          Icons.access_time,
+                          Icons.access_time_rounded,
                           size: 14.sp,
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
@@ -91,12 +91,11 @@ class RequestCard extends StatelessWidget {
               ),
               IconButton(
                 icon: Icon(
-                  Icons.videocam,
+                  Icons.videocam_rounded,
                   color: AppTheme.primaryColor,
                   size: 28.sp,
                 ),
                 onPressed: () {
-                  
                   context.push(
                     AppRoutes.callPage,
                     extra: {'bookingId': request.id},
@@ -121,14 +120,14 @@ class RequestCard extends StatelessWidget {
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: onReject,
-                    icon: Icon(Icons.close, size: 18.sp),
+                    icon: Icon(Icons.close_rounded, size: 18.sp),
                     label: Text('Reject', style: TextStyle(fontSize: 14.sp)),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppTheme.redIcon,
                       side: const BorderSide(color: AppTheme.redPastel),
                       padding: EdgeInsets.symmetric(vertical: 12.h),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
+                        borderRadius: BorderRadius.circular(10.r),
                       ),
                     ),
                   ),
@@ -137,14 +136,14 @@ class RequestCard extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton.icon(
                     onPressed: onApprove,
-                    icon: Icon(Icons.check, size: 18.sp),
+                    icon: Icon(Icons.check_rounded, size: 18.sp),
                     label: Text('Approve', style: TextStyle(fontSize: 14.sp)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primaryColor,
                       foregroundColor: Colors.white,
                       padding: EdgeInsets.symmetric(vertical: 12.h),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
+                        borderRadius: BorderRadius.circular(10.r),
                       ),
                     ),
                   ),
@@ -156,13 +155,13 @@ class RequestCard extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 12.h),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: _statusBackgroundColor(),
+                color: DoctorStatusUtils.getStatusBackgroundColor(request.status),
                 borderRadius: BorderRadius.circular(8.r),
               ),
               child: Text(
-                _statusLabel(),
+                request.statusLabel,
                 style: TextStyle(
-                  color: _statusTextColor(),
+                  color: DoctorStatusUtils.getStatusColor(request.status),
                   fontWeight: FontWeight.w600,
                   fontSize: 14.sp,
                 ),
@@ -171,35 +170,5 @@ class RequestCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _statusLabel() {
-    return request.statusLabel;
-  }
-
-  Color _statusBackgroundColor() {
-    switch (request.status) {
-      case DoctorAppointmentStatus.refunded:
-        return AppTheme.redPastel;
-      case DoctorAppointmentStatus.completed:
-        return AppTheme.greenPastel;
-      case DoctorAppointmentStatus.upcoming:
-        return AppTheme.bluePastel;
-      default:
-        return Colors.grey.shade200;
-    }
-  }
-
-  Color _statusTextColor() {
-    switch (request.status) {
-      case DoctorAppointmentStatus.refunded:
-        return AppTheme.redIcon;
-      case DoctorAppointmentStatus.completed:
-        return AppTheme.greenIcon;
-      case DoctorAppointmentStatus.upcoming:
-        return AppTheme.blueIcon;
-      default:
-        return Colors.grey.shade700;
-    }
   }
 }

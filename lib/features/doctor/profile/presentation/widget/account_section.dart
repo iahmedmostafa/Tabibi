@@ -8,6 +8,7 @@ class AccountSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -18,13 +19,13 @@ class AccountSection extends StatelessWidget {
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
-              color: Colors.grey[700],
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
         ),
         SizedBox(height: 12.h),
         Container(
-          color: Colors.white,
+          color: theme.colorScheme.surface,
           child: Column(
             children: [
               SettingsItem(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/widgets/quick_action_item.dart';
 
@@ -13,7 +14,7 @@ class DashboardQuickActions extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Quick Actions', style: theme.textTheme.titleLarge),
+        Text(AppStrings.doctorQuickActions, style: theme.textTheme.titleLarge),
         const SizedBox(height: 16),
         Row(
           children: [
@@ -42,7 +43,7 @@ class DashboardQuickActions extends StatelessWidget {
             ),
             const SizedBox(width: 10),
             QuickActionItem(
-              label: 'Earnings',
+              label: AppStrings.doctorEarnings,
               icon: Icons.attach_money,
               iconColor: AppTheme.purpleIcon,
               backgroundColor: AppTheme.purplePastel,

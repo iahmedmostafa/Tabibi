@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/profile_cubit.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/profile_state.dart';
 import 'package:tabibi/features/patient_profile/presentation/widgets/logout_dialog.dart';
@@ -12,6 +14,7 @@ class DangerZoneSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocListener<ProfileCubit, ProfileState>(
       listener: (context, state) {
         if (state is LogOutSuccess) {
@@ -32,7 +35,7 @@ class DangerZoneSection extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w600,
-                color: Colors.grey[700],
+                color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
           ),
@@ -48,10 +51,10 @@ class DangerZoneSection extends StatelessWidget {
                       _showLogoutDialog(context);
                     },
                     icon: Icon(Icons.logout, size: 20.sp),
-                    label: const Text('Log Out'),
+                    label: const Text(AppStrings.doctorLogout),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.grey[700],
-                      side: BorderSide(color: Colors.grey[300]!),
+                      foregroundColor: theme.colorScheme.onSurfaceVariant,
+                      side: BorderSide(color: theme.dividerColor),
                       padding: EdgeInsets.symmetric(vertical: 16.h),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.r),
@@ -69,9 +72,9 @@ class DangerZoneSection extends StatelessWidget {
                     icon: Icon(Icons.delete_outline, size: 20.sp),
                     label: const Text('Delete Account'),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: const Color(0xFFD32F2F),
-                      side: const BorderSide(color: Color(0xFFFFCDD2)),
-                      backgroundColor: const Color(0xFFFFEBEE),
+                      foregroundColor: AppTheme.redIcon,
+                      side: const BorderSide(color: AppTheme.redPastel),
+                      backgroundColor: AppTheme.redPastel.withValues(alpha: 0.1),
                       padding: EdgeInsets.symmetric(vertical: 16.h),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.r),
@@ -86,8 +89,8 @@ class DangerZoneSection extends StatelessWidget {
       ),
     );
   }
-}
-void _showLogoutDialog(BuildContext context) {
+
+  void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (ctx) => LogoutDialog(
@@ -98,7 +101,6 @@ void _showLogoutDialog(BuildContext context) {
     );
   }
 
-  
   void _showDeleteAccountDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -118,7 +120,7 @@ void _showLogoutDialog(BuildContext context) {
               // Add delete account logic here
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFD32F2F),
+              backgroundColor: AppTheme.redIcon,
             ),
             child: const Text('Delete'),
           ),
@@ -126,7 +128,7 @@ void _showLogoutDialog(BuildContext context) {
       ),
     );
   }
-
+}
 
 
 

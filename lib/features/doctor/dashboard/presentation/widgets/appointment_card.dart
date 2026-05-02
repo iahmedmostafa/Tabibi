@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
-import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart';
-import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
+import 'package:tabibi/features/doctor/shared/utils/doctor_status_utils.dart';
 
 class AppointmentCard extends StatelessWidget {
   final Appointment appointment;
@@ -17,8 +16,8 @@ class AppointmentCard extends StatelessWidget {
     final cardColor = theme.cardColor != Colors.transparent
         ? theme.cardColor
         : theme.colorScheme.surface;
-    final statusColor = _statusColor(appointment.status);
-    final statusBg = _statusBg(appointment.status);
+    final statusColor = DoctorStatusUtils.getStatusColor(appointment.status);
+    final statusBg = DoctorStatusUtils.getStatusBackgroundColor(appointment.status);
 
     return GestureDetector(
       onTap: () =>
@@ -49,9 +48,9 @@ class AppointmentCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
-                Icons.person_outline,
-                color: theme.colorScheme.onSurfaceVariant,
-                size: 28,
+                Icons.person_rounded,
+                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                size: 32,
               ),
             ),
             const SizedBox(width: 16),
@@ -65,7 +64,7 @@ class AppointmentCard extends StatelessWidget {
                     children: [
                       Text(
                         appointment.patientName,
-                        style: theme.textTheme.titleMedium,
+                        style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(
@@ -91,14 +90,14 @@ class AppointmentCard extends StatelessWidget {
                   Row(
                     children: [
                       const Icon(
-                        Icons.access_time,
+                        Icons.access_time_rounded,
                         size: 16,
                         color: AppColors.grey400,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: 6),
                       Text(
                         '${appointment.time} • ${appointment.date}',
-                        style: theme.textTheme.bodyMedium,
+                        style: theme.textTheme.bodySmall?.copyWith(color: AppColors.grey600),
                       ),
                     ],
                   ),
@@ -109,31 +108,5 @@ class AppointmentCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Color _statusColor(int status) {
-    switch (status) {
-      case DoctorAppointmentStatus.upcoming:
-        return AppTheme.blueIcon;
-      case DoctorAppointmentStatus.completed:
-        return AppTheme.greenIcon;
-      case DoctorAppointmentStatus.refunded:
-        return AppTheme.redIcon;
-      default:
-        return AppColors.grey400;
-    }
-  }
-
-  Color _statusBg(int status) {
-    switch (status) {
-      case DoctorAppointmentStatus.upcoming:
-        return AppTheme.bluePastel;
-      case DoctorAppointmentStatus.completed:
-        return AppTheme.greenPastel;
-      case DoctorAppointmentStatus.refunded:
-        return AppTheme.redPastel;
-      default:
-        return Colors.grey.shade200;
-    }
   }
 }

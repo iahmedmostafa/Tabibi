@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/doctor/requests/presentation/cubit/requests_cubit.dart';
@@ -20,7 +21,7 @@ class AppointmentRequestsPage extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
           title: Text(
-            'Appointment Requests',
+            AppStrings.doctorAppointmentRequests,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: Theme.of(context).colorScheme.onSurface,
             ),
@@ -109,7 +110,7 @@ class AppointmentRequestsPage extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             Text(
-              'No requests found',
+              AppStrings.doctorNoRequestsFound,
               style: TextStyle(
                 fontSize: 16.sp,
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -191,7 +192,7 @@ class _SearchBar extends StatelessWidget {
     return TextField(
       onChanged: (query) => context.read<RequestsCubit>().search(query),
       decoration: InputDecoration(
-        hintText: 'Search patients...',
+        hintText: AppStrings.doctorSearchPatients,
         hintStyle: TextStyle(
           color: Theme.of(context).colorScheme.onSurfaceVariant,
           fontSize: 14.sp,

@@ -34,7 +34,7 @@ class MedicineFormCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(18.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor != Colors.transparent ? Theme.of(context).cardColor : Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(18.r),
         border: Border.all(color: AppColors.grey200),
         boxShadow: [

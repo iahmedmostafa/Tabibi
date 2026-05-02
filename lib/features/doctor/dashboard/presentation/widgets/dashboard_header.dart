@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/dashboard_response.dart';
 
@@ -20,7 +21,7 @@ class DashboardHeader extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Welcome back,', style: theme.textTheme.bodyMedium),
+            Text(AppStrings.doctorWelcomeBack, style: theme.textTheme.bodyMedium),
             const SizedBox(height: 4),
             Text('Dr. ${data.doctorName}', style: theme.textTheme.headlineMedium),
           ],

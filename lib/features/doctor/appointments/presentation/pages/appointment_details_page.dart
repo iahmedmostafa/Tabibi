@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_cubit.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_state.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/mappers/appointment_patient_mapper.dart';
@@ -30,15 +31,19 @@ class AppointmentDetailsPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             'Appointment Details',
-            style: Theme.of(
-              context,
-            ).textTheme.titleLarge?.copyWith(color: Colors.black),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
           ),
           centerTitle: true,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
+            icon: Icon(
+              Icons.arrow_back,
+              size: 24.sp,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
             onPressed: () => context.pop(),
           ),
         ),
@@ -123,13 +128,22 @@ class _AppointmentDetailsError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(message),
-          SizedBox(height: 16.h),
-          ElevatedButton(onPressed: onRetry, child: const Text('Retry')),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, size: 64, color: AppColors.grey400),
+            const SizedBox(height: 16),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(onPressed: onRetry, child: const Text('Retry')),
+          ],
+        ),
       ),
     );
   }

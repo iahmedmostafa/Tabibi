@@ -19,6 +19,7 @@ class SettingsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return InkWell(
       onTap: onTap,
       child: Padding(
@@ -28,12 +29,12 @@ class SettingsItem extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(10.w),
               decoration: BoxDecoration(
-                color: Colors.grey[100],
+                color: theme.colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: Icon(
                 icon,
-                color: iconColor ?? Colors.grey[600],
+                color: iconColor ?? theme.colorScheme.onSurfaceVariant,
                 size: 20.sp,
               ),
             ),
@@ -47,6 +48,7 @@ class SettingsItem extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
                   if (subtitle != null) ...[
@@ -55,14 +57,14 @@ class SettingsItem extends StatelessWidget {
                       subtitle!,
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: Colors.grey[600],
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
                 ],
               ),
             ),
-            Icon(Icons.chevron_right, color: Colors.grey[400], size: 20.sp),
+            Icon(Icons.chevron_right, color: theme.dividerColor, size: 20.sp),
           ],
         ),
       ),

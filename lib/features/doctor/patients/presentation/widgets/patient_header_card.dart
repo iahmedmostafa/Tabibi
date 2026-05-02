@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/doctor/patients/domain/entities/patient.dart';
 
 class PatientHeaderCard extends StatelessWidget {
@@ -9,10 +11,15 @@ class PatientHeaderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cardColor = theme.cardColor != Colors.transparent
+        ? theme.cardColor
+        : theme.colorScheme.surface;
+
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cardColor,
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
@@ -30,7 +37,7 @@ class PatientHeaderCard extends StatelessWidget {
                 width: 80.w,
                 height: 80.w,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF8FB89C),
+                  color: AppTheme.tealDark,
                   borderRadius: BorderRadius.circular(16.r),
                 ),
                 child: Center(
@@ -51,8 +58,7 @@ class PatientHeaderCard extends StatelessWidget {
                   children: [
                     Text(
                       patient.name,
-                      style: TextStyle(
-                        fontSize: 20.sp,
+                      style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 1,
@@ -61,9 +67,8 @@ class PatientHeaderCard extends StatelessWidget {
                     SizedBox(height: 4.h),
                     Text(
                       'Patient ID: ${patient.patientId}',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.grey[600],
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                     SizedBox(height: 8.h),
@@ -73,13 +78,13 @@ class PatientHeaderCard extends StatelessWidget {
                         vertical: 4.h,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE8F5E9),
+                        color: AppTheme.greenPastel,
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Text(
-                        'Active Patient',
+                        AppStrings.doctorActivePatient,
                         style: TextStyle(
-                          color: const Color(0xFF4CAF50),
+                          color: AppTheme.greenIcon,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
                         ),
@@ -95,16 +100,18 @@ class PatientHeaderCard extends StatelessWidget {
             children: [
               Expanded(
                 child: _buildInfoItem(
+                  context,
                   'Age',
                   '${patient.age} years',
-                  Colors.grey[600]!,
+                  theme.colorScheme.onSurface,
                 ),
               ),
               Expanded(
                 child: _buildInfoItem(
+                  context,
                   'Gender',
                   patient.gender,
-                  Colors.grey[600]!,
+                  theme.colorScheme.onSurface,
                 ),
               ),
             ],
@@ -114,16 +121,18 @@ class PatientHeaderCard extends StatelessWidget {
             children: [
               Expanded(
                 child: _buildInfoItem(
+                  context,
                   'Blood Group',
                   patient.bloodGroup,
-                  const Color(0xFFD32F2F),
+                  AppTheme.redIcon,
                 ),
               ),
               Expanded(
                 child: _buildInfoItem(
+                  context,
                   'Weight',
                   patient.weight,
-                  Colors.grey[600]!,
+                  theme.colorScheme.onSurface,
                 ),
               ),
             ],
@@ -133,13 +142,15 @@ class PatientHeaderCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoItem(String label, String value, Color valueColor) {
+  Widget _buildInfoItem(BuildContext context, String label, String value, Color valueColor) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: TextStyle(fontSize: 12.sp, color: Colors.grey[500]),
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
         SizedBox(height: 4.h),
         Text(
@@ -161,6 +172,9 @@ class PatientHeaderCard extends StatelessWidget {
     if (parts.length >= 2) {
       return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
     }
-    return name.substring(0, 2).toUpperCase();
+    if (name.length >= 2) {
+      return name.substring(0, 2).toUpperCase();
+    }
+    return name.toUpperCase();
   }
 }

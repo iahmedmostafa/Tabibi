@@ -7,6 +7,7 @@ import 'package:tabibi/features/doctor/profile/presentation/widget/danger_zone_s
 import 'package:tabibi/features/doctor/profile/presentation/widget/profile_header.dart';
 import 'package:tabibi/features/doctor/profile/presentation/widget/quick_action_section.dart';
 import 'package:tabibi/features/doctor/profile/presentation/widget/security_section.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -16,11 +17,11 @@ class SettingsPage extends StatelessWidget {
     final profile = MockDoctorData.getDoctorProfile();
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text('Settings', style: TextStyle(fontSize: 20.sp)),
+        title: Text(AppStrings.doctorAccount, style: TextStyle(fontSize: 20.sp)),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
         automaticallyImplyLeading: false,
       ),
