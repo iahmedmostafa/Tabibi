@@ -20,26 +20,27 @@ class DangerZoneSection extends StatelessWidget {
         if (state is LogOutSuccess) {
           context.go(AppRoutes.login);
         } else if (state is LogOutError) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message)),
+          );
         }
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Text(
               'Danger Zone',
               style: TextStyle(
-                fontSize: 16.sp,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
+                letterSpacing: 0.3,
                 color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: 10.h),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Column(
@@ -47,17 +48,15 @@ class DangerZoneSection extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton.icon(
-                    onPressed: () {
-                      _showLogoutDialog(context);
-                    },
-                    icon: Icon(Icons.logout, size: 20.sp),
+                    onPressed: () => _showLogoutDialog(context),
+                    icon: Icon(Icons.logout_rounded, size: 20.sp),
                     label: const Text(AppStrings.doctorLogout),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: theme.colorScheme.onSurfaceVariant,
                       side: BorderSide(color: theme.dividerColor),
                       padding: EdgeInsets.symmetric(vertical: 16.h),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
+                        borderRadius: BorderRadius.circular(14.r),
                       ),
                     ),
                   ),
@@ -66,18 +65,16 @@ class DangerZoneSection extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton.icon(
-                    onPressed: () {
-                      _showDeleteAccountDialog(context);
-                    },
-                    icon: Icon(Icons.delete_outline, size: 20.sp),
+                    onPressed: () => _showDeleteAccountDialog(context),
+                    icon: Icon(Icons.delete_outline_rounded, size: 20.sp),
                     label: const Text('Delete Account'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppTheme.redIcon,
                       side: const BorderSide(color: AppTheme.redPastel),
-                      backgroundColor: AppTheme.redPastel.withValues(alpha: 0.1),
+                      backgroundColor: AppTheme.redPastel.withValues(alpha: 0.15),
                       padding: EdgeInsets.symmetric(vertical: 16.h),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
+                        borderRadius: BorderRadius.circular(14.r),
                       ),
                     ),
                   ),
@@ -105,6 +102,7 @@ class DangerZoneSection extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
         title: const Text('Delete Account'),
         content: const Text(
           'Are you sure you want to delete your account? This action cannot be undone.',
@@ -121,14 +119,12 @@ class DangerZoneSection extends StatelessWidget {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.redIcon,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
             ),
-            child: const Text('Delete'),
+            child: const Text('Delete', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
     );
   }
 }
-
-
-

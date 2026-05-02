@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class SettingsItem extends StatelessWidget {
   final IconData icon;
   final Color? iconColor;
+  final Color? iconBgColor;
   final String title;
   final String? subtitle;
   final VoidCallback onTap;
@@ -12,6 +13,7 @@ class SettingsItem extends StatelessWidget {
     super.key,
     required this.icon,
     this.iconColor,
+    this.iconBgColor,
     required this.title,
     this.subtitle,
     required this.onTap,
@@ -20,16 +22,22 @@ class SettingsItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final defaultIconBg = isDark
+        ? theme.colorScheme.surfaceContainerHighest
+        : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.7);
+
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(12.r),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
         child: Row(
           children: [
             Container(
               padding: EdgeInsets.all(10.w),
               decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest,
+                color: iconBgColor ?? defaultIconBg,
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: Icon(
@@ -46,13 +54,13 @@ class SettingsItem extends StatelessWidget {
                   Text(
                     title,
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: 15.sp,
                       fontWeight: FontWeight.w500,
                       color: theme.colorScheme.onSurface,
                     ),
                   ),
-                  if (subtitle != null) ...[
-                    SizedBox(height: 4.h),
+                  if (subtitle != null && subtitle!.isNotEmpty) ...[
+                    SizedBox(height: 3.h),
                     Text(
                       subtitle!,
                       style: TextStyle(
@@ -64,7 +72,11 @@ class SettingsItem extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(Icons.chevron_right, color: theme.dividerColor, size: 20.sp),
+            Icon(
+              Icons.chevron_right_rounded,
+              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+              size: 22.sp,
+            ),
           ],
         ),
       ),

@@ -45,4 +45,5 @@ class AppRoutes {
   static const doctorReviewsPage = '/doctor/reviews_page';
   static const doctorConversations = '/doctor/conversations';
   static const doctorChat = '/doctor/chat';
+  static const doctorEditProfile = '/doctor/edit_profile';
 }

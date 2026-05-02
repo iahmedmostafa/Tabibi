@@ -8,9 +8,9 @@ class DividerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Divider(
       height: 1.h,
-      indent: 60.w,
+      indent: 62.w,
       endIndent: 16.w,
-      color: Colors.grey[200],
+      color: Theme.of(context).dividerColor.withValues(alpha: 0.5),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/doctor/profile/presentation/widget/divider.dart';
+import 'package:tabibi/features/doctor/profile/presentation/widget/section_card.dart';
 import 'package:tabibi/features/doctor/profile/presentation/widget/settings_item.dart';
 
 class SecuritySection extends StatelessWidget {
@@ -8,42 +9,28 @@ class SecuritySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Text(
-            'Security',
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
+    return SectionCard(
+      title: 'Security',
+      child: Column(
+        children: [
+          SettingsItem(
+            icon: Icons.lock_outline_rounded,
+            iconColor: AppTheme.purpleIcon,
+            iconBgColor: AppTheme.purplePastel,
+            title: 'Change Password',
+            onTap: () {},
           ),
-        ),
-        SizedBox(height: 12.h),
-        Container(
-          color: theme.colorScheme.surface,
-          child: Column(
-            children: [
-              SettingsItem(
-                icon: Icons.lock_outline,
-                title: 'Change Password',
-                onTap: () {},
-              ),
-              const DividerWidget(),
-              SettingsItem(
-                icon: Icons.notifications_outlined,
-                title: 'Notifications',
-                subtitle: 'Enabled',
-                onTap: () {},
-              ),
-            ],
+          const DividerWidget(),
+          SettingsItem(
+            icon: Icons.notifications_outlined,
+            iconColor: AppTheme.orangeIcon,
+            iconBgColor: AppTheme.orangePastel,
+            title: 'Notifications',
+            subtitle: 'Enabled',
+            onTap: () {},
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

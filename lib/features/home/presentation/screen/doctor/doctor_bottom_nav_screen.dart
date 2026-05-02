@@ -6,7 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/features/doctor/chat/presentation/pages/doctor_conversations_screen.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/pages/dashboard_page.dart';
-import 'package:tabibi/features/doctor/profile/presentation/pages/settings_page.dart';
+import 'package:tabibi/features/doctor/profile/presentation/pages/doctor_profile_page.dart';
 import 'package:tabibi/features/doctor/schedule/presentation/pages/my_schedule_page.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/profile_cubit.dart';
 
@@ -25,14 +25,14 @@ class _DoctorBottomNavScreenState extends State<DoctorBottomNavScreen> {
     DashboardPage(showBottomNav: false),
     MySchedulePage(showBottomNav: false),
     DoctorConversationsScreen(),
-    SettingsPage(),
+    DoctorProfilePage(),
   ];
 
   static const _items = [
     _NavItem(icon: Iconsax.home_2,      activeIcon: Iconsax.home_25,      label: 'Home'),
     _NavItem(icon: Iconsax.calendar_1,  activeIcon: Iconsax.calendar_15,  label: 'Schedule'),
     _NavItem(icon: Iconsax.message,     activeIcon: Iconsax.message5,     label: 'Chats'),
-    _NavItem(icon: Iconsax.setting_2,   activeIcon: Iconsax.setting_25,   label: 'Settings'),
+    _NavItem(icon: Iconsax.user,        activeIcon: Iconsax.user,         label: 'Profile'),
   ];
 
   @override
