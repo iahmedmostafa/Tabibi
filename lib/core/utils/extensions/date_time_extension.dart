@@ -20,7 +20,7 @@ extension DateTimeParsing on String {
     result = result.replaceAllMapped(isoRegex, (match) {
       try {
         final isoString = match.group(0)!;
-        final date = BackendDateTime.parseUtc(isoString).toLocal();
+        final date = DateTime.parse(isoString);
         return DateFormat('MMM dd, yyyy - hh:mm a').format(date);
       } catch (e) {
         return match.group(0)!;

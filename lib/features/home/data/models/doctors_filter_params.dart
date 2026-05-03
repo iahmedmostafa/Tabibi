@@ -7,6 +7,8 @@ class DoctorsFilterParams {
   final String? cityId;
   final String? departmentId;
   final String? sort;
+  final String? sortByRating;
+  final String? sortByReviewCount;
   final String? fields;
   final int pageSize;
 
@@ -16,6 +18,8 @@ class DoctorsFilterParams {
     this.cityId,
     this.departmentId,
     this.sort,
+    this.sortByRating,
+    this.sortByReviewCount,
     this.fields = defaultFields,
     this.pageSize = 10,
   });
@@ -26,6 +30,8 @@ class DoctorsFilterParams {
     String? cityId,
     String? departmentId,
     String? sort,
+    String? sortByRating,
+    String? sortByReviewCount,
     String? fields,
     int? pageSize,
     bool clearQuery = false,
@@ -33,6 +39,8 @@ class DoctorsFilterParams {
     bool clearCity = false,
     bool clearDepartment = false,
     bool clearSort = false,
+    bool clearSortByRating = false,
+    bool clearSortByReviewCount = false,
     bool clearFields = false,
   }) {
     return DoctorsFilterParams(
@@ -41,6 +49,8 @@ class DoctorsFilterParams {
       cityId: clearCity ? null : cityId ?? this.cityId,
       departmentId: clearDepartment ? null : departmentId ?? this.departmentId,
       sort: clearSort ? null : sort ?? this.sort,
+      sortByRating: clearSortByRating ? null : sortByRating ?? this.sortByRating,
+      sortByReviewCount: clearSortByReviewCount ? null : sortByReviewCount ?? this.sortByReviewCount,
       fields: clearFields ? null : fields ?? this.fields,
       pageSize: pageSize ?? this.pageSize,
     );
@@ -63,6 +73,12 @@ class DoctorsFilterParams {
     addIfPresent('CityId', cityId);
     addIfPresent('DepartmentId', departmentId);
     addIfPresent('Sort', sort);
+    if (sortByRating?.toLowerCase() == 'asc' || sortByRating?.toLowerCase() == 'desc') {
+      addIfPresent('SortByRating', sortByRating);
+    }
+    if (sortByReviewCount?.toLowerCase() == 'asc' || sortByReviewCount?.toLowerCase() == 'desc') {
+      addIfPresent('SortByReviewCount', sortByReviewCount);
+    }
     addIfPresent('Fields', fields);
 
     return params;
@@ -73,5 +89,7 @@ class DoctorsFilterParams {
       cityId != null ||
       departmentId != null ||
       (sort != null && sort!.trim().isNotEmpty) ||
+      (sortByRating != null && sortByRating!.trim().isNotEmpty && (sortByRating!.toLowerCase() == 'asc' || sortByRating!.toLowerCase() == 'desc')) ||
+      (sortByReviewCount != null && sortByReviewCount!.trim().isNotEmpty && (sortByReviewCount!.toLowerCase() == 'asc' || sortByReviewCount!.toLowerCase() == 'desc')) ||
       pageSize != 10;      
 }

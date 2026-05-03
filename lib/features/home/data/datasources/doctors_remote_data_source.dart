@@ -13,6 +13,8 @@ abstract class DoctorsRemoteDataSource {
     int? gender,
     String? cityId,
     String? sort,
+    String? sortByRating,
+    String? sortByReviewCount,
     String? fields,
     DoctorsFilterParams? filters,
   });
@@ -32,6 +34,8 @@ class DoctorsRemoteDataSourceImpl implements DoctorsRemoteDataSource {
     int? gender,
     String? cityId,
     String? sort,
+    String? sortByRating,
+    String? sortByReviewCount,
     String? fields,
     DoctorsFilterParams? filters,
   }) async {
@@ -44,6 +48,8 @@ class DoctorsRemoteDataSourceImpl implements DoctorsRemoteDataSource {
             cityId: cityId,
             departmentId: departmentId,
             sort: sort,
+            sortByRating: sortByRating,
+            sortByReviewCount: sortByReviewCount,
             fields: fields,
             pageSize: pageSize,
           );

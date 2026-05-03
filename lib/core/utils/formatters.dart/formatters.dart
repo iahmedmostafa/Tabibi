@@ -24,7 +24,6 @@ class Formatter {
   }
 
   /// Converts a UTC ISO 8601 date string to 12-hour LOCAL time for display.
-  /// Converts to device timezone for user-friendly display.
   static String formatIsoTo12Hour(String isoDate) {
     if (isoDate.isEmpty) return "";
     try {
@@ -35,8 +34,8 @@ class Formatter {
     }
   }
 
-  /// Converts a 24-hour time string (e.g., from backend schedule) to 12-hour format.
-  /// Example: "14:25:00" → "02:25 PM"
+  /// Converts a 24-hour UTC time string from backend schedule to 12-hour local format.
+  /// Example: "21:25:00" (UTC) → "12:25 AM" (UTC+3)
   static String formatTo12Hour(String time24) {
     if (time24.isEmpty) return "";
     try {
@@ -46,15 +45,16 @@ class Formatter {
       final hour = int.parse(parts[0]);
       final minute = int.parse(parts[1]);
 
-      // Create a DateTime with today's date and the given time in LOCAL timezone
+      // Backend stores schedule times in UTC — convert to local for display
       final now = DateTime.now();
-      final localDateTime = DateTime(
+      final utcDateTime = DateTime.utc(
         now.year,
         now.month,
         now.day,
         hour,
         minute,
       );
+      final localDateTime = utcDateTime.toLocal();
 
       return DateFormat('hh:mm a').format(localDateTime);
     } catch (e) {
@@ -73,7 +73,6 @@ class Formatter {
   }
 
   /// Converts a UTC ISO 8601 date string to local date+time for display.
-  /// Converts to device timezone for user-friendly display.
   static String formatIsoToDateTime(String isoDate) {
     if (isoDate.isEmpty) return "";
     try {
@@ -83,11 +82,4 @@ class Formatter {
       return isoDate;
     }
   }
-
-  // static String formatCurrency(double amount) {
-  //   return NumberFormat.currency(
-  //     locale: 'en_US',
-  //     symbol: '\$',
-  //   ).format(amount); // Customize the currency locale and symbol as needed
-  // }
 }

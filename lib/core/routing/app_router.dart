@@ -376,7 +376,7 @@ final GoRouter router = GoRouter(
                 ..getDoctors(
                   filters: const DoctorsFilterParams(
                     pageSize: 10,
-                    sort: 'YearsOfExperience desc',
+                    sortByRating: 'desc',
                   ),
                 ),
             ),

@@ -32,9 +32,12 @@ class _SchedulePageState extends State<SchedulePage> {
   ];
 
   String _formatTime(TimeOfDay time) {
-    // Send local time directly to the backend for schedules
-    final hour = time.hour.toString().padLeft(2, '0');
-    final minute = time.minute.toString().padLeft(2, '0');
+    // Convert local time to UTC before sending to backend
+    final now = DateTime.now();
+    final localDt = DateTime(now.year, now.month, now.day, time.hour, time.minute);
+    final utcDt = localDt.toUtc();
+    final hour = utcDt.hour.toString().padLeft(2, '0');
+    final minute = utcDt.minute.toString().padLeft(2, '0');
     return '$hour:$minute:00';
   }
 

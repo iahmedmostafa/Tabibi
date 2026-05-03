@@ -25,9 +25,6 @@ class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
     _SortOption('Default', null),
     _SortOption('Name A-Z', 'Name'),
     _SortOption('Name Z-A', 'Name desc'),
-    _SortOption('Highest rating', 'Rating desc'),
-    _SortOption('Lowest rating', 'Rating'),
-    _SortOption('Most reviewed', 'ReviewCount desc'),
     _SortOption('Lowest fee', 'ConsultationFee'),
     _SortOption('Highest fee', 'ConsultationFee desc'),
     _SortOption('Most experienced', 'YearsOfExperience desc'),
@@ -214,6 +211,78 @@ class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
                       clearSort: value == null,
                     ),
                   ),
+                ),
+                SizedBox(height: 18.h),
+                const _SectionLabel('Rating Order'),
+                SizedBox(height: 8.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _choice(
+                        'None',
+                        _draft.sortByRating == null,
+                        () => setState(
+                          () => _draft = _draft.copyWith(clearSortByRating: true),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: _choice(
+                        'Highest',
+                        _draft.sortByRating?.toLowerCase() == 'desc',
+                        () => setState(
+                          () => _draft = _draft.copyWith(sortByRating: 'desc'),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: _choice(
+                        'Lowest',
+                        _draft.sortByRating?.toLowerCase() == 'asc',
+                        () => setState(
+                          () => _draft = _draft.copyWith(sortByRating: 'asc'),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 18.h),
+                const _SectionLabel('Review Count Order'),
+                SizedBox(height: 8.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _choice(
+                        'None',
+                        _draft.sortByReviewCount == null,
+                        () => setState(
+                          () => _draft = _draft.copyWith(clearSortByReviewCount: true),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: _choice(
+                        'Most',
+                        _draft.sortByReviewCount?.toLowerCase() == 'desc',
+                        () => setState(
+                          () => _draft = _draft.copyWith(sortByReviewCount: 'desc'),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: _choice(
+                        'Least',
+                        _draft.sortByReviewCount?.toLowerCase() == 'asc',
+                        () => setState(
+                          () => _draft = _draft.copyWith(sortByReviewCount: 'asc'),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 18.h),
                 Row(
