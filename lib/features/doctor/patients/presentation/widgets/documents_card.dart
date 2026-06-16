@@ -7,11 +7,13 @@ class DocumentsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(color: theme.dividerColor),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,7 +23,11 @@ class DocumentsCard extends StatelessWidget {
             children: [
               Text(
                 'Documents & Scans',
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.onSurface,
+                ),
               ),
               Text(
                 'View All',
@@ -34,11 +40,11 @@ class DocumentsCard extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                _buildDocumentPlaceholder(Icons.image_outlined),
+                _buildDocumentPlaceholder(Icons.image_outlined, context),
                 SizedBox(width: 12.w),
-                _buildDocumentPlaceholder(Icons.description_outlined),
+                _buildDocumentPlaceholder(Icons.description_outlined, context),
                 SizedBox(width: 12.w),
-                _buildAddDocument(),
+                _buildAddDocument(context),
               ],
             ),
           ),
@@ -47,28 +53,38 @@ class DocumentsCard extends StatelessWidget {
     );
   }
 
-  Widget _buildDocumentPlaceholder(IconData icon) {
+  Widget _buildDocumentPlaceholder(IconData icon, BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: 100.w,
       height: 100.w,
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: theme.colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(12.r),
       ),
-      child: Icon(icon, size: 40.sp, color: Colors.grey[400]),
+      child: Icon(
+        icon,
+        size: 40.sp,
+        color: theme.colorScheme.onSurfaceVariant,
+      ),
     );
   }
 
-  Widget _buildAddDocument() {
+  Widget _buildAddDocument(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: 100.w,
       height: 100.w,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: Colors.grey[300]!, width: 2),
+        border: Border.all(color: theme.dividerColor, width: 2),
       ),
-      child: Icon(Icons.add, size: 40.sp, color: Colors.grey[400]),
+      child: Icon(
+        Icons.add,
+        size: 40.sp,
+        color: theme.colorScheme.onSurfaceVariant,
+      ),
     );
   }
 }

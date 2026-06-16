@@ -20,9 +20,9 @@ class EarningsTransactionCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
-        color: AppColors.grey50,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: AppColors.grey200),
+        border: Border.all(color: Theme.of(context).dividerColor),
       ),
       child: Row(
         children: [
@@ -31,7 +31,7 @@ class EarningsTransactionCard extends StatelessWidget {
             child: Container(
               width: 48.w,
               height: 48.w,
-              color: AppColors.grey100,
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               child: hasAvatar
                   ? CachedNetworkImage(
                       imageUrl: transaction.patientAvatarUrl!,
@@ -51,7 +51,7 @@ class EarningsTransactionCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.grey900,
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontWeight: FontWeight.w800,
                   ),
                 ),

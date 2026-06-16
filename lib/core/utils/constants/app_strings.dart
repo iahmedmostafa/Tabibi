@@ -144,4 +144,28 @@ class AppStrings {
   static const changePhoto = "Change Photo";
   static const nameRequired = "Name is required";
   static const cityRequired = "City is required";
+
+  // Doctor Side Strings
+  static const doctorQuickActions = "Quick Actions";
+  static const doctorTodayAppointments = "Today's Appointments";
+  static const doctorSeeAll = "See All";
+  static const doctorNoAppointmentsToday = "No appointments today";
+  static const doctorAppointmentRequests = "Appointment Requests";
+  static const doctorSearchPatients = "Search patients...";
+  static const doctorNoRequestsFound = "No requests found";
+  static const doctorPatientProfile = "Patient Profile";
+  static const doctorEdit = "Edit";
+  static const doctorActivePatient = "Active Patient";
+  static const doctorAccount = "Account";
+  static const doctorSecurity = "Security";
+  static const doctorDangerZone = "Danger Zone";
+  static const doctorDeleteAccount = "Delete Account";
+  static const doctorEarnings = "Earnings";
+  static const doctorLifetimeEarnings = "Lifetime Earnings";
+  static const doctorThisMonth = "This Month";
+  static const doctorCreatePrescription = "Create Prescription";
+  static const doctorClinicalNotes = "Clinical Notes";
+  static const doctorMedicines = "Medicines";
+  static const doctorWelcomeBack = "Welcome back,";
+  static const doctorLogout = "Log Out";
 }

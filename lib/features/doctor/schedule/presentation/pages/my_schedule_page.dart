@@ -71,8 +71,8 @@ class _MySchedulePageState extends State<MySchedulePage> {
                           child: appointments.isEmpty
                               ? const ScheduleEmptyState()
                               : ListView.builder(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 16.w,
+                                  padding: EdgeInsets.fromLTRB(
+                                    16.w, 0, 16.w, 16.h,
                                   ),
                                   itemCount: appointments.length,
                                   itemBuilder: (context, index) =>

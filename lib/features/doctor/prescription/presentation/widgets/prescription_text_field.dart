@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/theme/theme.dart';
 
 class PrescriptionTextField extends StatelessWidget {
   final TextEditingController? controller;
@@ -26,7 +26,8 @@ class PrescriptionTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,7 +36,7 @@ class PrescriptionTextField extends StatelessWidget {
           label,
           style: textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w700,
-            color: AppColors.grey800,
+            color: theme.colorScheme.onSurface,
           ),
         ),
         SizedBox(height: 8.h),
@@ -50,31 +51,41 @@ class PrescriptionTextField extends StatelessWidget {
               ? TextInputAction.newline
               : TextInputAction.next,
           onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+          style: textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurface,
+          ),
           decoration: InputDecoration(
             hintText: hintText,
-            prefixIcon: Icon(icon, color: AppColors.grey400, size: 20.sp),
+            hintStyle: textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+            ),
+            prefixIcon: Icon(
+              icon,
+              color: theme.colorScheme.onSurfaceVariant,
+              size: 20.sp,
+            ),
             alignLabelWithHint: maxLines > 1,
             filled: true,
-            fillColor: AppColors.grey50,
+            fillColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
             contentPadding: EdgeInsets.symmetric(
               horizontal: 16.w,
               vertical: 14.h,
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.grey200),
+              borderSide: BorderSide(color: theme.dividerColor),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.grey200),
+              borderSide: BorderSide(color: theme.dividerColor),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.teal, width: 1.4),
+              borderSide: BorderSide(color: AppTheme.primaryColor, width: 1.4),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.error),
+              borderSide: const BorderSide(color: AppTheme.redIcon),
             ),
           ),
         ),

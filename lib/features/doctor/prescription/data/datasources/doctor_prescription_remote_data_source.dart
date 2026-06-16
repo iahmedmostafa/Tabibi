@@ -2,9 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:tabibi/core/error/exceptions.dart';
 import 'package:tabibi/core/network/api_constance.dart';
 import 'package:tabibi/core/network/error_message_model.dart';
+import 'package:tabibi/features/booking/data/models/prescription_model.dart';
 import 'package:tabibi/features/doctor/prescription/data/models/create_prescription_request_model.dart';
 
 abstract class DoctorPrescriptionRemoteDataSource {
+  Future<PrescriptionModel> getPrescription({required String bookingId});
+
   Future<void> createPrescription({
     required String appointmentId,
     required CreatePrescriptionRequestModel request,
@@ -18,6 +21,29 @@ class DoctorPrescriptionRemoteDataSourceImpl
   final Dio dio;
 
   DoctorPrescriptionRemoteDataSourceImpl(this.dio);
+
+  @override
+  Future<PrescriptionModel> getPrescription({required String bookingId}) async {
+    try {
+      final response = await dio.get(ApiConstance.prescription(bookingId));
+      final responseData = response.data;
+      final Map<String, dynamic> jsonMap = responseData is Map<String, dynamic> && responseData.containsKey('prescription') && responseData['prescription'] != null 
+          ? responseData['prescription'] 
+          : responseData;
+          
+      return PrescriptionModel.fromJson(jsonMap);
+    } on DioException catch (e) {
+      if (e.response != null) {
+        _throwServerException(e.response!.statusCode, e.response!.data);
+      }
+      throw ServerException(
+        errorMessageModel: ErrorMessageModel(
+          statusCode: 500,
+          statusMessage: e.message ?? 'Unknown Error',
+        ),
+      );
+    }
+  }
 
   @override
   Future<void> createPrescription({

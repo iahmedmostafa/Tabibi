@@ -30,9 +30,9 @@ class PrescriptionEntryCard extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(18.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(18.r),
-        border: Border.all(color: AppColors.grey200),
+        border: Border.all(color: Theme.of(context).dividerColor),
         boxShadow: [
           BoxShadow(
             color: AppColors.midnightBlue.withValues(alpha: 0.08),
@@ -69,7 +69,7 @@ class PrescriptionEntryCard extends StatelessWidget {
                           ? 'Prescription Required'
                           : 'Prescription Unavailable',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.grey900,
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
@@ -80,7 +80,7 @@ class PrescriptionEntryCard extends StatelessWidget {
                           : policy.disabledMessage ??
                               'Prescription cannot be written for this appointment.',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.grey500,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         height: 1.35,
                       ),
                     ),
@@ -106,7 +106,9 @@ class PrescriptionEntryCard extends StatelessWidget {
                       onPrescriptionRouteResult(completed);
                     }
                   : null,
-              icon: Icon(Iconsax.edit_2, size: 18.sp),
+              icon: Icon(
+                  policy.canWrite ? Iconsax.edit_2 : Iconsax.document_text,
+                  size: 18.sp),
               label: const Text('Write Prescription'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.midnightBlue,

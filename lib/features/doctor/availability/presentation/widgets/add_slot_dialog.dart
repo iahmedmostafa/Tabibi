@@ -30,7 +30,7 @@ class _AddSlotDialogState extends State<AddSlotDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           DropdownButtonFormField<String>(
-            value: selectedDay,
+            initialValue: selectedDay,
             decoration: const InputDecoration(
               labelText: 'Select Day',
               border: OutlineInputBorder(),

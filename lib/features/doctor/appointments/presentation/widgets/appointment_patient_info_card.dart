@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/doctor/appointments/domain/entities/appointment_details_entity.dart';
 import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
+import 'package:tabibi/features/doctor/shared/utils/doctor_status_utils.dart';
 
 class AppointmentPatientInfoCard extends StatelessWidget {
   final PatientEntity patient;
@@ -20,8 +20,8 @@ class AppointmentPatientInfoCard extends StatelessWidget {
     final tt = Theme.of(context).textTheme;
     final hasImage = patient.avatarUrl != null && patient.avatarUrl!.isNotEmpty;
     final statusLabel = DoctorAppointmentStatus.label(status);
-    final statusColor = _statusColor(status);
-    final statusBg = _statusBg(status);
+    final statusColor = DoctorStatusUtils.getStatusColor(status);
+    final statusBg = DoctorStatusUtils.getStatusBackgroundColor(status);
 
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -55,16 +55,16 @@ class AppointmentPatientInfoCard extends StatelessWidget {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       ),
                       errorWidget: (_, __, ___) => Icon(
-                        Icons.person,
-                        size: 32.sp,
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        Icons.person_rounded,
+                        size: 36.sp,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
                       ),
                     ),
                   )
                 : Icon(
-                    Icons.person,
-                    size: 32.sp,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    Icons.person_rounded,
+                    size: 36.sp,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
                   ),
           ),
           SizedBox(width: 16.w),
@@ -76,6 +76,7 @@ class AppointmentPatientInfoCard extends StatelessWidget {
                   patient.name,
                   style: tt.bodyLarge?.copyWith(
                     color: Theme.of(context).colorScheme.onSurface,
+                    fontWeight: FontWeight.w700,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -92,16 +93,16 @@ class AppointmentPatientInfoCard extends StatelessWidget {
                   ),
                 ],
 
-                SizedBox(height: 8.h),
+                SizedBox(height: 10.h),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
                   decoration: BoxDecoration(
                     color: statusBg,
-                    borderRadius: BorderRadius.circular(4.r),
+                    borderRadius: BorderRadius.circular(6.r),
                   ),
                   child: Text(
                     statusLabel,
-                    style: tt.bodySmall?.copyWith(color: statusColor),
+                    style: tt.bodySmall?.copyWith(color: statusColor, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -110,31 +111,5 @@ class AppointmentPatientInfoCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Color _statusColor(int status) {
-    switch (status) {
-      case DoctorAppointmentStatus.upcoming:
-        return AppTheme.blueIcon;
-      case DoctorAppointmentStatus.completed:
-        return AppTheme.greenIcon;
-      case DoctorAppointmentStatus.refunded:
-        return AppTheme.redIcon;
-      default:
-        return Colors.grey;
-    }
-  }
-
-  Color _statusBg(int status) {
-    switch (status) {
-      case DoctorAppointmentStatus.upcoming:
-        return AppTheme.bluePastel;
-      case DoctorAppointmentStatus.completed:
-        return AppTheme.greenPastel;
-      case DoctorAppointmentStatus.refunded:
-        return AppTheme.redPastel;
-      default:
-        return Colors.grey.shade100;
-    }
   }
 }

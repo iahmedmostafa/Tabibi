@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/theme/theme.dart';
 
 class MedicinesHeader extends StatelessWidget {
   final int count;
@@ -15,12 +15,13 @@ class MedicinesHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor != Colors.transparent ? theme.cardColor : theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(18.r),
-        border: Border.all(color: AppColors.grey200),
+        border: Border.all(color: theme.dividerColor),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.045),
@@ -35,10 +36,10 @@ class MedicinesHeader extends StatelessWidget {
             width: 42.w,
             height: 42.w,
             decoration: BoxDecoration(
-              color: AppColors.teal.withValues(alpha: 0.12),
+              color: AppTheme.primaryColor.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(13.r),
             ),
-            child: Icon(Iconsax.hospital, color: AppColors.teal, size: 22.sp),
+            child: Icon(Iconsax.hospital, color: AppTheme.primaryColor, size: 22.sp),
           ),
           SizedBox(width: 12.w),
           Expanded(
@@ -47,17 +48,15 @@ class MedicinesHeader extends StatelessWidget {
               children: [
                 Text(
                   'Medicines',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.grey900,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
                 SizedBox(height: 3.h),
                 Text(
                   '$count ${count == 1 ? 'item' : 'items'} added to this prescription',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodySmall?.copyWith(color: AppColors.grey500),
+                  style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                 ),
               ],
             ),
@@ -68,7 +67,7 @@ class MedicinesHeader extends StatelessWidget {
             icon: Icon(Icons.add, size: 18.sp),
             label: const Text('Add'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.teal,
+              backgroundColor: AppTheme.primaryColor,
               foregroundColor: Colors.white,
               elevation: 0,
               padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),

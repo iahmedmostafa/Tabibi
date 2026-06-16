@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/cubit/create_prescription_cubit.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/cubit/create_prescription_state.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/pages/create_prescription_args.dart';
@@ -19,20 +20,20 @@ class CreatePrescriptionPage extends StatelessWidget {
     return BlocListener<CreatePrescriptionCubit, CreatePrescriptionState>(
       listener: _handlePrescriptionState,
       child: Scaffold(
-        backgroundColor: AppColors.grey50,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
           title: Text(
-            'Create Prescription',
+            AppStrings.doctorCreatePrescription,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: AppColors.grey900,
+              color: Theme.of(context).colorScheme.onSurface,
               fontWeight: FontWeight.w800,
             ),
           ),
           centerTitle: true,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
+            icon: Icon(Icons.arrow_back, size: 24.sp, color: Theme.of(context).colorScheme.onSurface),
             onPressed: () => context.pop(),
           ),
         ),

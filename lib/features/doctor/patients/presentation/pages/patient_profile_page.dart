@@ -3,15 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/features/doctor/patients/domain/entities/patient.dart';
 import 'package:tabibi/features/doctor/patients/presentation/cubit/patient_profile_flow_cubit.dart';
-import 'package:tabibi/features/doctor/patients/presentation/widgets/allergies_card.dart';
-import 'package:tabibi/features/doctor/patients/presentation/widgets/contact_information_card.dart';
-import 'package:tabibi/features/doctor/patients/presentation/widgets/documents_card.dart';
-import 'package:tabibi/features/doctor/patients/presentation/widgets/medical_history_card.dart';
 import 'package:tabibi/features/doctor/patients/presentation/widgets/patient_header_card.dart';
 import 'package:tabibi/features/doctor/patients/presentation/widgets/prescription_entry_card.dart';
-import 'package:tabibi/features/doctor/patients/presentation/widgets/previous_visits_card.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/policies/prescription_write_policy.dart';
 
 class PatientProfilePage extends StatelessWidget {
@@ -46,24 +42,30 @@ class PatientProfilePage extends StatelessWidget {
               _popProfile(context);
             },
             child: Scaffold(
-              backgroundColor: Colors.grey[50],
+              backgroundColor: Theme.of(context).colorScheme.surface,
               appBar: AppBar(
                 title: Text(
-                  'Patient Profile',
-                  style: TextStyle(fontSize: 20.sp),
+                  AppStrings.doctorPatientProfile,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 centerTitle: true,
-                backgroundColor: Colors.white,
+                backgroundColor: Theme.of(context).colorScheme.surface,
                 elevation: 0,
                 leading: IconButton(
-                  icon: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    size: 24.sp,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                   onPressed: () => _popProfile(context),
                 ),
                 actions: [
                   TextButton(
                     onPressed: () {},
                     child: Text(
-                      'Edit',
+                      AppStrings.doctorEdit,
                       style: TextStyle(
                         color: AppTheme.primaryColor,
                         fontSize: 16.sp,
@@ -85,7 +87,8 @@ class PatientProfilePage extends StatelessWidget {
                         PatientProfileFlowState
                       >(
                         builder: (context, flowState) {
-                          if (flowState.prescriptionCompleted) {
+                          if (flowState.prescriptionCompleted || 
+                              prescriptionWritePolicy.restriction == PrescriptionWriteRestriction.prescriptionExists) {
                             return const SizedBox.shrink();
                           }
 
@@ -104,16 +107,7 @@ class PatientProfilePage extends StatelessWidget {
                             ],
                           );
                         },
-                      ),
-                    ContactInformationCard(patient: patient),
-                    SizedBox(height: 16.h),
-                    MedicalHistoryCard(patient: patient),
-                    SizedBox(height: 16.h),
-                    AllergiesCard(patient: patient),
-                    SizedBox(height: 16.h),
-                    PreviousVisitsCard(patient: patient),
-                    SizedBox(height: 16.h),
-                    const DocumentsCard(),
+                    ),
                     SizedBox(height: 24.h),
                   ],
                 ),

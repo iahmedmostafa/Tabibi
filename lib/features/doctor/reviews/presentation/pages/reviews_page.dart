@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
+import 'package:tabibi/core/animations/fade_in_slide.dart';
+import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/doctor/reviews/domain/entities/review.dart';
 import 'package:tabibi/features/doctor/reviews/presentation/cubit/reviews_cubit.dart';
 import 'package:tabibi/features/doctor/reviews/presentation/cubit/reviews_state.dart';
@@ -16,19 +18,16 @@ class ReviewsPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => sl<ReviewsCubit>()..getReviews(),
       child: Scaffold(
-        backgroundColor: Colors.grey[50],
         appBar: AppBar(
           title: Text('Reviews & Ratings', style: TextStyle(fontSize: 20.sp)),
           centerTitle: true,
-          backgroundColor: Colors.white,
-          elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
+            icon: Icon(Icons.arrow_back, size: 24.sp),
             onPressed: () => context.pop(),
           ),
           actions: [
             IconButton(
-              icon: Icon(Icons.filter_list, size: 24.sp, color: Colors.black),
+              icon: Icon(Icons.filter_list, size: 24.sp),
               onPressed: () {},
             ),
           ],
@@ -71,17 +70,17 @@ class _RatingSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocBuilder<ReviewsCubit, ReviewsState>(
       buildWhen: (previous, current) => previous.summary != current.summary,
       builder: (context, state) {
         final summary = state.summary;
         return Container(
           padding: EdgeInsets.all(24.w),
-          color: Colors.white,
+          color: theme.cardColor,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Left side - Average rating
               Expanded(
                 flex: 2,
                 child: Column(
@@ -91,6 +90,7 @@ class _RatingSummaryCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 48.sp,
                         fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.onSurface,
                       ),
                     ),
                     SizedBox(height: 8.h),
@@ -100,7 +100,7 @@ class _RatingSummaryCard extends StatelessWidget {
                         5,
                         (index) => Icon(
                           Icons.star,
-                          color: const Color(0xFFFFB74D),
+                          color: AppTheme.orangeIcon,
                           size: 20.sp,
                         ),
                       ),
@@ -110,14 +110,13 @@ class _RatingSummaryCard extends StatelessWidget {
                       '${summary.totalReviews} reviews',
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: Colors.grey[600],
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
                 ),
               ),
               SizedBox(width: 24.w),
-              // Right side - Rating distribution
               Expanded(
                 flex: 3,
                 child: Column(
@@ -155,24 +154,27 @@ class _RatingBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       children: [
         Text(
           '$rating',
-          style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
+          style: TextStyle(
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w500,
+            color: theme.colorScheme.onSurface,
+          ),
         ),
         SizedBox(width: 4.w),
-        Icon(Icons.star, color: const Color(0xFFFFB74D), size: 14.sp),
+        Icon(Icons.star, color: AppTheme.orangeIcon, size: 14.sp),
         SizedBox(width: 8.w),
         Expanded(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(4.r),
             child: LinearProgressIndicator(
               value: percentage / 100,
-              backgroundColor: Colors.grey[200],
-              valueColor: const AlwaysStoppedAnimation<Color>(
-                Color(0xFFFFB74D),
-              ),
+              backgroundColor: theme.dividerColor,
+              valueColor: AlwaysStoppedAnimation<Color>(AppTheme.orangeIcon),
               minHeight: 6.h,
             ),
           ),
@@ -183,7 +185,10 @@ class _RatingBar extends StatelessWidget {
           child: Text(
             count.toString(),
             textAlign: TextAlign.end,
-            style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
           ),
         ),
       ],
@@ -200,7 +205,7 @@ class _FilterChips extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.selectedRatingFilter != current.selectedRatingFilter,
       builder: (context, state) {
-        return Container(
+        return Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -245,21 +250,23 @@ class _FilterChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: onTap,
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF2C3E50) : Colors.white,
+          color: isSelected ? AppTheme.primaryColor : theme.cardColor,
           borderRadius: BorderRadius.circular(20.r),
           border: Border.all(
-            color: isSelected ? const Color(0xFF2C3E50) : Colors.grey[300]!,
+            color: isSelected ? AppTheme.primaryColor : theme.dividerColor,
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.white : Colors.grey[700],
+            color: isSelected ? Colors.white : theme.colorScheme.onSurface,
             fontSize: 14.sp,
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
           ),
@@ -274,6 +281,7 @@ class _ReviewsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocBuilder<ReviewsCubit, ReviewsState>(
       buildWhen: (previous, current) =>
           previous.filteredReviews != current.filteredReviews,
@@ -285,7 +293,11 @@ class _ReviewsList extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Text(
                 'Patient Reviews',
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.onSurface,
+                ),
               ),
             ),
             SizedBox(height: 12.h),
@@ -295,13 +307,19 @@ class _ReviewsList extends StatelessWidget {
                 child: Center(
                   child: Text(
                     'No reviews found for this rating',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 14.sp),
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      fontSize: 14.sp,
+                    ),
                   ),
                 ),
               )
             else
-              ...state.filteredReviews.map(
-                (review) => _ReviewCard(review: review),
+              ...state.filteredReviews.asMap().entries.map(
+                (entry) => FadeInSlide(
+                  delay: Duration(milliseconds: 80 * entry.key),
+                  child: _ReviewCard(review: entry.value),
+                ),
               ),
           ],
         );
@@ -317,10 +335,11 @@ class _ReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(16.w),
-      color: Colors.white,
+      color: theme.cardColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -330,7 +349,7 @@ class _ReviewCard extends StatelessWidget {
                 width: 48.w,
                 height: 48.w,
                 decoration: BoxDecoration(
-                  color: Colors.grey[200],
+                  color: AppTheme.tealDark.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Center(
@@ -339,7 +358,7 @@ class _ReviewCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey[700],
+                      color: AppTheme.tealDark,
                     ),
                   ),
                 ),
@@ -354,6 +373,7 @@ class _ReviewCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.onSurface,
                       ),
                     ),
                     SizedBox(height: 4.h),
@@ -361,7 +381,7 @@ class _ReviewCard extends StatelessWidget {
                       DateFormat('MMM d, yyyy').format(review.date),
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: Colors.grey[600],
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -372,7 +392,7 @@ class _ReviewCard extends StatelessWidget {
                   5,
                   (index) => Icon(
                     index < review.rating ? Icons.star : Icons.star_border,
-                    color: const Color(0xFFFFB74D),
+                    color: AppTheme.orangeIcon,
                     size: 16.sp,
                   ),
                 ),
@@ -384,7 +404,7 @@ class _ReviewCard extends StatelessWidget {
             review.comment,
             style: TextStyle(
               fontSize: 14.sp,
-              color: Colors.grey[700],
+              color: theme.colorScheme.onSurfaceVariant,
               height: 1.5,
             ),
           ),
@@ -394,12 +414,15 @@ class _ReviewCard extends StatelessWidget {
               Icon(
                 Icons.thumb_up_outlined,
                 size: 16.sp,
-                color: Colors.grey[600],
+                color: theme.colorScheme.onSurfaceVariant,
               ),
               SizedBox(width: 4.w),
               Text(
                 'Helpful (${review.helpfulCount})',
-                style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
               ),
             ],
           ),

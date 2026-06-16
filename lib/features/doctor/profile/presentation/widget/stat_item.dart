@@ -9,16 +9,24 @@ class StatItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       children: [
         Text(
           value,
-          style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 24.sp,
+            fontWeight: FontWeight.bold,
+            color: theme.colorScheme.onSurface,
+          ),
         ),
         SizedBox(height: 4.h),
         Text(
           label,
-          style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
+          style: TextStyle(
+            fontSize: 12.sp,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
         ),
       ],
     );

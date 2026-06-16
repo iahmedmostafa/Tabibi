@@ -14,6 +14,7 @@ class EditAvailabilityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text('Edit Availability', style: TextStyle(fontSize: 20.sp)),
         centerTitle: true,
@@ -61,6 +62,7 @@ class _WorkingDaysSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocBuilder<AvailabilityCubit, AvailabilityState>(
       buildWhen: (previous, current) =>
           previous.workingDays != current.workingDays,
@@ -70,16 +72,14 @@ class _WorkingDaysSection extends StatelessWidget {
           children: [
             Text(
               'Working Days',
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(fontSize: 20.sp),
+              style: theme.textTheme.titleLarge?.copyWith(fontSize: 20.sp),
             ),
             SizedBox(height: 16.h),
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: theme.cardColor,
                 borderRadius: BorderRadius.circular(16.r),
-                border: Border.all(color: Colors.grey[200]!),
+                border: Border.all(color: theme.dividerColor),
               ),
               child: Column(
                 children: state.workingDays.entries.map((entry) {
@@ -88,7 +88,10 @@ class _WorkingDaysSection extends StatelessWidget {
                       SwitchListTile(
                         title: Text(
                           entry.key,
-                          style: TextStyle(fontSize: 16.sp),
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            color: theme.colorScheme.onSurface,
+                          ),
                         ),
                         value: entry.value,
                         activeTrackColor: AppTheme.primaryColor,
@@ -100,7 +103,12 @@ class _WorkingDaysSection extends StatelessWidget {
                         },
                       ),
                       if (entry.key != 'Sunday')
-                        Divider(height: 1.h, indent: 16.w, endIndent: 16.w),
+                        Divider(
+                          height: 1.h,
+                          indent: 16.w,
+                          endIndent: 16.w,
+                          color: theme.dividerColor,
+                        ),
                     ],
                   );
                 }).toList(),
@@ -118,6 +126,7 @@ class _TimeSlotsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocBuilder<AvailabilityCubit, AvailabilityState>(
       buildWhen: (previous, current) => previous.timeSlots != current.timeSlots,
       builder: (context, state) {
@@ -129,9 +138,7 @@ class _TimeSlotsSection extends StatelessWidget {
               children: [
                 Text(
                   'Time Slots',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontSize: 20.sp),
+                  style: theme.textTheme.titleLarge?.copyWith(fontSize: 20.sp),
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
@@ -163,7 +170,10 @@ class _TimeSlotsSection extends StatelessWidget {
                   padding: EdgeInsets.all(32.w),
                   child: Text(
                     'No time slots added yet',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 14.sp),
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      fontSize: 14.sp,
+                    ),
                   ),
                 ),
               )
@@ -177,27 +187,31 @@ class _TimeSlotsSection extends StatelessWidget {
 }
 
 class _TimeSlotItem extends StatelessWidget {
-  final dynamic
-  slot; // Using dynamic to avoid import issues, but should be TimeSlot
+  final dynamic slot; 
 
   const _TimeSlotItem({required this.slot});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       margin: EdgeInsets.only(bottom: 16.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: Colors.grey[200]!),
+        border: Border.all(color: theme.dividerColor),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             slot.day,
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              color: theme.colorScheme.onSurface,
+            ),
           ),
           SizedBox(height: 16.h),
           Row(
@@ -223,7 +237,10 @@ class _TimeSlotItem extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 12.w),
                 child: Text(
                   'to',
-                  style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                  style: TextStyle(
+                    color: theme.colorScheme.onSurfaceVariant,
+                    fontSize: 14.sp,
+                  ),
                 ),
               ),
               Expanded(
@@ -275,22 +292,31 @@ class _TimeChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return InkWell(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
         decoration: BoxDecoration(
-          color: Colors.grey[50],
+          color: theme.colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(8.r),
         ),
         child: Row(
           children: [
-            Icon(Icons.access_time, size: 18.sp, color: Colors.grey),
+            Icon(
+              Icons.access_time,
+              size: 18.sp,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
             SizedBox(width: 8.w),
             Flexible(
               child: Text(
                 time,
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp),
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14.sp,
+                  color: theme.colorScheme.onSurface,
+                ),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -306,6 +332,7 @@ class _BreakTimesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocBuilder<AvailabilityCubit, AvailabilityState>(
       buildWhen: (previous, current) =>
           previous.breakTimes != current.breakTimes,
@@ -318,9 +345,7 @@ class _BreakTimesSection extends StatelessWidget {
               children: [
                 Text(
                   'Break Times',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontSize: 20.sp),
+                  style: theme.textTheme.titleLarge?.copyWith(fontSize: 20.sp),
                 ),
                 TextButton.icon(
                   onPressed: () {
@@ -332,7 +357,7 @@ class _BreakTimesSection extends StatelessWidget {
                   icon: Icon(Icons.add, size: 18.sp),
                   label: Text('Add Break', style: TextStyle(fontSize: 14.sp)),
                   style: TextButton.styleFrom(
-                    backgroundColor: Colors.grey[100],
+                    backgroundColor: theme.colorScheme.surfaceContainerHighest,
                     foregroundColor: AppTheme.primaryColor,
                   ),
                 ),
@@ -345,7 +370,10 @@ class _BreakTimesSection extends StatelessWidget {
                   padding: EdgeInsets.all(32.w),
                   child: Text(
                     'No break times added yet',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 14.sp),
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      fontSize: 14.sp,
+                    ),
                   ),
                 ),
               )
@@ -355,23 +383,33 @@ class _BreakTimesSection extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: 16.h),
                   padding: EdgeInsets.all(16.w),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: theme.cardColor,
                     borderRadius: BorderRadius.circular(16.r),
-                    border: Border.all(color: Colors.grey[200]!),
+                    border: Border.all(color: theme.dividerColor),
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.access_time, color: Colors.grey, size: 20.sp),
+                      Icon(
+                        Icons.access_time,
+                        color: theme.colorScheme.onSurfaceVariant,
+                        size: 20.sp,
+                      ),
                       SizedBox(width: 12.w),
                       Expanded(
                         child: Text(
                           '${breakTime.startTimeString} - ${breakTime.endTimeString}',
-                          style: TextStyle(fontSize: 16.sp),
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            color: theme.colorScheme.onSurface,
+                          ),
                         ),
                       ),
                       Text(
                         '(${breakTime.label})',
-                        style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                        style: TextStyle(
+                          color: theme.colorScheme.onSurfaceVariant,
+                          fontSize: 14.sp,
+                        ),
                       ),
                       SizedBox(width: 12.w),
                       IconButton(

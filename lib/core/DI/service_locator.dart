@@ -79,6 +79,11 @@ import 'package:tabibi/features/doctor/prescription/domain/repositories/doctor_p
 import 'package:tabibi/features/doctor/prescription/domain/usecases/complete_appointment_use_case.dart';
 import 'package:tabibi/features/doctor/prescription/domain/usecases/create_prescription_use_case.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/cubit/create_prescription_cubit.dart';
+import 'package:tabibi/features/doctor/profile/data/datasources/doctor_profile_remote_data_source.dart' as doc_prof_ds;
+import 'package:tabibi/features/doctor/profile/data/repositories/doctor_profile_repository_impl.dart' as doc_prof_repo_impl;
+import 'package:tabibi/features/doctor/profile/domain/repositories/doctor_profile_repository.dart' as doc_prof_repo;
+import 'package:tabibi/features/doctor/profile/presentation/cubit/doctor_profile_cubit.dart' as doc_prof_cubit;
+import 'package:tabibi/features/doctor/profile/presentation/cubit/edit_profile_cubit.dart';
 import 'package:tabibi/features/doctor/profile/presentation/cubit/doctor_logout_cubit.dart';
 import 'package:tabibi/features/doctor/requests/data/datasources/requests_remote_data_source.dart';
 import 'package:tabibi/features/doctor/requests/data/repositories/requests_repository_impl.dart';
@@ -246,6 +251,9 @@ Future<void> init() async {
   sl.registerLazySingleton<AppointmentsRemoteDataSource>(
     () => AppointmentsRemoteDataSourceImpl(sl()),
   );
+  sl.registerLazySingleton<doc_prof_ds.DoctorProfileRemoteDataSource>(
+    () => doc_prof_ds.DoctorProfileRemoteDataSourceImpl(sl()),
+  );
   sl.registerLazySingleton<DoctorPrescriptionRemoteDataSource>(
     () => DoctorPrescriptionRemoteDataSourceImpl(sl()),
   );
@@ -298,6 +306,9 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<ScheduleRepository>(
     () => ScheduleRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<doc_prof_repo.DoctorProfileRepository>(
+    () => doc_prof_repo_impl.DoctorProfileRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<RequestsRepository>(
     () => RequestsRepositoryImpl(sl()),
@@ -373,6 +384,8 @@ Future<void> init() async {
   sl.registerFactory(() => ClinicUploadImageCubit(sl()));
   sl.registerFactory(() => CitiesCubit(sl()));
   sl.registerFactory(() => PatientProfileCubit(sl(), sl()));
+  sl.registerFactory(() => doc_prof_cubit.DoctorProfileCubit(sl()));
+  sl.registerFactory(() => EditProfileCubit(sl()));
   sl.registerFactory(() => DoctorProfileCubit(sl(), sl(), sl()));
   sl.registerFactory(() => DepartmentsCubit(sl()));
   sl.registerLazySingleton(() => home_ds.DepartmentsDataSource(sl()));

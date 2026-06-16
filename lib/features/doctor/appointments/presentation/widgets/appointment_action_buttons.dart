@@ -31,7 +31,7 @@ class AppointmentActionButtons extends StatelessWidget {
             icon: const Icon(Icons.videocam_outlined),
             label: const Text('Start Consultation'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF1A2B42),
+              backgroundColor: AppTheme.primaryColor,
               foregroundColor: Colors.white,
               padding: EdgeInsets.symmetric(vertical: 16.h),
               shape: RoundedRectangleBorder(

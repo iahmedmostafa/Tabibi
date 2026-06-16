@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/widgets/appointment_card.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
+import 'package:tabibi/core/animations/fade_in_slide.dart';
 
 class DashboardTodayAppointments extends StatelessWidget {
   final List<Appointment> appointments;
@@ -21,13 +23,13 @@ class DashboardTodayAppointments extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Today's Appointments",
+              AppStrings.doctorTodayAppointments,
               style: theme.textTheme.titleLarge,
             ),
             TextButton(
               onPressed: () => context.push(AppRoutes.doctorRequests),
               child: const Text(
-                'See All',
+                AppStrings.doctorSeeAll,
                 style: TextStyle(color: AppTheme.tealDark),
               ),
             ),
@@ -47,7 +49,7 @@ class DashboardTodayAppointments extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'No appointments today',
+                    AppStrings.doctorNoAppointmentsToday,
                     style: theme.textTheme.bodyMedium,
                   ),
                 ],
@@ -55,8 +57,11 @@ class DashboardTodayAppointments extends StatelessWidget {
             ),
           )
         else
-          ...appointments.map(
-            (apt) => AppointmentCard(appointment: apt),
+          ...appointments.asMap().entries.map(
+            (entry) => FadeInSlide(
+              delay: Duration(milliseconds: 100 * entry.key),
+              child: AppointmentCard(appointment: entry.value),
+            ),
           ),
       ],
     );

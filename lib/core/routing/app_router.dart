@@ -50,7 +50,10 @@ import 'package:tabibi/features/doctor/prescription/presentation/cubit/create_pr
 import 'package:tabibi/features/doctor/prescription/presentation/pages/create_prescription_args.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/pages/create_prescription_page.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/policies/prescription_write_policy.dart';
-import 'package:tabibi/features/doctor/profile/presentation/pages/settings_page.dart';
+import 'package:tabibi/features/doctor/profile/domain/entities/doctor_profile_entity.dart';
+import 'package:tabibi/features/doctor/profile/presentation/cubit/edit_profile_cubit.dart';
+import 'package:tabibi/features/doctor/profile/presentation/pages/doctor_profile_page.dart';
+import 'package:tabibi/features/doctor/profile/presentation/pages/edit_profile_page.dart';
 import 'package:tabibi/features/doctor/requests/presentation/pages/appointment_requests_page.dart';
 import 'package:tabibi/features/doctor/reviews/presentation/pages/reviews_page.dart';
 import 'package:tabibi/features/doctor/schedule/presentation/pages/my_schedule_page.dart';
@@ -593,8 +596,22 @@ final GoRouter router = GoRouter(
       name: AppRoutes.doctorSettings,
       builder: (context, state) => BlocProvider(
         create: (context) => sl<ProfileCubit>(),
-        child: const SettingsPage(),
+        child: const DoctorProfilePage(),
       ),
+    ),
+    GoRoute(
+      path: AppRoutes.doctorEditProfile,
+      name: AppRoutes.doctorEditProfile,
+      builder: (context, state) {
+        final profile = state.extra as DoctorProfileEntity;
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => sl<EditProfileCubit>()),
+            BlocProvider(create: (context) => sl<UploadImageCubit>()),
+          ],
+          child: EditProfilePage(profile: profile),
+        );
+      },
     ),
     GoRoute(
       path: AppRoutes.doctorAppointmentDetails,

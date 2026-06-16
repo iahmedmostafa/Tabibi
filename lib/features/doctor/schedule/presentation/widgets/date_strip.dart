@@ -38,7 +38,7 @@ class DateStrip extends StatelessWidget {
                         style: TextStyle(
                           color: isSelected
                               ? AppTheme.primaryColor
-                              : Colors.grey,
+                              : Theme.of(context).colorScheme.onSurfaceVariant,
                           fontWeight: FontWeight.w500,
                           fontSize: 12.sp,
                         ),
@@ -70,7 +70,7 @@ class DateStrip extends StatelessWidget {
                                     ? Colors.white
                                     : isToday
                                     ? AppTheme.primaryColor
-                                    : Colors.black87,
+                                    : Theme.of(context).colorScheme.onSurface,
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.bold,
                               ),

@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/profile_cubit.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/profile_state.dart';
 import 'package:tabibi/features/patient_profile/presentation/widgets/logout_dialog.dart';
@@ -12,31 +14,33 @@ class DangerZoneSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocListener<ProfileCubit, ProfileState>(
       listener: (context, state) {
         if (state is LogOutSuccess) {
           context.go(AppRoutes.login);
         } else if (state is LogOutError) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message)),
+          );
         }
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Text(
               'Danger Zone',
               style: TextStyle(
-                fontSize: 16.sp,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
-                color: Colors.grey[700],
+                letterSpacing: 0.3,
+                color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: 10.h),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Column(
@@ -44,17 +48,15 @@ class DangerZoneSection extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton.icon(
-                    onPressed: () {
-                      _showLogoutDialog(context);
-                    },
-                    icon: Icon(Icons.logout, size: 20.sp),
-                    label: const Text('Log Out'),
+                    onPressed: () => _showLogoutDialog(context),
+                    icon: Icon(Icons.logout_rounded, size: 20.sp),
+                    label: const Text(AppStrings.doctorLogout),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.grey[700],
-                      side: BorderSide(color: Colors.grey[300]!),
+                      foregroundColor: theme.colorScheme.onSurfaceVariant,
+                      side: BorderSide(color: theme.dividerColor),
                       padding: EdgeInsets.symmetric(vertical: 16.h),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
+                        borderRadius: BorderRadius.circular(14.r),
                       ),
                     ),
                   ),
@@ -63,18 +65,16 @@ class DangerZoneSection extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton.icon(
-                    onPressed: () {
-                      _showDeleteAccountDialog(context);
-                    },
-                    icon: Icon(Icons.delete_outline, size: 20.sp),
+                    onPressed: () => _showDeleteAccountDialog(context),
+                    icon: Icon(Icons.delete_outline_rounded, size: 20.sp),
                     label: const Text('Delete Account'),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: const Color(0xFFD32F2F),
-                      side: const BorderSide(color: Color(0xFFFFCDD2)),
-                      backgroundColor: const Color(0xFFFFEBEE),
+                      foregroundColor: AppTheme.redIcon,
+                      side: const BorderSide(color: AppTheme.redPastel),
+                      backgroundColor: AppTheme.redPastel.withValues(alpha: 0.15),
                       padding: EdgeInsets.symmetric(vertical: 16.h),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
+                        borderRadius: BorderRadius.circular(14.r),
                       ),
                     ),
                   ),
@@ -86,8 +86,8 @@ class DangerZoneSection extends StatelessWidget {
       ),
     );
   }
-}
-void _showLogoutDialog(BuildContext context) {
+
+  void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (ctx) => LogoutDialog(
@@ -98,11 +98,11 @@ void _showLogoutDialog(BuildContext context) {
     );
   }
 
-  
   void _showDeleteAccountDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
         title: const Text('Delete Account'),
         content: const Text(
           'Are you sure you want to delete your account? This action cannot be undone.',
@@ -118,15 +118,13 @@ void _showLogoutDialog(BuildContext context) {
               // Add delete account logic here
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFD32F2F),
+              backgroundColor: AppTheme.redIcon,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
             ),
-            child: const Text('Delete'),
+            child: const Text('Delete', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
     );
   }
-
-
-
-
+}
