@@ -16,13 +16,12 @@ import 'package:tabibi/core/utils/helper/helper_functions.dart';
 import 'package:tabibi/core/widgets/custom_input_field.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
 import 'package:tabibi/features/authentication/modules/login/presentation/business_logic/log_in_cubit.dart';
-import 'package:tabibi/features/authentication/modules/login/presentation/widgets/bottom_login_section.dart';
 import 'package:tabibi/features/authentication/modules/widgets/auth_prompt_text.dart';
 import 'package:tabibi/features/authentication/modules/widgets/top_section.dart';
 import 'package:tabibi/features/doctor_profile/domain/usecases/doctor_status_use_case.dart';
 
-import '../../../../../../core/utils/validators/validation.dart';
 import '../../../../../../core/services/shared_prefs_service.dart';
+import '../../../../../../core/utils/validators/validation.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -33,6 +32,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   late LogInCubit cubit;
+  bool isPasswordVisible = false;
   @override
   Widget build(BuildContext context) {
     cubit = context.read<LogInCubit>();
@@ -69,8 +69,15 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomInputField(
                 hintText: AppStrings.password,
                 icon: Iconsax.password_check,
-                isPassword: true,
-                validator: Validator.validatePassword,
+                validator: (value) =>
+                    Validator.validateEmptyText("Password", value),
+                isPassword: isPasswordVisible,
+                suffixIcon: isPasswordVisible ? Iconsax.eye_slash : Iconsax.eye,
+                onpressed: () {
+                  setState(() {
+                    isPasswordVisible = !isPasswordVisible;
+                  });
+                },
                 controller: cubit.passwordController,
               ),
 
@@ -107,9 +114,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                 },
                 child: BlocBuilder<LogInCubit, LogInState>(
+                  buildWhen: (previous, current) =>
+                      current is LogInLoading || current is LogInInitial,
                   builder: (context, state) {
                     if (state is LogInLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.primary,
+                        ),
+                      );
                     }
                     return PrimaryButton(
                       onPress: () {
@@ -123,11 +136,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
               VerticalSpace(height: AppHeight.h23),
 
-              BottomLoginSection(
-                onGooglePressed: () {},
-                onFacebookPressed: () {},
-              ),
-              VerticalSpace(height: AppHeight.h23),
               GestureDetector(
                 onTap: () {
                   context.go(AppRoutes.forgotPassword);
@@ -136,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   AppStrings.forgotPassword,
                   style: Theme.of(
                     context,
-                  ).textTheme.bodySmall?.copyWith(color: AppColors.blue600),
+                  ).textTheme.bodySmall?.copyWith(color: AppColors.grey600),
                 ),
               ),
 

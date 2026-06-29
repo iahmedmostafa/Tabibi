@@ -5,6 +5,7 @@ import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_images.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
+import 'package:tabibi/features/patient_profile/presentation/widgets/medical_profile_bottom_sheet.dart';
 
 class QuickActionsRow extends StatelessWidget {
   const QuickActionsRow({super.key});
@@ -19,11 +20,11 @@ class QuickActionsRow extends StatelessWidget {
         onTap: () => context.pushNamed(AppRoutes.allDoctors),
       ),
       _QuickActionData(
-        title: 'Favorite\nDoctors',
+        title: 'Symptom\nChecker',
         imagePath: AppImages.quickActionSupport,
         color: AppColors.actionGreenLight,
-        badge: 'New',
-        onTap: () => context.pushNamed(AppRoutes.favorites),
+        badge: 'AI',
+        onTap: () => context.pushNamed(AppRoutes.aiSymptomCheck),
       ),
       _QuickActionData(
         title: 'My\nAppointments',
@@ -35,10 +36,10 @@ class QuickActionsRow extends StatelessWidget {
         ),
       ),
       _QuickActionData(
-        title: 'Doctors\nMap',
+        title: 'Medical\nHistory',
         imagePath: AppImages.quickActionReport,
         color: AppColors.paleBlueLight,
-        onTap: () => context.pushNamed(AppRoutes.doctorsMapScreen),
+        onTap: () => MedicalProfileBottomSheet.showForEdit(context),
       ),
     ];
 

@@ -10,6 +10,7 @@ class CustomInputField extends StatelessWidget {
   final IconData? icon;
   final IconData? suffixIcon;
   final bool isPassword;
+  final VoidCallback? onpressed;
   final bool isPrefixIconNotExist;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
@@ -19,6 +20,7 @@ class CustomInputField extends StatelessWidget {
     super.key,
     required this.hintText,
     this.icon,
+    this.onpressed,
     this.suffixIcon,
     this.isPassword = false,
     this.isPrefixIconNotExist = true,
@@ -33,6 +35,7 @@ class CustomInputField extends StatelessWidget {
       height: AppHeight.h45,
       child: TextFormField(
         obscureText: isPassword,
+        style: Theme.of(context).textTheme.headlineSmall,
         controller: controller,
         validator: validator,
         maxLines: maxLines ?? 1,
@@ -59,18 +62,27 @@ class CustomInputField extends StatelessWidget {
             minWidth: 0,
             minHeight: 0,
           ),
-          suffixIcon: Padding(
-            padding: const EdgeInsets.only(right: AppPadding.p16),
-            child: Icon(
-              suffixIcon,
-              color: AppColors.grey400,
-              size: AppSizes.iconSm2,
-            ),
-          ),
+          suffixIcon: onpressed != null
+              ? IconButton(
+                  onPressed: onpressed,
+                  icon: Icon(
+                    suffixIcon,
+                    color: AppColors.grey400,
+                    size: AppSizes.iconSm2,
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.only(right: AppPadding.p16),
+                  child: Icon(
+                    suffixIcon,
+                    color: AppColors.grey400,
+                    size: AppSizes.iconSm2,
+                  ),
+                ),
           filled: true,
           fillColor: AppHelperFunctions.isDarkMode(context)
               ? AppColors.darkBackground
-              : AppColors.grey100,
+              : AppColors.white,
           contentPadding: const EdgeInsets.symmetric(
             vertical: AppPadding.p10,
             horizontal: AppPadding.p16,

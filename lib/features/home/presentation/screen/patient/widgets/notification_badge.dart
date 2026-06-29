@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/helper/helper_functions.dart';
 import 'package:tabibi/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:tabibi/features/notifications/presentation/cubit/notifications_state.dart';
 
@@ -11,6 +14,7 @@ class NotificationBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = AppHelperFunctions.isDarkMode(context);
     return Container(
       width: 40,
       height: 40,
@@ -27,7 +31,8 @@ class NotificationBadge extends StatelessWidget {
                 onPressed: () {
                   context.pushNamed(AppRoutes.notifications);
                 },
-                icon: const Icon(CupertinoIcons.bell_fill, size: 21),
+                icon:  Icon(Iconsax.notification_bing5, size: 24,
+                color: isDark ? AppColors.white : AppColors.black,),
               ),
               if (state.unreadCount > 0)
                 Positioned(

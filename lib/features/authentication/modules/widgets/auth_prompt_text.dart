@@ -18,14 +18,19 @@ class AuthPromptText extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(text, style: Theme.of(context).textTheme.bodySmall),
+        Text(
+          text,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: AppColors.grey600,
+          ),
+        ),
         GestureDetector(
           onTap: onPress,
           child: Text(
             gestureDetectorName,
             style: Theme.of(
               context,
-            ).textTheme.bodySmall?.copyWith(color: AppColors.blue600),
+            ).textTheme.bodySmall?.copyWith(color: AppColors.primary),
           ),
         ),
       ],

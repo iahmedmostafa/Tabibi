@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/core/utils/constants/app_padding.dart';
@@ -17,7 +18,7 @@ class OnboardingPage extends StatelessWidget {
         SizedBox(
           height: AppHeight.h532,
           width: AppWidth.w390,
-          child: Image.asset(image!, fit: BoxFit.fill),
+          child: SvgPicture.asset(image!, fit: BoxFit.fill),
         ),
         VerticalSpace(height: AppHeight.h28_5),
         Center(

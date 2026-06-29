@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/core/widgets/drop_menu.dart/drop_menu.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
@@ -39,9 +40,8 @@ class DepartmentDropdown extends StatelessWidget {
             state.departments.isNotEmpty) {
           return DropMenu(
             hint: 'Department',
-            items: state.departments
-                .map((department) => department.name)
-                .toList(),
+            prefixIcon: Iconsax.briefcase,
+            items: state.departments.map((department) => department.name).toList(),
             onChanged: (value) {
               if (value != null) {
                 final selectedCity = state.departments.firstWhere(
@@ -52,8 +52,8 @@ class DepartmentDropdown extends StatelessWidget {
             },
             value: selectedDepartmentId != null
                 ? state.departments
-                      .firstWhere((city) => city.id == selectedDepartmentId)
-                      .name
+                    .firstWhere((city) => city.id == selectedDepartmentId)
+                    .name
                 : null,
           );
         }

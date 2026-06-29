@@ -6,7 +6,6 @@ import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
-import 'package:tabibi/core/utils/constants/app_images.dart';
 import 'package:tabibi/core/utils/constants/app_padding.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
@@ -18,7 +17,6 @@ import 'package:tabibi/features/authentication/modules/signup/presentation/cubit
 import 'package:tabibi/features/authentication/modules/signup/presentation/cubit/sign_up_state.dart';
 import 'package:tabibi/features/authentication/modules/widgets/auth_prompt_text.dart';
 import 'package:tabibi/features/authentication/modules/widgets/or_section.dart';
-import 'package:tabibi/features/authentication/modules/widgets/social_button.dart';
 import 'package:tabibi/features/authentication/modules/widgets/top_section.dart';
 
 import '../../../../../../core/widgets/drop_menu.dart/drop_menu.dart';
@@ -85,6 +83,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 // DropMenu for role selection
                 DropMenu(
                   hint: AppStrings.selectRole,
+                  prefixIcon: Iconsax.user_tag,
                   items: const ['Patient', 'Doctor'],
                   onChanged: (value) async {
                     setState(() {
@@ -137,20 +136,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const OrSection(),
 
                 const VerticalSpace(height: 24),
-                SocialButton(
-                  text: AppStrings.signWithGoogle,
-                  iconPath: AppImages.google,
-                  onPressed: () {},
-                ),
 
-                VerticalSpace(height: AppHeight.h16),
-                SocialButton(
-                  text: AppStrings.signWithFacebook,
-                  iconPath: AppImages.facebook,
-                  onPressed: () {},
-                ),
-
-                VerticalSpace(height: AppHeight.h24),
                 AuthPromptText(
                   text: AppStrings.haveAccount,
                   gestureDetectorName: AppStrings.signIn,

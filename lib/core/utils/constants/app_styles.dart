@@ -28,7 +28,7 @@ class AppTextStyle {
 
   /// Style for H3 headings. (Inter, 16, Bold)
   static final TextStyle h3 = _baseInter.copyWith(
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: FontWeight.bold,
     height: 1.5,
   );

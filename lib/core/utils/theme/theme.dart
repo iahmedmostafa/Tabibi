@@ -10,7 +10,7 @@ class AppTheme {
   AppTheme._();
 
   // ===== Doctor Feature Colors =====
-  static const Color primaryColor = Color(0xFF1C2A3A);
+  static const Color primaryColor = Color(0xFF0165FC);
   static const Color tealDark = Color(0xFF0D9891);
 
   // Pastel backgrounds

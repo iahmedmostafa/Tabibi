@@ -25,6 +25,7 @@
     android:label="tabibi"
     android:name="${applicationName}"
     android:icon="@mipmap/ic_launcher"
+    android:usesCleartextTraffic="true"
     android:theme="@style/LaunchTheme">
       <activity
     android:name=".MainActivity"

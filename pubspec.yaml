@@ -8,13 +8,11 @@ environment:
   sdk: ^3.9.2
 
 dependencies:
-  animated_dashed_circle: ^0.0.5
   awesome_notifications: ^0.11.0
   awesome_snackbar_content: ^0.1.8
   bottom_picker: ^4.1.1
   cached_network_image: ^3.4.1
   carousel_slider: ^5.1.1
-  cupertino_icons: ^1.0.8
   dartz: ^0.10.1
   dio: ^5.9.0
   dots_indicator: ^4.0.1
@@ -31,6 +29,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   flutter_secure_storage: ^9.2.4
   flutter_stripe: ^12.2.0
+  flutter_svg: ^2.3.0
   get_it: ^8.2.0
   go_router: null
   google_fonts: ^6.3.2

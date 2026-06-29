@@ -15,6 +15,9 @@ class ApiConstance {
   static const String cities = "cities";
   static const String patientProfile = "patients/me";
   static const String updatePatientProfile = "patients/me";
+  static const String medicalProfile = "medical-profile/me";
+  static const String updateMedicalProfile = "medical-profile/me";
+  static const String symptomCheck = "ai/symptom-check";
   static const String updateDoctorProfile = "doctors/me";
   static const String doctorStatus = "doctors/me/status";
   static const String doctors = "doctors";

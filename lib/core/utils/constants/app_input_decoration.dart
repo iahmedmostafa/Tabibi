@@ -24,7 +24,7 @@ class AppInputDecoration {
           ? Icon(prefixIcon, color: iconColor, size: 20)
           : null,
       filled: true,
-      fillColor: isDark ? AppColors.grey800 : AppColors.grey100,
+      fillColor: isDark ? AppColors.grey800 : AppColors.white,
       border: OutlineInputBorder(
         borderRadius: AppBorderRadius.r12,
         borderSide: BorderSide(color: borderColor),
@@ -33,17 +33,17 @@ class AppInputDecoration {
         borderRadius: AppBorderRadius.r12,
         borderSide: BorderSide(color: borderColor),
       ),
-      focusedBorder: OutlineInputBorder(
+      focusedBorder: const OutlineInputBorder(
         borderRadius: AppBorderRadius.r12,
-        borderSide: const BorderSide(color: AppColors.primary, width: 2),
+        borderSide: BorderSide(color: AppColors.primary, width: 2),
       ),
-      errorBorder: OutlineInputBorder(
+      errorBorder: const OutlineInputBorder(
         borderRadius: AppBorderRadius.r12,
-        borderSide: const BorderSide(color: AppColors.error, width: 1.5),
+        borderSide: BorderSide(color: AppColors.error, width: 1.5),
       ),
-      focusedErrorBorder: OutlineInputBorder(
+      focusedErrorBorder: const OutlineInputBorder(
         borderRadius: AppBorderRadius.r12,
-        borderSide: const BorderSide(color: AppColors.error, width: 2),
+        borderSide: BorderSide(color: AppColors.error, width: 2),
       ),
       contentPadding: EdgeInsets.symmetric(
         horizontal: AppWidth.w16,

@@ -41,7 +41,7 @@ class HomeSearchBar extends StatelessWidget {
             Icon(CupertinoIcons.search, color: AppColors.grey500, size: 22.sp),
             SizedBox(width: 14.w),
             Text(
-              'Search doctor, specialty, or condition',
+              'Search doctor, specialty',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],

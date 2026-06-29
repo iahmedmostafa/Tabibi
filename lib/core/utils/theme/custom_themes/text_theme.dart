@@ -8,15 +8,15 @@ class AppTextTheme {
   /* -- Light Text Theme -- */
   static TextTheme lightTextTheme = TextTheme(
     // Headings
-    headlineLarge: AppTextStyle.h1.copyWith(color: AppColors.textPrimary),
+    headlineLarge: AppTextStyle.h1.copyWith(color: AppColors.black),
     headlineMedium: AppTextStyle.h2.copyWith(color: AppColors.textPrimary),
-    headlineSmall: AppTextStyle.h3.copyWith(color: AppColors.textPrimary),
+    headlineSmall: AppTextStyle.h3.copyWith(color: AppColors.black),
     titleLarge: AppTextStyle.h4.copyWith(color: AppColors.textPrimary),
 
     // Body
     bodyLarge: AppTextStyle.bodyXl.copyWith(color: AppColors.textPrimary),
     bodyMedium: AppTextStyle.bodySRegular.copyWith(color: AppColors.grey400),
-    bodySmall: AppTextStyle.bodySMedium.copyWith(color: AppColors.primary),
+    bodySmall: AppTextStyle.bodySMedium.copyWith(color: AppColors.black),
 
     // Labels
     labelLarge: AppTextStyle.button.copyWith(color: AppColors.textWhite),

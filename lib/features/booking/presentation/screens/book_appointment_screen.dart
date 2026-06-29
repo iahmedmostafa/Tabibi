@@ -14,10 +14,23 @@ import 'package:tabibi/features/booking/presentation/widgets/booking_type_select
 import 'package:tabibi/features/booking/presentation/widgets/show_data_time.dart';
 import 'package:tabibi/features/booking/presentation/widgets/time_slot_grid.dart';
 import 'package:tabibi/features/doctor_details/data/models/doctor_details_model.dart';
+import 'package:tabibi/features/patient_profile/presentation/widgets/medical_profile_bottom_sheet.dart';
 
 class BookAppointmentScreen extends StatelessWidget {
   final DoctorDetailsModel doctor;
   const BookAppointmentScreen({super.key, required this.doctor});
+
+  void _onConfirmPressed(BuildContext context) {
+    // Check medical profile before booking
+    MedicalProfileBottomSheet.showIfNeeded(
+      context,
+      onComplete: () {
+        context.read<AppointmentCubit>().bookAppointment(
+              doctorId: doctor.id,
+            );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,11 +95,7 @@ class BookAppointmentScreen extends StatelessWidget {
                       ? AppStrings.booking
                       : AppStrings.confirm,
                   onPress: state is AppointmentReadyToBook
-                      ? () {
-                          context.read<AppointmentCubit>().bookAppointment(
-                            doctorId: doctor.id,
-                          );
-                        }
+                      ? () => _onConfirmPressed(context)
                       : null, // Disable if not ready
                 ),
               ],
@@ -97,3 +106,4 @@ class BookAppointmentScreen extends StatelessWidget {
     );
   }
 }
+

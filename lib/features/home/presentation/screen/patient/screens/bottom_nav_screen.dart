@@ -14,6 +14,7 @@ import 'package:tabibi/features/favorite/presentation/controller/favorites_cubit
 import 'package:tabibi/features/home/presentation/screen/patient/screens/patient_home_screen.dart';
 import 'package:tabibi/features/notifications/data/datasources/fcm_token_data_source.dart';
 import 'package:tabibi/features/patient_profile/presentation/screens/profile_screen.dart';
+import 'package:tabibi/features/patient_profile/presentation/widgets/medical_profile_bottom_sheet.dart';
 
 class BottomNavScreen extends StatefulWidget {
   const BottomNavScreen({super.key, this.initialIndex = 0});
@@ -31,6 +32,10 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     _currentIndex = widget.initialIndex;
     startServer();
     sl<FavoritesCubit>().getFavorites();
+    // Show medical profile bottom sheet after register if not completed
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      MedicalProfileBottomSheet.showIfNeeded(context);
+    });
   }
 
   void startServer() async {

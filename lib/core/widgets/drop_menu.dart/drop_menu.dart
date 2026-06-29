@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tabibi/core/utils/constants/app_border_radius.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
-import 'package:tabibi/core/utils/constants/sizes.dart';
+import 'package:tabibi/core/utils/constants/app_input_decoration.dart';
 import 'package:tabibi/core/utils/helper/helper_functions.dart';
 
 class DropMenu extends StatelessWidget {
@@ -10,6 +10,7 @@ class DropMenu extends StatelessWidget {
   final String hint;
   final void Function(String?) onChanged;
   final String? value;
+  final IconData? prefixIcon;
 
   const DropMenu({
     super.key,
@@ -17,53 +18,84 @@ class DropMenu extends StatelessWidget {
     required this.hint,
     required this.onChanged,
     this.value,
+    this.prefixIcon,
   });
 
   @override
   Widget build(BuildContext context) {
     final isDark = AppHelperFunctions.isDarkMode(context);
-    return Material(
-      elevation: 4,
-      borderRadius: AppBorderRadius.r8,
-      child: DropdownButtonFormField<String>(
-        initialValue: value,
-        hint: Text(
-          hint,
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium!.copyWith(color: AppColors.grey),
+    final fieldStyle = Theme.of(context).textTheme.headlineSmall?.copyWith(
+      color: isDark ? AppColors.white : AppColors.black,
+    );
+    final menuTextStyle = Theme.of(context).textTheme.headlineSmall?.copyWith(
+      color: isDark ? AppColors.white : AppColors.black,
+      height: 1.2,
+    );
+    final menuBackground = isDark ? AppColors.grey800 : Colors.white;
+
+    return DropdownButtonFormField<String>(
+      initialValue: value,
+      isExpanded: true,
+      borderRadius: BorderRadius.circular(16),
+      icon: Icon(
+        Icons.keyboard_arrow_down_rounded,
+        color: isDark ? AppColors.grey400 : AppColors.grey500,
+      ),
+      iconSize: 24.r,
+      elevation: 6,
+      menuMaxHeight: 240.h,
+      dropdownColor: menuBackground,
+      style: fieldStyle,
+      hint: Text(
+        hint,
+        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+          color: isDark ? AppColors.white : AppColors.dark,
         ),
-        decoration: InputDecoration(
-          hintStyle: Theme.of(context).textTheme.bodyMedium,
-          filled: true,
-          fillColor: isDark ? AppColors.darkBackground : AppColors.grey100,
-          border: Theme.of(context).inputDecorationTheme.border,
-          enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-          focusedBorder: Theme.of(context).inputDecorationTheme.focusedBorder,
-          contentPadding: EdgeInsets.symmetric(
-            vertical: AppHeight.h8,
-            horizontal: AppWidth.w16,
-          ),
-        ),
-        dropdownColor: isDark ? AppColors.darkBackground : AppColors.white,
-        icon: const Icon(
-          Icons.keyboard_arrow_down,
-          color: AppColors.grey100,
-          size: AppSizes.iconSm2,
-        ),
-        items: items.map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
+      ),
+      selectedItemBuilder: (context) {
+        return items.map((item) {
+          return Align(
+            alignment: Alignment.centerLeft,
             child: Text(
-              value,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: isDark ? AppColors.white : AppColors.black,
-              ),
+              item,
+              style: fieldStyle,
+              overflow: TextOverflow.ellipsis,
+            
             ),
           );
-        }).toList(),
-        onChanged: onChanged,
+        }).toList();
+      },
+      decoration: AppInputDecoration.build(
+        context,
+        isDark: isDark,
+        hintText: hint,
+        prefixIcon: prefixIcon,
+      ).copyWith(
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: AppWidth.w16,
+          vertical: AppHeight.h16,
+        ),
       ),
+      items: items.map((String item) {
+        return DropdownMenuItem<String>(
+          value: item,
+          child: SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppWidth.w8,
+                vertical: AppHeight.h4,
+              ),
+              child: Text(
+                item,
+                style: menuTextStyle,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+      onChanged: onChanged,
     );
   }
 }

@@ -42,9 +42,13 @@ class ProfileImagePicker extends StatelessWidget {
               child: Container(
                 width: 40,
                 height: 40,
-                decoration: const BoxDecoration(
-                  color: AppColors.darkTeal,
+                decoration:  BoxDecoration(
+                  color: AppColors.primary,
                   shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 3,
+                  ),
                 ),
                 child: const Icon(Iconsax.edit, color: Colors.white, size: 20),
               ),

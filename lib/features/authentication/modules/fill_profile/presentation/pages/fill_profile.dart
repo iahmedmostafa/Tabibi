@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/style/spacing/horizental_space.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/core/utils/constants/app_padding.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
@@ -72,7 +74,9 @@ class _FillProfileState extends State<FillProfile> {
                   HorizentalSpace(width: AppWidth.w14),
                   Text(
                     "Fill Your Profile",
-                    style: Theme.of(context).textTheme.headlineMedium,
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                      color: AppColors.black,
+                    ),
                   ),
                 ],
               ),
@@ -101,6 +105,7 @@ class _FillProfileState extends State<FillProfile> {
               DropMenu(
                 hint: AppStrings.genderFillProfile,
                 items: const ['Male', 'Female'],
+                prefixIcon: Iconsax.user_square,
                 onChanged: (value) {
                   setState(() {
                     gender = value == 'Male' ? 1 : 2;

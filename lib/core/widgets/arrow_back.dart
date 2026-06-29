@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
-import 'package:tabibi/core/utils/constants/app_images.dart';
 
 class ArrowBack extends StatelessWidget {
   final String nameRoute;
@@ -16,8 +16,9 @@ class ArrowBack extends StatelessWidget {
           onPressed: () {
             context.go(nameRoute);
           },
-          icon: Image.asset(
-            AppImages.back,
+          icon: Icon(
+            Iconsax.arrow_left_2,
+            size: 24,
             color: isDark ? AppColors.white : AppColors.black,
           ),
         ),

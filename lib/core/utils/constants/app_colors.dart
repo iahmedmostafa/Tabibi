@@ -11,7 +11,7 @@ class AppColors {
   static const primary = midnightBlue;
   static const grey = Color(0xff9B9B9B);
   static const textGrey = Color(0xff6B7280);
-  static const darkTeal = Color(0xff1C2A3A);
+  static const darkTeal = Color(0xFF14B8C4);
 
   static const blue600 = Color(0xFF1C64F2);
   // Dashboard Specific Colors
@@ -77,8 +77,7 @@ class AppColors {
   static const Color teal = Color(0xFF0D9891);
   static const Color lightTeal = Color(0xFFA4CFC3);
   // ===== Main Colors =====
-  static const Color midnightBlue = Color(0xFF1C2A3A);
-
+  static const Color midnightBlue = Color(0xFF0165FC);
   // ===== Greyscale =====
   static const Color grey50 = Color(0xFFF9FAFB);
   static const Color grey100 = Color(0xFFF3F4F6);

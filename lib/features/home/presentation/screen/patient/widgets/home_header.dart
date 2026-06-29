@@ -32,7 +32,7 @@ class HomeHeader extends StatelessWidget {
                   ),
                   SizedBox(height: 6.h),
                   Text(
-                    'How can we help you today?',
+                    'Location',
                     style: Theme.of(
                       context,
                     ).textTheme.bodyMedium?.copyWith(height: 1.4),
@@ -41,15 +41,15 @@ class HomeHeader extends StatelessWidget {
                   Row(
                     children: [
                       Icon(
-                        Iconsax.location,
-                        color: AppColors.grey500,
+                        Iconsax.location5,
+                        color: AppColors.primary,
                         size: 18.sp,
                       ),
                       SizedBox(width: 6.w),
                       Flexible(
                         child: Text(
                           city,
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: Theme.of(context).textTheme.headlineSmall,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),

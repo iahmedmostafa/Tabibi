@@ -69,7 +69,7 @@ class DatePickerField extends StatelessWidget {
           vertical: AppHeight.h12,
         ),
         decoration: BoxDecoration(
-          color: isDark ? AppColors.darkBackground : AppColors.grey100,
+          color: isDark ? AppColors.darkBackground : AppColors.white,
           borderRadius: AppBorderRadius.r8,
           border: Border.all(
             color: isDark ? AppColors.grey700 : AppColors.grey300,
@@ -84,7 +84,7 @@ class DatePickerField extends StatelessWidget {
             HorizentalSpace(width: AppWidth.w12),
             Text(
               selectedDate != null ? selectedDate! : hintText,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 color: selectedDate != null
                     ? (isDark ? AppColors.white : AppColors.black)
                     : AppColors.grey,

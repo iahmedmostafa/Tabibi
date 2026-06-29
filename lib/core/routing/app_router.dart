@@ -75,6 +75,8 @@ import 'package:tabibi/features/patient_profile/presentation/controller/profile_
 import 'package:tabibi/features/patient_profile/presentation/screens/edit_profile_screen.dart';
 import 'package:tabibi/features/video_call/presentation/cubit/video_call_cubit.dart';
 import 'package:tabibi/features/video_call/presentation/screen/video_call_screen.dart';
+import 'package:tabibi/features/ai_symptom_checker/presentation/screens/ai_symptom_chat_screen.dart';
+import 'package:tabibi/features/ai_symptom_checker/presentation/cubit/ai_symptom_cubit.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart'
     as doctor_profile_departments;
@@ -546,6 +548,14 @@ final GoRouter router = GoRouter(
           child: CallPage(bookingId: extra['bookingId'] as String? ?? ''),
         );
       },
+    ),
+    GoRoute(
+      path: AppRoutes.aiSymptomCheck,
+      name: AppRoutes.aiSymptomCheck,
+      builder: (context, state) => BlocProvider(
+        create: (context) => sl<AiSymptomCubit>(),
+        child: const AiSymptomChatScreen(),
+      ),
     ),
     GoRoute(
       path: AppRoutes.editProfile,
