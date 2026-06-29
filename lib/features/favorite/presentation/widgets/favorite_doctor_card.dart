@@ -29,6 +29,9 @@ class FavoriteDoctorCard extends StatelessWidget {
             ),
           );
         },
+        onBookTap: () {
+          context.push(AppRoutes.doctorDetails, extra: doctor);
+        },
       ),
     );
   }

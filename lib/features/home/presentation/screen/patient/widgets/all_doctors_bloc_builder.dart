@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_images.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/features/favorite/presentation/controller/favorites_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_cubit.dart';
@@ -26,7 +29,7 @@ class AllDoctorsBlocBuilder extends StatelessWidget {
       child: BlocBuilder<DoctorsCubit, DoctorsState>(
         builder: (context, state) {
           if (state.status == DoctorsStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
+            return _AllDoctorsSkeleton();
           }
 
           if (state.status == DoctorsStatus.failure) {
@@ -77,10 +80,8 @@ class AllDoctorsBlocBuilder extends StatelessWidget {
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
-                              Icons.search_off,
-                              size: 64,
-                              color: Colors.grey[400],
+                            SvgPicture.asset(AppImages.doctorNotFound,
+                            fit: BoxFit.cover,
                             ),
                             VerticalSpace(height: 16.h),
                             Text(
@@ -131,6 +132,12 @@ class AllDoctorsBlocBuilder extends StatelessWidget {
                                         doctor,
                                       );
                                     },
+                                    onBookTap: () {
+                                      context.push(
+                                        AppRoutes.doctorDetails,
+                                        extra: doctor,
+                                      );
+                                    },
                                   ),
                                 );
                               },
@@ -142,6 +149,119 @@ class AllDoctorsBlocBuilder extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _AllDoctorsSkeleton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Skeletonizer(
+      enabled: true,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: ListView.separated(
+          physics: const NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.only(bottom: 20.h),
+          itemCount: 3,
+          separatorBuilder: (context, index) => VerticalSpace(height: 16.h),
+          itemBuilder: (context, index) {
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(28.r),
+                color: Colors.white,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 190.h,
+                    width: double.infinity,
+                    color: Colors.white,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(14.w, 14.h, 14.w, 14.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 180.w,
+                          height: 18.h,
+                          color: Colors.white,
+                        ),
+                        SizedBox(height: 6.h),
+                        Container(
+                          width: 100.w,
+                          height: 20.h,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(999.r),
+                          ),
+                        ),
+                        SizedBox(height: 10.h),
+                        Row(
+                          children: [
+                            const Icon(Icons.location_on_rounded, size: 15),
+                            SizedBox(width: 4.w),
+                            Container(
+                              width: 150.w,
+                              height: 12.h,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10.h),
+                        Row(
+                          children: [
+                            const Icon(Icons.star, size: 16),
+                            SizedBox(width: 4.w),
+                            Container(
+                              width: 30.w,
+                              height: 12.h,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 8.w),
+                            Container(
+                              width: 80.w,
+                              height: 12.h,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10.h),
+                        Row(
+                          children: [
+                            Container(
+                              width: 80.w,
+                              height: 16.h,
+                              color: Colors.white,
+                            ),
+                            const Spacer(),
+                            Container(
+                              width: 80.w,
+                              height: 30.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(999.r),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 2.h),
+                        Container(
+                          width: 120.w,
+                          height: 11.h,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

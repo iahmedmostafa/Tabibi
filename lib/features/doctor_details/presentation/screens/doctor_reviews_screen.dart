@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/features/doctor_details/presentation/controller/reviews_cubit.dart';
 import 'package:tabibi/features/doctor_details/presentation/controller/reviews_state.dart';
@@ -38,14 +40,90 @@ class _DoctorReviewsScreenState extends State<DoctorReviewsScreen> {
     }
   }
 
+  Widget _buildFilterChip(
+    BuildContext context,
+    String label, {
+    bool isActive = false,
+    IconData? icon,
+    bool hasDropdown = false,
+  }) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      decoration: BoxDecoration(
+        color: isActive
+            ? AppColors.primary
+            : (isDark ? AppColors.darkSurface : Colors.white),
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(
+          color: isActive
+              ? AppColors.primary
+              : (isDark ? AppColors.grey800 : AppColors.grey300),
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) ...[
+            Icon(
+              icon,
+              size: 16.sp,
+              color: isActive ? Colors.white : (isDark ? Colors.white : AppColors.black),
+            ),
+            SizedBox(width: 6.w),
+          ],
+          Text(
+            label,
+            style: TextStyle(
+              color: isActive
+                  ? Colors.white
+                  : (isDark ? AppColors.textDarkSecondary : AppColors.textSecondary),
+              fontWeight: FontWeight.w600,
+              fontSize: 13.sp,
+            ),
+          ),
+          if (hasDropdown) ...[
+            SizedBox(width: 4.w),
+            Icon(
+              Icons.arrow_drop_down,
+              size: 18.sp,
+              color: isDark ? Colors.white : AppColors.black,
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocProvider(
       create: (context) => sl<ReviewsCubit>()..getReviews(widget.doctorId),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(AppStrings.reviews),
-          centerTitle: true,
+          title: Text(
+            AppStrings.reviews,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          centerTitle: false,
+          actions: [
+            TextButton.icon(
+              onPressed: () {},
+              icon: Icon(Iconsax.edit, size: 18.sp, color: AppColors.primary),
+              label: Text(
+                "add review",
+                style: TextStyle(
+                  color: AppColors.primary,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            SizedBox(width: 16.w),
+          ],
         ),
         body: BlocBuilder<ReviewsCubit, ReviewsState>(
           builder: (context, state) {
@@ -62,29 +140,77 @@ class _DoctorReviewsScreenState extends State<DoctorReviewsScreen> {
                   ? state.hasNextPage
                   : true;
 
-              if (reviews.isEmpty) {
-                return const Center(child: Text("No reviews found"));
-              }
-
-              return ListView.builder(
-                controller: _scrollController,
-                padding: EdgeInsets.all(24.w),
-                itemCount: reviews.length + (hasNextPage ? 1 : 0),
-                itemBuilder: (context, index) {
-                  if (index < reviews.length) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 16.h),
-                      child: ReviewItem(review: reviews[index]),
-                    );
-                  } else {
-                    return const Center(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
-                        child: CircularProgressIndicator(),
+              return Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "Search in reviews",
+                        prefixIcon: Icon(Iconsax.search_normal, color: AppColors.primary, size: 20.sp),
+                        hintStyle: TextStyle(color: AppColors.grey400, fontSize: 14.sp),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                        filled: true,
+                        fillColor: isDark ? AppColors.darkSurface : Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16.r),
+                          borderSide: BorderSide(color: isDark ? AppColors.grey800 : AppColors.grey200),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16.r),
+                          borderSide: BorderSide(color: isDark ? AppColors.grey800 : AppColors.grey200),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16.r),
+                          borderSide: BorderSide(color: AppColors.primary),
+                        ),
                       ),
-                    );
-                  }
-                },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 38.h,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      children: [
+                        _buildFilterChip(context, "Filter", icon: Iconsax.setting_4, hasDropdown: true),
+                        SizedBox(width: 8.w),
+                        _buildFilterChip(context, "Verified", isActive: true),
+                        SizedBox(width: 8.w),
+                        _buildFilterChip(context, "Latest", isActive: true),
+                        SizedBox(width: 8.w),
+                        _buildFilterChip(context, "With Photos"),
+                        SizedBox(width: 8.w),
+                        _buildFilterChip(context, "Detailed"),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Expanded(
+                    child: reviews.isEmpty
+                        ? const Center(child: Text("No reviews found"))
+                        : ListView.builder(
+                            controller: _scrollController,
+                            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
+                            itemCount: reviews.length + (hasNextPage ? 1 : 0),
+                            itemBuilder: (context, index) {
+                              if (index < reviews.length) {
+                                return Padding(
+                                  padding: EdgeInsets.only(bottom: 8.h),
+                                  child: ReviewItem(review: reviews[index]),
+                                );
+                              } else {
+                                return const Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                  ),
+                ],
               );
             }
             return const SizedBox.shrink();

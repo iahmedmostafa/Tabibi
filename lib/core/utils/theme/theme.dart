@@ -32,6 +32,7 @@ class AppTheme {
     brightness: Brightness.light,
     textTheme: AppTextTheme.lightTextTheme,
     appBarTheme: AppBarThemes.lighAppBarTheme,
+    colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary, surface: AppColors.primary),
     elevatedButtonTheme: AppElevatedButtonTheme.lightElevatedButtonTheme,
     outlinedButtonTheme: OutlinedButtonThemes.lighOutlinedButtonThemes,
     inputDecorationTheme: TextFormFieldThemes.lightInputDecorationTheme,

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
+import 'package:tabibi/features/booking/data/models/booking_model.dart';
 import 'package:tabibi/features/booking/presentation/controller/my_bookings_cubit.dart';
 import 'package:tabibi/features/booking/presentation/widgets/booking_card.dart';
 import 'package:tabibi/features/booking/presentation/widgets/booking_tab_filter.dart';
@@ -55,9 +57,23 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
                 previous.allBookings != current.allBookings;
           },
           builder: (context, state) {
-            if (state.status == MyBookingsStatus.loading) {
-              return const Center(child: CircularProgressIndicator());
-            }
+            final isLoading = state.status == MyBookingsStatus.loading;
+
+            final bookings = isLoading
+                ? List.generate(
+                    4,
+                    (index) => const BookingModel(
+                      id: 'dummy',
+                      doctorId: 'dummy',
+                      doctorName: 'Dr. Skeletonizer Name',
+                      department: 'Department',
+                      address: 'Hospital Address',
+                      appointmentDate: '2025-01-01T10:00:00.000Z',
+                      type: 1,
+                    ),
+                  )
+                : state.allBookings;
+
             return Column(
               children: [
                 SizedBox(height: 16.h),
@@ -69,7 +85,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
                 ),
                 SizedBox(height: 24.h),
                 Expanded(
-                  child: state.allBookings.isEmpty
+                  child: !isLoading && bookings.isEmpty
                       ? Center(
                           child: Text(
                             AppStrings.noBookingsFound,
@@ -80,20 +96,23 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
                                 ),
                           ),
                         )
-                      : ListView.separated(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 24.w,
-                            vertical: 8.h,
+                      : Skeletonizer(
+                          enabled: isLoading,
+                          child: ListView.separated(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 24.w,
+                              vertical: 8.h,
+                            ),
+                            itemCount: bookings.length,
+                            separatorBuilder: (context, index) =>
+                                SizedBox(height: 16.h),
+                            itemBuilder: (context, index) {
+                              return BookingCard(
+                                booking: bookings[index],
+                                status: state.selectedTab,
+                              );
+                            },
                           ),
-                          itemCount: state.allBookings.length,
-                          separatorBuilder: (context, index) =>
-                              SizedBox(height: 16.h),
-                          itemBuilder: (context, index) {
-                            return BookingCard(
-                              booking: state.allBookings[index],
-                              status: state.selectedTab,
-                            );
-                          },
                         ),
                 ),
               ],

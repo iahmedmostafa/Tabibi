@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tabibi/core/routing/fade_slide_page_route.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
@@ -101,7 +102,7 @@ final GoRouter router = GoRouter(
             : AppRoutes.login),
 
   routes: [
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.onboarding,
 
       name: AppRoutes.onboarding,
@@ -109,7 +110,7 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const OnBoardingScreen(),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.login,
 
       name: AppRoutes.login,
@@ -123,7 +124,7 @@ final GoRouter router = GoRouter(
       },
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.forgotPassword,
 
       name: AppRoutes.forgotPassword,
@@ -135,7 +136,7 @@ final GoRouter router = GoRouter(
       ),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: '${AppRoutes.verifyCode}/:email',
 
       name: AppRoutes.verifyCode,
@@ -171,7 +172,7 @@ final GoRouter router = GoRouter(
       },
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.createNewPassword,
 
       name: AppRoutes.createNewPassword,
@@ -193,7 +194,7 @@ final GoRouter router = GoRouter(
       },
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.signUp,
 
       name: AppRoutes.signUp,
@@ -205,7 +206,7 @@ final GoRouter router = GoRouter(
       ),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.home,
 
       name: AppRoutes.home,
@@ -234,7 +235,7 @@ final GoRouter router = GoRouter(
       ),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.homeDoctorScreen,
 
       name: AppRoutes.homeDoctorScreen,
@@ -242,7 +243,7 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const HomeScreen(),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.fillProfile,
 
       name: AppRoutes.fillProfile,
@@ -262,7 +263,7 @@ final GoRouter router = GoRouter(
       ),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.doctorFillProfile,
 
       name: AppRoutes.doctorFillProfile,
@@ -294,7 +295,7 @@ final GoRouter router = GoRouter(
       ),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.patientHome,
 
       name: AppRoutes.patientHome,
@@ -302,7 +303,7 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const PatientHomeScreen(),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.pending,
 
       name: AppRoutes.pending,
@@ -310,7 +311,7 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const PendingPage(),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.approved,
 
       name: AppRoutes.approved,
@@ -318,7 +319,7 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const ApprovedPage(),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.newpage,
 
       name: AppRoutes.newpage,
@@ -326,7 +327,7 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const NewPage(),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.rejected,
 
       name: AppRoutes.rejected,
@@ -334,7 +335,7 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const RejectedPage(),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.clinicLocation,
 
       name: AppRoutes.clinicLocation,
@@ -346,7 +347,7 @@ final GoRouter router = GoRouter(
       ),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.doctorStatusHandler,
 
       name: AppRoutes.doctorStatusHandler,
@@ -358,7 +359,7 @@ final GoRouter router = GoRouter(
       ),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.bottomNavScreen,
 
       name: AppRoutes.bottomNavScreen,
@@ -391,7 +392,7 @@ final GoRouter router = GoRouter(
       },
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.allDoctors,
 
       name: AppRoutes.allDoctors,
@@ -417,7 +418,7 @@ final GoRouter router = GoRouter(
       },
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.allDepartments,
 
       name: AppRoutes.allDepartments,
@@ -429,7 +430,7 @@ final GoRouter router = GoRouter(
       ),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.doctorDetails,
 
       name: AppRoutes.doctorDetails,
@@ -441,7 +442,7 @@ final GoRouter router = GoRouter(
       },
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.bookAppointment,
 
       name: AppRoutes.bookAppointment,
@@ -457,7 +458,7 @@ final GoRouter router = GoRouter(
       },
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.myBookings,
 
       name: AppRoutes.myBookings,
@@ -470,7 +471,7 @@ final GoRouter router = GoRouter(
       },
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.notifications,
 
       name: AppRoutes.notifications,
@@ -478,7 +479,7 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const NotificationsScreen(),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.favorites,
 
       name: AppRoutes.favorites,
@@ -486,7 +487,7 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const FavoritesScreen(),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.doctorsMapScreen,
 
       name: AppRoutes.doctorsMapScreen,
@@ -498,7 +499,7 @@ final GoRouter router = GoRouter(
       ),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: '${AppRoutes.doctorReviews}/:doctorId',
 
       name: AppRoutes.doctorReviews,
@@ -510,7 +511,7 @@ final GoRouter router = GoRouter(
       },
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: '${AppRoutes.prescription}/:bookingId',
 
       name: AppRoutes.prescription,
@@ -526,7 +527,7 @@ final GoRouter router = GoRouter(
         );
       },
     ),
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.chat,
       name: AppRoutes.chat,
       builder: (context, state) {
@@ -538,7 +539,7 @@ final GoRouter router = GoRouter(
         );
       },
     ),
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.callPage,
       name: AppRoutes.callPage,
       builder: (context, state) {
@@ -549,7 +550,7 @@ final GoRouter router = GoRouter(
         );
       },
     ),
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.aiSymptomCheck,
       name: AppRoutes.aiSymptomCheck,
       builder: (context, state) => BlocProvider(
@@ -557,7 +558,7 @@ final GoRouter router = GoRouter(
         child: const AiSymptomChatScreen(),
       ),
     ),
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.editProfile,
       name: AppRoutes.editProfile,
       builder: (context, state) => MultiBlocProvider(
@@ -572,7 +573,7 @@ final GoRouter router = GoRouter(
       ),
     ),
 
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.doctorSchedule,
       name: AppRoutes.doctorSchedule,
       builder: (context, state) => BlocProvider(
@@ -580,7 +581,7 @@ final GoRouter router = GoRouter(
         child: const MySchedulePage(),
       ),
     ),
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.doctorAvailability,
       name: AppRoutes.doctorAvailability,
       builder: (context, state) => BlocProvider(
@@ -588,17 +589,17 @@ final GoRouter router = GoRouter(
         child: const EditAvailabilityPage(),
       ),
     ),
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.doctorRequests,
       name: AppRoutes.doctorRequests,
       builder: (context, state) => const AppointmentRequestsPage(),
     ),
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.doctorEarnings,
       name: AppRoutes.doctorEarnings,
       builder: (context, state) => const EarningsPage(),
     ),
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.doctorSettings,
       name: AppRoutes.doctorSettings,
       builder: (context, state) => BlocProvider(
@@ -606,7 +607,7 @@ final GoRouter router = GoRouter(
         child: const SettingsPage(),
       ),
     ),
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.doctorAppointmentDetails,
       name: AppRoutes.doctorAppointmentDetails,
       builder: (context, state) {
@@ -614,7 +615,7 @@ final GoRouter router = GoRouter(
         return AppointmentDetailsPage(appointment: appointment);
       },
     ),
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.doctorPatientProfile,
       name: AppRoutes.doctorPatientProfile,
       builder: (context, state) {
@@ -632,7 +633,7 @@ final GoRouter router = GoRouter(
         return PatientProfilePage(patient: extra as Patient);
       },
     ),
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.doctorCreatePrescription,
       name: AppRoutes.doctorCreatePrescription,
       builder: (context, state) {
@@ -647,17 +648,17 @@ final GoRouter router = GoRouter(
         );
       },
     ),
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.doctorReviewsPage,
       name: AppRoutes.doctorReviewsPage,
       builder: (context, state) => const ReviewsPage(),
     ),
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.doctorConversations,
       name: AppRoutes.doctorConversations,
       builder: (context, state) => const DoctorConversationsScreen(),
     ),
-    GoRoute(
+    AppGoRoute(
       path: AppRoutes.doctorChat,
       name: AppRoutes.doctorChat,
       builder: (context, state) {

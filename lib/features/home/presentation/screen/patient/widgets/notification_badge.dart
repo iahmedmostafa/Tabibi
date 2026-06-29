@@ -19,7 +19,7 @@ class NotificationBadge extends StatelessWidget {
       width: 40,
       height: 40,
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
+        color: isDark ? AppColors.grey900.withValues(alpha: .18): AppColors.white.withValues(alpha: .6),
         borderRadius: BorderRadius.circular(50),
       ),
       child: BlocBuilder<NotificationsCubit, NotificationsState>(

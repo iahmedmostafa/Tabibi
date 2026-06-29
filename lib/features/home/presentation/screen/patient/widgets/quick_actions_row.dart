@@ -13,126 +13,190 @@ class QuickActionsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final actions = [
-      _QuickActionData(
-        title: 'Book\nAppointment',
-        imagePath: AppImages.quickActionDoctor,
-        color: AppColors.actionPinkLight,
+      _FeatureCardData(
+        title: 'Appointment Booking',
+        iconPath: AppImages.quickActionDoctor,
+        gradientColors: const [Color(0xFFE9DCFF), Color(0xFFD9CCFF)],
+        accent: const Color(0xFF8D6BE8),
         onTap: () => context.pushNamed(AppRoutes.allDoctors),
       ),
-      _QuickActionData(
-        title: 'Symptom\nChecker',
-        imagePath: AppImages.quickActionSupport,
-        color: AppColors.actionGreenLight,
+      _FeatureCardData(
+        title: 'AI Medical Assistant',
+        iconPath: AppImages.quickActionSupport,
+        gradientColors: const [Color(0xFFD7FFF8), Color(0xFFA9EEE4)],
+        accent: const Color(0xFF27C7B8),
         badge: 'AI',
         onTap: () => context.pushNamed(AppRoutes.aiSymptomCheck),
       ),
-      _QuickActionData(
-        title: 'My\nAppointments',
-        imagePath: AppImages.quickActionHistory,
-        color: AppColors.actionOrangeLight,
+      _FeatureCardData(
+        title: 'Medical Records',
+        iconPath: AppImages.quickActionHistory,
+        gradientColors: const [Color(0xFFE3ECFF), Color(0xFFC9D8FF)],
+        accent: const Color(0xFF6288FF),
         onTap: () => context.pushNamed(
           AppRoutes.myBookings,
           extra: BookingStatus.upcoming,
         ),
       ),
-      _QuickActionData(
-        title: 'Medical\nHistory',
-        imagePath: AppImages.quickActionReport,
-        color: AppColors.paleBlueLight,
+      _FeatureCardData(
+        title: 'Prescription Manager',
+        iconPath: AppImages.quickActionReport,
+        gradientColors: const [Color(0xFFFFE3EA), Color(0xFFFFC5D2)],
+        accent: const Color(0xFFFF7D9A),
         onTap: () => MedicalProfileBottomSheet.showForEdit(context),
       ),
     ];
 
-    return Row(
-      children: actions
-          .map(
-            (action) => Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4.w),
-                child: _QuickActionCard(data: action),
-              ),
-            ),
-          )
-          .toList(),
+    return SizedBox(
+      height: 150.h,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        padding: EdgeInsets.only(right: 8.w),
+        itemCount: actions.length,
+
+        separatorBuilder: (_, _) => SizedBox(width: 14.w),
+        itemBuilder: (context, index) {
+          return _FeatureGradientCard(data: actions[index]);
+        },
+      ),
     );
   }
 }
 
-class _QuickActionCard extends StatelessWidget {
-  const _QuickActionCard({required this.data});
+class _FeatureGradientCard extends StatelessWidget {
+  const _FeatureGradientCard({required this.data});
 
-  final _QuickActionData data;
+  final _FeatureCardData data;
 
   @override
   Widget build(BuildContext context) {
-    final surfaceColor = Theme.of(context).cardColor;
-
     return InkWell(
       onTap: data.onTap,
-      borderRadius: BorderRadius.circular(22.r),
-      child: Ink(
-        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 16.h),
+      borderRadius: BorderRadius.circular(28.r),
+      child: Container(
+        width: 122.w,
+        padding: EdgeInsets.all(16.r),
         decoration: BoxDecoration(
-          color: surfaceColor,
-          borderRadius: BorderRadius.circular(22.r),
+          borderRadius: BorderRadius.circular(28.r),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: data.gradientColors,
+          ),
+          border: Border.all(color: AppColors.black.withValues(alpha: 0.05,)),
           boxShadow: [
             BoxShadow(
-              color: AppColors.midnightBlue.withValues(alpha: 0.05),
-              blurRadius: 18,
-              offset: const Offset(0, 8),
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
             ),
           ],
         ),
         child: Stack(
-          clipBehavior: Clip.none,
           children: [
-            Column(
-              children: [
-                Container(
-                  width: 58.w,
-                  height: 58.w,
-                  decoration: BoxDecoration(
-                    color: data.color,
-                    borderRadius: BorderRadius.circular(18.r),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(10.r),
-                    child: Image.asset(
-                      data.imagePath,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
+            Positioned(
+              right: -20,
+              top: -18,
+              child: Container(
+                width: 74.r,
+                height: 74.r,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.white.withOpacity(0.18),
                 ),
-                SizedBox(height: 12.h),
-                Text(
-                  data.title,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(height: 1.35),
+              ),
+            ),
+            Positioned(
+              right: 24.w,
+              top: 26.h,
+              child: Container(
+                width: 44.r,
+                height: 44.r,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16.r),
+                  color: AppColors.white.withOpacity(0.10),
+                ),
+              ),
+            ),
+            Positioned(
+              left: -28,
+              bottom: -34,
+              child: Container(
+                width: 104.r,
+                height: 104.r,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.white.withOpacity(0.14),
+                ),
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 48.r,
+                      height: 48.r,
+                      padding: EdgeInsets.all(11.r),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.white.withOpacity(0.32),
+                        border: Border.all(
+                          color: AppColors.white.withOpacity(0.28),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: data.accent.withOpacity(0.18),
+                            blurRadius: 18,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                      child: Image.asset(data.iconPath, fit: BoxFit.contain),
+                    ),
+                    const Spacer(),
+                    if (data.badge != null)
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 9.w,
+                          vertical: 5.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.actionGreen,
+                          borderRadius: BorderRadius.circular(999.r),
+                        ),
+                        child: Text(
+                          data.badge!,
+                          style: TextStyle(
+                            color: AppColors.white,
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      data.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: AppColors.black,
+                        fontWeight: FontWeight.w800,
+                        height: 1.12,
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                  ],
                 ),
               ],
             ),
-            if (data.badge != null)
-              Positioned(
-                top: -8.h,
-                right: 6.w,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
-                  decoration: BoxDecoration(
-                    color: AppColors.actionGreen,
-                    borderRadius: BorderRadius.circular(999.r),
-                  ),
-                  child: Text(
-                    data.badge!,
-                    style: TextStyle(
-                      color: AppColors.white,
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ),
           ],
         ),
       ),
@@ -140,18 +204,20 @@ class _QuickActionCard extends StatelessWidget {
   }
 }
 
-class _QuickActionData {
-  const _QuickActionData({
+class _FeatureCardData {
+  const _FeatureCardData({
     required this.title,
-    required this.imagePath,
-    required this.color,
+    required this.iconPath,
+    required this.gradientColors,
+    required this.accent,
     required this.onTap,
     this.badge,
   });
 
   final String title;
-  final String imagePath;
-  final Color color;
+  final String iconPath;
+  final List<Color> gradientColors;
+  final Color accent;
   final VoidCallback onTap;
   final String? badge;
 }

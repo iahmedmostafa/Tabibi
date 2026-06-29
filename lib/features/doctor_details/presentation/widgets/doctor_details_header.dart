@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_images.dart';
 import 'package:tabibi/features/doctor_details/domain/entities/doctor_details_entity.dart';
@@ -12,26 +13,45 @@ class DoctorDetailsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final doctorName = doctor.name.startsWith('Dr.') ? doctor.name : 'Dr. ${doctor.name}';
     return Row(
       children: [
-        Container(
-          width: 100.w,
-          height: 100.h,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.r),
-            color: AppColors.grey100,
-            image: doctor.avatarUrl != null && doctor.avatarUrl!.isNotEmpty
-                ? DecorationImage(
-                    image: CachedNetworkImageProvider(doctor.avatarUrl!),
-                    fit: BoxFit.cover,
-                  )
-                : const DecorationImage(
-                    image: AssetImage(
-                    AppImages.onboarding3,
-                    ), // Fallback
-                    fit: BoxFit.cover,
-                  ),
-          ),
+        Stack(
+          children: [
+            Container(
+              width: 90.w,
+              height: 90.h,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.grey100,
+                image: doctor.avatarUrl != null && doctor.avatarUrl!.isNotEmpty
+                    ? DecorationImage(
+                        image: CachedNetworkImageProvider(doctor.avatarUrl!),
+                        fit: BoxFit.cover,
+                      )
+                    : const DecorationImage(
+                        image: AssetImage(AppImages.person), 
+                        fit: BoxFit.cover,
+                      ),
+              ),
+            ),
+            Positioned(
+              bottom: 2.h,
+              right: 2.w,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                padding: EdgeInsets.all(2.r),
+                child: Icon(
+                  Icons.verified,
+                  color: AppColors.primary,
+                  size: 18.sp,
+                ),
+              ),
+            ),
+          ],
         ),
         SizedBox(width: 16.w),
         Expanded(
@@ -39,36 +59,44 @@ class DoctorDetailsHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                doctor.name,
+                doctorName,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 18.sp,
                 ),
               ),
-              SizedBox(height: 8.h),
+              SizedBox(height: 6.h),
               Text(
                 doctor.department,
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium?.copyWith(color: AppColors.grey500),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.grey500,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               SizedBox(height: 8.h),
               Row(
                 children: [
                   Icon(
-                    Icons.location_on,
+                    Iconsax.location5,
                     size: 16.sp,
-                    color: AppColors.grey500,
+                    color: AppColors.primary,
                   ),
                   SizedBox(width: 4.w),
-                  Expanded(
+                  Flexible(
                     child: Text(
                       doctor.address,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodySmall?.copyWith(color: AppColors.grey500),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppColors.grey500,
+                        fontSize: 13.sp,
+                      ),
                       overflow: TextOverflow.ellipsis,
                     ),
+                  ),
+                  SizedBox(width: 6.w),
+                  Icon(
+                    Iconsax.map,
+                    size: 16.sp,
+                    color: AppColors.primary,
                   ),
                 ],
               ),

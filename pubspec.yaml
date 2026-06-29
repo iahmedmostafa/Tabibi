@@ -41,9 +41,11 @@ dependencies:
   jwt_decoder: ^2.0.1
   location: ^8.0.1
   logger: ^2.6.2
+  persistent_bottom_nav_bar_v2: ^6.3.2
   pin_code_fields: null
   shared_preferences: null
   signalr_netcore: ^1.4.4
+  skeletonizer: ^2.1.3
   smooth_page_indicator: ^1.2.0
   zego_uikit_prebuilt_call: any
 

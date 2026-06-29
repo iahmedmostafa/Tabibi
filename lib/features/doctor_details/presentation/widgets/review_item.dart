@@ -10,67 +10,124 @@ class ReviewItem extends StatelessWidget {
 
   const ReviewItem({super.key, required this.review});
 
+  String _getRelativeTime(DateTime dateTime) {
+    final duration = DateTime.now().difference(dateTime);
+    if (duration.inDays > 365) {
+      final years = (duration.inDays / 365).floor();
+      return "$years year${years > 1 ? 's' : ''} ago";
+    } else if (duration.inDays > 30) {
+      final months = (duration.inDays / 30).floor();
+      return "$months month${months > 1 ? 's' : ''} ago";
+    } else if (duration.inDays > 0) {
+      return "${duration.inDays} day${duration.inDays > 1 ? 's' : ''} ago";
+    } else if (duration.inHours > 0) {
+      return "${duration.inHours} hour${duration.inHours > 1 ? 's' : ''} ago";
+    } else {
+      return "just now";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Container(
-      padding: EdgeInsets.all(16.r),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.darkTeal : AppColors.grey100,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                backgroundImage: review.patientAvatar != null
-                    ? CachedNetworkImageProvider(review.patientAvatar!)
-                          as ImageProvider
-                    : const AssetImage(AppImages.person),
-                radius: 20.r,
-                backgroundColor: AppColors.grey200,
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      review.patientName,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Stack(
+              children: [
+                CircleAvatar(
+                  backgroundImage: review.patientAvatar != null
+                      ? CachedNetworkImageProvider(review.patientAvatar!)
+                            as ImageProvider
+                      : const AssetImage(AppImages.person),
+                  radius: 24.r,
+                  backgroundColor: AppColors.grey200,
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
                     ),
-                    Row(
-                      children: List.generate(
-                        5,
-                        (index) => Icon(
-                          Icons.star,
-                          color: index < review.rating
-                              ? Colors.amber
-                              : AppColors.grey300,
-                          size: 16,
-                        ),
+                    padding: EdgeInsets.all(1.5.r),
+                    child: Icon(
+                      Icons.verified,
+                      color: AppColors.primary,
+                      size: 13.sp,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    review.patientName,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.sp,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                      size: 18.sp,
+                    ),
+                    SizedBox(width: 4.w),
+                    Text(
+                      review.rating.toStringAsFixed(1),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.sp,
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          if (review.comment != null) ...[
-            SizedBox(height: 12.h),
-            Text(
-              review.comment!,
-              style: Theme.of(
-                context,
-              ).textTheme.headlineSmall,
+                SizedBox(height: 4.h),
+                Text(
+                  _getRelativeTime(review.createdAt),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.grey400,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ],
             ),
           ],
+        ),
+        if (review.comment != null && review.comment!.isNotEmpty) ...[
+          SizedBox(height: 12.h),
+          Text(
+            review.comment!,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: isDark ? AppColors.textDarkSecondary : AppColors.textSecondary,
+              height: 1.4,
+              fontSize: 13.sp,
+            ),
+          ),
         ],
-      ),
+        SizedBox(height: 16.h),
+        Divider(
+          color: isDark ? AppColors.grey800 : AppColors.grey200,
+          thickness: 1,
+        ),
+      ],
     );
   }
 }

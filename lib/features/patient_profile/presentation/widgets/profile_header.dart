@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tabibi/core/utils/constants/app_dimensions.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_images.dart';
 import 'package:tabibi/features/patient_profile/domain/entities/patient_profile.dart';
 
@@ -14,6 +15,7 @@ class ProfileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final avatarUrl = profile?.avatarUrl;
     final hasImage = avatarUrl != null && avatarUrl.isNotEmpty;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Column(
       children: [
@@ -24,16 +26,16 @@ class ProfileHeader extends StatelessWidget {
               builder: (_) => GestureDetector(
                 onTap: () => Navigator.of(context).pop(),
                 child: Container(
-                  color: Colors.transparent,
+                  color: Colors.black.withValues(alpha: 0.6),
                   child: Center(
                     child: GestureDetector(
                       onTap: () {},
                       child: Container(
-                        width: 300.r,
-                        height: 300.r,
+                        width: 280.r,
+                        height: 280.r,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Theme.of(context).scaffoldBackgroundColor,
+                          border: Border.all(color: Colors.white, width: 4.w),
                           image: DecorationImage(
                             image: hasImage
                                 ? CachedNetworkImageProvider(avatarUrl)
@@ -53,30 +55,71 @@ class ProfileHeader extends StatelessWidget {
             width: 120.r,
             height: 120.r,
             decoration: BoxDecoration(
-              color: Theme.of(context).highlightColor,
               shape: BoxShape.circle,
-              image: DecorationImage(
-                image: hasImage
-                    ? CachedNetworkImageProvider(avatarUrl)
-                    : const AssetImage(AppImages.carouselImage)
-                          as ImageProvider,
-                fit: BoxFit.cover,
+              border: Border.all(
+                color: AppColors.primary.withValues(alpha: 0.15),
+                width: 6.r,
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withValues(alpha: 0.1),
+                  blurRadius: 16,
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
+            child: ClipOval(
+              child: hasImage
+                  ? CachedNetworkImage(
+                      imageUrl: avatarUrl,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Container(
+                        color: AppColors.paleBlueLight,
+                        child: const Center(
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Image.asset(
+                        AppImages.carouselImage,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : Image.asset(
+                      AppImages.carouselImage,
+                      fit: BoxFit.cover,
+                    ),
             ),
           ),
         ),
-        SizedBox(height: AppHeight.h16),
+        SizedBox(height: 16.h),
         Text(
           profile?.name ?? "User",
-          style: Theme.of(context).textTheme.headlineMedium,
+          style: TextStyle(
+            fontSize: 22.sp,
+            fontWeight: FontWeight.w800,
+            color: isDark ? Colors.white : AppColors.black,
+          ),
         ),
         if (profile?.city?.name.isNotEmpty == true) ...[
-          SizedBox(height: 4.h),
-          Text(
-            profile!.city!.name,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).disabledColor,
-            ),
+          SizedBox(height: 6.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Iconsax.location,
+                size: 14.sp,
+                color: AppColors.grey500,
+              ),
+              SizedBox(width: 4.w),
+              Text(
+                profile!.city!.name,
+                style: TextStyle(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.grey500,
+                ),
+              ),
+            ],
           ),
         ],
       ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/cities_cubit.dart'
@@ -91,12 +92,10 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
       appBar: AppBar(
         title: Text(
           "All Doctors",
-          style: TextStyle(
-            color:
-                Theme.of(context).textTheme.bodyLarge?.color ??
-                AppColors.midnightBlue,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
             fontSize: 20.sp,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primary,
           ),
         ),
         centerTitle: true,
@@ -104,16 +103,16 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back,
-            color: Theme.of(context).iconTheme.color,
+            Iconsax.arrow_left_2,
+            color: Theme.of(context).primaryColor,
           ),
           onPressed: () {
-            GoRouter.of(context).go(AppRoutes.bottomNavScreen);
+            context.pop();
           },
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.map, color: Theme.of(context).iconTheme.color),
+            icon: Icon(Iconsax.map, color: Theme.of(context).iconTheme.color),
             onPressed: () {
               GoRouter.of(context).push(AppRoutes.doctorsMapScreen);
             },

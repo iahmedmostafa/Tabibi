@@ -26,33 +26,35 @@ class BookingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16.r),
+        color: isDark ? AppColors.grey900 : Colors.white,
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.12)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
+            color: AppColors.primary.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Date + Chat button
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 Formatter.formatIsoToDateTime(booking.appointmentDate),
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                   fontSize: 14.sp,
-                  color:
-                      Theme.of(context).textTheme.bodyLarge?.color ??
-                      AppColors.midnightBlue,
+                  color: isDark ? Colors.white : AppColors.black,
                 ),
               ),
               GestureDetector(
@@ -72,16 +74,24 @@ class BookingCard extends StatelessWidget {
                     vertical: 6.h,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.midnightBlue,
+                    color: AppColors.paleBlueLight,
                     borderRadius: BorderRadius.circular(20.r),
                   ),
                   child: Row(
                     children: [
-                      Icon(Iconsax.message, size: 14.sp, color: Colors.white),
+                      Icon(
+                        Iconsax.message,
+                        size: 14.sp,
+                        color: AppColors.primary,
+                      ),
                       SizedBox(width: 4.w),
                       Text(
                         "Chat",
-                        style: TextStyle(color: Colors.white, fontSize: 12.sp),
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ],
                   ),
@@ -90,22 +100,24 @@ class BookingCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 12.h),
-          Container(height: 1, color: AppColors.grey100),
+          const Divider(height: 1, color: AppColors.grey200),
           SizedBox(height: 12.h),
+
+          // Doctor info
           Row(
             children: [
               Container(
                 width: 80.w,
                 height: 80.w,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.r),
-                  color: AppColors.grey100,
+                  borderRadius: BorderRadius.circular(14.r),
+                  color: AppColors.paleBlueLight,
                   image: DecorationImage(
                     image: booking.doctorAvatar != null
                         ? CachedNetworkImageProvider(booking.doctorAvatar!)
-                        : const AssetImage(AppImages.onboarding3)
+                        : const AssetImage(AppImages.person)
                               as ImageProvider,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                   ),
                 ),
               ),
@@ -118,8 +130,8 @@ class BookingCard extends StatelessWidget {
                       booking.doctorName,
                       style: TextStyle(
                         fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.midnightBlue,
+                        fontWeight: FontWeight.w800,
+                        color: isDark ? Colors.white : AppColors.black,
                       ),
                     ),
                     SizedBox(height: 4.h),
@@ -127,7 +139,8 @@ class BookingCard extends StatelessWidget {
                       booking.department,
                       style: TextStyle(
                         fontSize: 14.sp,
-                        color: AppColors.grey500,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primary,
                       ),
                     ),
                     SizedBox(height: 4.h),
@@ -136,7 +149,7 @@ class BookingCard extends StatelessWidget {
                         Icon(
                           Iconsax.location,
                           size: 14.sp,
-                          color: AppColors.grey500,
+                          color: AppColors.grey400,
                         ),
                         SizedBox(width: 4.w),
                         Expanded(
@@ -157,7 +170,7 @@ class BookingCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 16.h),
-          Container(height: 1, color: AppColors.grey100),
+          const Divider(height: 1, color: AppColors.grey200),
           SizedBox(height: 16.h),
           _buildActionButtons(context),
         ],
@@ -176,7 +189,7 @@ class BookingCard extends StatelessWidget {
                 context,
                 "Cancel",
                 AppColors.grey100,
-                AppColors.midnightBlue,
+                AppColors.grey700,
                 () => _showCancelBookingDialog(context),
               ),
             ),
@@ -187,8 +200,8 @@ class BookingCard extends StatelessWidget {
                 ? _buildButton(
                     context,
                     "Go to Clinic",
-                    AppColors.grey100,
-                    AppColors.midnightBlue,
+                    AppColors.paleBlueLight,
+                    AppColors.primary,
                     () {},
                   )
                 : _buildButton(
@@ -215,8 +228,8 @@ class BookingCard extends StatelessWidget {
                 child: _buildButton(
                   context,
                   "Re-Book",
-                  AppColors.grey100,
-                  AppColors.midnightBlue,
+                  AppColors.paleBlueLight,
+                  AppColors.primary,
                   () {
                     context.pushNamed(
                       AppRoutes.doctorDetails,
@@ -228,12 +241,11 @@ class BookingCard extends StatelessWidget {
                         department: booking.department,
                         consultationFee:
                             200, //don't carry this not affect in doctor details
-                        yearsOfExperience:
-                            0, 
-                          rating: 0,
-                          reviewCount: 0
+                        yearsOfExperience: 0,
+                        rating: 0,
+                        reviewCount: 0,
 
-                            //,//don't carry this not affect in doctor details
+                        //,//don't carry this not affect in doctor details
                       ),
                     );
                   },
@@ -245,7 +257,7 @@ class BookingCard extends StatelessWidget {
                   child: _buildButton(
                     context,
                     AppStrings.prescription,
-                    AppColors.midnightBlue,
+                    AppColors.primary,
                     Colors.white,
                     () {
                       context.pushNamed(
@@ -265,7 +277,7 @@ class BookingCard extends StatelessWidget {
               child: _buildButton(
                 context,
                 "Add Review",
-                AppColors.midnightBlue,
+                AppColors.primary,
                 Colors.white,
                 () => _showAddReviewDialog(context),
               ),
@@ -280,8 +292,8 @@ class BookingCard extends StatelessWidget {
             child: _buildButton(
               context,
               "Re-Book",
-              AppColors.grey100,
-              AppColors.midnightBlue,
+              AppColors.paleBlueLight,
+              AppColors.primary,
               () {
                 context.pushNamed(
                   AppRoutes.doctorDetails,
@@ -352,17 +364,17 @@ class BookingCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 40.h,
+        height: 42.h,
         decoration: BoxDecoration(
           color: bgColor,
-          borderRadius: BorderRadius.circular(20.r),
+          borderRadius: BorderRadius.circular(22.r),
         ),
         child: Center(
           child: Text(
             text,
             style: TextStyle(
               color: textColor,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w700,
               fontSize: 14.sp,
             ),
           ),

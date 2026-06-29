@@ -14,11 +14,14 @@ class HomeHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
-        final name = state is ProfileLoaded ? state.patientProfile.name : 'Guest';
+        final name = state is ProfileLoaded
+            ? state.patientProfile.name
+            : 'Guest';
         final city = state is ProfileLoaded
             ? state.patientProfile.city?.name ?? 'Your city'
             : 'Your city';
         final firstName = name.trim().split(' ').first;
+        final isDark = Theme.of(context).brightness == Brightness.dark;
 
         return Row(
           children: [
@@ -28,38 +31,58 @@ class HomeHeader extends StatelessWidget {
                 children: [
                   Text(
                     'Hello, $firstName',
-                    style: Theme.of(context).textTheme.headlineLarge,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -0.4,
+                    ),
                   ),
                   SizedBox(height: 6.h),
                   Text(
                     'Location',
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium?.copyWith(height: 1.4),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: isDark ? AppColors.grey400 : AppColors.grey500,
+                      height: 1.4,
+                    ),
                   ),
                   SizedBox(height: 12.h),
-                  Row(
-                    children: [
-                      Icon(
-                        Iconsax.location5,
-                        color: AppColors.primary,
-                        size: 18.sp,
-                      ),
-                      SizedBox(width: 6.w),
-                      Flexible(
-                        child: Text(
-                          city,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 10.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(0.08),
+                      borderRadius: BorderRadius.circular(999.r),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Iconsax.location5,
+                          color: AppColors.primary,
+                          size: 16.sp,
                         ),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_down_rounded,
-                        color: AppColors.grey500,
-                        size: 18.sp,
-                      ),
-                    ],
+                        SizedBox(width: 6.w),
+                        ConstrainedBox(
+                          constraints: BoxConstraints(maxWidth: 180.w),
+                          child: Text(
+                            city,
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: isDark ? AppColors.white : AppColors.black,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        SizedBox(width: 4.w),
+                        Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          color: AppColors.grey500,
+                          size: 18.sp,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

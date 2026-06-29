@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tabibi/core/utils/constants/app_dimensions.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 
 class ProfileMenuItem extends StatelessWidget {
   final IconData icon;
@@ -20,36 +21,35 @@ class ProfileMenuItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(20.r),
       child: Padding(
         padding: EdgeInsets.symmetric(
-          vertical: AppHeight.h16,
-          horizontal: AppWidth.w20,
+          vertical: 16.h,
+          horizontal: 20.w,
         ),
         child: Row(
           children: [
             Icon(
               icon,
-              color: isLogout
-                  ? Theme.of(context).colorScheme.error
-                  : Theme.of(context).iconTheme.color,
-              size: 24.sp,
+              color: isLogout ? AppColors.error : AppColors.primary,
+              size: 22.sp,
             ),
-            SizedBox(width: AppWidth.w16),
+            SizedBox(width: 16.w),
             Expanded(
               child: Text(
                 text,
-                style: isLogout
-                    ? Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.error,
-                      )
-                    : Theme.of(context).textTheme.bodyMedium,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  color: isLogout ? AppColors.error : AppColors.black,
+                ),
               ),
             ),
             if (!isLogout)
               Icon(
-                Icons.arrow_forward_ios,
-                size: 16.sp,
-                color: Theme.of(context).disabledColor,
+                Iconsax.arrow_right_3,
+                size: 18.sp,
+                color: AppColors.grey400,
               ),
           ],
         ),

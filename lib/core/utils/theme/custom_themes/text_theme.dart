@@ -9,12 +9,12 @@ class AppTextTheme {
   static TextTheme lightTextTheme = TextTheme(
     // Headings
     headlineLarge: AppTextStyle.h1.copyWith(color: AppColors.black),
-    headlineMedium: AppTextStyle.h2.copyWith(color: AppColors.textPrimary),
+    headlineMedium: AppTextStyle.h2.copyWith(color: AppColors.black),
     headlineSmall: AppTextStyle.h3.copyWith(color: AppColors.black),
-    titleLarge: AppTextStyle.h4.copyWith(color: AppColors.textPrimary),
+    titleLarge: AppTextStyle.h4.copyWith(color: AppColors.black),
 
     // Body
-    bodyLarge: AppTextStyle.bodyXl.copyWith(color: AppColors.textPrimary),
+    bodyLarge: AppTextStyle.bodyXl.copyWith(color: AppColors.black),
     bodyMedium: AppTextStyle.bodySRegular.copyWith(color: AppColors.grey400),
     bodySmall: AppTextStyle.bodySMedium.copyWith(color: AppColors.black),
 

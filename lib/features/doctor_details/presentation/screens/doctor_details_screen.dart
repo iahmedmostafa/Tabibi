@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
@@ -22,8 +23,31 @@ class DoctorDetailsScreen extends StatelessWidget {
 
   const DoctorDetailsScreen({super.key, required this.doctor});
 
+  static String _formatToLocal24Hour(String time24) {
+    if (time24.isEmpty) return "";
+    try {
+      final parts = time24.split(':');
+      if (parts.length < 2) return time24;
+      final hour = int.parse(parts[0]);
+      final minute = int.parse(parts[1]);
+      final now = DateTime.now();
+      final utcDateTime = DateTime.utc(
+        now.year,
+        now.month,
+        now.day,
+        hour,
+        minute,
+      );
+      final localDateTime = utcDateTime.toLocal();
+      return "${localDateTime.hour.toString().padLeft(2, '0')}:${localDateTime.minute.toString().padLeft(2, '0')}";
+    } catch (e) {
+      return time24;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocProvider(
       create: (context) =>
           sl<DoctorDetailsCubit>()..getDoctorDetails(doctor.id),
@@ -31,13 +55,58 @@ class DoctorDetailsScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text(AppStrings.doctorDetails),
           centerTitle: true,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => context.pop(),
+          leadingWidth: 64.w,
+          leading: Padding(
+            padding: EdgeInsets.only(left: 20.w),
+            child: Container(
+              height: 40.h,
+              width: 40.w,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isDark ? AppColors.grey800 : AppColors.borderLight,
+                ),
+                color: isDark ? AppColors.darkSurface : Colors.white,
+              ),
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                icon: Icon(
+                  Iconsax.arrow_left,
+                  size: 20.sp,
+                  color: isDark ? Colors.white : AppColors.black,
+                ),
+                onPressed: () => context.pop(),
+              ),
+            ),
           ),
           actions: [
-            // Reactive heart icon tied to the singleton FavoritesCubit
+            Container(
+              height: 40.h,
+              width: 40.w,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isDark ? AppColors.grey800 : AppColors.borderLight,
+                ),
+                color: isDark ? AppColors.darkSurface : Colors.white,
+              ),
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                icon: Icon(
+                  Iconsax.share,
+                  size: 20.sp,
+                  color: isDark ? Colors.white : AppColors.black,
+                ),
+                onPressed: () {},
+              ),
+            ),
+            SizedBox(width: 8.w),
             FavouriteBlocBuilder(doctor: doctor),
+            SizedBox(width: 20.w),
           ],
         ),
         body: BlocBuilder<DoctorDetailsCubit, DoctorDetailsState>(
@@ -66,30 +135,47 @@ class DoctorDetailsScreen extends StatelessWidget {
                       AppStrings.aboutMe,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
+                        fontSize: 16.sp,
                       ),
                     ),
                     SizedBox(height: 8.h),
-                    Text(
-                      details.bio ??
+                    ExpandableAboutText(
+                      text: details.bio ??
                           "Dr. ${details.name}, a dedicated ${details.department}, brings a wealth of experience to our center.",
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.grey500,
-                        height: 1.5,
-                      ),
                     ),
                     SizedBox(height: 24.h),
                     Text(
                       AppStrings.workingTime,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
+                        fontSize: 16.sp,
                       ),
                     ),
+                    SizedBox(height: 12.h),
+                    Divider(color: isDark ? AppColors.grey800 : AppColors.borderLight, thickness: 1),
                     SizedBox(height: 8.h),
                     ...details.schedule.map(
-                      (s) => Text(
-                        "${Formatter.getDayName(s.dayOfWeek)}: ${Formatter.formatTo12Hour(s.openTime)} - ${Formatter.formatTo12Hour(s.closeTime)}",
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.grey500,
+                      (s) => Padding(
+                        padding: EdgeInsets.symmetric(vertical: 6.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              Formatter.getDayName(s.dayOfWeek),
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: AppColors.grey500,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                            Text(
+                              "${_formatToLocal24Hour(s.openTime)} - ${_formatToLocal24Hour(s.closeTime)}",
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: isDark ? Colors.white : AppColors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -98,20 +184,36 @@ class DoctorDetailsScreen extends StatelessWidget {
                       AppStrings.consultationFee,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
+                        fontSize: 16.sp,
                       ),
                     ),
-                    Text(
-                      "${details.consultationFee} EGP",
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.grey500,
-                      ),
+                    SizedBox(height: 8.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Fee",
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.grey500,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                        Text(
+                          "${details.consultationFee} EGP",
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 24.h),
                     ReviewBlocBuilder(details: details),
                     if (details.reviews.isEmpty)
                       const Text("No reviews yet")
                     else
-                      ...details.reviews.map(
+                      ...details.reviews.take(3).map(
                         (r) => Padding(
                           padding: EdgeInsets.only(bottom: 12.h),
                           child: ReviewItem(review: r),
@@ -131,6 +233,68 @@ class DoctorDetailsScreen extends StatelessWidget {
             return const SizedBox.shrink();
           },
         ),
+      ),
+    );
+  }
+}
+
+class ExpandableAboutText extends StatefulWidget {
+  final String text;
+  const ExpandableAboutText({super.key, required this.text});
+
+  @override
+  State<ExpandableAboutText> createState() => _ExpandableAboutTextState();
+}
+
+class _ExpandableAboutTextState extends State<ExpandableAboutText> {
+  bool isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final text = widget.text;
+    const maxLength = 120;
+    if (text.length <= maxLength) {
+      return Text(
+        text,
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+          color: AppColors.grey500,
+          height: 1.5,
+          fontSize: 14.sp,
+        ),
+      );
+    }
+
+    return RichText(
+      text: TextSpan(
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+          color: AppColors.grey500,
+          height: 1.5,
+          fontSize: 14.sp,
+          fontFamily: Theme.of(context).textTheme.bodyMedium?.fontFamily,
+        ),
+        children: [
+          TextSpan(
+            text: isExpanded ? text : '${text.substring(0, maxLength)}... ',
+          ),
+          WidgetSpan(
+            alignment: PlaceholderAlignment.baseline,
+            baseline: TextBaseline.alphabetic,
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  isExpanded = !isExpanded;
+                });
+              },
+              child: Text(
+                isExpanded ? "Show less" : "Read more",
+                style: const TextStyle(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
