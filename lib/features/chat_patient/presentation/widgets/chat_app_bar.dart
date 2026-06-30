@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 
 class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String doctorName;
@@ -14,10 +14,11 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final hasImage = doctorImage != null && doctorImage!.isNotEmpty;
 
     return AppBar(
-      backgroundColor: AppColors.midnightBlue,
+      backgroundColor: isDark ? AppColors.darkSurface : AppColors.midnightBlue,
       foregroundColor: Colors.white,
       elevation: 0,
       titleSpacing: 0,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 
 /// Shown when the messages list is empty
 class ChatEmptyState extends StatelessWidget {
@@ -8,6 +8,7 @@ class ChatEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -15,7 +16,7 @@ class ChatEmptyState extends StatelessWidget {
           Icon(
             Icons.chat_bubble_outline_rounded,
             size: 70.sp,
-            color: AppColors.grey300,
+            color: isDark ? AppColors.grey700 : AppColors.grey300,
           ),
           SizedBox(height: 16.h),
           Text(
@@ -23,13 +24,16 @@ class ChatEmptyState extends StatelessWidget {
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
-              color: AppColors.grey500,
+              color: isDark ? AppColors.grey200 : AppColors.grey500,
             ),
           ),
           SizedBox(height: 6.h),
           Text(
             'Start the conversation!',
-            style: TextStyle(fontSize: 13.sp, color: AppColors.grey400),
+            style: TextStyle(
+              fontSize: 13.sp,
+              color: isDark ? AppColors.grey400 : AppColors.grey400,
+            ),
           ),
         ],
       ),
@@ -43,18 +47,23 @@ class ChatErrorState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.wifi_off_rounded, size: 60.sp, color: AppColors.grey400),
+          Icon(
+            Icons.wifi_off_rounded,
+            size: 60.sp,
+            color: isDark ? AppColors.grey700 : AppColors.grey400,
+          ),
           SizedBox(height: 12.h),
           Text(
             'Could not load messages',
             style: TextStyle(
               fontSize: 15.sp,
               fontWeight: FontWeight.w600,
-              color: AppColors.grey600,
+              color: isDark ? AppColors.grey300 : AppColors.grey600,
             ),
           ),
         ],
@@ -69,20 +78,23 @@ class ChatExpiredBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       margin: EdgeInsets.all(12.w),
       padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFF8E1),
+        color: isDark ? AppColors.grey900 : const Color(0xFFFFF8E1),
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: const Color(0xFFFFE082)),
+        border: Border.all(
+          color: isDark ? AppColors.grey800 : const Color(0xFFFFE082),
+        ),
       ),
       child: Row(
         children: [
-          const Icon(
+          Icon(
             Icons.lock_clock_rounded,
-            color: Color(0xFFF59E0B),
+            color: isDark ? AppColors.actionAmber : const Color(0xFFF59E0B),
             size: 20,
           ),
           SizedBox(width: 10.w),
@@ -90,7 +102,7 @@ class ChatExpiredBanner extends StatelessWidget {
             child: Text(
               'Chat is only available for 7 days after your appointment.',
               style: TextStyle(
-                color: const Color(0xFF92400E),
+                color: isDark ? AppColors.grey300 : const Color(0xFF92400E),
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w500,
               ),

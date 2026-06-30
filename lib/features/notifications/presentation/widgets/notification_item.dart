@@ -29,7 +29,7 @@ class NotificationItem extends StatelessWidget {
         decoration: BoxDecoration(
           color: !notification.isRead
               ? isDark
-                    ? AppColors.primary
+                    ? AppColors.grey900
                     : AppColors.white
               : isDark
               ? AppColors.dark

@@ -13,4 +13,6 @@ class AppImages {
   static const quickActionHistory = "assets/images/history-book1.png";
   static const quickActionReport = "assets/images/medical-report.png";
   static const doctorNotFound = "assets/images/undraw_file-search_cbur.svg";
+  static const empty = "assets/images/undraw_empty_4zx0.svg";
+
 }

@@ -19,6 +19,12 @@ class PrescriptionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final scaffoldBackground = isDark ? AppColors.darkBackground : AppColors.grey50;
+    final appBarBackground = isDark ? AppColors.darkBackground : Colors.white;
+    final titleColor = isDark ? AppColors.white : AppColors.grey900;
+    final iconColor = isDark ? AppColors.white : AppColors.black;
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
@@ -26,28 +32,33 @@ class PrescriptionScreen extends StatelessWidget {
         _goBack(context);
       },
       child: Scaffold(
-        backgroundColor: AppColors.grey50,
+        backgroundColor: scaffoldBackground,
         appBar: AppBar(
           title: Text(
             AppStrings.prescription,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: AppColors.grey900,
+              color: titleColor,
               fontWeight: FontWeight.w800,
             ),
           ),
           centerTitle: true,
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
+          backgroundColor: appBarBackground,
+          surfaceTintColor: appBarBackground,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
+            icon: Icon(Icons.arrow_back, size: 24.sp, color: iconColor),
             onPressed: () => _goBack(context),
           ),
         ),
         body: BlocBuilder<PrescriptionCubit, PrescriptionState>(
           builder: (context, state) {
             if (state.status == PrescriptionStatus.loading) {
-              return const Center(child: CircularProgressIndicator());
+              return Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.primary,
+                  backgroundColor: isDark ? AppColors.grey800 : AppColors.grey200,
+                ),
+              );
             }
 
             if (state.status == PrescriptionStatus.failure) {
@@ -79,7 +90,11 @@ class PrescriptionScreen extends StatelessWidget {
     BuildContext context,
     PrescriptionModel prescription,
   ) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bodyColor = isDark ? AppColors.grey300 : AppColors.grey700;
+
     return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
       padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 28.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,7 +108,7 @@ class PrescriptionScreen extends StatelessWidget {
             child: Text(
               prescription.diagnosis,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: AppColors.grey700,
+                color: bodyColor,
                 fontSize: 15.sp,
                 height: 1.5,
               ),
@@ -108,7 +123,7 @@ class PrescriptionScreen extends StatelessWidget {
               child: Text(
                 prescription.notes!,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: AppColors.grey700,
+                  color: bodyColor,
                   fontSize: 15.sp,
                   height: 1.5,
                 ),
@@ -137,15 +152,29 @@ class _MedicinesHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final surfaceColor = isDark ? AppColors.grey900 : Colors.white;
+    final borderColor = isDark ? AppColors.grey800 : AppColors.grey200;
+    final titleColor = isDark ? AppColors.white : AppColors.grey900;
+    final subtitleColor = isDark ? AppColors.grey400 : AppColors.grey500;
+    final iconBackground = isDark
+        ? AppColors.grey800
+        : AppColors.teal.withValues(alpha: 0.12);
+    final iconColor = isDark ? AppColors.teal20 : AppColors.teal;
+    final chipBackground = isDark
+        ? AppColors.grey800
+        : AppColors.midnightBlue.withValues(alpha: 0.08);
+    final chipTextColor = isDark ? AppColors.grey100 : AppColors.midnightBlue;
+
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: surfaceColor,
         borderRadius: BorderRadius.circular(18.r),
-        border: Border.all(color: AppColors.grey200),
+        border: Border.all(color: borderColor),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.045),
+            color: Colors.black.withValues(alpha: isDark ? 0.26 : 0.045),
             blurRadius: 14,
             offset: const Offset(0, 8),
           ),
@@ -157,10 +186,10 @@ class _MedicinesHeader extends StatelessWidget {
             width: 42.w,
             height: 42.w,
             decoration: BoxDecoration(
-              color: AppColors.teal.withValues(alpha: 0.12),
+              color: iconBackground,
               borderRadius: BorderRadius.circular(13.r),
             ),
-            child: Icon(Iconsax.hospital, color: AppColors.teal, size: 22.sp),
+            child: Icon(Iconsax.hospital, color: iconColor, size: 22.sp),
           ),
           SizedBox(width: 12.w),
           Expanded(
@@ -170,16 +199,16 @@ class _MedicinesHeader extends StatelessWidget {
                 Text(
                   AppStrings.medicines,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.grey900,
+                    color: titleColor,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
                 SizedBox(height: 3.h),
                 Text(
                   'Follow the dosage and timing exactly as prescribed',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodySmall?.copyWith(color: AppColors.grey500),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: subtitleColor,
+                  ),
                 ),
               ],
             ),
@@ -188,13 +217,13 @@ class _MedicinesHeader extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
             decoration: BoxDecoration(
-              color: AppColors.midnightBlue.withValues(alpha: 0.08),
+              color: chipBackground,
               borderRadius: BorderRadius.circular(999.r),
             ),
             child: Text(
               '$count ${count == 1 ? 'item' : AppStrings.items}',
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: AppColors.midnightBlue,
+                color: chipTextColor,
                 fontWeight: FontWeight.w800,
               ),
             ),

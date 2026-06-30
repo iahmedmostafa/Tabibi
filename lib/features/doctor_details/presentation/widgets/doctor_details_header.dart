@@ -8,31 +8,70 @@ import 'package:tabibi/features/doctor_details/domain/entities/doctor_details_en
 
 class DoctorDetailsHeader extends StatelessWidget {
   final DoctorDetails doctor;
+  final String heroTag;
 
-  const DoctorDetailsHeader({super.key, required this.doctor});
+  const DoctorDetailsHeader({
+    super.key,
+    required this.doctor,
+    required this.heroTag,
+  });
+
+  static Widget _heroFlightShuttleBuilder(
+    BuildContext flightContext,
+    Animation<double> animation,
+    HeroFlightDirection direction,
+    BuildContext fromHeroContext,
+    BuildContext toHeroContext,
+  ) {
+    final fromHero = fromHeroContext.widget as Hero;
+    final toHero = toHeroContext.widget as Hero;
+    final child = direction == HeroFlightDirection.push
+        ? toHero.child
+        : fromHero.child;
+    final curve = CurvedAnimation(
+      parent: animation,
+      curve: Curves.easeInOutCubic,
+    );
+
+    return FadeTransition(
+      opacity: curve,
+      child: ScaleTransition(
+        scale: Tween<double>(begin: 0.96, end: 1).animate(curve),
+        child: Material(
+          color: Colors.transparent,
+          child: child,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final doctorName = doctor.name.startsWith('Dr.') ? doctor.name : 'Dr. ${doctor.name}';
+
     return Row(
       children: [
         Stack(
           children: [
-            Container(
-              width: 90.w,
-              height: 90.h,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.grey100,
-                image: doctor.avatarUrl != null && doctor.avatarUrl!.isNotEmpty
-                    ? DecorationImage(
-                        image: CachedNetworkImageProvider(doctor.avatarUrl!),
-                        fit: BoxFit.cover,
-                      )
-                    : const DecorationImage(
-                        image: AssetImage(AppImages.person), 
-                        fit: BoxFit.cover,
-                      ),
+            Hero(
+              tag: heroTag,
+              flightShuttleBuilder: _heroFlightShuttleBuilder,
+              child: Container(
+                width: 90.w,
+                height: 90.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.grey100,
+                  image: doctor.avatarUrl != null && doctor.avatarUrl!.isNotEmpty
+                      ? DecorationImage(
+                          image: CachedNetworkImageProvider(doctor.avatarUrl!),
+                          fit: BoxFit.cover,
+                        )
+                      : const DecorationImage(
+                          image: AssetImage(AppImages.person),
+                          fit: BoxFit.cover,
+                        ),
+                ),
               ),
             ),
             Positioned(
@@ -61,17 +100,17 @@ class DoctorDetailsHeader extends StatelessWidget {
               Text(
                 doctorName,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.sp,
-                ),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.sp,
+                    ),
               ),
               SizedBox(height: 6.h),
               Text(
                 doctor.department,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.grey500,
-                  fontWeight: FontWeight.w500,
-                ),
+                      color: AppColors.grey500,
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
               SizedBox(height: 8.h),
               Row(
@@ -86,9 +125,9 @@ class DoctorDetailsHeader extends StatelessWidget {
                     child: Text(
                       doctor.address,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.grey500,
-                        fontSize: 13.sp,
-                      ),
+                            color: AppColors.grey500,
+                            fontSize: 13.sp,
+                          ),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),

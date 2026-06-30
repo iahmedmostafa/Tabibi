@@ -46,15 +46,19 @@ class _StatePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(14.r),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: isDark ? AppColors.grey900 : AppColors.white,
         borderRadius: BorderRadius.circular(18.r),
+        border: Border.all(
+          color: isDark ? AppColors.grey800 : AppColors.borderLight,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withOpacity(isDark ? 0.30 : 0.06),
             blurRadius: 18,
             offset: const Offset(0, 10),
           ),
@@ -66,7 +70,7 @@ class _StatePanel extends StatelessWidget {
             width: 48.r,
             height: 48.r,
             decoration: BoxDecoration(
-              color: accentColor.withOpacity(0.10),
+              color: accentColor.withOpacity(isDark ? 0.18 : 0.10),
               borderRadius: BorderRadius.circular(16.r),
             ),
             child: Icon(icon, color: accentColor, size: 23.sp),
@@ -78,7 +82,7 @@ class _StatePanel extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: accentColor == AppColors.error
                         ? AppColors.error
-                        : AppColors.grey600,
+                        : (isDark ? AppColors.grey300 : AppColors.grey600),
                     height: 1.35,
                     fontWeight: FontWeight.w600,
                   ),

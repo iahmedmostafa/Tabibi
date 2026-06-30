@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tabibi/features/chat_patient/presentation/widgets/chat_input_bar.dart';
 import '../../../../core/DI/service_locator.dart';
 import '../../../../core/utils/constants/app_colors.dart';
 import '../../domain/entities/chat_entity.dart';
 import '../../domain/usecases/chat_usecases.dart';
 import '../widgets/chat_app_bar.dart';
 import '../widgets/chat_date_chip.dart';
-import '../widgets/chat_input_bar.dart';
 import '../widgets/chat_message_bubble.dart';
 import '../widgets/chat_states.dart';
 
@@ -71,8 +71,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F4F8),
+      backgroundColor: isDark ? AppColors.darkBackground : const Color(0xFFF0F4F8),
       appBar: ChatAppBar(
         doctorName: widget.doctorName,
         doctorImage: widget.doctorImage,
@@ -139,7 +140,6 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  /// Reacts to the stream to decide whether to show input or expired bar
   Widget _buildBottomBar() {
     return StreamBuilder<ChatResponseEntity>(
       stream: _chatStream,

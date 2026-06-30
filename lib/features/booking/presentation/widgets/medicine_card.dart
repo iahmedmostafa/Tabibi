@@ -13,15 +13,27 @@ class MedicineCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final surfaceColor = isDark ? AppColors.grey900 : Colors.white;
+    final borderColor = isDark ? AppColors.grey800 : AppColors.grey200;
+    final titleColor = isDark ? AppColors.white : AppColors.grey900;
+    final labelColor = isDark ? AppColors.grey400 : AppColors.grey500;
+    final valueColor = isDark ? AppColors.grey200 : AppColors.grey800;
+    final dividerColor = isDark ? AppColors.grey800 : AppColors.grey100;
+    final iconBackground = isDark ? AppColors.grey800 : AppColors.grey100;
+    final iconColor = isDark ? AppColors.grey300 : AppColors.grey500;
+    final badgeBackground = isDark ? AppColors.grey800 : AppColors.teal.withValues(alpha: 0.12);
+    final badgeTextColor = isDark ? AppColors.teal20 : AppColors.teal;
+
     return Container(
       padding: EdgeInsets.all(18.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: surfaceColor,
         borderRadius: BorderRadius.circular(18.r),
-        border: Border.all(color: AppColors.grey200),
+        border: Border.all(color: borderColor),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.045),
+            color: Colors.black.withValues(alpha: isDark ? 0.26 : 0.045),
             blurRadius: 16,
             offset: const Offset(0, 8),
           ),
@@ -36,14 +48,14 @@ class MedicineCard extends StatelessWidget {
                 width: 38.w,
                 height: 38.w,
                 decoration: BoxDecoration(
-                  color: AppColors.teal.withValues(alpha: 0.12),
+                  color: badgeBackground,
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Center(
                   child: Text(
                     '$index',
                     style: TextStyle(
-                      color: AppColors.teal,
+                      color: badgeTextColor,
                       fontWeight: FontWeight.w800,
                       fontSize: 14.sp,
                     ),
@@ -55,7 +67,7 @@ class MedicineCard extends StatelessWidget {
                 child: Text(
                   medicine.medicineName,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.grey900,
+                    color: titleColor,
                     fontWeight: FontWeight.w800,
                     fontSize: 16.sp,
                   ),
@@ -64,24 +76,36 @@ class MedicineCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 14.h),
-          Container(height: 1, color: AppColors.grey100),
+          Container(height: 1, color: dividerColor),
           SizedBox(height: 14.h),
           _buildDetailRow(
             icon: Iconsax.weight,
             label: AppStrings.dosage,
             value: medicine.dosage,
+            labelColor: labelColor,
+            valueColor: valueColor,
+            iconBackground: iconBackground,
+            iconColor: iconColor,
           ),
           SizedBox(height: 10.h),
           _buildDetailRow(
             icon: Iconsax.repeat,
             label: AppStrings.frequency,
             value: medicine.frequency,
+            labelColor: labelColor,
+            valueColor: valueColor,
+            iconBackground: iconBackground,
+            iconColor: iconColor,
           ),
           SizedBox(height: 10.h),
           _buildDetailRow(
             icon: Iconsax.timer_1,
             label: AppStrings.duration,
             value: medicine.duration,
+            labelColor: labelColor,
+            valueColor: valueColor,
+            iconBackground: iconBackground,
+            iconColor: iconColor,
           ),
           if (medicine.instructions.isNotEmpty) ...[
             SizedBox(height: 10.h),
@@ -89,6 +113,10 @@ class MedicineCard extends StatelessWidget {
               icon: Iconsax.info_circle,
               label: AppStrings.instructions,
               value: medicine.instructions,
+              labelColor: labelColor,
+              valueColor: valueColor,
+              iconBackground: iconBackground,
+              iconColor: iconColor,
             ),
           ],
         ],
@@ -100,6 +128,10 @@ class MedicineCard extends StatelessWidget {
     required IconData icon,
     required String label,
     required String value,
+    required Color labelColor,
+    required Color valueColor,
+    required Color iconBackground,
+    required Color iconColor,
   }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,10 +140,10 @@ class MedicineCard extends StatelessWidget {
           width: 30.w,
           height: 30.w,
           decoration: BoxDecoration(
-            color: AppColors.grey100,
+            color: iconBackground,
             borderRadius: BorderRadius.circular(9.r),
           ),
-          child: Icon(icon, size: 15.sp, color: AppColors.grey500),
+          child: Icon(icon, size: 15.sp, color: iconColor),
         ),
         SizedBox(width: 10.w),
         Expanded(
@@ -121,7 +153,7 @@ class MedicineCard extends StatelessWidget {
               Text(
                 label,
                 style: TextStyle(
-                  color: AppColors.grey500,
+                  color: labelColor,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w600,
                 ),
@@ -130,7 +162,7 @@ class MedicineCard extends StatelessWidget {
               Text(
                 value,
                 style: TextStyle(
-                  color: AppColors.grey800,
+                  color: valueColor,
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w700,
                   height: 1.35,

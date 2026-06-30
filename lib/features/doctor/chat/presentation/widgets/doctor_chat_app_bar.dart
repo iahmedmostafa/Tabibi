@@ -18,10 +18,11 @@ class DoctorChatAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final hasImage = patientImage != null && patientImage!.isNotEmpty;
 
     return AppBar(
-      backgroundColor: AppColors.midnightBlue,
+      backgroundColor: isDark ? AppColors.darkSurface : AppColors.midnightBlue,
       foregroundColor: Colors.white,
       elevation: 0,
       titleSpacing: 0,

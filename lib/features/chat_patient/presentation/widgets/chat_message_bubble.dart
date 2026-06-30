@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import '../../../../../core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 import '../../domain/entities/chat_entity.dart';
 
 class ChatMessageBubble extends StatelessWidget {
@@ -12,6 +12,7 @@ class ChatMessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMe = message.isMe;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Padding(
       padding: EdgeInsets.only(
@@ -26,29 +27,34 @@ class ChatMessageBubble extends StatelessWidget {
               ? CrossAxisAlignment.end
               : CrossAxisAlignment.start,
           children: [
-            _buildBubble(isMe),
+            _buildBubble(context, isMe, isDark),
             SizedBox(height: 3.h),
-            _buildTimestamp(isMe),
+            _buildTimestamp(isMe, isDark),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildBubble(bool isMe) {
+  Widget _buildBubble(BuildContext context, bool isMe, bool isDark) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
       decoration: BoxDecoration(
-        color: isMe ? AppColors.midnightBlue : Colors.white,
+        color: isMe
+            ? AppColors.midnightBlue
+            : (isDark ? AppColors.grey900 : Colors.white),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(18.r),
           topRight: Radius.circular(18.r),
           bottomLeft: Radius.circular(isMe ? 18.r : 4.r),
           bottomRight: Radius.circular(isMe ? 4.r : 18.r),
         ),
+        border: isDark && !isMe
+            ? Border.all(color: AppColors.grey800)
+            : null,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
+            color: Colors.black.withValues(alpha: isDark ? 0.22 : 0.06),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -57,7 +63,7 @@ class ChatMessageBubble extends StatelessWidget {
       child: Text(
         message.message,
         style: TextStyle(
-          color: isMe ? Colors.white : AppColors.grey800,
+          color: isMe ? Colors.white : (isDark ? AppColors.grey100 : AppColors.grey800),
           fontSize: 14.5.sp,
           height: 1.4,
         ),
@@ -65,13 +71,16 @@ class ChatMessageBubble extends StatelessWidget {
     );
   }
 
-  Widget _buildTimestamp(bool isMe) {
+  Widget _buildTimestamp(bool isMe, bool isDark) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           DateFormat('HH:mm').format(message.sentAt),
-          style: TextStyle(fontSize: 10.sp, color: AppColors.grey500),
+          style: TextStyle(
+            fontSize: 10.sp,
+            color: isDark ? AppColors.grey400 : AppColors.grey500,
+          ),
         ),
         if (isMe) ...[
           SizedBox(width: 4.w),

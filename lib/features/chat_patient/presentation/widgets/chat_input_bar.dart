@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 
 class ChatInputBar extends StatelessWidget {
   final TextEditingController controller;
@@ -16,21 +16,23 @@ class ChatInputBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: EdgeInsets.fromLTRB(12.w, 8.h, 12.w, 16.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? AppColors.darkSurface : Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.07),
+            color: Colors.black.withValues(alpha: isDark ? 0.22 : 0.07),
             blurRadius: 12,
             offset: const Offset(0, -3),
           ),
         ],
+        border: Border(top: BorderSide(color: isDark ? AppColors.grey800 : Colors.transparent)),
       ),
       child: Row(
         children: [
-          Expanded(child: _buildTextField()),
+          Expanded(child: _buildTextField(context, isDark)),
           SizedBox(width: 10.w),
           _buildSendButton(),
         ],
@@ -38,11 +40,12 @@ class ChatInputBar extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField() {
+  Widget _buildTextField(BuildContext context, bool isDark) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFF0F4F8),
+        color: isDark ? AppColors.grey800 : const Color(0xFFF0F4F8),
         borderRadius: BorderRadius.circular(24.r),
+        border: Border.all(color: isDark ? AppColors.grey700 : Colors.transparent),
       ),
       child: TextField(
         controller: controller,
@@ -50,10 +53,16 @@ class ChatInputBar extends StatelessWidget {
         minLines: 1,
         textInputAction: TextInputAction.send,
         onSubmitted: (_) => onSend(),
-        style: TextStyle(fontSize: 14.5.sp, color: AppColors.grey800),
+        style: TextStyle(
+          fontSize: 14.5.sp,
+          color: isDark ? AppColors.white : AppColors.grey800,
+        ),
         decoration: InputDecoration(
-          hintText: 'Type a message…',
-          hintStyle: TextStyle(color: AppColors.grey400, fontSize: 14.sp),
+          hintText: 'Type a message�',
+          hintStyle: TextStyle(
+            color: isDark ? AppColors.grey400 : AppColors.grey400,
+            fontSize: 14.sp,
+          ),
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(
             horizontal: 18.w,
@@ -91,19 +100,32 @@ class ChatInputBar extends StatelessWidget {
   }
 }
 
-/// Shown when canChat == false after data is loaded
 class ChatExpiredBar extends StatelessWidget {
   const ChatExpiredBar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: EdgeInsets.all(16.w),
-      color: Colors.white,
-      child: Text(
-        '🔒  This chat has expired.',
-        textAlign: TextAlign.center,
-        style: TextStyle(color: AppColors.grey500, fontSize: 13.sp),
+      color: isDark ? AppColors.darkSurface : Colors.white,
+      child: Container(
+        padding: EdgeInsets.all(12.w),
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.grey800 : const Color(0xFFFFF8E1),
+          borderRadius: BorderRadius.circular(14.r),
+          border: Border.all(
+            color: isDark ? AppColors.grey700 : const Color(0xFFFFE082),
+          ),
+        ),
+        child: Text(
+          '??  This chat has expired.',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: isDark ? AppColors.grey200 : const Color(0xFF92400E),
+            fontSize: 13.sp,
+          ),
+        ),
       ),
     );
   }

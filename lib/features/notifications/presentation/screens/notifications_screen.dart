@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
+import 'package:tabibi/core/utils/constants/app_images.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/features/notifications/domain/entities/notification_entity.dart';
 import 'package:tabibi/features/notifications/presentation/cubit/notifications_cubit.dart';
@@ -38,7 +41,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.midnightBlue),
+          icon: const Icon(Iconsax.arrow_left_2, color: AppColors.grey500),
           onPressed: () {
             context.pop();
           },
@@ -55,7 +58,14 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               return Center(child: Text(state.errorMessage));
             case NotificationsStatus.loaded:
               if (state.notifications.isEmpty) {
-                return const Center(child: Text('No notifications yet'));
+                return Center(
+                  child: Column(
+                    children: [
+                      SvgPicture.asset(AppImages.empty),
+                      const Text('No notifications yet'),
+                    ],
+                  ),
+                );
               }
               final now = DateTime.now();
               final today = DateTime(now.year, now.month, now.day);

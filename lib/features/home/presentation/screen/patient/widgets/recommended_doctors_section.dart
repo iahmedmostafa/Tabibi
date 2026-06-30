@@ -82,8 +82,17 @@ class _RecommendedDoctorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final rating = doctor.rating ?? 0;
     final reviewCount = doctor.reviewCount ?? 0;
+    final heroTag = 'doctor-avatar-${doctor.id}';
+    final cardSurface = isDark ? AppColors.grey900 : AppColors.white;
+    final cardBorder = isDark
+        ? AppColors.grey800
+        : AppColors.black.withValues(alpha: 0.1);
+    final titleColor = isDark ? AppColors.white : AppColors.black;
+    final bodyColor = isDark ? AppColors.grey400 : AppColors.grey500;    final imageBg = isDark ? AppColors.grey800 : AppColors.grey300;
+    final imageIconColor = isDark ? AppColors.grey400 : AppColors.grey500;
 
     return InkWell(
       onTap: () => context.push(AppRoutes.doctorDetails, extra: doctor),
@@ -91,14 +100,14 @@ class _RecommendedDoctorCard extends StatelessWidget {
       child: Container(
         width: 244.w,
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: cardSurface,
           borderRadius: BorderRadius.circular(18.r),
-            border: Border.all(color: AppColors.black.withValues(alpha: 0.1)),
+          border: Border.all(color: cardBorder),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withOpacity(0.15),
-              blurRadius: 3,
-              offset: const Offset(0, 1),
+              color: Colors.black.withOpacity(isDark ? 0.24 : 0.08),
+              blurRadius: isDark ? 18 : 12,
+              offset: const Offset(0, 4),
             ),
           ],
         ),
@@ -109,24 +118,27 @@ class _RecommendedDoctorCard extends StatelessWidget {
               height: 150.h,
               child: Stack(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(18.r),
-                    ),
-                    child: Container(
-                      width: double.infinity,
-                      height: double.infinity,
-                      color: AppColors.grey300,
-                      child: doctor.avatarUrl != null
-                          ? CachedNetworkImage(
-                              imageUrl: doctor.avatarUrl!,
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) =>
-                                  Container(color: AppColors.grey300),
-                              errorWidget: (context, url, error) =>
-                                  _DoctorImageFallback(),
-                            )
-                          : _DoctorImageFallback(),
+                  Hero(
+                    tag: heroTag,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(18.r),
+                      ),
+                      child: Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        color: imageBg,
+                        child: doctor.avatarUrl != null
+                            ? CachedNetworkImage(
+                                imageUrl: doctor.avatarUrl!,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) =>
+                                    Container(color: imageBg),
+                                errorWidget: (context, url, error) =>
+                                    _DoctorImageFallback(color: imageIconColor),
+                              )
+                            : _DoctorImageFallback(color: imageIconColor),
+                      ),
                     ),
                   ),
                   Positioned(
@@ -139,11 +151,15 @@ class _RecommendedDoctorCard extends StatelessWidget {
                         width: 38.r,
                         height: 38.r,
                         decoration: BoxDecoration(
-                          color: AppColors.white.withOpacity(0.78),
+                          color: isDark
+                              ? AppColors.grey800
+                              : AppColors.white.withOpacity(0.78),
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.06),
+                              color: Colors.black.withOpacity(
+                                isDark ? 0.18 : 0.06,
+                              ),
                               blurRadius: 12,
                               offset: const Offset(0, 5),
                             ),
@@ -153,7 +169,7 @@ class _RecommendedDoctorCard extends StatelessWidget {
                           isFavorite ? Icons.favorite : Icons.favorite_border,
                           color: isFavorite
                               ? AppColors.error
-                              : AppColors.white,
+                              : (isDark ? AppColors.grey300 : AppColors.white),
                           size: 19.sp,
                         ),
                       ),
@@ -162,7 +178,7 @@ class _RecommendedDoctorCard extends StatelessWidget {
                   Positioned(
                     right: 10.w,
                     bottom: 10.h,
-                    child: _RatingPill(rating: rating),
+                    child: _RatingPill(rating: rating, isDark: isDark),
                   ),
                 ],
               ),
@@ -177,7 +193,7 @@ class _RecommendedDoctorCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: AppColors.black,
+                      color: titleColor,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
@@ -187,7 +203,7 @@ class _RecommendedDoctorCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.grey600,
+                      color: bodyColor,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -207,7 +223,7 @@ class _RecommendedDoctorCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(
-                                color: AppColors.grey500,
+                                color: bodyColor,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
@@ -219,20 +235,18 @@ class _RecommendedDoctorCard extends StatelessWidget {
                     children: [
                       Text(
                         'EGP ${doctor.consultationFee.toStringAsFixed(0)}',
-                        style: Theme.of(context).textTheme.titleSmall
-                            ?.copyWith(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w800,
-                            ),
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: titleColor,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                       const Spacer(),
                       Text(
                         '$reviewCount reviews',
-                        style: Theme.of(context).textTheme.bodySmall
-                            ?.copyWith(
-                              color: AppColors.grey500,
-                              fontWeight: FontWeight.w600,
-                            ),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: bodyColor,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ],
                   ),
@@ -247,29 +261,34 @@ class _RecommendedDoctorCard extends StatelessWidget {
 }
 
 class _DoctorImageFallback extends StatelessWidget {
+  const _DoctorImageFallback({required this.color});
+
+  final Color color;
+
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Icon(Iconsax.user, size: 54.sp, color: AppColors.grey500),
+      child: Icon(Iconsax.user, size: 54.sp, color: color),
     );
   }
 }
 
 class _RatingPill extends StatelessWidget {
-  const _RatingPill({required this.rating});
+  const _RatingPill({required this.rating, required this.isDark});
 
   final double rating;
+  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 7.h),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: isDark ? AppColors.grey800 : AppColors.white,
         borderRadius: BorderRadius.circular(999.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withOpacity(isDark ? 0.18 : 0.06),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -283,7 +302,7 @@ class _RatingPill extends StatelessWidget {
           Text(
             rating > 0 ? rating.toStringAsFixed(1) : 'New',
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: AppColors.black,
+              color: isDark ? AppColors.grey100 : AppColors.black,
               fontWeight: FontWeight.w800,
             ),
           ),
@@ -296,6 +315,9 @@ class _RatingPill extends StatelessWidget {
 class _DoctorsSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final skeleton = isDark ? AppColors.grey800 : Colors.white;
+
     return Skeletonizer(
       enabled: true,
       child: SizedBox(
@@ -309,8 +331,11 @@ class _DoctorsSkeleton extends StatelessWidget {
             return Container(
               width: 244.w,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: isDark ? AppColors.grey900 : Colors.white,
                 borderRadius: BorderRadius.circular(18.r),
+                border: Border.all(
+                  color: isDark ? AppColors.grey800 : AppColors.grey100,
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -318,33 +343,29 @@ class _DoctorsSkeleton extends StatelessWidget {
                   Container(
                     height: 150.h,
                     width: double.infinity,
-                    color: Colors.white,
+                    color: skeleton,
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(14.w, 12.h, 14.w, 14.h),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          width: 140.w,
-                          height: 16.h,
-                          color: Colors.white,
-                        ),
+                        Container(width: 140.w, height: 16.h, color: skeleton),
                         SizedBox(height: 6.h),
-                        Container(
-                          width: 90.w,
-                          height: 12.h,
-                          color: Colors.white,
-                        ),
+                        Container(width: 90.w, height: 12.h, color: skeleton),
                         SizedBox(height: 7.h),
                         Row(
                           children: [
-                            const Icon(Iconsax.location5, size: 14),
+                            const Icon(
+                              Iconsax.location5,
+                              size: 14,
+                              color: AppColors.grey500,
+                            ),
                             SizedBox(width: 4.w),
                             Container(
                               width: 100.w,
                               height: 12.h,
-                              color: Colors.white,
+                              color: skeleton,
                             ),
                           ],
                         ),
@@ -354,13 +375,13 @@ class _DoctorsSkeleton extends StatelessWidget {
                             Container(
                               width: 60.w,
                               height: 16.h,
-                              color: Colors.white,
+                              color: skeleton,
                             ),
                             const Spacer(),
                             Container(
                               width: 60.w,
                               height: 12.h,
-                              color: Colors.white,
+                              color: skeleton,
                             ),
                           ],
                         ),

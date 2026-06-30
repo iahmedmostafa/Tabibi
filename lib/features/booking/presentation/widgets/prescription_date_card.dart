@@ -12,26 +12,31 @@ class PrescriptionDateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final gradientColors = isDark
+        ? [AppColors.grey900, AppColors.darkBackground]
+        : [AppColors.midnightBlue, AppColors.blue600];
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(18.w),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            AppColors.midnightBlue,
-            AppColors.midnightBlue.withValues(alpha: 0.85),
-          ],
+          colors: gradientColors,
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(18.r),
         boxShadow: [
           BoxShadow(
-            color: AppColors.midnightBlue.withValues(alpha: 0.20),
+            color: AppColors.midnightBlue.withValues(alpha: isDark ? 0.28 : 0.20),
             blurRadius: 18,
             offset: const Offset(0, 10),
           ),
         ],
+        border: Border.all(
+          color: Colors.white.withValues(alpha: isDark ? 0.06 : 0.0),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,10 +47,10 @@ class PrescriptionDateCard extends StatelessWidget {
                 width: 52.w,
                 height: 52.w,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.13),
+                  color: Colors.white.withValues(alpha: isDark ? 0.08 : 0.13),
                   borderRadius: BorderRadius.circular(16.r),
                   border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.12),
+                    color: Colors.white.withValues(alpha: isDark ? 0.08 : 0.12),
                   ),
                 ),
                 child: Icon(
@@ -70,9 +75,11 @@ class PrescriptionDateCard extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 9.h),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.11),
+              color: Colors.white.withValues(alpha: isDark ? 0.08 : 0.11),
               borderRadius: BorderRadius.circular(999.r),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.10)),
+              border: Border.all(
+                color: Colors.white.withValues(alpha: isDark ? 0.08 : 0.10),
+              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -111,9 +118,10 @@ class PrescriptionDateCard extends StatelessWidget {
           SizedBox(height: 10.h),
           Text(
             'Review your diagnosis, notes, and prescribed medicine schedule.',
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall?.copyWith(color: Colors.white70, height: 1.4),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.white70,
+                  height: 1.4,
+                ),
           ),
         ],
       ),

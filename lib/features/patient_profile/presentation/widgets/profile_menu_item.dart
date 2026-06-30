@@ -19,14 +19,13 @@ class ProfileMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(20.r),
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: 16.h,
-          horizontal: 20.w,
-        ),
+        padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
         child: Row(
           children: [
             Icon(
@@ -41,7 +40,11 @@ class ProfileMenuItem extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
-                  color: isLogout ? AppColors.error : AppColors.black,
+                  color: isLogout
+                      ? AppColors.error
+                      : isDark
+                      ? AppColors.white
+                      : AppColors.black,
                 ),
               ),
             ),

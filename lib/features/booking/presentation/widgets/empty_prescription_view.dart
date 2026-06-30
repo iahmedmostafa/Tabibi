@@ -9,6 +9,14 @@ class EmptyPrescriptionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final surfaceColor = isDark ? AppColors.grey900 : Colors.white;
+    final borderColor = isDark ? AppColors.grey800 : AppColors.grey200;
+    final titleColor = isDark ? AppColors.white : AppColors.grey900;
+    final bodyColor = isDark ? AppColors.grey400 : AppColors.grey500;
+    final iconBackground = isDark ? AppColors.grey800 : AppColors.grey100;
+    final iconColor = isDark ? AppColors.grey400 : AppColors.grey400;
+
     return Center(
       child: Padding(
         padding: EdgeInsets.all(24.r),
@@ -16,12 +24,12 @@ class EmptyPrescriptionView extends StatelessWidget {
           width: double.infinity,
           padding: EdgeInsets.all(24.w),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: surfaceColor,
             borderRadius: BorderRadius.circular(20.r),
-            border: Border.all(color: AppColors.grey200),
+            border: Border.all(color: borderColor),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.045),
+                color: Colors.black.withValues(alpha: isDark ? 0.26 : 0.045),
                 blurRadius: 16,
                 offset: const Offset(0, 8),
               ),
@@ -34,20 +42,20 @@ class EmptyPrescriptionView extends StatelessWidget {
                 width: 72.w,
                 height: 72.w,
                 decoration: BoxDecoration(
-                  color: AppColors.grey100,
+                  color: iconBackground,
                   borderRadius: BorderRadius.circular(20.r),
                 ),
                 child: Icon(
                   Iconsax.document,
                   size: 34.sp,
-                  color: AppColors.grey400,
+                  color: iconColor,
                 ),
               ),
               SizedBox(height: 16.h),
               Text(
                 AppStrings.noPrescriptionFound,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.grey900,
+                  color: titleColor,
                   fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
@@ -56,7 +64,7 @@ class EmptyPrescriptionView extends StatelessWidget {
               Text(
                 'Your prescription will appear here after your doctor publishes it.',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.grey500,
+                  color: bodyColor,
                   height: 1.4,
                 ),
                 textAlign: TextAlign.center,

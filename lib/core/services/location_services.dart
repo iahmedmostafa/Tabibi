@@ -1,6 +1,8 @@
 import 'dart:ui' as ui;
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
@@ -74,7 +76,6 @@ class LocationServices {
     required String? imageUrl,
     required double size,
   }) async {
-    // 1. Load the marker frame
     final ByteData markerData = await rootBundle.load(markerPath);
     final ui.Codec markerCodec = await ui.instantiateImageCodec(
       markerData.buffer.asUint8List(),
@@ -84,16 +85,13 @@ class LocationServices {
     final ui.FrameInfo markerFrame = await markerCodec.getNextFrame();
     final ui.Image markerImage = markerFrame.image;
 
-    // 2. Prepare Canvas
     final ui.PictureRecorder recorder = ui.PictureRecorder();
     final ui.Canvas canvas = ui.Canvas(recorder);
     final double markerWidth = markerImage.width.toDouble();
     final double markerHeight = markerImage.height.toDouble();
 
-    // 3. Draw marker frame
     canvas.drawImage(markerImage, ui.Offset.zero, ui.Paint());
 
-    // 4. Load & Draw Doctor Image if available
     if (imageUrl != null && imageUrl.isNotEmpty) {
       try {
         final Uint8List imageBytes = await _fetchImage(imageUrl);
@@ -104,7 +102,6 @@ class LocationServices {
         );
         final ui.Image doctorImage = (await imageCodec.getNextFrame()).image;
 
-        // Clip to circle
         final double radius = doctorImage.width / 2;
         final ui.Offset center = ui.Offset(markerWidth / 2, markerWidth * 0.42);
 
@@ -119,12 +116,10 @@ class LocationServices {
         );
         canvas.restore();
       } catch (e) {
-        // If image loading fails, we just keep the base marker
         debugPrint('Error loading doctor avatar for marker: $e');
       }
     }
 
-    // 5. Convert to Uint8List
     final ui.Picture picture = recorder.endRecording();
     final ui.Image finalImage = await picture.toImage(
       markerWidth.round(),
@@ -136,15 +131,72 @@ class LocationServices {
     return byteData!.buffer.asUint8List();
   }
 
+  Future<Uint8List> getClusterMarker({
+    required int count,
+    required bool isDark,
+    required double size,
+  }) async {
+    final recorder = ui.PictureRecorder();
+    final canvas = ui.Canvas(recorder);
+    final center = ui.Offset(size / 2, size / 2);
+    final radius = size / 2;
+
+    final shadowPaint = ui.Paint()
+      ..color = Colors.black.withValues(alpha: isDark ? 0.42 : 0.18)
+      ..maskFilter = const ui.MaskFilter.blur(ui.BlurStyle.normal, 14);
+
+    canvas.drawCircle(center.translate(0, 3), radius * 0.72, shadowPaint);
+
+    final outerPaint = ui.Paint()
+      ..color = isDark ? const Color(0xFF2563EB) : const Color(0xFF0165FC);
+    canvas.drawCircle(center, radius * 0.72, outerPaint);
+
+    final innerPaint = ui.Paint()
+      ..color = isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FBFF);
+    canvas.drawCircle(center, radius * 0.49, innerPaint);
+
+    final highlightPaint = ui.Paint()
+      ..color = Colors.white.withValues(alpha: isDark ? 0.14 : 0.3);
+    canvas.drawCircle(
+      ui.Offset(center.dx - radius * 0.18, center.dy - radius * 0.18),
+      radius * 0.14,
+      highlightPaint,
+    );
+
+    final textPainter = TextPainter(
+      text: TextSpan(
+        text: count > 99 ? '99+' : '$count',
+        style: TextStyle(
+          color: isDark ? Colors.white : const Color(0xFF0165FC),
+          fontSize: count > 99 ? size * 0.16 : size * 0.19,
+          fontWeight: FontWeight.w800,
+          letterSpacing: -0.3,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout();
+
+    textPainter.paint(
+      canvas,
+      ui.Offset(
+        center.dx - textPainter.width / 2,
+        center.dy - textPainter.height / 2,
+      ),
+    );
+
+    final picture = recorder.endRecording();
+    final image = await picture.toImage(size.round(), size.round());
+    final data = await image.toByteData(format: ui.ImageByteFormat.png);
+    return data!.buffer.asUint8List();
+  }
+
   Future<Uint8List> _fetchImage(String url) async {
     if (url.startsWith('http')) {
       try {
-        // Using DefaultCacheManager to get the file from cache or download it
         final file = await DefaultCacheManager().getSingleFile(url);
         return await file.readAsBytes();
       } catch (e) {
         debugPrint('CacheManager failed, falling back to simple http: $e');
-        // Fallback to simple http if cache manager fails
         final response = await http.get(Uri.parse(url));
         if (response.statusCode == 200) {
           return response.bodyBytes;
@@ -153,7 +205,6 @@ class LocationServices {
         }
       }
     } else {
-      // Assume it's an asset if it doesn't start with http
       final ByteData data = await rootBundle.load(url);
       return data.buffer.asUint8List();
     }

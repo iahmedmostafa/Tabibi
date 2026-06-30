@@ -33,11 +33,11 @@ class ConfirmationDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final actionColor = confirmColor ?? AppColors.midnightBlue;
-
+    bool isDark = theme.brightness == Brightness.dark;
     return Dialog(
       insetPadding: EdgeInsets.symmetric(horizontal: 24.w),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28.r)),
-      backgroundColor: theme.dialogBackgroundColor,
+      backgroundColor: isDark? AppColors.grey900 : AppColors.white,
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: 360.w),
         child: Padding(
@@ -74,29 +74,30 @@ class ConfirmationDialog extends StatelessWidget {
               SizedBox(height: 16.h),
             Text(
               message,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: AppColors.grey700,
-                  height: 1.45,
-                ),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: isDark ? AppColors.grey300 : AppColors.grey700,
+                height: 1.45,
+              ),
               textAlign: TextAlign.center,
             ),
-              SizedBox(height: 24.h),
+            SizedBox(height: 24.h),
             Row(
               children: [
                 Expanded(
                   child: TextButton(
-                      onPressed: isLoading ? null : () => Navigator.pop(context),
+                    onPressed: isLoading ? null : () => Navigator.pop(context),
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.transparent,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(22.r),
+                        borderRadius: BorderRadius.circular(22.r),
                       ),
-                        minimumSize: Size(0, 44.h),
-                        padding: EdgeInsets.symmetric(vertical: AppHeight.h12),
+                      minimumSize: Size(0, 44.h),
+                      padding: EdgeInsets.symmetric(vertical: AppHeight.h12),
                     ),
                     child: Text(
                       cancelText,
-                        style: theme.textTheme.bodyMedium?.copyWith(
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: isDark ? AppColors.grey300 : AppColors.grey700,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

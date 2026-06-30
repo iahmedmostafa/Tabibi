@@ -54,7 +54,6 @@ class QuickActionsRow extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.only(right: 8.w),
         itemCount: actions.length,
-
         separatorBuilder: (_, _) => SizedBox(width: 14.w),
         itemBuilder: (context, index) {
           return _FeatureGradientCard(data: actions[index]);
@@ -84,7 +83,7 @@ class _FeatureGradientCard extends StatelessWidget {
             end: Alignment.bottomRight,
             colors: data.gradientColors,
           ),
-          border: Border.all(color: AppColors.black.withValues(alpha: 0.05,)),
+          border: Border.all(color: AppColors.black.withValues(alpha: 0.05)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.04),

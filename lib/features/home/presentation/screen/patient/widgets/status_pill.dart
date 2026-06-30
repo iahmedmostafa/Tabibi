@@ -9,16 +9,20 @@ class StatusPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 6.h),
       decoration: BoxDecoration(
-        color: AppColors.grey100,
+        color: isDark ? AppColors.grey800 : AppColors.grey100,
         borderRadius: BorderRadius.circular(999.r),
+        border: Border.all(
+          color: isDark ? AppColors.grey700 : AppColors.grey200,
+        ),
       ),
       child: Text(
         text,
         style: Theme.of(context).textTheme.labelMedium?.copyWith(
-          color: AppColors.primary,
+          color: isDark ? AppColors.grey200 : AppColors.primary,
           fontWeight: FontWeight.w800,
         ),
       ),

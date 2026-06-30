@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/features/chat_patient/domain/entities/chat_entity.dart';
 import 'package:tabibi/features/chat_patient/domain/usecases/chat_usecases.dart';
@@ -67,7 +68,7 @@ class _DoctorChatScreenState extends State<DoctorChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F4F8),
+      backgroundColor: Theme.of(context).brightness == Brightness.dark ? AppColors.darkBackground : const Color(0xFFF0F4F8),
       appBar: DoctorChatAppBar(
         patientName: widget.patientName,
         patientImage: widget.patientImage,
@@ -100,3 +101,4 @@ class _DoctorChatScreenState extends State<DoctorChatScreen> {
     super.dispose();
   }
 }
+

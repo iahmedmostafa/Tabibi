@@ -18,7 +18,6 @@ class PatientHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
@@ -30,10 +29,7 @@ class PatientHomeScreen extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: isDark
-                      ? [
-                          AppColors.darkBackground,
-                          AppColors.darkBackground,
-                        ]
+                      ? [AppColors.darkBackground, AppColors.darkBackground]
                       : [
                           AppColors.paleBlue.withValues(alpha: .3),
                           AppColors.white,

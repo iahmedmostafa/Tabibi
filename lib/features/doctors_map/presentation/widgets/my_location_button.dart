@@ -14,15 +14,32 @@ class MyLocationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final background = isDark ? AppColors.grey900 : AppColors.white;
+    final borderColor = isDark ? AppColors.grey700 : AppColors.grey200;
+    final iconColor = isDark ? AppColors.white : AppColors.primary;
+
     return Positioned(
       bottom: bottomOffset,
       right: 16.w,
-      child: FloatingActionButton(
-        heroTag: 'myLocation',
-        mini: true,
-        backgroundColor: Colors.white,
-        onPressed: onPressed,
-        child: const Icon(Icons.my_location, color: AppColors.midnightBlue),
+      child: Material(
+        color: background,
+        elevation: 8,
+        shadowColor: Colors.black.withValues(alpha: 0.18),
+        shape: const CircleBorder(),
+        child: InkWell(
+          customBorder: const CircleBorder(),
+          onTap: onPressed,
+          child: Container(
+            width: 48.w,
+            height: 48.w,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: borderColor),
+            ),
+            child: Icon(Icons.my_location_rounded, color: iconColor, size: 22.sp),
+          ),
+        ),
       ),
     );
   }

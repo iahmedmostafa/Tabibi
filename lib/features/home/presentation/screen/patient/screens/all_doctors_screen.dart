@@ -11,7 +11,6 @@ import 'package:tabibi/features/home/data/models/doctors_filter_params.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/doctor_filter_sheet.dart';
 
-import '../../../../../../core/style/spacing/vertical_space.dart';
 import '../cubit/departments_cubit.dart';
 import '../widgets/all_doctors_bloc_builder.dart';
 import '../widgets/custom_text_field.dart';
@@ -91,7 +90,7 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
-          "All Doctors",
+          'All Doctors',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
@@ -104,7 +103,7 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
         leading: IconButton(
           icon: Icon(
             Iconsax.arrow_left_2,
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).iconTheme.color,
           ),
           onPressed: () {
             context.pop();
@@ -121,7 +120,7 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
       ),
       body: Column(
         children: [
-          VerticalSpace(height: 16.h),
+          SizedBox(height: 16.h),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: CustomTextField(
@@ -137,11 +136,10 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
               },
             ),
           ),
-          const VerticalSpace(height: 16),
-
-          VerticalSpace(height: 16.h),
-          // Doctors List
-          AllDoctorsBlocBuilder(scrollController: _scrollController),
+          const SizedBox(height: 16),
+          Expanded(
+            child: AllDoctorsBlocBuilder(scrollController: _scrollController),
+          ),
         ],
       ),
     );

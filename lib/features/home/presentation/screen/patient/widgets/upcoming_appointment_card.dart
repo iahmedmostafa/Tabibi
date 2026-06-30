@@ -25,19 +25,22 @@ class UpcomingAppointmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;    final textPrimary = isDark ? AppColors.white : AppColors.black;
+    final textSecondary = isDark ? AppColors.grey400 : AppColors.grey600;    final imageBackground = isDark ? AppColors.grey800 : AppColors.grey300;
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(18.r),
       child: Container(
         padding: EdgeInsets.all(14.r),
-        decoration: softCardDecoration(),
+        decoration: softCardDecoration(context),
         child: Row(
           children: [
             Container(
               width: 78.r,
               height: 78.r,
               decoration: BoxDecoration(
-                color: AppColors.grey300,
+                color: imageBackground,
                 borderRadius: BorderRadius.circular(16.r),
               ),
               child: booking.doctorAvatar != null
@@ -47,7 +50,7 @@ class UpcomingAppointmentCard extends StatelessWidget {
                         imageUrl: booking.doctorAvatar!,
                         fit: BoxFit.cover,
                         placeholder: (context, url) =>
-                            Container(color: AppColors.grey300),
+                            Container(color: imageBackground),
                         errorWidget: (context, url, error) =>
                             const Icon(Iconsax.user, color: AppColors.grey500),
                       ),
@@ -68,7 +71,7 @@ class UpcomingAppointmentCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.titleSmall
                               ?.copyWith(
-                                color: AppColors.black,
+                                color: textPrimary,
                                 fontWeight: FontWeight.w800,
                               ),
                         ),
@@ -86,7 +89,7 @@ class UpcomingAppointmentCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.grey600,
+                      color: textSecondary,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -106,7 +109,7 @@ class UpcomingAppointmentCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(
-                                color: AppColors.grey600,
+                                color: textSecondary,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
@@ -125,7 +128,7 @@ class UpcomingAppointmentCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(
-                                color: AppColors.grey600,
+                                color: textSecondary,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
@@ -136,7 +139,7 @@ class UpcomingAppointmentCard extends StatelessWidget {
                   Text(
                     countText,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.grey500,
+                      color: isDark ? AppColors.grey400 : AppColors.grey500,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -149,3 +152,4 @@ class UpcomingAppointmentCard extends StatelessWidget {
     );
   }
 }
+

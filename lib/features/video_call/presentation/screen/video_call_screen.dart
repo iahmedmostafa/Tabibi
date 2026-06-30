@@ -84,12 +84,12 @@ class _CallPageState extends State<CallPage> {
             } else if (state is VideoCallSuccess) {
               final data = state.data;
               const appSign =
-                  "af428fc820e313a7a4fd61073afa43db6e47ca38389538540a391257b7e786c6";
+                  "11667b832247c64b13eb07b54fc7b9b64af1194fe06acb6325309f910d130ea7";
               debugPrint(
                 'Zego Config - userID: ${data.userId}, userName: ${data.userName}, callID: ${data.roomId}',
               );
               return ZegoUIKitPrebuiltCall(
-                appID: 137215456,
+                appID: 708323901,
                 appSign: appSign,
                 userID: data.userId,
                 userName: data.userName,

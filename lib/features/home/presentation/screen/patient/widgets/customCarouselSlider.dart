@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_images.dart';
@@ -24,12 +26,11 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
         CarouselSlider(
           options: CarouselOptions(
             height: 220.h,
-            padEnds: false,
             viewportFraction: 0.92,
             enlargeCenterPage: true,
-            enlargeFactor: 0.12,
             autoPlay: false,
             pageSnapping: true,
+            
             onPageChanged: (index, reason) {
               setState(() {
                 currentIndex = index;
@@ -117,25 +118,28 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
                                 ),
                               ),
                               SizedBox(height: 14.h),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 14.w,
-                                  vertical: 10.h,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppColors.white.withOpacity(0.16),
-                                  borderRadius: BorderRadius.circular(999.r),
-                                  border: Border.all(
-                                    color: AppColors.white.withOpacity(0.14),
+                              GestureDetector(
+                                onTap: () => context.pushNamed(AppRoutes.allDoctors),
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 14.w,
+                                    vertical: 10.h,
                                   ),
-                                ),
-                                child: Text(
-                                  'Explore doctors',
-                                  style: Theme.of(context).textTheme.labelLarge
-                                      ?.copyWith(
-                                        color: AppColors.white,
-                                        fontWeight: FontWeight.w700,
-                                      ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.white.withOpacity(0.16),
+                                    borderRadius: BorderRadius.circular(999.r),
+                                    border: Border.all(
+                                      color: AppColors.white.withOpacity(0.14),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Explore doctors',
+                                    style: Theme.of(context).textTheme.labelLarge
+                                        ?.copyWith(
+                                          color: AppColors.white,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                  ),
                                 ),
                               ),
                             ],

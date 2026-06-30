@@ -11,19 +11,20 @@ class EmptyUpcomingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(18.r),
       child: Ink(
         padding: EdgeInsets.all(14.r),
-        decoration: softCardDecoration(),
+        decoration: softCardDecoration(context),
         child: Row(
           children: [
             Container(
               width: 56.r,
               height: 56.r,
               decoration: BoxDecoration(
-                color: AppColors.grey100,
+                color: isDark ? AppColors.grey800 : AppColors.grey100,
                 borderRadius: BorderRadius.circular(16.r),
               ),
               child: const Icon(Iconsax.calendar_1, color: AppColors.primary),
@@ -36,7 +37,7 @@ class EmptyUpcomingCard extends StatelessWidget {
                   Text(
                     'No upcoming appointments yet',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: AppColors.black,
+                      color: isDark ? AppColors.white : AppColors.black,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
@@ -44,7 +45,7 @@ class EmptyUpcomingCard extends StatelessWidget {
                   Text(
                     'Tap to view your bookings.',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.grey500,
+                      color: isDark ? AppColors.grey400 : AppColors.grey500,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -53,7 +54,7 @@ class EmptyUpcomingCard extends StatelessWidget {
             ),
             Icon(
               Icons.chevron_right_rounded,
-              color: AppColors.grey500,
+              color: isDark ? AppColors.grey400 : AppColors.grey500,
               size: 24.sp,
             ),
           ],

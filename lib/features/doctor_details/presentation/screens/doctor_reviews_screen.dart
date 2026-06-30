@@ -68,7 +68,9 @@ class _DoctorReviewsScreenState extends State<DoctorReviewsScreen> {
             Icon(
               icon,
               size: 16.sp,
-              color: isActive ? Colors.white : (isDark ? Colors.white : AppColors.black),
+              color: isActive
+                  ? Colors.white
+                  : (isDark ? Colors.white : AppColors.black),
             ),
             SizedBox(width: 6.w),
           ],
@@ -77,7 +79,9 @@ class _DoctorReviewsScreenState extends State<DoctorReviewsScreen> {
             style: TextStyle(
               color: isActive
                   ? Colors.white
-                  : (isDark ? AppColors.textDarkSecondary : AppColors.textSecondary),
+                  : (isDark
+                        ? AppColors.textDarkSecondary
+                        : AppColors.textSecondary),
               fontWeight: FontWeight.w600,
               fontSize: 13.sp,
             ),
@@ -104,26 +108,11 @@ class _DoctorReviewsScreenState extends State<DoctorReviewsScreen> {
         appBar: AppBar(
           title: Text(
             AppStrings.reviews,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
           ),
-          centerTitle: false,
-          actions: [
-            TextButton.icon(
-              onPressed: () {},
-              icon: Icon(Iconsax.edit, size: 18.sp, color: AppColors.primary),
-              label: Text(
-                "add review",
-                style: TextStyle(
-                  color: AppColors.primary,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            SizedBox(width: 16.w),
-          ],
+          centerTitle: true,
         ),
         body: BlocBuilder<ReviewsCubit, ReviewsState>(
           builder: (context, state) {
@@ -143,26 +132,51 @@ class _DoctorReviewsScreenState extends State<DoctorReviewsScreen> {
               return Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 24.w,
+                      vertical: 12.h,
+                    ),
                     child: TextFormField(
                       decoration: InputDecoration(
                         hintText: "Search in reviews",
-                        prefixIcon: Icon(Iconsax.search_normal, color: AppColors.primary, size: 20.sp),
-                        hintStyle: TextStyle(color: AppColors.grey400, fontSize: 14.sp),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                        prefixIcon: Icon(
+                          Iconsax.search_normal,
+                          color: AppColors.primary,
+                          size: 20.sp,
+                        ),
+                        hintStyle: TextStyle(
+                          color: AppColors.grey400,
+                          fontSize: 14.sp,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 12.h,
+                        ),
                         filled: true,
-                        fillColor: isDark ? AppColors.darkSurface : Colors.white,
+                        fillColor: isDark
+                            ? AppColors.darkSurface
+                            : Colors.white,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16.r),
-                          borderSide: BorderSide(color: isDark ? AppColors.grey800 : AppColors.grey200),
+                          borderSide: BorderSide(
+                            color: isDark
+                                ? AppColors.grey800
+                                : AppColors.grey200,
+                          ),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16.r),
-                          borderSide: BorderSide(color: isDark ? AppColors.grey800 : AppColors.grey200),
+                          borderSide: BorderSide(
+                            color: isDark
+                                ? AppColors.grey800
+                                : AppColors.grey200,
+                          ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16.r),
-                          borderSide: BorderSide(color: AppColors.primary),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                          ),
                         ),
                       ),
                     ),
@@ -173,7 +187,12 @@ class _DoctorReviewsScreenState extends State<DoctorReviewsScreen> {
                       scrollDirection: Axis.horizontal,
                       padding: EdgeInsets.symmetric(horizontal: 24.w),
                       children: [
-                        _buildFilterChip(context, "Filter", icon: Iconsax.setting_4, hasDropdown: true),
+                        _buildFilterChip(
+                          context,
+                          "Filter",
+                          icon: Iconsax.setting_4,
+                          hasDropdown: true,
+                        ),
                         SizedBox(width: 8.w),
                         _buildFilterChip(context, "Verified", isActive: true),
                         SizedBox(width: 8.w),
@@ -191,7 +210,10 @@ class _DoctorReviewsScreenState extends State<DoctorReviewsScreen> {
                         ? const Center(child: Text("No reviews found"))
                         : ListView.builder(
                             controller: _scrollController,
-                            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 24.w,
+                              vertical: 8.h,
+                            ),
                             itemCount: reviews.length + (hasNextPage ? 1 : 0),
                             itemBuilder: (context, index) {
                               if (index < reviews.length) {
@@ -202,7 +224,9 @@ class _DoctorReviewsScreenState extends State<DoctorReviewsScreen> {
                               } else {
                                 return const Center(
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 16.0,
+                                    ),
                                     child: CircularProgressIndicator(),
                                   ),
                                 );

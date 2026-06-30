@@ -43,7 +43,6 @@ class OnboardingServices {
     await Future.wait([
       _sharedPref.setBool('is_logged_in', false),
       _sharedPref.remove('user_role'),
-      _sharedPref.remove('is_profile_filled'),
     ]);
   }
 }

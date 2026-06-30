@@ -4,10 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:tabibi/core/utils/helper/helper_functions.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
 import 'package:tabibi/features/booking/presentation/controller/my_bookings_cubit.dart';
 import 'package:tabibi/features/booking/presentation/controller/upcoming_booking_cubit.dart';
-import 'package:tabibi/core/utils/constants/app_strings.dart';
 
 class BookingSuccessDialog extends StatelessWidget {
   const BookingSuccessDialog({super.key});
@@ -19,9 +20,10 @@ class BookingSuccessDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = AppHelperFunctions.isDarkMode(context);
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
-      backgroundColor: AppColors.white,
+      backgroundColor: isDark ? AppColors.grey900 : AppColors.white,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
         child: Column(
@@ -47,7 +49,6 @@ class BookingSuccessDialog extends StatelessWidget {
               AppStrings.congratulations,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: AppColors.dark,
                 fontSize: 22.sp,
               ),
             ),

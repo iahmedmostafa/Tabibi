@@ -7,11 +7,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/core/utils/functions/select_image.dart';
 import 'package:tabibi/core/utils/helper/helper_functions.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_state.dart';
-import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/features/patient_profile/data/models/patient_profile_model.dart';
 import 'package:tabibi/features/patient_profile/data/models/update_patient_profile_params.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/patient_profile_cubit.dart';
@@ -136,7 +136,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: 0,
             leading: IconButton(
-              icon: const Icon(Iconsax.arrow_left),
+              icon: const Icon(Iconsax.arrow_left_2),
               onPressed: () => context.pop(),
             ),
           ),

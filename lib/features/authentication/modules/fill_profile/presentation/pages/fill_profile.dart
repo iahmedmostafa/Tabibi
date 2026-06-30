@@ -7,9 +7,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
+import 'package:tabibi/core/services/shared_prefs_service.dart';
 import 'package:tabibi/core/style/spacing/horizental_space.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
-import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/core/utils/constants/app_padding.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
@@ -18,7 +18,6 @@ import 'package:tabibi/core/widgets/arrow_back.dart';
 import 'package:tabibi/core/widgets/drop_menu.dart/drop_menu.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
 import 'package:tabibi/core/widgets/success_dialog.dart';
-import 'package:tabibi/core/services/shared_prefs_service.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/city_dropdown.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/date_picker_field.dart';
@@ -74,9 +73,9 @@ class _FillProfileState extends State<FillProfile> {
                   HorizentalSpace(width: AppWidth.w14),
                   Text(
                     "Fill Your Profile",
-                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                      color: AppColors.black,
-                    ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.headlineMedium,
                   ),
                 ],
               ),

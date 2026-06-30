@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import '../../../../../core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 
 class ChatDateChip extends StatelessWidget {
   final DateTime date;
@@ -10,30 +10,35 @@ class ChatDateChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final dividerColor = isDark ? AppColors.grey800 : AppColors.grey300;
+    final chipBg = isDark ? AppColors.grey800 : AppColors.grey200;
+    final textColor = isDark ? AppColors.grey200 : AppColors.grey600;
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 12.h),
       child: Row(
         children: [
-          Expanded(child: Divider(color: AppColors.grey300, thickness: 1)),
+          Expanded(child: Divider(color: dividerColor, thickness: 1)),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
               decoration: BoxDecoration(
-                color: AppColors.grey200,
+                color: chipBg,
                 borderRadius: BorderRadius.circular(20.r),
               ),
               child: Text(
                 _label,
                 style: TextStyle(
                   fontSize: 11.sp,
-                  color: AppColors.grey600,
+                  color: textColor,
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ),
           ),
-          Expanded(child: Divider(color: AppColors.grey300, thickness: 1)),
+          Expanded(child: Divider(color: dividerColor, thickness: 1)),
         ],
       ),
     );

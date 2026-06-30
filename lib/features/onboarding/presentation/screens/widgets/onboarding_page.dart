@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
@@ -24,11 +25,7 @@ class OnboardingPage extends StatelessWidget {
         Center(
           child: Text(
             title!,
-            style: const TextStyle(
-              fontSize: AppSizes.fontSizeLg,
-              fontWeight: FontWeight.w700,
-              color: Color(0xff374151),
-            ),
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
         ),
         VerticalSpace(height: AppHeight.h8),
