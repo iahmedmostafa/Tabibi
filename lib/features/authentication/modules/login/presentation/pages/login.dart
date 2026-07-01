@@ -114,8 +114,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                 },
                 child: BlocBuilder<LogInCubit, LogInState>(
-                  buildWhen: (previous, current) =>
-                      current is LogInLoading || current is LogInInitial,
                   builder: (context, state) {
                     if (state is LogInLoading) {
                       return const Center(

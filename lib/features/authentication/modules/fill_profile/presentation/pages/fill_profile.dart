@@ -146,9 +146,17 @@ class _FillProfileState extends State<FillProfile> {
                       builder: (context) => const SuccessDialog(),
                     );
                     Future.delayed(const Duration(seconds: 3), () {
-                      if (context.mounted) {
-                        context.goNamed(AppRoutes.bottomNavScreen);
+                      if (!context.mounted) return;
+
+                      final navigator = Navigator.of(
+                        context,
+                        rootNavigator: true,
+                      );
+                      if (navigator.canPop()) {
+                        navigator.pop();
                       }
+
+                      context.goNamed(AppRoutes.bottomNavScreen);
                     });
                   } else if (state.updateStatus ==
                       PatientProfileUpdateStatus.failure) {
@@ -188,3 +196,4 @@ class _FillProfileState extends State<FillProfile> {
     );
   }
 }
+

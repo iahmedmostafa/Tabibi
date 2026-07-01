@@ -32,26 +32,26 @@ class ProfileActionButton extends StatelessWidget {
         }
         // Handle profile update success
         else if (state.updateStatus == DoctorProfileUpdateStatus.success) {
-          WidgetsBinding.instance.addPostFrameCallback((_) async {
+          EasyLoading.dismiss();
+
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            useRootNavigator: true,
+            builder: (_) => const SuccessDialog(),
+          );
+
+          Future.delayed(const Duration(seconds: 2), () {
             if (!context.mounted) return;
 
-            EasyLoading.dismiss();
+            final navigator = Navigator.of(context, rootNavigator: true);
+            if (navigator.canPop()) {
+              navigator.pop();
+            }
 
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              useRootNavigator: true,
-              builder: (_) => const SuccessDialog(),
-            );
-
-            await Future.delayed(const Duration(seconds: 2));
-
-            if (!context.mounted) return;
-
-            Navigator.of(context, rootNavigator: true).pop();
             context.go(AppRoutes.doctorStatusHandler);
 
-            // ⬅️ خليها بعد التنقل
+            // Refresh the doctor status after we reach the handler screen.
             context.read<DoctorProfileCubit>().getDoctorStatus();
           });
         }
@@ -73,3 +73,4 @@ class ProfileActionButton extends StatelessWidget {
     );
   }
 }
+

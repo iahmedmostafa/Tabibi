@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tabibi/core/routing/fade_slide_page_route.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
+import 'package:tabibi/core/routing/fade_slide_page_route.dart';
+import 'package:tabibi/core/routing/startup_gate_screen.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
+import 'package:tabibi/features/ai_symptom_checker/presentation/cubit/ai_symptom_cubit.dart';
+import 'package:tabibi/features/ai_symptom_checker/presentation/screens/ai_symptom_chat_screen.dart';
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/cubit/create_new_password_cubit.dart';
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/pages/create_new_password.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/clinic_location_cubit.dart';
@@ -76,32 +79,26 @@ import 'package:tabibi/features/patient_profile/presentation/controller/profile_
 import 'package:tabibi/features/patient_profile/presentation/screens/edit_profile_screen.dart';
 import 'package:tabibi/features/video_call/presentation/cubit/video_call_cubit.dart';
 import 'package:tabibi/features/video_call/presentation/screen/video_call_screen.dart';
-import 'package:tabibi/features/ai_symptom_checker/presentation/screens/ai_symptom_chat_screen.dart';
-import 'package:tabibi/features/ai_symptom_checker/presentation/cubit/ai_symptom_cubit.dart';
 
 import '../../features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart'
     as doctor_profile_departments;
 import '../../features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_cubit.dart';
 import '../../features/home/presentation/screen/patient/cubit/departments_cubit.dart'
     as patient_departments;
-import '../services/shared_prefs_service.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 final GoRouter router = GoRouter(
   navigatorKey: navigatorKey,
 
-  initialLocation: OnboardingServices.isFirstTime()
-      ? AppRoutes.onboarding
-      : (OnboardingServices.isLoggedIn()
-            ? (OnboardingServices.getRole() == '2'
-                  ? AppRoutes.homeDoctorScreen
-                  : (OnboardingServices.isProfileFilled()
-                        ? AppRoutes.bottomNavScreen
-                        : AppRoutes.fillProfile))
-            : AppRoutes.login),
+  initialLocation: AppRoutes.initial,
 
   routes: [
+    AppGoRoute(
+      path: AppRoutes.initial,
+      name: AppRoutes.initial,
+      builder: (context, state) => const StartupGateScreen(),
+    ),
     AppGoRoute(
       path: AppRoutes.onboarding,
 
@@ -672,7 +669,3 @@ final GoRouter router = GoRouter(
     ),
   ],
 );
-
-
-
-
