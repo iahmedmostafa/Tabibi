@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/features/doctor/chat/presentation/widgets/chat_localizations.dart';
 
-/// Shown when the messages list is empty
+
 class ChatEmptyState extends StatelessWidget {
   const ChatEmptyState({super.key});
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final loc = ChatLocalizations.of(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -20,7 +22,7 @@ class ChatEmptyState extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           Text(
-            'No messages yet',
+            loc.noMessages,
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
@@ -29,7 +31,7 @@ class ChatEmptyState extends StatelessWidget {
           ),
           SizedBox(height: 6.h),
           Text(
-            'Start the conversation!',
+            loc.startConversation,
             style: TextStyle(
               fontSize: 13.sp,
               color: isDark ? AppColors.grey400 : AppColors.grey400,
@@ -41,13 +43,14 @@ class ChatEmptyState extends StatelessWidget {
   }
 }
 
-/// Shown when the network / server call fails
+
 class ChatErrorState extends StatelessWidget {
   const ChatErrorState({super.key});
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final loc = ChatLocalizations.of(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -59,7 +62,7 @@ class ChatErrorState extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
           Text(
-            'Could not load messages',
+            loc.couldNotLoadMessages,
             style: TextStyle(
               fontSize: 15.sp,
               fontWeight: FontWeight.w600,
@@ -72,13 +75,14 @@ class ChatErrorState extends StatelessWidget {
   }
 }
 
-/// Yellow banner shown when canChat == false
+
 class ChatExpiredBanner extends StatelessWidget {
   const ChatExpiredBanner({super.key});
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final loc = ChatLocalizations.of(context);
     return Container(
       width: double.infinity,
       margin: EdgeInsets.all(12.w),
@@ -100,7 +104,7 @@ class ChatExpiredBanner extends StatelessWidget {
           SizedBox(width: 10.w),
           Expanded(
             child: Text(
-              'Chat is only available for 7 days after your appointment.',
+              loc.expiredBanner,
               style: TextStyle(
                 color: isDark ? AppColors.grey300 : const Color(0xFF92400E),
                 fontSize: 12.sp,

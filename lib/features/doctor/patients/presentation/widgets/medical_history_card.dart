@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/patients/domain/entities/patient.dart';
 
 class MedicalHistoryCard extends StatelessWidget {
@@ -9,18 +10,27 @@ class MedicalHistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? AppColors.darkSurface : Colors.white,
         borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: isDark ? AppColors.grey800 : AppColors.grey200,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Medical History',
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+              color: isDark ? Colors.white : AppColors.grey900,
+            ),
           ),
           SizedBox(height: 16.h),
           ...patient.medicalHistory.map(
@@ -39,6 +49,7 @@ class MedicalHistoryCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w500,
+                            color: isDark ? Colors.white : AppColors.grey900,
                           ),
                         ),
                         SizedBox(height: 4.h),
@@ -46,7 +57,7 @@ class MedicalHistoryCard extends StatelessWidget {
                           'Since ${condition.since}',
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: Colors.grey[600],
+                            color: isDark ? AppColors.grey400 : Colors.grey[600],
                           ),
                         ),
                       ],
@@ -59,13 +70,16 @@ class MedicalHistoryCard extends StatelessWidget {
                       vertical: 4.h,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE8F5E9),
+                      color: isDark ? Colors.green.shade900.withValues(alpha: 0.2) : const Color(0xFFE8F5E9),
                       borderRadius: BorderRadius.circular(12.r),
+                      border: Border.all(
+                        color: isDark ? Colors.green.shade800 : Colors.transparent,
+                      ),
                     ),
                     child: Text(
                       condition.status,
                       style: TextStyle(
-                        color: const Color(0xFF4CAF50),
+                        color: isDark ? Colors.green.shade300 : const Color(0xFF4CAF50),
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
                       ),

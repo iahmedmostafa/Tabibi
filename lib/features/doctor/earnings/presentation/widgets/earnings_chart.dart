@@ -14,6 +14,7 @@ class EarningsChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final maxAmount = data.fold<double>(
       0,
       (previous, point) => math.max(previous, point.amount),
@@ -31,7 +32,10 @@ class EarningsChart extends StatelessWidget {
             drawVerticalLine: false,
             horizontalInterval: chartMaxY / 4,
             getDrawingHorizontalLine: (value) {
-              return const FlLine(color: AppColors.grey200, strokeWidth: 1);
+              return FlLine(
+                color: isDark ? AppColors.grey800 : AppColors.grey200,
+                strokeWidth: 1,
+              );
             },
           ),
           borderData: FlBorderData(show: false),
@@ -48,7 +52,10 @@ class EarningsChart extends StatelessWidget {
                 reservedSize: 46.w,
                 getTitlesWidget: (value, meta) => Text(
                   EarningsFormatters.compactMoney(value),
-                  style: TextStyle(color: AppColors.grey500, fontSize: 10.sp),
+                  style: TextStyle(
+                    color: isDark ? AppColors.grey400 : AppColors.grey500,
+                    fontSize: 10.sp,
+                  ),
                 ),
               ),
             ),
@@ -66,7 +73,7 @@ class EarningsChart extends StatelessWidget {
                     child: Text(
                       data[index].label,
                       style: TextStyle(
-                        color: AppColors.grey500,
+                        color: isDark ? AppColors.grey400 : AppColors.grey500,
                         fontSize: 10.sp,
                         fontWeight: FontWeight.w600,
                       ),
@@ -95,7 +102,7 @@ class EarningsChart extends StatelessWidget {
                     radius: 4,
                     color: AppColors.teal,
                     strokeWidth: 3,
-                    strokeColor: Colors.white,
+                    strokeColor: isDark ? AppColors.darkSurface : Colors.white,
                   );
                 },
               ),

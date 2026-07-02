@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/features/doctor/core/doctor_localizations.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/widgets/appointment_card.dart';
 import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
@@ -26,29 +28,42 @@ class _MySchedulePageState extends State<MySchedulePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final loc = DoctorLocalizations.of(context);
+
     return BlocProvider(
       create: (context) =>
           sl<ScheduleCubit>()
             ..getDoctorSchedule(_selectedDate.toIso8601String()),
       child: Scaffold(
+        backgroundColor: theme.scaffoldBackgroundColor,
         appBar: AppBar(
-          title: Text('My Schedule', style: TextStyle(fontSize: 20.sp)),
+          title: Text(loc.mySchedule, style: theme.textTheme.titleLarge),
           centerTitle: true,
+          elevation: 0,
           automaticallyImplyLeading: false,
+          surfaceTintColor: Colors.transparent,
         ),
         body: Column(
           children: [
             SizedBox(height: 16.h),
             ScheduleDateTimeline(
               selectedDate: _selectedDate,
-              onDateChange: (date) => setState(() => _selectedDate = date),
+              onDateChange: (date) {
+                setState(() => _selectedDate = date);
+              },
             ),
             SizedBox(height: 24.h),
             Expanded(
               child: BlocBuilder<ScheduleCubit, ScheduleState>(
                 builder: (context, state) {
                   if (state is ScheduleLoading || state is ScheduleInitial) {
-                    return const Center(child: CircularProgressIndicator());
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.midnightBlue,
+                        strokeWidth: 2.5,
+                      ),
+                    );
                   }
                   if (state is ScheduleError) {
                     return _ScheduleError(
@@ -125,13 +140,36 @@ class _ScheduleError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(message),
+          Icon(
+            Icons.error_outline_rounded,
+            size: 48.sp,
+            color: isDark ? Colors.red.shade400 : Colors.red.shade600,
+          ),
           SizedBox(height: 16.h),
-          ElevatedButton(onPressed: onRetry, child: const Text('Retry')),
+          Text(
+            message,
+            style: TextStyle(
+              color: isDark ? AppColors.grey400 : AppColors.grey600,
+            ),
+          ),
+          SizedBox(height: 16.h),
+          ElevatedButton.icon(
+            onPressed: onRetry,
+            icon: const Icon(Icons.refresh_rounded),
+            label: const Text('Retry'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.midnightBlue,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+            ),
+          ),
         ],
       ),
     );

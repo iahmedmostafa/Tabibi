@@ -8,7 +8,7 @@ class DoctorStatusUseCase {
 
   DoctorStatusUseCase(this.repository);
 
-  Future<Either<Failure, DoctorStatus>> call() async {
-    return await repository.doctorStatus();
+  Future<Either<Failure, DoctorStatus>> call() {
+    return repository.doctorStatus();
   }
 }

@@ -1,5 +1,6 @@
+import 'package:equatable/equatable.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
-import 'package:tabibi/features/doctor_profile/data/models/doctor_profile_model.dart';
+import 'package:tabibi/features/doctor_profile/domain/entities/doctor_profile.dart';
 
 enum DoctorProfileStatus { initial, loading, success, failure }
 
@@ -7,10 +8,10 @@ enum DoctorProfileUpdateStatus { initial, loading, success, failure }
 
 enum DoctorStatusAction { initial, loading, success, failure }
 
-class DoctorProfileState {
+class DoctorProfileState extends Equatable {
   final DoctorProfileStatus status;
   final DoctorProfileUpdateStatus updateStatus;
-  final DoctorProfileModel? profile;
+  final DoctorProfile? profile;
   final String updateMessage;
   final String? errorMessage;
   final DoctorStatusAction? doctorStatus;
@@ -29,11 +30,13 @@ class DoctorProfileState {
   DoctorProfileState copyWith({
     DoctorProfileStatus? status,
     DoctorProfileUpdateStatus? updateStatus,
-    DoctorProfileModel? profile,
+    DoctorProfile? profile,
     DoctorStatus? newDoctorStatus,
     DoctorStatusAction? doctorStatus,
     String? errorMessage,
     String? updateMessage,
+    bool clearError = false,
+    bool clearUpdateMessage = false,
   }) {
     return DoctorProfileState(
       status: status ?? this.status,
@@ -41,8 +44,21 @@ class DoctorProfileState {
       profile: profile ?? this.profile,
       newDoctorStatus: newDoctorStatus ?? this.newDoctorStatus,
       doctorStatus: doctorStatus ?? this.doctorStatus,
-      errorMessage: errorMessage ?? this.errorMessage,
-      updateMessage: updateMessage ?? this.updateMessage,
+      errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
+      updateMessage: clearUpdateMessage
+          ? ''
+          : (updateMessage ?? this.updateMessage),
     );
   }
+
+  @override
+  List<Object?> get props => [
+    status,
+    updateStatus,
+    profile,
+    updateMessage,
+    errorMessage,
+    doctorStatus,
+    newDoctorStatus,
+  ];
 }

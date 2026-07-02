@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/patients/domain/entities/patient.dart';
 
 class PreviousVisitsCard extends StatelessWidget {
@@ -9,18 +10,27 @@ class PreviousVisitsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? AppColors.darkSurface : Colors.white,
         borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: isDark ? AppColors.grey800 : AppColors.grey200,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Previous Visits',
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+              color: isDark ? Colors.white : AppColors.grey900,
+            ),
           ),
           SizedBox(height: 16.h),
           ...patient.previousVisits.map(
@@ -31,13 +41,13 @@ class PreviousVisitsCard extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(10.w),
                     decoration: BoxDecoration(
-                      color: Colors.grey[100],
+                      color: isDark ? AppColors.grey800 : Colors.grey[100],
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Icon(
                       Icons.calendar_today,
                       size: 20.sp,
-                      color: Colors.grey[600],
+                      color: isDark ? AppColors.grey300 : Colors.grey[600],
                     ),
                   ),
                   SizedBox(width: 16.w),
@@ -50,6 +60,7 @@ class PreviousVisitsCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w500,
+                            color: isDark ? Colors.white : AppColors.grey900,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -59,7 +70,7 @@ class PreviousVisitsCard extends StatelessWidget {
                           visit.date,
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: Colors.grey[600],
+                            color: isDark ? AppColors.grey400 : Colors.grey[600],
                           ),
                         ),
                       ],
@@ -68,7 +79,7 @@ class PreviousVisitsCard extends StatelessWidget {
                   Icon(
                     Icons.description_outlined,
                     size: 20.sp,
-                    color: Colors.grey[400],
+                    color: isDark ? AppColors.grey500 : Colors.grey[400],
                   ),
                 ],
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/features/doctor/chat/presentation/widgets/chat_localizations.dart';
 
 class ChatInputBar extends StatelessWidget {
   final TextEditingController controller;
@@ -41,6 +42,7 @@ class ChatInputBar extends StatelessWidget {
   }
 
   Widget _buildTextField(BuildContext context, bool isDark) {
+    final loc = ChatLocalizations.of(context);
     return Container(
       decoration: BoxDecoration(
         color: isDark ? AppColors.grey800 : const Color(0xFFF0F4F8),
@@ -58,9 +60,9 @@ class ChatInputBar extends StatelessWidget {
           color: isDark ? AppColors.white : AppColors.grey800,
         ),
         decoration: InputDecoration(
-          hintText: 'Type a messageÖ',
+          hintText: loc.typeMessage,
           hintStyle: TextStyle(
-            color: isDark ? AppColors.grey400 : AppColors.grey400,
+            color: isDark ? AppColors.grey500 : AppColors.grey400,
             fontSize: 14.sp,
           ),
           border: InputBorder.none,
@@ -106,6 +108,7 @@ class ChatExpiredBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final loc = ChatLocalizations.of(context);
     return Container(
       padding: EdgeInsets.all(16.w),
       color: isDark ? AppColors.darkSurface : Colors.white,
@@ -119,7 +122,7 @@ class ChatExpiredBar extends StatelessWidget {
           ),
         ),
         child: Text(
-          '??  This chat has expired.',
+          '‚è≥  ${loc.expiredBar}',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: isDark ? AppColors.grey200 : const Color(0xFF92400E),

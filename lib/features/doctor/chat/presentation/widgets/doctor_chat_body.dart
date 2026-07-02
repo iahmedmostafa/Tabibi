@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/chat_patient/domain/entities/chat_entity.dart';
 import 'package:tabibi/features/chat_patient/presentation/widgets/chat_date_chip.dart';
 import 'package:tabibi/features/chat_patient/presentation/widgets/chat_message_bubble.dart';
 import 'package:tabibi/features/chat_patient/presentation/widgets/chat_states.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_loading_state.dart';
 
 class DoctorChatBody extends StatelessWidget {
   final Stream<ChatResponseEntity> chatStream;
@@ -25,12 +25,7 @@ class DoctorChatBody extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting &&
             !snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(
-              color: AppColors.midnightBlue,
-              strokeWidth: 2.5,
-            ),
-          );
+          return const DoctorLoadingState();
         }
         if (snapshot.hasError) return const ChatErrorState();
         if (!snapshot.hasData) return const ChatEmptyState();

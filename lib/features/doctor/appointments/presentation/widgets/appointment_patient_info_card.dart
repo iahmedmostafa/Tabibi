@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tabibi/core/utils/theme/theme.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/appointments/domain/entities/appointment_details_entity.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_card.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_status_badge.dart';
 import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 
 class AppointmentPatientInfoCard extends StatelessWidget {
@@ -17,55 +19,48 @@ class AppointmentPatientInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tt = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final hasImage = patient.avatarUrl != null && patient.avatarUrl!.isNotEmpty;
     final statusLabel = DoctorAppointmentStatus.label(status);
-    final statusColor = _statusColor(status);
-    final statusBg = _statusBg(status);
+    final statusData = _statusData(status);
 
-    return Container(
+    return DoctorCard(
       padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
       child: Row(
         children: [
           Container(
             width: 64.w,
             height: 64.w,
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(12.r),
+              color: isDark ? AppColors.grey800 : AppColors.grey100,
+              borderRadius: BorderRadius.circular(16.r),
             ),
-            child: hasImage
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(12.r),
-                    child: CachedNetworkImage(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16.r),
+              child: hasImage
+                  ? CachedNetworkImage(
                       imageUrl: patient.avatarUrl!,
                       fit: BoxFit.cover,
-                      placeholder: (_, __) => const Center(
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                      placeholder: (_, __) => Center(
+                        child: Icon(
+                          Icons.person,
+                          size: 32.sp,
+                          color: isDark ? AppColors.grey400 : AppColors.grey500,
+                        ),
                       ),
                       errorWidget: (_, __, ___) => Icon(
                         Icons.person,
                         size: 32.sp,
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        color: isDark ? AppColors.grey400 : AppColors.grey500,
                       ),
+                    )
+                  : Icon(
+                      Icons.person,
+                      size: 32.sp,
+                      color: isDark ? AppColors.grey400 : AppColors.grey500,
                     ),
-                  )
-                : Icon(
-                    Icons.person,
-                    size: 32.sp,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+            ),
           ),
           SizedBox(width: 16.w),
           Expanded(
@@ -74,8 +69,8 @@ class AppointmentPatientInfoCard extends StatelessWidget {
               children: [
                 Text(
                   patient.name,
-                  style: tt.bodyLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -84,25 +79,18 @@ class AppointmentPatientInfoCard extends StatelessWidget {
                   SizedBox(height: 4.h),
                   Text(
                     patient.email!,
-                    style: tt.labelSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: isDark ? AppColors.grey400 : AppColors.grey500,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
-
                 SizedBox(height: 8.h),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                  decoration: BoxDecoration(
-                    color: statusBg,
-                    borderRadius: BorderRadius.circular(4.r),
-                  ),
-                  child: Text(
-                    statusLabel,
-                    style: tt.bodySmall?.copyWith(color: statusColor),
-                  ),
+                DoctorStatusBadge(
+                  label: statusLabel,
+                  color: statusData.color,
+                  backgroundColor: statusData.bgColor,
                 ),
               ],
             ),
@@ -112,29 +100,22 @@ class AppointmentPatientInfoCard extends StatelessWidget {
     );
   }
 
-  Color _statusColor(int status) {
+  _StatusColors _statusData(int status) {
     switch (status) {
       case DoctorAppointmentStatus.upcoming:
-        return AppTheme.blueIcon;
+        return _StatusColors(AppColors.blue, AppColors.paleBlueLight);
       case DoctorAppointmentStatus.completed:
-        return AppTheme.greenIcon;
+        return _StatusColors(AppColors.actionGreen, AppColors.successLight);
       case DoctorAppointmentStatus.refunded:
-        return AppTheme.redIcon;
+        return _StatusColors(AppColors.error, AppColors.lightPink);
       default:
-        return Colors.grey;
+        return _StatusColors(AppColors.grey400, AppColors.grey100);
     }
   }
+}
 
-  Color _statusBg(int status) {
-    switch (status) {
-      case DoctorAppointmentStatus.upcoming:
-        return AppTheme.bluePastel;
-      case DoctorAppointmentStatus.completed:
-        return AppTheme.greenPastel;
-      case DoctorAppointmentStatus.refunded:
-        return AppTheme.redPastel;
-      default:
-        return Colors.grey.shade100;
-    }
-  }
+class _StatusColors {
+  final Color color;
+  final Color bgColor;
+  const _StatusColors(this.color, this.bgColor);
 }

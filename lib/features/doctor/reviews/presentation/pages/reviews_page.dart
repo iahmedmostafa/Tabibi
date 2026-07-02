@@ -4,6 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_styles.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_card.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_empty_state.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_error_state.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_loading_state.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_section_header.dart';
 import 'package:tabibi/features/doctor/reviews/domain/entities/review.dart';
 import 'package:tabibi/features/doctor/reviews/presentation/cubit/reviews_cubit.dart';
 import 'package:tabibi/features/doctor/reviews/presentation/cubit/reviews_state.dart';
@@ -13,37 +20,41 @@ class ReviewsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return BlocProvider(
       create: (context) => sl<ReviewsCubit>()..getReviews(),
       child: Scaffold(
-        backgroundColor: Colors.grey[50],
+        backgroundColor: theme.scaffoldBackgroundColor,
         appBar: AppBar(
-          title: Text('Reviews & Ratings', style: TextStyle(fontSize: 20.sp)),
+          title: Text('Reviews & Ratings', style: theme.textTheme.titleLarge),
           centerTitle: true,
-          backgroundColor: Colors.white,
-          elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
+            icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp),
             onPressed: () => context.pop(),
           ),
           actions: [
             IconButton(
-              icon: Icon(Icons.filter_list, size: 24.sp, color: Colors.black),
+              icon: Icon(
+                Icons.filter_list,
+                size: 24.sp,
+                color: isDark ? Colors.white : AppColors.grey900,
+              ),
               onPressed: () {},
             ),
           ],
+          surfaceTintColor: Colors.transparent,
         ),
         body: BlocBuilder<ReviewsCubit, ReviewsState>(
           builder: (context, state) {
             if (state.status == ReviewsStatus.loading) {
-              return const Center(child: CircularProgressIndicator());
+              return const DoctorLoadingState();
             }
             if (state.status == ReviewsStatus.failure) {
-              return Center(
-                child: Padding(
-                  padding: EdgeInsets.all(24.w),
-                  child: Text(state.errorMessage ?? 'Failed to load reviews'),
-                ),
+              return DoctorErrorState(
+                message: state.errorMessage ?? 'Failed to load reviews',
+                onRetry: () => context.read<ReviewsCubit>().getReviews(),
               );
             }
             return const SingleChildScrollView(
@@ -71,26 +82,26 @@ class _RatingSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return BlocBuilder<ReviewsCubit, ReviewsState>(
       buildWhen: (previous, current) => previous.summary != current.summary,
       builder: (context, state) {
         final summary = state.summary;
-        return Container(
+        return DoctorCard(
           padding: EdgeInsets.all(24.w),
-          color: Colors.white,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Left side - Average rating
               Expanded(
                 flex: 2,
                 child: Column(
                   children: [
                     Text(
                       summary.averageRating.toStringAsFixed(1),
-                      style: TextStyle(
+                      style: AppTextStyle.h1.copyWith(
                         fontSize: 48.sp,
-                        fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.white : AppColors.grey900,
                       ),
                     ),
                     SizedBox(height: 8.h),
@@ -108,16 +119,14 @@ class _RatingSummaryCard extends StatelessWidget {
                     SizedBox(height: 8.h),
                     Text(
                       '${summary.totalReviews} reviews',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.grey[600],
+                      style: AppTextStyle.bodyXsMedium.copyWith(
+                        color: isDark ? AppColors.grey400 : AppColors.grey500,
                       ),
                     ),
                   ],
                 ),
               ),
               SizedBox(width: 24.w),
-              // Right side - Rating distribution
               Expanded(
                 flex: 3,
                 child: Column(
@@ -155,11 +164,15 @@ class _RatingBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Row(
       children: [
         Text(
           '$rating',
-          style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
+          style: AppTextStyle.bodyXsMedium.copyWith(
+            color: isDark ? Colors.white : AppColors.grey900,
+          ),
         ),
         SizedBox(width: 4.w),
         Icon(Icons.star, color: const Color(0xFFFFB74D), size: 14.sp),
@@ -169,7 +182,7 @@ class _RatingBar extends StatelessWidget {
             borderRadius: BorderRadius.circular(4.r),
             child: LinearProgressIndicator(
               value: percentage / 100,
-              backgroundColor: Colors.grey[200],
+              backgroundColor: isDark ? AppColors.grey800 : AppColors.grey200,
               valueColor: const AlwaysStoppedAnimation<Color>(
                 Color(0xFFFFB74D),
               ),
@@ -183,7 +196,9 @@ class _RatingBar extends StatelessWidget {
           child: Text(
             count.toString(),
             textAlign: TextAlign.end,
-            style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
+            style: AppTextStyle.bodyXsMedium.copyWith(
+              color: isDark ? AppColors.grey400 : AppColors.grey500,
+            ),
           ),
         ),
       ],
@@ -200,7 +215,7 @@ class _FilterChips extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.selectedRatingFilter != current.selectedRatingFilter,
       builder: (context, state) {
-        return Container(
+        return Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -245,21 +260,29 @@ class _FilterChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF2C3E50) : Colors.white,
+          color: isSelected
+              ? AppColors.midnightBlue
+              : (isDark ? AppColors.darkSurface : Colors.white),
           borderRadius: BorderRadius.circular(20.r),
           border: Border.all(
-            color: isSelected ? const Color(0xFF2C3E50) : Colors.grey[300]!,
+            color: isSelected
+                ? AppColors.midnightBlue
+                : (isDark ? AppColors.grey800 : AppColors.grey200),
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.white : Colors.grey[700],
+            color: isSelected
+                ? Colors.white
+                : (isDark ? AppColors.grey400 : AppColors.grey700),
             fontSize: 14.sp,
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
           ),
@@ -274,38 +297,32 @@ class _ReviewsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ReviewsCubit, ReviewsState>(
-      buildWhen: (previous, current) =>
-          previous.filteredReviews != current.filteredReviews,
-      builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Text(
-                'Patient Reviews',
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-              ),
-            ),
-            SizedBox(height: 12.h),
-            if (state.filteredReviews.isEmpty)
-              Padding(
-                padding: EdgeInsets.all(32.w),
-                child: Center(
-                  child: Text(
-                    'No reviews found for this rating',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 14.sp),
-                  ),
-                ),
-              )
-            else
-              ...state.filteredReviews.map(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: DoctorSectionHeader(title: 'Patient Reviews'),
+        ),
+        SizedBox(height: 12.h),
+        BlocBuilder<ReviewsCubit, ReviewsState>(
+          buildWhen: (previous, current) =>
+              previous.filteredReviews != current.filteredReviews,
+          builder: (context, state) {
+            if (state.filteredReviews.isEmpty) {
+              return const DoctorEmptyState(
+                icon: Icons.reviews_outlined,
+                message: 'No reviews found for this rating',
+              );
+            }
+            return Column(
+              children: state.filteredReviews.map(
                 (review) => _ReviewCard(review: review),
-              ),
-          ],
-        );
-      },
+              ).toList(),
+            );
+          },
+        ),
+      ],
     );
   }
 }
@@ -317,10 +334,10 @@ class _ReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 12.h),
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return DoctorCard(
       padding: EdgeInsets.all(16.w),
-      color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -330,16 +347,14 @@ class _ReviewCard extends StatelessWidget {
                 width: 48.w,
                 height: 48.w,
                 decoration: BoxDecoration(
-                  color: Colors.grey[200],
+                  color: isDark ? AppColors.grey800 : AppColors.grey200,
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Center(
                   child: Text(
                     review.initials,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[700],
+                    style: AppTextStyle.bodySBold.copyWith(
+                      color: isDark ? Colors.white : AppColors.grey700,
                     ),
                   ),
                 ),
@@ -351,17 +366,15 @@ class _ReviewCard extends StatelessWidget {
                   children: [
                     Text(
                       review.patientName,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
+                      style: AppTextStyle.bodySMedium.copyWith(
+                        color: isDark ? Colors.white : AppColors.grey900,
                       ),
                     ),
                     SizedBox(height: 4.h),
                     Text(
                       DateFormat('MMM d, yyyy').format(review.date),
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.grey[600],
+                      style: AppTextStyle.bodyXsMedium.copyWith(
+                        color: isDark ? AppColors.grey400 : AppColors.grey500,
                       ),
                     ),
                   ],
@@ -382,9 +395,8 @@ class _ReviewCard extends StatelessWidget {
           SizedBox(height: 12.h),
           Text(
             review.comment,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.grey[700],
+            style: AppTextStyle.bodySRegular.copyWith(
+              color: isDark ? AppColors.grey300 : AppColors.grey700,
               height: 1.5,
             ),
           ),
@@ -394,12 +406,14 @@ class _ReviewCard extends StatelessWidget {
               Icon(
                 Icons.thumb_up_outlined,
                 size: 16.sp,
-                color: Colors.grey[600],
+                color: isDark ? AppColors.grey400 : AppColors.grey500,
               ),
               SizedBox(width: 4.w),
               Text(
                 'Helpful (${review.helpfulCount})',
-                style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
+                style: AppTextStyle.bodyXsMedium.copyWith(
+                  color: isDark ? AppColors.grey400 : AppColors.grey500,
+                ),
               ),
             ],
           ),

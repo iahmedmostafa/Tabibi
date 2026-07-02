@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_loading_state.dart';
 import 'package:tabibi/features/doctor/earnings/presentation/cubit/earnings_cubit.dart';
 import 'package:tabibi/features/doctor/earnings/presentation/cubit/earnings_state.dart';
 import 'package:tabibi/features/doctor/earnings/presentation/widgets/earnings_analytics_section.dart';
@@ -16,31 +17,24 @@ class EarningsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return BlocProvider(
       create: (context) => sl<EarningsCubit>()..loadDashboard(),
       child: Scaffold(
-        backgroundColor: AppColors.grey50,
+        backgroundColor: theme.scaffoldBackgroundColor,
         appBar: AppBar(
-          title: Text(
-            'Earnings',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: AppColors.grey900,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
+          title: Text('Earnings', style: theme.textTheme.titleLarge),
           centerTitle: true,
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-          elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
+            icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp),
             onPressed: () => context.pop(),
           ),
         ),
         body: BlocBuilder<EarningsCubit, EarningsState>(
           builder: (context, state) {
             if (state.isInitialDashboardLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return const DoctorLoadingState();
             }
 
             if (state.hasInitialDashboardFailure) {
@@ -57,6 +51,7 @@ class EarningsPage extends StatelessWidget {
 
             return RefreshIndicator(
               onRefresh: context.read<EarningsCubit>().retryDashboard,
+              color: AppColors.primary,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 28.h),

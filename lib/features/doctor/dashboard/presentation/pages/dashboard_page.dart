@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_loading_state.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_error_state.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/dashboard_response.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/cubit/dashboard_cubit.dart';
@@ -20,17 +23,20 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return BlocProvider(
       create: (context) => sl<DashboardCubit>()..getDoctorDashboard(),
       child: Scaffold(
+        backgroundColor: theme.scaffoldBackgroundColor,
         body: SafeArea(
           child: BlocBuilder<DashboardCubit, DashboardState>(
             builder: (context, state) {
               if (state is DashboardLoading || state is DashboardInitial) {
-                return const Center(child: CircularProgressIndicator());
+                return const DoctorLoadingState();
               }
               if (state is DashboardError) {
-                return _DashboardError(
+                return DoctorErrorState(
                   message: state.message,
                   onRetry: () =>
                       context.read<DashboardCubit>().getDoctorDashboard(),
@@ -42,36 +48,6 @@ class DashboardPage extends StatelessWidget {
               return const SizedBox();
             },
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _DashboardError extends StatelessWidget {
-  final String message;
-  final VoidCallback onRetry;
-
-  const _DashboardError({required this.message, required this.onRetry});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.error_outline, size: 64, color: AppColors.grey400),
-            const SizedBox(height: 16),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(onPressed: onRetry, child: const Text('Retry')),
-          ],
         ),
       ),
     );
@@ -107,29 +83,77 @@ class _DashboardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final appointments = _mapAppointments(data);
 
-    return RefreshIndicator(
-      onRefresh: () => context.read<DashboardCubit>().getDoctorDashboard(),
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            DashboardHeader(data: data),
-            const SizedBox(height: 24),
-            DashboardStatsRow(stats: data.stats),
-            const SizedBox(height: 32),
-            const DashboardQuickActions(),
-            const SizedBox(height: 32),
-            DashboardTodayAppointments(appointments: appointments),
-            const SizedBox(height: 16),
-            const DashboardRequestsBanner(),
-            const SizedBox(height: 16),
-          ],
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: isDark
+                    ? [AppColors.darkBackground, AppColors.darkBackground]
+                    : [
+                        AppColors.paleBlue.withValues(alpha: 0.3),
+                        AppColors.white,
+                        AppColors.grey50,
+                      ],
+              ),
+            ),
+          ),
         ),
-      ),
+        Positioned(
+          top: -60,
+          right: -40,
+          child: Container(
+            width: 180.r,
+            height: 180.r,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.primary.withOpacity(isDark ? 0.10 : 0.08),
+            ),
+          ),
+        ),
+        Positioned(
+          top: 200,
+          left: -70,
+          child: Container(
+            width: 140.r,
+            height: 140.r,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.actionGreen.withOpacity(isDark ? 0.06 : 0.05),
+            ),
+          ),
+        ),
+        RefreshIndicator(
+          onRefresh: () => context.read<DashboardCubit>().getDoctorDashboard(),
+          color: theme.colorScheme.primary,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: EdgeInsets.all(24.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DashboardHeader(data: data),
+                SizedBox(height: 24.h),
+                DashboardStatsRow(stats: data.stats),
+                SizedBox(height: 32.h),
+                const DashboardQuickActions(),
+                SizedBox(height: 32.h),
+                DashboardTodayAppointments(appointments: appointments),
+                SizedBox(height: 16.h),
+                const DashboardRequestsBanner(),
+                SizedBox(height: 16.h),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

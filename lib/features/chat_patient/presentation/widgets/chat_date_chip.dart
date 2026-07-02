@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/features/doctor/chat/presentation/widgets/chat_localizations.dart';
 
 class ChatDateChip extends StatelessWidget {
   final DateTime date;
@@ -11,6 +12,7 @@ class ChatDateChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final loc = ChatLocalizations.of(context);
     final dividerColor = isDark ? AppColors.grey800 : AppColors.grey300;
     final chipBg = isDark ? AppColors.grey800 : AppColors.grey200;
     final textColor = isDark ? AppColors.grey200 : AppColors.grey600;
@@ -29,7 +31,7 @@ class ChatDateChip extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20.r),
               ),
               child: Text(
-                _label,
+                _getLabel(loc),
                 style: TextStyle(
                   fontSize: 11.sp,
                   color: textColor,
@@ -44,13 +46,14 @@ class ChatDateChip extends StatelessWidget {
     );
   }
 
-  String get _label {
+  String _getLabel(ChatLocalizations loc) {
     final now = DateTime.now();
     final yesterday = now.subtract(const Duration(days: 1));
+    final locale = loc.isAr ? 'ar' : 'en';
 
-    if (_isSameDay(date, now)) return 'Today';
-    if (_isSameDay(date, yesterday)) return 'Yesterday';
-    return DateFormat('MMMM d, yyyy').format(date);
+    if (_isSameDay(date, now)) return loc.isAr ? 'اليوم' : 'Today';
+    if (_isSameDay(date, yesterday)) return loc.yesterday;
+    return DateFormat('MMMM d, yyyy', locale).format(date);
   }
 
   bool _isSameDay(DateTime a, DateTime b) =>

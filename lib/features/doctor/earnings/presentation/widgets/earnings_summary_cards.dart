@@ -200,17 +200,22 @@ class _MetricCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(18.r),
-        border: Border.all(color: AppColors.grey200),
+        border: Border.all(
+          color: isDark ? AppColors.grey800 : AppColors.black.withValues(alpha: 0.1),
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.045),
-            blurRadius: 14,
-            offset: const Offset(0, 8),
+            color: Colors.black.withValues(alpha: isDark ? 0.28 : 0.045),
+            blurRadius: isDark ? 18 : 14,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -234,8 +239,8 @@ class _MetricCard extends StatelessWidget {
                 data.label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.grey500,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: isDark ? AppColors.grey400 : AppColors.grey500,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -244,8 +249,7 @@ class _MetricCard extends StatelessWidget {
                 data.value,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.grey900,
+                style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w900,
                 ),
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_styles.dart';
 
 class PrescriptionTextField extends StatelessWidget {
   final TextEditingController? controller;
@@ -26,16 +27,15 @@ class PrescriptionTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w700,
-            color: AppColors.grey800,
+          style: AppTextStyle.bodySMedium.copyWith(
+            color: isDark ? Colors.white : AppColors.grey800,
           ),
         ),
         SizedBox(height: 8.h),
@@ -50,23 +50,38 @@ class PrescriptionTextField extends StatelessWidget {
               ? TextInputAction.newline
               : TextInputAction.next,
           onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+          style: TextStyle(
+            color: isDark ? Colors.white : AppColors.grey900,
+            fontSize: 14.5.sp,
+          ),
           decoration: InputDecoration(
             hintText: hintText,
-            prefixIcon: Icon(icon, color: AppColors.grey400, size: 20.sp),
+            hintStyle: TextStyle(
+              color: isDark ? AppColors.grey500 : AppColors.grey400,
+            ),
+            prefixIcon: Icon(
+              icon,
+              color: isDark ? AppColors.grey400 : AppColors.grey400,
+              size: 20.sp,
+            ),
             alignLabelWithHint: maxLines > 1,
             filled: true,
-            fillColor: AppColors.grey50,
+            fillColor: isDark ? AppColors.grey900 : AppColors.grey50,
             contentPadding: EdgeInsets.symmetric(
               horizontal: 16.w,
               vertical: 14.h,
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.grey200),
+              borderSide: BorderSide(
+                color: isDark ? AppColors.grey800 : AppColors.grey200,
+              ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.grey200),
+              borderSide: BorderSide(
+                color: isDark ? AppColors.grey800 : AppColors.grey200,
+              ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),

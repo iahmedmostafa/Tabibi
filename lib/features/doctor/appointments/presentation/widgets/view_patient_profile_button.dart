@@ -24,8 +24,11 @@ class ViewPatientProfileButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return SizedBox(
       width: double.infinity,
+      height: 52.h,
       child: ElevatedButton.icon(
         onPressed: () async {
           final completed = await context.pushNamed(
@@ -47,15 +50,22 @@ class ViewPatientProfileButton extends StatelessWidget {
           }
         },
         icon: Icon(Icons.person_search_outlined, size: 20.sp),
-        label: const Text('View Patient Profile'),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.teal,
-          foregroundColor: Colors.white,
-          padding: EdgeInsets.symmetric(vertical: 15.h),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
+        label: Text(
+          'View Patient Profile',
+          style: theme.textTheme.labelLarge?.copyWith(
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.3,
           ),
-          textStyle: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w700),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primary,
+          foregroundColor: Colors.white,
+          elevation: 4,
+          shadowColor: AppColors.primary.withValues(alpha: 0.3),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(60.r),
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
         ),
       ),
     );
