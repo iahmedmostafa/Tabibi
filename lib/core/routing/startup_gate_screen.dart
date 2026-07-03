@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
+import 'package:tabibi/core/network/api_constance.dart';
+import 'package:tabibi/core/network/server_connection.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
+import 'package:tabibi/core/services/cache_helper.dart';
+import 'package:tabibi/core/services/notification_manager.dart';
 import 'package:tabibi/core/services/shared_prefs_service.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/features/doctor_profile/domain/usecases/doctor_status_use_case.dart';
+import 'package:tabibi/features/notifications/data/datasources/fcm_token_data_source.dart';
 
 class StartupGateScreen extends StatefulWidget {
   const StartupGateScreen({super.key});
@@ -37,30 +42,36 @@ class _StartupGateScreenState extends State<StartupGateScreen> {
     }
 
     final role = OnboardingServices.getRole();
+
+    final accessToken = await CacheHelper.getData(key: ApiKeys.accessToken);
+    if (accessToken != null) {
+      await ServerConnection().connect(accessToken: accessToken);
+      NotificationManager.instance.start(sl<FcmTokenDataSource>());
+    }
+
     if (role == '2') {
       final result = await sl<DoctorStatusUseCase>()();
 
       if (!mounted) return;
 
-      result.fold(
-        (_) => context.goNamed(AppRoutes.doctorStatusHandler),
-        (status) {
-          switch (status) {
-            case DoctorStatus.New:
-              context.goNamed(AppRoutes.doctorFillProfile);
-              break;
-            case DoctorStatus.Pending:
-              context.goNamed(AppRoutes.pending);
-              break;
-            case DoctorStatus.Approved:
-              context.goNamed(AppRoutes.homeDoctorScreen);
-              break;
-            case DoctorStatus.Rejected:
-              context.goNamed(AppRoutes.rejected);
-              break;
-          }
-        },
-      );
+      result.fold((_) => context.goNamed(AppRoutes.doctorStatusHandler), (
+        status,
+      ) {
+        switch (status) {
+          case DoctorStatus.New:
+            context.goNamed(AppRoutes.doctorFillProfile);
+            break;
+          case DoctorStatus.Pending:
+            context.goNamed(AppRoutes.pending);
+            break;
+          case DoctorStatus.Approved:
+            context.goNamed(AppRoutes.homeDoctorScreen);
+            break;
+          case DoctorStatus.Rejected:
+            context.goNamed(AppRoutes.rejected);
+            break;
+        }
+      });
       return;
     }
 

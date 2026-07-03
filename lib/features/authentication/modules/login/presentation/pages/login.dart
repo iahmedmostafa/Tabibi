@@ -6,6 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/core/network/server_connection.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
+import 'package:tabibi/core/services/notification_manager.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
@@ -19,6 +20,7 @@ import 'package:tabibi/features/authentication/modules/login/presentation/busine
 import 'package:tabibi/features/authentication/modules/widgets/auth_prompt_text.dart';
 import 'package:tabibi/features/authentication/modules/widgets/top_section.dart';
 import 'package:tabibi/features/doctor_profile/domain/usecases/doctor_status_use_case.dart';
+import 'package:tabibi/features/notifications/data/datasources/fcm_token_data_source.dart';
 
 import '../../../../../../core/services/shared_prefs_service.dart';
 import '../../../../../../core/utils/validators/validation.dart';
@@ -101,6 +103,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                     await ServerConnection().connect(
                       accessToken: state.logInEntity.accessToken,
+                    );
+                    NotificationManager.instance.start(
+                      sl<FcmTokenDataSource>(),
                     );
                     if (state.role == '2') {
                       await _handleDoctorNavigation(context);

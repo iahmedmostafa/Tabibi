@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tabibi/core/DI/service_locator.dart';
+import 'package:tabibi/core/network/api_constance.dart';
+import 'package:tabibi/core/network/server_connection.dart';
+import 'package:tabibi/core/services/cache_helper.dart';
+import 'package:tabibi/core/services/notification_manager.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/chat/presentation/pages/doctor_conversations_screen.dart';
 import 'package:tabibi/features/doctor/core/doctor_localizations.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:tabibi/features/doctor/profile/presentation/pages/settings_page.dart';
 import 'package:tabibi/features/doctor/schedule/presentation/pages/my_schedule_page.dart';
+import 'package:tabibi/features/notifications/data/datasources/fcm_token_data_source.dart';
 
 class DoctorBottomNavScreen extends StatefulWidget {
   final int initialIndex;
@@ -16,11 +22,19 @@ class DoctorBottomNavScreen extends StatefulWidget {
 
 class _DoctorBottomNavScreenState extends State<DoctorBottomNavScreen> {
   late int _currentIndex;
+  String? accessToken;
 
   @override
   void initState() {
     super.initState();
     _currentIndex = widget.initialIndex;
+    _startServer();
+  }
+
+  void _startServer() async {
+    accessToken = await CacheHelper.getData(key: ApiKeys.accessToken);
+    ServerConnection().connect(accessToken: accessToken!);
+    NotificationManager.instance.start(sl<FcmTokenDataSource>());
   }
 
   @override

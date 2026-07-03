@@ -73,9 +73,7 @@ class _FillProfileState extends State<FillProfile> {
                   HorizentalSpace(width: AppWidth.w14),
                   Text(
                     "Fill Your Profile",
-                    style: Theme.of(
-                      context,
-                    ).textTheme.headlineMedium,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ],
               ),
@@ -138,25 +136,27 @@ class _FillProfileState extends State<FillProfile> {
                     EasyLoading.show(status: 'Loading...');
                   } else if (state.updateStatus ==
                       PatientProfileUpdateStatus.success) {
-                    EasyLoading.dismiss();
-                    OnboardingServices.setProfileFilled(true);
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) => const SuccessDialog(),
-                    );
-                    Future.delayed(const Duration(seconds: 3), () {
+                    EasyLoading.dismiss().then((_) {
                       if (!context.mounted) return;
-
-                      final navigator = Navigator.of(
-                        context,
-                        rootNavigator: true,
+                      OnboardingServices.setProfileFilled(true);
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) => const SuccessDialog(),
                       );
-                      if (navigator.canPop()) {
-                        navigator.pop();
-                      }
+                      Future.delayed(const Duration(seconds: 3), () {
+                        if (!context.mounted) return;
 
-                      context.goNamed(AppRoutes.bottomNavScreen);
+                        final navigator = Navigator.of(
+                          context,
+                          rootNavigator: true,
+                        );
+                        if (navigator.canPop()) {
+                          navigator.pop();
+                        }
+
+                        context.goNamed(AppRoutes.bottomNavScreen);
+                      });
                     });
                   } else if (state.updateStatus ==
                       PatientProfileUpdateStatus.failure) {
@@ -196,4 +196,3 @@ class _FillProfileState extends State<FillProfile> {
     );
   }
 }
-

@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:tabibi/core/error/failure.dart';
 import 'package:tabibi/core/network/api_constance.dart';
 
 abstract class FcmTokenDataSource {
@@ -23,10 +22,9 @@ class FcmTokenDataSourceImpl implements FcmTokenDataSource {
       );
       log('📱 FCM token registered with backend ✅');
     } on DioException catch (e) {
-      handleDioException(e);
+      log('📱 FCM token registration failed: ${e.message}');
     } catch (e) {
       log('📱 FCM token registration failed: $e');
-      rethrow;
     }
   }
 }

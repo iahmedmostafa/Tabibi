@@ -8,6 +8,7 @@ import 'package:tabibi/core/routing/app_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/features/notifications/data/datasources/fcm_token_data_source.dart';
 import 'package:tabibi/features/notifications/domain/entities/notification_entity.dart';
+
 const _channelKey = 'tabibi_notifications';
 
 /// ───────────────── BACKGROUND HANDLER ─────────────────
@@ -45,6 +46,7 @@ class NotificationManager {
 
   /// START LISTENING
   void start(FcmTokenDataSource tokenSource) {
+    _signalRSub?.cancel();
     _listenSignalR();
     _registerToken(tokenSource);
   }
@@ -100,13 +102,23 @@ class NotificationManager {
   /// ───────────────── TOKEN REGISTRATION ─────────────────
 
   Future<void> _registerToken(FcmTokenDataSource source) async {
-    final token = await _fcm.getToken();
-    if (token != null) {
-      await source.registerToken(token);
-      log("FCM Token: $token");
+    try {
+      final token = await _fcm.getToken();
+      if (token != null) {
+        await source.registerToken(token);
+        log("FCM Token: $token");
+      }
+    } catch (e) {
+      log('FCM token registration error: $e');
     }
 
-    _tokenRefreshSub = _fcm.onTokenRefresh.listen(source.registerToken);
+    _tokenRefreshSub = _fcm.onTokenRefresh.listen((token) async {
+      try {
+        await source.registerToken(token);
+      } catch (e) {
+        log('FCM token refresh error: $e');
+      }
+    });
   }
 
   /// ───────────────── SIGNALR ─────────────────
@@ -206,7 +218,6 @@ Future<void> onNotificationActionReceived(ReceivedAction action) async {
   switch (notificationType) {
     case NotificationType.bookingAlert:
     case NotificationType.payment:
-  
       GoRouter.of(context).push(AppRoutes.myBookings);
       break;
 

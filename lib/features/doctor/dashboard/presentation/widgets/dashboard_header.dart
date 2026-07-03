@@ -4,6 +4,7 @@ import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/core/doctor_localizations.dart';
 import 'package:tabibi/features/doctor/core/widgets/animated_fade_slide.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/dashboard_response.dart';
+import 'package:tabibi/features/home/presentation/screen/patient/widgets/notification_badge.dart';
 
 class DashboardHeader extends StatelessWidget {
   final DashboardResponse data;
@@ -41,22 +42,29 @@ class DashboardHeader extends StatelessWidget {
               ),
             ],
           ),
-          CircleAvatar(
-            radius: 26.r,
-            backgroundColor: AppColors.primary,
-            backgroundImage: data.doctorAvatarUrl != null
-                ? NetworkImage(data.doctorAvatarUrl!)
-                : null,
-            child: data.doctorAvatarUrl == null
-                ? Text(
-                    initials,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14.sp,
-                    ),
-                  )
-                : null,
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const NotificationBadge(),
+              SizedBox(width: 12.w),
+              CircleAvatar(
+                radius: 26.r,
+                backgroundColor: AppColors.primary,
+                backgroundImage: data.doctorAvatarUrl != null
+                    ? NetworkImage(data.doctorAvatarUrl!)
+                    : null,
+                child: data.doctorAvatarUrl == null
+                    ? Text(
+                        initials,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14.sp,
+                        ),
+                      )
+                    : null,
+              ),
+            ],
           ),
         ],
       ),
