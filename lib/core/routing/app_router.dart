@@ -573,16 +573,13 @@ final GoRouter router = GoRouter(
     AppGoRoute(
       path: AppRoutes.doctorSchedule,
       name: AppRoutes.doctorSchedule,
-      builder: (context, state) => BlocProvider(
-        create: (_) => AvailabilityCubit(),
-        child: const MySchedulePage(),
-      ),
+      builder: (context, state) => const MySchedulePage(),
     ),
     AppGoRoute(
       path: AppRoutes.doctorAvailability,
       name: AppRoutes.doctorAvailability,
       builder: (context, state) => BlocProvider(
-        create: (_) => AvailabilityCubit(),
+        create: (_) => sl<AvailabilityCubit>()..getSchedule(),
         child: const EditAvailabilityPage(),
       ),
     ),
@@ -599,10 +596,7 @@ final GoRouter router = GoRouter(
     AppGoRoute(
       path: AppRoutes.doctorSettings,
       name: AppRoutes.doctorSettings,
-      builder: (context, state) => BlocProvider(
-        create: (context) => sl<ProfileCubit>(),
-        child: const SettingsPage(),
-      ),
+      builder: (context, state) => const SettingsPage(),
     ),
     AppGoRoute(
       path: AppRoutes.doctorAppointmentDetails,

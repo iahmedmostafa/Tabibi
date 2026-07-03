@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tabibi/core/utils/theme/theme.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/features/doctor/core/doctor_localizations.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/dashboard_response.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/widgets/stat_card.dart';
 
@@ -10,30 +12,34 @@ class DashboardStatsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = DoctorLocalizations.of(context);
     return Row(
       children: [
         StatCard(
-          label: 'Today',
+          label: loc.today,
           value: stats.todayCount.toString(),
           icon: Icons.calendar_today,
-          iconColor: AppTheme.blueIcon,
-          backgroundColor: AppTheme.bluePastel,
+          iconColor: AppColors.blue,
+          backgroundColor: AppColors.paleBlueLight,
+          delayMilliseconds: 0,
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12.w),
         StatCard(
-          label: 'Done',
+          label: loc.done,
           value: stats.completedCount.toString(),
           icon: Icons.check_circle_outline,
-          iconColor: AppTheme.greenIcon,
-          backgroundColor: AppTheme.greenPastel,
+          iconColor: AppColors.actionGreen,
+          backgroundColor: AppColors.successLight,
+          delayMilliseconds: 80,
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12.w),
         StatCard(
-          label: 'Refunded',
+          label: loc.refunded,
           value: stats.cancelledCount.toString(),
           icon: Icons.cancel_outlined,
-          iconColor: AppTheme.redIcon,
-          backgroundColor: AppTheme.redPastel,
+          iconColor: AppColors.error,
+          backgroundColor: AppColors.lightPink,
+          delayMilliseconds: 160,
         ),
       ],
     );

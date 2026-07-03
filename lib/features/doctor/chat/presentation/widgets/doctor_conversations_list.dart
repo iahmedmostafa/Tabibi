@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:tabibi/features/chat_patient/domain/entities/chat_entity.dart';
 import 'package:tabibi/features/doctor/chat/presentation/widgets/doctor_conversation_list_tile.dart';
 
@@ -16,13 +15,25 @@ class DoctorConversationsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      itemCount: conversations.length,
-      separatorBuilder: (_, __) =>
-          Divider(height: 1, indent: 80.w, color: AppColors.grey200),
-      itemBuilder: (context, index) => DoctorConversationListTile(
-        conversation: conversations[index],
-        onNavigateBack: onNavigateBack,
+    return AnimationLimiter(
+      child: ListView.builder(
+        itemCount: conversations.length,
+        itemBuilder: (context, index) {
+          final conversation = conversations[index];
+          return AnimationConfiguration.staggeredList(
+            position: index,
+            duration: const Duration(milliseconds: 350),
+            child: SlideAnimation(
+              verticalOffset: 24.0,
+              child: FadeInAnimation(
+                child: DoctorConversationListTile(
+                  conversation: conversation,
+                  onNavigateBack: onNavigateBack,
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

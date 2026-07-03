@@ -65,6 +65,7 @@ class AppColors {
   static const Color teal90 = Color(0xFF004D40);
   static const Color teal80 = Color(0xFF00695C);
   static const Color teal20 = Color(0xFF99F6E4);
+  static const Color teal200 = Color(0xFF99F6E4);
   static const Color dark = Color(0xff272727);
   static const Color darkerGrey = Color(0xFF4F4F4F);
   static const Color darkGrey = Color(0xFF939393);

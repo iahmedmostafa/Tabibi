@@ -4,8 +4,8 @@ import 'package:tabibi/core/error/exceptions.dart';
 import 'package:tabibi/core/error/failure.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/features/doctor_profile/data/datasources/base_doctor_profile_data_source.dart';
-import 'package:tabibi/features/doctor_profile/data/models/doctor_profile_model.dart';
-import 'package:tabibi/features/doctor_profile/data/models/update_doctor_profile_params.dart';
+import 'package:tabibi/features/doctor_profile/domain/entities/doctor_profile.dart';
+import 'package:tabibi/features/doctor_profile/domain/entities/update_doctor_profile_params.dart';
 import 'package:tabibi/features/doctor_profile/domain/repositories/base_doctor_profile_repository.dart';
 
 class DoctorProfileRepository implements BaseDoctorProfileRepository {
@@ -14,7 +14,7 @@ class DoctorProfileRepository implements BaseDoctorProfileRepository {
   DoctorProfileRepository(this.baseDoctorProfileDataSource);
 
   @override
-  Future<Either<Failure, DoctorProfileModel>> getDoctorProfile() async {
+  Future<Either<Failure, DoctorProfile>> getDoctorProfile() async {
     try {
       final result = await baseDoctorProfileDataSource.getDoctorProfile();
       return Right(result);
@@ -22,6 +22,8 @@ class DoctorProfileRepository implements BaseDoctorProfileRepository {
       return Left(ServerFailure(failure.errorMessageModel.statusMessage));
     } on DioException catch (failure) {
       return Left(ServerFailure(failure.message ?? 'Dio Error'));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
     }
   }
 
@@ -38,6 +40,8 @@ class DoctorProfileRepository implements BaseDoctorProfileRepository {
       return Left(ServerFailure(failure.errorMessageModel.statusMessage));
     } on DioException catch (failure) {
       return Left(ServerFailure(failure.message ?? 'Dio Error'));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
     }
   }
 
@@ -50,6 +54,8 @@ class DoctorProfileRepository implements BaseDoctorProfileRepository {
       return Left(ServerFailure(failure.errorMessageModel.statusMessage));
     } on DioException catch (failure) {
       return Left(ServerFailure(failure.message ?? 'Dio Error'));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
     }
   }
 }

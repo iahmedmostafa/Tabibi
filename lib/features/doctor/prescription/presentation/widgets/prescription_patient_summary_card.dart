@@ -61,17 +61,19 @@ class PrescriptionPatientSummaryCard extends StatelessWidget {
                       patientName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w800,
+                        fontSize: 16,
                       ),
                     ),
                     SizedBox(height: 5.h),
                     Text(
                       patientId,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      style: TextStyle(
                         color: Colors.white70,
                         fontWeight: FontWeight.w600,
+                        fontSize: 13,
                       ),
                     ),
                   ],
@@ -128,9 +130,10 @@ class _PatientChip extends StatelessWidget {
           SizedBox(width: 6.w),
           Text(
             label,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w700,
+              fontSize: 12,
             ),
           ),
         ],

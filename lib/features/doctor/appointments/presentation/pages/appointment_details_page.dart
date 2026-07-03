@@ -12,6 +12,8 @@ import 'package:tabibi/features/doctor/appointments/presentation/widgets/appoint
 import 'package:tabibi/features/doctor/appointments/presentation/widgets/prescription_card.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/widgets/reason_for_visit_card.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/widgets/view_patient_profile_button.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_loading_state.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_error_state.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart';
 import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 
@@ -22,23 +24,21 @@ class AppointmentDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return BlocProvider(
       create: (context) =>
           sl<AppointmentDetailsCubit>()..getAppointmentDetails(appointment.id),
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: theme.scaffoldBackgroundColor,
         appBar: AppBar(
           title: Text(
             'Appointment Details',
-            style: Theme.of(
-              context,
-            ).textTheme.titleLarge?.copyWith(color: Colors.black),
+            style: theme.textTheme.titleLarge,
           ),
           centerTitle: true,
-          backgroundColor: Colors.white,
-          elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
+            icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp),
             onPressed: () => context.pop(),
           ),
         ),
@@ -46,10 +46,10 @@ class AppointmentDetailsPage extends StatelessWidget {
           builder: (context, state) {
             if (state is AppointmentDetailsLoading ||
                 state is AppointmentDetailsInitial) {
-              return const Center(child: CircularProgressIndicator());
+              return const DoctorLoadingState();
             }
             if (state is AppointmentDetailsError) {
-              return _AppointmentDetailsError(
+              return DoctorErrorState(
                 message: state.message,
                 onRetry: () => context
                     .read<AppointmentDetailsCubit>()
@@ -106,30 +106,6 @@ class AppointmentDetailsPage extends StatelessWidget {
             return const SizedBox();
           },
         ),
-      ),
-    );
-  }
-}
-
-class _AppointmentDetailsError extends StatelessWidget {
-  final String message;
-  final VoidCallback onRetry;
-
-  const _AppointmentDetailsError({
-    required this.message,
-    required this.onRetry,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(message),
-          SizedBox(height: 16.h),
-          ElevatedButton(onPressed: onRetry, child: const Text('Retry')),
-        ],
       ),
     );
   }

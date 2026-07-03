@@ -91,6 +91,17 @@ import 'package:tabibi/features/doctor/reviews/domain/repositories/doctor_review
 import 'package:tabibi/features/doctor/reviews/domain/usecases/get_my_reviews_use_case.dart';
 import 'package:tabibi/features/doctor/reviews/presentation/cubit/reviews_cubit.dart'
     as doctor_reviews;
+import 'package:tabibi/features/doctor/availability/data/datasources/availability_remote_data_source.dart';
+import 'package:tabibi/features/doctor/availability/data/repositories/availability_repository_impl.dart';
+import 'package:tabibi/features/doctor/availability/domain/repositories/availability_repository.dart';
+import 'package:tabibi/features/doctor/availability/domain/usecases/get_availability_use_case.dart';
+import 'package:tabibi/features/doctor/availability/domain/usecases/update_availability_use_case.dart';
+import 'package:tabibi/features/doctor/availability/presentation/cubit/availability_cubit.dart';
+import 'package:tabibi/features/doctor/patients/data/datasources/patient_medical_profile_remote_data_source.dart';
+import 'package:tabibi/features/doctor/patients/data/repositories/patient_medical_profile_repository_impl.dart';
+import 'package:tabibi/features/doctor/patients/domain/repositories/patient_medical_profile_repository.dart';
+import 'package:tabibi/features/doctor/patients/domain/usecases/get_patient_medical_profile_use_case.dart';
+import 'package:tabibi/features/doctor/patients/presentation/cubit/medical_history_cubit.dart';
 import 'package:tabibi/features/doctor/schedule/data/datasources/schedule_remote_data_source.dart';
 import 'package:tabibi/features/doctor/schedule/data/repositories/schedule_repository_impl.dart';
 import 'package:tabibi/features/doctor/schedule/domain/repositories/schedule_repository.dart';
@@ -266,6 +277,12 @@ Future<void> init() async {
   sl.registerLazySingleton<BaseAiRemoteDataSource>(
     () => AiRemoteDataSourceImpl(),
   );
+  sl.registerLazySingleton<BaseAvailabilityRemoteDataSource>(
+    () => AvailabilityRemoteDataSourceImpl(sl()),
+  );
+  sl.registerLazySingleton<PatientMedicalProfileRemoteDataSource>(
+    () => PatientMedicalProfileRemoteDataSourceImpl(sl<Dio>()),
+  );
 
   /// REPOSITORY
   sl.registerLazySingleton<BaseAuthenticationRepository>(
@@ -334,6 +351,12 @@ Future<void> init() async {
   sl.registerLazySingleton<BaseAiRepository>(
     () => AiRepositoryImpl(sl()),
   );
+  sl.registerLazySingleton<AvailabilityRepository>(
+    () => AvailabilityRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<PatientMedicalProfileRepository>(
+    () => PatientMedicalProfileRepositoryImpl(sl()),
+  );
 
   /// USE CASE
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
@@ -385,6 +408,9 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetMedicalProfileUseCase(sl()));
   sl.registerLazySingleton(() => UpdateMedicalProfileUseCase(sl()));
   sl.registerLazySingleton(() => CheckSymptomsUseCase(sl()));
+  sl.registerLazySingleton(() => GetAvailabilityUseCase(sl()));
+  sl.registerLazySingleton(() => UpdateAvailabilityUseCase(sl()));
+  sl.registerLazySingleton(() => GetPatientMedicalProfileUseCase(sl()));
 
   /// CUBIT
   sl.registerFactory(() => AppointmentDetailsCubit(sl()));
@@ -431,4 +457,6 @@ Future<void> init() async {
   sl.registerFactory(() => doctor_reviews.ReviewsCubit(sl()));
   sl.registerFactory(() => MedicalProfileCubit(sl(), sl()));
   sl.registerFactory(() => AiSymptomCubit(sl()));
+  sl.registerFactory(() => AvailabilityCubit(sl(), sl()));
+  sl.registerFactory(() => MedicalHistoryCubit(sl()));
 }

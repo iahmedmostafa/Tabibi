@@ -1,37 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tabibi/features/doctor/profile/domain/entities/doctor_profile.dart';
+import 'package:tabibi/features/doctor/core/doctor_localizations.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_card.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_section_header.dart';
+import 'package:tabibi/features/doctor_profile/domain/entities/doctor_profile.dart';
 import 'package:tabibi/features/doctor/profile/presentation/widget/settings_item.dart';
 
 class AvailabilitySection extends StatelessWidget {
   final DoctorProfile profile;
+  final VoidCallback? onTap;
 
-  const AvailabilitySection({super.key, required this.profile});
+  const AvailabilitySection({super.key, required this.profile, this.onTap});
 
   @override
   Widget build(BuildContext context) {
+    final loc = DoctorLocalizations.of(context);
+
+    final workingHoursText = profile.schedule.isNotEmpty
+        ? '${profile.schedule.first.openTime} - ${profile.schedule.first.closeTime}'
+        : (loc.isAr ? 'غير محدد' : 'Not Configured');
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Text(
-            'Availability',
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey[700],
-            ),
-          ),
+          child: DoctorSectionHeader(title: loc.availability),
         ),
         SizedBox(height: 12.h),
-        Container(
-          color: Colors.white,
+        DoctorCard(
+          margin: EdgeInsets.symmetric(horizontal: 16.w),
+          padding: EdgeInsets.zero,
           child: SettingsItem(
             icon: Icons.access_time,
-            title: 'Working Hours',
-            subtitle: profile.workingHours,
-            onTap: () {},
+            title: loc.workingHours,
+            subtitle: workingHoursText,
+            onTap: onTap ?? () {},
           ),
         ),
       ],

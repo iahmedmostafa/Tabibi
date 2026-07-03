@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tabibi/core/utils/theme/theme.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/availability/presentation/cubit/availability_cubit.dart';
 
 class AddSlotDialog extends StatefulWidget {
@@ -59,7 +59,7 @@ class _AddSlotDialogState extends State<AddSlotDialog> {
             Navigator.pop(context);
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppTheme.primaryColor,
+            backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
           ),
           child: const Text('Add'),

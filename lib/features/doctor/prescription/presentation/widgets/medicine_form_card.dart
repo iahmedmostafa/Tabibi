@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_styles.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_card.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/cubit/create_prescription_state.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/widgets/prescription_text_field.dart';
 
@@ -31,20 +33,10 @@ class MedicineFormCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return DoctorCard(
       padding: EdgeInsets.all(18.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18.r),
-        border: Border.all(color: AppColors.grey200),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.045),
-            blurRadius: 16,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -60,10 +52,8 @@ class MedicineFormCard extends StatelessWidget {
                 child: Center(
                   child: Text(
                     '$index',
-                    style: TextStyle(
+                    style: AppTextStyle.bodySBold.copyWith(
                       color: AppColors.teal,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w800,
                     ),
                   ),
                 ),
@@ -75,17 +65,16 @@ class MedicineFormCard extends StatelessWidget {
                   children: [
                     Text(
                       'Medicine $index',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.grey900,
+                      style: AppTextStyle.h3.copyWith(
+                        color: isDark ? Colors.white : AppColors.grey900,
                       ),
                     ),
                     SizedBox(height: 2.h),
                     Text(
                       'Dose, schedule, duration, and patient instructions',
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodySmall?.copyWith(color: AppColors.grey500),
+                      style: AppTextStyle.bodyXsMedium.copyWith(
+                        color: isDark ? AppColors.grey400 : AppColors.grey500,
+                      ),
                     ),
                   ],
                 ),
@@ -93,12 +82,15 @@ class MedicineFormCard extends StatelessWidget {
               if (canRemove)
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColors.lightPink,
+                    color: isDark ? Colors.red.shade900.withValues(alpha: 0.2) : AppColors.lightPink,
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: IconButton(
                     onPressed: onRemove,
-                    icon: const Icon(Iconsax.trash, color: AppColors.error),
+                    icon: Icon(
+                      Iconsax.trash,
+                      color: isDark ? Colors.red.shade300 : AppColors.error,
+                    ),
                     tooltip: 'Remove medicine',
                   ),
                 ),

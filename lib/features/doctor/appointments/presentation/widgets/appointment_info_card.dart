@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tabibi/core/utils/theme/theme.dart';
-import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/appointments/domain/entities/appointment_details_entity.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_card.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_status_badge.dart';
+import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 
 class AppointmentInfoCard extends StatelessWidget {
   final AppointmentDetailsEntity details;
@@ -14,43 +16,35 @@ class AppointmentInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tt = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final typeLabel = details.type == 1 ? 'Video Call' : 'Consultation';
-    final statusColor = _statusColor(details.status);
-    final statusBg = _statusBg(details.status);
+    final statusLabel = DoctorAppointmentStatus.label(details.status);
+    final statusData = _statusData(details.status);
 
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16.r),
-      ),
+    return DoctorCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Appointment Information',
-            style: tt.titleLarge?.copyWith(
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
+            style: theme.textTheme.titleLarge,
           ),
           SizedBox(height: 16.h),
           _buildInfoRow(
             context: context,
             icon: Icons.calendar_today,
-            iconColor: AppTheme.blueIcon,
-            bgIconColor: AppTheme.bluePastel,
+            iconColor: AppColors.blue,
+            bgIconColor: AppColors.paleBlueLight,
             label: 'Date',
             value: _formatDate(details.appointmentDate),
-            
           ),
           SizedBox(height: 16.h),
           _buildInfoRow(
             context: context,
             icon: Icons.access_time,
-          
-            iconColor: AppTheme.orangeIcon,
-            bgIconColor: AppTheme.orangePastel,
+            iconColor: AppColors.actionAmber,
+            bgIconColor: AppColors.actionOrangeLight,
             label: 'Time',
             value: _formatTime(details.appointmentDate),
           ),
@@ -58,8 +52,8 @@ class AppointmentInfoCard extends StatelessWidget {
           _buildInfoRow(
             context: context,
             icon: Icons.medical_services_outlined,
-            iconColor: AppTheme.greenIcon,
-            bgIconColor: AppTheme.greenPastel,
+            iconColor: AppColors.actionGreen,
+            bgIconColor: AppColors.successLight,
             label: 'Type',
             value: typeLabel,
           ),
@@ -69,12 +63,12 @@ class AppointmentInfoCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(10.w),
                 decoration: BoxDecoration(
-                  color: statusBg,
+                  color: statusData.bgColor,
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Icon(
                   Icons.info_outline,
-                  color: statusColor,
+                  color: statusData.color,
                   size: 20.sp,
                 ),
               ),
@@ -84,24 +78,15 @@ class AppointmentInfoCard extends StatelessWidget {
                 children: [
                   Text(
                     'Status',
-                    style: tt.labelSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: isDark ? AppColors.grey400 : AppColors.grey500,
                     ),
                   ),
                   SizedBox(height: 4.h),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 10.w,
-                      vertical: 3.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: statusBg,
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: Text(
-                      DoctorAppointmentStatus.label(details.status),
-                      style: tt.bodySmall?.copyWith(color: statusColor),
-                    ),
+                  DoctorStatusBadge(
+                    label: statusLabel,
+                    color: statusData.color,
+                    backgroundColor: statusData.bgColor,
                   ),
                 ],
               ),
@@ -120,7 +105,9 @@ class AppointmentInfoCard extends StatelessWidget {
     required String label,
     required String value,
   }) {
-    final tt = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -139,16 +126,15 @@ class AppointmentInfoCard extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: tt.labelSmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: isDark ? AppColors.grey400 : AppColors.grey500,
                 ),
               ),
               SizedBox(height: 4.h),
               Text(
                 value,
-                style: tt.bodyMedium?.copyWith(
+                style: theme.textTheme.bodyMedium?.copyWith(
                   height: 1.4,
-                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ],
@@ -190,29 +176,22 @@ class AppointmentInfoCard extends StatelessWidget {
     return '$hour:$m $period';
   }
 
-  Color _statusColor(int status) {
+  _StatusColors _statusData(int status) {
     switch (status) {
       case DoctorAppointmentStatus.upcoming:
-        return AppTheme.blueIcon;
+        return _StatusColors(AppColors.blue, AppColors.paleBlueLight);
       case DoctorAppointmentStatus.completed:
-        return AppTheme.greenIcon;
+        return _StatusColors(AppColors.actionGreen, AppColors.successLight);
       case DoctorAppointmentStatus.refunded:
-        return AppTheme.redIcon;
+        return _StatusColors(AppColors.error, AppColors.lightPink);
       default:
-        return Colors.grey;
+        return _StatusColors(AppColors.grey400, AppColors.grey100);
     }
   }
+}
 
-  Color _statusBg(int status) {
-    switch (status) {
-      case DoctorAppointmentStatus.upcoming:
-        return AppTheme.bluePastel;
-      case DoctorAppointmentStatus.completed:
-        return AppTheme.greenPastel;
-      case DoctorAppointmentStatus.refunded:
-        return AppTheme.redPastel;
-      default:
-        return Colors.grey.shade100;
-    }
-  }
+class _StatusColors {
+  final Color color;
+  final Color bgColor;
+  const _StatusColors(this.color, this.bgColor);
 }

@@ -1,4 +1,4 @@
-import 'package:tabibi/features/home/data/models/work_schedule_dto.dart';
+import 'package:tabibi/features/doctor_profile/domain/entities/doctor_profile.dart';
 
 class DoctorFillProfileFormState {
   final int currentPage;
@@ -9,7 +9,7 @@ class DoctorFillProfileFormState {
   final double? clinicLatitude;
   final double? clinicLongitude;
   final int gender;
-  final List<WorkScheduleDto> schedules;
+  final List<Schedule> schedules;
 
   const DoctorFillProfileFormState({
     this.currentPage = 0,
@@ -32,7 +32,7 @@ class DoctorFillProfileFormState {
     double? clinicLatitude,
     double? clinicLongitude,
     int? gender,
-    List<WorkScheduleDto>? schedules,
+    List<Schedule>? schedules,
   }) {
     return DoctorFillProfileFormState(
       currentPage: currentPage ?? this.currentPage,

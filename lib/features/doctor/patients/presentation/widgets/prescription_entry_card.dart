@@ -26,19 +26,24 @@ class PrescriptionEntryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(18.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? AppColors.darkSurface : Colors.white,
         borderRadius: BorderRadius.circular(18.r),
-        border: Border.all(color: AppColors.grey200),
+        border: Border.all(
+          color: isDark ? AppColors.grey800 : AppColors.grey200,
+        ),
         boxShadow: [
-          BoxShadow(
-            color: AppColors.midnightBlue.withValues(alpha: 0.08),
-            blurRadius: 18,
-            offset: const Offset(0, 10),
-          ),
+          if (!isDark)
+            BoxShadow(
+              color: AppColors.midnightBlue.withValues(alpha: 0.08),
+              blurRadius: 18,
+              offset: const Offset(0, 10),
+            ),
         ],
       ),
       child: Column(
@@ -69,7 +74,7 @@ class PrescriptionEntryCard extends StatelessWidget {
                           ? 'Prescription Required'
                           : 'Prescription Unavailable',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.grey900,
+                        color: isDark ? Colors.white : AppColors.grey900,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
@@ -80,7 +85,7 @@ class PrescriptionEntryCard extends StatelessWidget {
                           : policy.disabledMessage ??
                               'Prescription cannot be written for this appointment.',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.grey500,
+                        color: isDark ? AppColors.grey400 : AppColors.grey500,
                         height: 1.35,
                       ),
                     ),

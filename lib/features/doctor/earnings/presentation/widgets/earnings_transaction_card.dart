@@ -13,6 +13,7 @@ class EarningsTransactionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final hasAvatar =
         transaction.patientAvatarUrl != null &&
         transaction.patientAvatarUrl!.isNotEmpty;
@@ -20,9 +21,11 @@ class EarningsTransactionCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
-        color: AppColors.grey50,
+        color: isDark ? AppColors.grey900 : AppColors.grey50,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: AppColors.grey200),
+        border: Border.all(
+          color: isDark ? AppColors.grey800 : AppColors.grey200,
+        ),
       ),
       child: Row(
         children: [
@@ -31,14 +34,18 @@ class EarningsTransactionCard extends StatelessWidget {
             child: Container(
               width: 48.w,
               height: 48.w,
-              color: AppColors.grey100,
+              color: isDark ? AppColors.darkSurface : AppColors.grey100,
               child: hasAvatar
                   ? CachedNetworkImage(
                       imageUrl: transaction.patientAvatarUrl!,
                       fit: BoxFit.cover,
                       errorWidget: (_, __, ___) => const Icon(Icons.person),
                     )
-                  : Icon(Icons.person, color: AppColors.grey500, size: 24.sp),
+                  : Icon(
+                      Icons.person,
+                      color: isDark ? AppColors.grey400 : AppColors.grey500,
+                      size: 24.sp,
+                    ),
             ),
           ),
           SizedBox(width: 12.w),
@@ -51,7 +58,7 @@ class EarningsTransactionCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.grey900,
+                    color: isDark ? Colors.white : AppColors.grey900,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -61,7 +68,7 @@ class EarningsTransactionCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.grey500,
+                    color: isDark ? AppColors.grey400 : AppColors.grey500,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

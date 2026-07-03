@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
-import 'package:tabibi/features/doctor/dashboard/presentation/widgets/appointment_card.dart';
+import 'package:tabibi/features/doctor/core/doctor_localizations.dart';
 import 'package:tabibi/features/doctor/dashboard/domain/entities/appointment.dart';
-import 'package:tabibi/core/utils/theme/theme.dart';
+import 'package:tabibi/features/doctor/dashboard/presentation/widgets/appointment_card.dart';
 
 class DashboardTodayAppointments extends StatelessWidget {
   final List<Appointment> appointments;
@@ -14,6 +15,9 @@ class DashboardTodayAppointments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final loc = DoctorLocalizations.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -21,34 +25,42 @@ class DashboardTodayAppointments extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Today's Appointments",
-              style: theme.textTheme.titleLarge,
+              loc.todayAppointments,
+              style: theme.textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
             ),
             TextButton(
               onPressed: () => context.push(AppRoutes.doctorRequests),
-              child: const Text(
-                'See All',
-                style: TextStyle(color: AppTheme.tealDark),
+              child: Text(
+                loc.seeAll,
+                style: TextStyle(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         if (appointments.isEmpty)
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
+            padding: EdgeInsets.symmetric(vertical: 20.h),
             child: Center(
               child: Column(
                 children: [
-                  const Icon(
-                    Icons.event_busy,
-                    size: 48,
-                    color: AppColors.grey300,
+                  Icon(
+                    Icons.event_busy_rounded,
+                    size: 48.sp,
+                    color: isDark ? AppColors.grey700 : AppColors.grey300,
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   Text(
-                    'No appointments today',
-                    style: theme.textTheme.bodyMedium,
+                    loc.noAppointmentsToday,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: isDark ? AppColors.grey400 : AppColors.grey500,
+                    ),
                   ),
                 ],
               ),

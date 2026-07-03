@@ -4,10 +4,10 @@ import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/core/widgets/drop_menu.dart/drop_menu.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
-import 'package:tabibi/features/home/data/models/work_schedule_dto.dart';
+import 'package:tabibi/features/doctor_profile/domain/entities/doctor_profile.dart';
 
 class SchedulePage extends StatefulWidget {
-  final Function(List<WorkScheduleDto>) onScheduleChanged;
+  final ValueChanged<List<Schedule>> onScheduleChanged;
 
   const SchedulePage({super.key, required this.onScheduleChanged});
 
@@ -16,7 +16,7 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
-  final List<WorkScheduleDto> _schedules = [];
+  final List<Schedule> _schedules = [];
   int? _selectedDay;
   TimeOfDay? _openTime;
   TimeOfDay? _closeTime;
@@ -61,7 +61,7 @@ class _SchedulePageState extends State<SchedulePage> {
     if (_selectedDay != null && _openTime != null && _closeTime != null) {
       setState(() {
         _schedules.add(
-          WorkScheduleDto(
+          Schedule(
             dayOfWeek: _selectedDay!,
             openTime: _formatTime(_openTime!),
             closeTime: _formatTime(_closeTime!),

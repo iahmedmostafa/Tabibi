@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/doctor_fill_profile_form_state.dart';
-import 'package:tabibi/features/home/data/models/work_schedule_dto.dart';
+import 'package:tabibi/features/doctor_profile/domain/entities/doctor_profile.dart';
 
 class DoctorFillProfileFormCubit extends Cubit<DoctorFillProfileFormState> {
   DoctorFillProfileFormCubit() : super(const DoctorFillProfileFormState());
@@ -47,7 +47,7 @@ class DoctorFillProfileFormCubit extends Cubit<DoctorFillProfileFormState> {
     emit(state.copyWith(clinicLatitude: latitude, clinicLongitude: longitude));
   }
 
-  void setSchedules(List<WorkScheduleDto> schedules) {
+  void setSchedules(List<Schedule> schedules) {
     emit(state.copyWith(schedules: schedules));
   }
 

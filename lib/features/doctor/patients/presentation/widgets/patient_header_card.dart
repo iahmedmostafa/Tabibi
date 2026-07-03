@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/patients/domain/entities/patient.dart';
 
 class PatientHeaderCard extends StatelessWidget {
@@ -9,17 +10,23 @@ class PatientHeaderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? AppColors.darkSurface : Colors.white,
         borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: isDark ? AppColors.grey800 : AppColors.grey200,
+        ),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
+          if (!isDark)
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
         ],
       ),
       child: Column(
@@ -54,6 +61,7 @@ class PatientHeaderCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.white : AppColors.grey900,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -63,7 +71,7 @@ class PatientHeaderCard extends StatelessWidget {
                       'Patient ID: ${patient.patientId}',
                       style: TextStyle(
                         fontSize: 14.sp,
-                        color: Colors.grey[600],
+                        color: isDark ? AppColors.grey400 : AppColors.grey600,
                       ),
                     ),
                     SizedBox(height: 8.h),
@@ -73,13 +81,16 @@ class PatientHeaderCard extends StatelessWidget {
                         vertical: 4.h,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE8F5E9),
+                        color: isDark ? Colors.green.shade900.withValues(alpha: 0.2) : const Color(0xFFE8F5E9),
                         borderRadius: BorderRadius.circular(12.r),
+                        border: Border.all(
+                          color: isDark ? Colors.green.shade800 : Colors.transparent,
+                        ),
                       ),
                       child: Text(
                         'Active Patient',
                         style: TextStyle(
-                          color: const Color(0xFF4CAF50),
+                          color: isDark ? Colors.green.shade300 : const Color(0xFF4CAF50),
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
                         ),
@@ -95,16 +106,18 @@ class PatientHeaderCard extends StatelessWidget {
             children: [
               Expanded(
                 child: _buildInfoItem(
+                  context,
                   'Age',
                   '${patient.age} years',
-                  Colors.grey[600]!,
+                  isDark ? AppColors.grey300 : AppColors.grey800,
                 ),
               ),
               Expanded(
                 child: _buildInfoItem(
+                  context,
                   'Gender',
                   patient.gender,
-                  Colors.grey[600]!,
+                  isDark ? AppColors.grey300 : AppColors.grey800,
                 ),
               ),
             ],
@@ -114,6 +127,7 @@ class PatientHeaderCard extends StatelessWidget {
             children: [
               Expanded(
                 child: _buildInfoItem(
+                  context,
                   'Blood Group',
                   patient.bloodGroup,
                   const Color(0xFFD32F2F),
@@ -121,9 +135,10 @@ class PatientHeaderCard extends StatelessWidget {
               ),
               Expanded(
                 child: _buildInfoItem(
+                  context,
                   'Weight',
                   patient.weight,
-                  Colors.grey[600]!,
+                  isDark ? AppColors.grey300 : AppColors.grey800,
                 ),
               ),
             ],
@@ -133,13 +148,17 @@ class PatientHeaderCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoItem(String label, String value, Color valueColor) {
+  Widget _buildInfoItem(BuildContext context, String label, String value, Color valueColor) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: TextStyle(fontSize: 12.sp, color: Colors.grey[500]),
+          style: TextStyle(
+            fontSize: 12.sp,
+            color: isDark ? AppColors.grey400 : Colors.grey[500],
+          ),
         ),
         SizedBox(height: 4.h),
         Text(

@@ -16,6 +16,8 @@ class EarningsSectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Row(
       children: [
         Container(
@@ -35,16 +37,16 @@ class EarningsSectionHeader extends StatelessWidget {
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.grey900,
+                  color: isDark ? Colors.white : AppColors.grey900,
                   fontWeight: FontWeight.w800,
                 ),
               ),
               SizedBox(height: 3.h),
               Text(
                 subtitle,
-                style: Theme.of(
-                  context,
-                ).textTheme.bodySmall?.copyWith(color: AppColors.grey500),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: isDark ? AppColors.grey400 : AppColors.grey500,
+                ),
               ),
             ],
           ),

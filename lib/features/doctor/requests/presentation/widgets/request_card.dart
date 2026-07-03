@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/formatters.dart/formatters.dart';
-import 'package:tabibi/core/utils/theme/theme.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_card.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_status_badge.dart';
 import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/requests/domain/entities/appointment_request.dart';
 
@@ -21,20 +23,12 @@ class RequestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final statusData = _statusData(request.status);
+
+    return DoctorCard(
       margin: EdgeInsets.only(bottom: 16.h),
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -44,12 +38,12 @@ class RequestCard extends StatelessWidget {
                 width: 48.w,
                 height: 48.w,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(12.r),
+                  color: isDark ? AppColors.grey800 : AppColors.grey100,
+                  borderRadius: BorderRadius.circular(14.r),
                 ),
                 child: Icon(
                   Icons.person,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  color: isDark ? AppColors.grey400 : AppColors.grey500,
                   size: 24.sp,
                 ),
               ),
@@ -60,10 +54,8 @@ class RequestCard extends StatelessWidget {
                   children: [
                     Text(
                       request.patientName,
-                      style: TextStyle(
-                        fontSize: 16.sp,
+                      style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     SizedBox(height: 4.h),
@@ -72,16 +64,13 @@ class RequestCard extends StatelessWidget {
                         Icon(
                           Icons.access_time,
                           size: 14.sp,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          color: isDark ? AppColors.grey400 : AppColors.grey500,
                         ),
                         SizedBox(width: 4.w),
                         Text(
                           '${Formatter.formatDateForDoctor(request.dateTime)} - ${Formatter.formatTimeForDoctor(request.dateTime)}',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurfaceVariant,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: isDark ? AppColors.grey400 : AppColors.grey500,
                           ),
                         ),
                       ],
@@ -92,11 +81,10 @@ class RequestCard extends StatelessWidget {
               IconButton(
                 icon: Icon(
                   Icons.videocam,
-                  color: AppTheme.primaryColor,
+                  color: AppColors.primary,
                   size: 28.sp,
                 ),
                 onPressed: () {
-                  
                   context.push(
                     AppRoutes.callPage,
                     extra: {'bookingId': request.id},
@@ -108,9 +96,8 @@ class RequestCard extends StatelessWidget {
           SizedBox(height: 12.h),
           Text(
             request.reason,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: isDark ? AppColors.grey400 : AppColors.grey500,
               height: 1.4,
             ),
           ),
@@ -119,32 +106,38 @@ class RequestCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: onReject,
-                    icon: Icon(Icons.close, size: 18.sp),
-                    label: Text('Reject', style: TextStyle(fontSize: 14.sp)),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: AppTheme.redIcon,
-                      side: const BorderSide(color: AppTheme.redPastel),
-                      padding: EdgeInsets.symmetric(vertical: 12.h),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
+                  child: SizedBox(
+                    height: 46.h,
+                    child: OutlinedButton.icon(
+                      onPressed: onReject,
+                      icon: Icon(Icons.close, size: 18.sp),
+                      label: Text('Reject', style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.error,
+                        side: BorderSide(color: AppColors.lightPink),
+                        backgroundColor: AppColors.lightPink,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(22.r),
+                        ),
                       ),
                     ),
                   ),
                 ),
                 SizedBox(width: 12.w),
                 Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: onApprove,
-                    icon: Icon(Icons.check, size: 18.sp),
-                    label: Text('Approve', style: TextStyle(fontSize: 14.sp)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.primaryColor,
-                      foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(vertical: 12.h),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
+                  child: SizedBox(
+                    height: 46.h,
+                    child: ElevatedButton.icon(
+                      onPressed: onApprove,
+                      icon: Icon(Icons.check, size: 18.sp),
+                      label: Text('Approve', style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(22.r),
+                        ),
+                        elevation: 0,
                       ),
                     ),
                   ),
@@ -152,21 +145,10 @@ class RequestCard extends StatelessWidget {
               ],
             )
           else
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 12.h),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: _statusBackgroundColor(),
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: Text(
-                _statusLabel(),
-                style: TextStyle(
-                  color: _statusTextColor(),
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.sp,
-                ),
-              ),
+            DoctorStatusBadge(
+              label: _statusLabel(),
+              color: statusData.color,
+              backgroundColor: statusData.bgColor,
             ),
         ],
       ),
@@ -177,29 +159,22 @@ class RequestCard extends StatelessWidget {
     return request.statusLabel;
   }
 
-  Color _statusBackgroundColor() {
-    switch (request.status) {
-      case DoctorAppointmentStatus.refunded:
-        return AppTheme.redPastel;
-      case DoctorAppointmentStatus.completed:
-        return AppTheme.greenPastel;
+  _StatusColors _statusData(int status) {
+    switch (status) {
       case DoctorAppointmentStatus.upcoming:
-        return AppTheme.bluePastel;
+        return _StatusColors(AppColors.blue, AppColors.paleBlueLight);
+      case DoctorAppointmentStatus.completed:
+        return _StatusColors(AppColors.actionGreen, AppColors.successLight);
+      case DoctorAppointmentStatus.refunded:
+        return _StatusColors(AppColors.error, AppColors.lightPink);
       default:
-        return Colors.grey.shade200;
+        return _StatusColors(AppColors.grey400, AppColors.grey100);
     }
   }
+}
 
-  Color _statusTextColor() {
-    switch (request.status) {
-      case DoctorAppointmentStatus.refunded:
-        return AppTheme.redIcon;
-      case DoctorAppointmentStatus.completed:
-        return AppTheme.greenIcon;
-      case DoctorAppointmentStatus.upcoming:
-        return AppTheme.blueIcon;
-      default:
-        return Colors.grey.shade700;
-    }
-  }
+class _StatusColors {
+  final Color color;
+  final Color bgColor;
+  const _StatusColors(this.color, this.bgColor);
 }

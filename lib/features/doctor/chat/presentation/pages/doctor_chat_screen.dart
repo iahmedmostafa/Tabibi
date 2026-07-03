@@ -67,8 +67,10 @@ class _DoctorChatScreenState extends State<DoctorChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Theme.of(context).brightness == Brightness.dark ? AppColors.darkBackground : const Color(0xFFF0F4F8),
+      backgroundColor: isDark ? AppColors.darkBackground : const Color(0xFFF0F4F8),
       appBar: DoctorChatAppBar(
         patientName: widget.patientName,
         patientImage: widget.patientImage,

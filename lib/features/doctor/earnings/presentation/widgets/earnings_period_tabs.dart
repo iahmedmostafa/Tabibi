@@ -13,6 +13,8 @@ class EarningsPeriodTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Row(
       children: EarningsPeriod.values.map((period) {
         final isSelected = selected == period;
@@ -30,14 +32,16 @@ class EarningsPeriodTabs extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? AppColors.midnightBlue
-                      : AppColors.grey100,
+                      : (isDark ? AppColors.grey800 : AppColors.grey100),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Text(
                   EarningsFormatters.periodLabel(period),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: isSelected ? Colors.white : AppColors.grey600,
+                    color: isSelected
+                        ? Colors.white
+                        : (isDark ? AppColors.grey400 : AppColors.grey600),
                     fontWeight: FontWeight.w800,
                   ),
                 ),

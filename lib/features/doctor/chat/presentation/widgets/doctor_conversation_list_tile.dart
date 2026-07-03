@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/core/utils/constants/app_styles.dart';
 import 'package:tabibi/features/chat_patient/domain/entities/chat_entity.dart';
+import 'chat_localizations.dart';
 
 class DoctorConversationListTile extends StatelessWidget {
   final ConversationEntity conversation;
@@ -19,122 +21,156 @@ class DoctorConversationListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final loc = ChatLocalizations.of(context);
     final hasImage = conversation.otherUserImage != null &&
         conversation.otherUserImage!.isNotEmpty;
 
-    return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+    return InkWell(
       onTap: () {
-        context
-            .pushNamed(
-              AppRoutes.doctorChat,
-              extra: {
-                'patientId': conversation.otherUserId,
-                'patientName': conversation.otherUserName,
-                'patientImage': conversation.otherUserImage,
-              },
-            )
-            .then((_) => onNavigateBack());
+        context.pushNamed(
+          AppRoutes.doctorChat,
+          extra: {
+            'patientId': conversation.otherUserId,
+            'patientName': conversation.otherUserName,
+            'patientImage': conversation.otherUserImage,
+          },
+        ).then((_) => onNavigateBack());
       },
-      leading: CircleAvatar(
-        radius: 28.r,
-        backgroundColor: AppColors.grey200,
-        backgroundImage: hasImage
-            ? CachedNetworkImageProvider(conversation.otherUserImage!)
-            : null,
-        child: !hasImage
-            ? Icon(Icons.person, size: 30.sp, color: AppColors.grey400)
-            : null,
-      ),
-      title: Row(
-        children: [
-          Expanded(
-            child: Text(
-              conversation.otherUserName.isNotEmpty
-                  ? conversation.otherUserName
-                  : 'Unknown Patient',
-              style: TextStyle(
-                fontWeight: conversation.unreadCount > 0
-                    ? FontWeight.bold
-                    : FontWeight.w600,
-                fontSize: 16.sp,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          border: Border(
+            bottom: BorderSide(
+              color: isDark ? AppColors.grey800.withValues(alpha: 0.5) : AppColors.grey200.withValues(alpha: 0.5),
+              width: 1,
             ),
           ),
-          Text(
-            _formatTime(conversation.lastMessageTime),
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: conversation.unreadCount > 0
-                  ? AppColors.midnightBlue
-                  : AppColors.grey500,
-              fontWeight: conversation.unreadCount > 0
-                  ? FontWeight.bold
-                  : FontWeight.normal,
-            ),
-          ),
-        ],
-      ),
-      subtitle: Padding(
-        padding: EdgeInsets.only(top: 6.h),
+        ),
         child: Row(
           children: [
+            _buildAvatar(hasImage),
+            SizedBox(width: 12.w),
             Expanded(
-              child: Text(
-                conversation.lastMessage,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: conversation.unreadCount > 0
-                      ? Colors.black87
-                      : AppColors.grey600,
-                  fontWeight: conversation.unreadCount > 0
-                      ? FontWeight.w500
-                      : FontWeight.normal,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHeader(loc, isDark),
+                  SizedBox(height: 5.h),
+                  _buildMessagePreview(isDark),
+                ],
               ),
             ),
-            if (conversation.unreadCount > 0) _buildUnreadBadge(),
           ],
         ),
       ),
     );
   }
 
+  Widget _buildAvatar(bool hasImage) {
+    return CircleAvatar(
+      radius: 28.r,
+      backgroundColor: AppColors.grey200,
+      backgroundImage: hasImage
+          ? CachedNetworkImageProvider(conversation.otherUserImage!)
+          : null,
+      child: !hasImage
+          ? Icon(Icons.person_rounded, size: 28.sp, color: AppColors.grey400)
+          : null,
+    );
+  }
+
+  Widget _buildHeader(ChatLocalizations loc, bool isDark) {
+    final hasUnread = conversation.unreadCount > 0;
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            conversation.otherUserName.isNotEmpty
+                ? conversation.otherUserName
+                : loc.unknownPatient,
+            style: AppTextStyle.bodySMedium.copyWith(
+              fontWeight: hasUnread ? FontWeight.w700 : FontWeight.w600,
+              color: isDark ? Colors.white : AppColors.grey800,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        SizedBox(width: 8.w),
+        Text(
+          _formatTime(conversation.lastMessageTime, loc),
+          style: AppTextStyle.bodyXsMedium.copyWith(
+            color: hasUnread
+                ? AppColors.midnightBlue
+                : (isDark ? AppColors.grey400 : AppColors.grey500),
+            fontWeight: hasUnread ? FontWeight.w600 : FontWeight.normal,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMessagePreview(bool isDark) {
+    final hasUnread = conversation.unreadCount > 0;
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            conversation.lastMessage,
+            style: AppTextStyle.bodySRegular.copyWith(
+              fontSize: 13.sp,
+              color: hasUnread
+                  ? (isDark ? Colors.white : AppColors.grey800)
+                  : (isDark ? AppColors.grey400 : AppColors.grey600),
+              fontWeight: hasUnread ? FontWeight.w500 : FontWeight.normal,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        if (hasUnread) ...[
+          SizedBox(width: 8.w),
+          _buildUnreadBadge(),
+        ],
+      ],
+    );
+  }
+
   Widget _buildUnreadBadge() {
     return Container(
-      margin: EdgeInsets.only(left: 8.w),
-      padding: EdgeInsets.all(6.w),
-      decoration: const BoxDecoration(
+      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
+      decoration: BoxDecoration(
         color: AppColors.midnightBlue,
-        shape: BoxShape.circle,
+        borderRadius: BorderRadius.circular(10.r),
+      ),
+      constraints: BoxConstraints(
+        minWidth: 20.w,
       ),
       child: Center(
         child: Text(
           conversation.unreadCount.toString(),
-          style: TextStyle(
+          style: AppTextStyle.bodyXsBold.copyWith(
             color: Colors.white,
-            fontSize: 10.sp,
-            fontWeight: FontWeight.bold,
           ),
         ),
       ),
     );
   }
 
-  String _formatTime(DateTime time) {
+  String _formatTime(DateTime time, ChatLocalizations loc) {
     final now = DateTime.now();
     final diff = now.difference(time);
+    final locale = loc.isAr ? 'ar' : 'en';
+
     if (diff.inDays == 0 && now.day == time.day) {
-      return DateFormat('HH:mm').format(time);
+      return DateFormat('HH:mm', locale).format(time);
     } else if (diff.inDays == 1 || (diff.inDays == 0 && now.day != time.day)) {
-      return 'Yesterday';
+      return loc.yesterday;
     } else if (diff.inDays < 7) {
-      return DateFormat('EEEE').format(time);
+      return DateFormat('EEEE', locale).format(time);
     }
-    return DateFormat('dd/MM/yyyy').format(time);
+    return DateFormat('dd/MM/yyyy', locale).format(time);
   }
 }

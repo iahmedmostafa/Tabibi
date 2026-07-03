@@ -17,7 +17,10 @@ class ApiConstance {
   static const String updatePatientProfile = "patients/me";
   static const String medicalProfile = "medical-profile/me";
   static const String updateMedicalProfile = "medical-profile/me";
+  static String medicalProfileByPatientId(String patientId) =>
+      "medical-profile/patients/$patientId";
   static const String symptomCheck = "ai/symptom-check";
+  static const String doctorProfile = "doctors/profile";
   static const String updateDoctorProfile = "doctors/me";
   static const String doctorStatus = "doctors/me/status";
   static const String doctors = "doctors";
@@ -26,6 +29,8 @@ class ApiConstance {
   static const String doctorDetails = "doctors/doctor-details";
   static const String doctorHome = "doctor-system/home";
   static const String doctorSchedule = "doctor-system/schedule";
+  static const String getDoctorSchedule = "doctors/schedule";
+  static const String updateDoctorSchedule = "doctors/schedule";
   static const String doctorAppointments = "doctor-system/appointments";
   static const String doctorEarningsSummary = "doctor-system/earnings/summary";
   static const String doctorEarningsAnalytics =

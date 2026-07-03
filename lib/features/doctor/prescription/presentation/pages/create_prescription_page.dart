@@ -16,25 +16,25 @@ class CreatePrescriptionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return BlocListener<CreatePrescriptionCubit, CreatePrescriptionState>(
       listener: _handlePrescriptionState,
       child: Scaffold(
-        backgroundColor: AppColors.grey50,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
-          title: Text(
-            'Create Prescription',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: AppColors.grey900,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
+          title: Text('Create Prescription', style: Theme.of(context).textTheme.titleLarge),
           centerTitle: true,
-          backgroundColor: Colors.white,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
+            icon: Icon(
+              Icons.arrow_back,
+              size: 24.sp,
+              color: isDark ? Colors.white : AppColors.grey900,
+            ),
             onPressed: () => context.pop(),
           ),
+          surfaceTintColor: Colors.transparent,
         ),
         bottomNavigationBar: const CreatePrescriptionSubmitBar(),
         body: CreatePrescriptionForm(args: args),

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'chat_localizations.dart';
 
 class DoctorChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String patientName;
@@ -19,6 +20,7 @@ class DoctorChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final loc = ChatLocalizations.of(context);
     final hasImage = patientImage != null && patientImage!.isNotEmpty;
 
     return AppBar(
@@ -46,7 +48,7 @@ class DoctorChatAppBar extends StatelessWidget implements PreferredSizeWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                patientName.isNotEmpty ? patientName : 'Patient',
+                patientName.isNotEmpty ? patientName : loc.unknownPatient,
                 style: TextStyle(
                   fontSize: 15.sp,
                   fontWeight: FontWeight.w700,
@@ -54,7 +56,7 @@ class DoctorChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
               Text(
-                'Patient',
+                loc.patient,
                 style: TextStyle(
                   fontSize: 11.sp,
                   color: Colors.white70,

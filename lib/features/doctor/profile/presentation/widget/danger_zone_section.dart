@@ -3,8 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
-import 'package:tabibi/features/patient_profile/presentation/controller/profile_cubit.dart';
-import 'package:tabibi/features/patient_profile/presentation/controller/profile_state.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:tabibi/features/doctor/core/doctor_localizations.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_section_header.dart';
+import 'package:tabibi/features/doctor/profile/presentation/cubit/doctor_logout_cubit.dart';
+import 'package:tabibi/features/doctor/profile/presentation/cubit/doctor_logout_state.dart';
 import 'package:tabibi/features/patient_profile/presentation/widgets/logout_dialog.dart';
 
 class DangerZoneSection extends StatelessWidget {
@@ -12,14 +15,20 @@ class DangerZoneSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ProfileCubit, ProfileState>(
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final loc = DoctorLocalizations.of(context);
+
+    return BlocListener<DoctorLogoutCubit, DoctorLogoutState>(
       listener: (context, state) {
-        if (state is LogOutSuccess) {
+        if (state is DoctorLogoutSuccess) {
           context.go(AppRoutes.login);
-        } else if (state is LogOutError) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+        } else if (state is DoctorLogoutError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: isDark ? AppColors.darkRed : AppColors.error,
+            ),
+          );
         }
       },
       child: Column(
@@ -27,14 +36,7 @@ class DangerZoneSection extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Text(
-              'Danger Zone',
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[700],
-              ),
-            ),
+            child: DoctorSectionHeader(title: loc.dangerZone),
           ),
           SizedBox(height: 12.h),
           Padding(
@@ -44,34 +46,15 @@ class DangerZoneSection extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton.icon(
-                    onPressed: () {
-                      _showLogoutDialog(context);
-                    },
+                    onPressed: () => _showLogoutDialog(context),
                     icon: Icon(Icons.logout, size: 20.sp),
-                    label: const Text('Log Out'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.grey[700],
-                      side: BorderSide(color: Colors.grey[300]!),
-                      padding: EdgeInsets.symmetric(vertical: 16.h),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 12.h),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton.icon(
-                    onPressed: () {
-                      _showDeleteAccountDialog(context);
-                    },
-                    icon: Icon(Icons.delete_outline, size: 20.sp),
-                    label: const Text('Delete Account'),
+                    label: Text(loc.logOut),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: const Color(0xFFD32F2F),
                       side: const BorderSide(color: Color(0xFFFFCDD2)),
-                      backgroundColor: const Color(0xFFFFEBEE),
+                      backgroundColor: isDark
+                          ? const Color(0x1AD32F2F)
+                          : const Color(0xFFFFEBEE),
                       padding: EdgeInsets.symmetric(vertical: 16.h),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.r),
@@ -86,47 +69,15 @@ class DangerZoneSection extends StatelessWidget {
       ),
     );
   }
-}
-void _showLogoutDialog(BuildContext context) {
+
+  void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (ctx) => LogoutDialog(
         onLogout: () {
-          context.read<ProfileCubit>().logOut();
+          context.read<DoctorLogoutCubit>().logOut();
         },
       ),
     );
   }
-
-  
-  void _showDeleteAccountDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete Account'),
-        content: const Text(
-          'Are you sure you want to delete your account? This action cannot be undone.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // Add delete account logic here
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFD32F2F),
-            ),
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
-    );
-  }
-
-
-
-
+}

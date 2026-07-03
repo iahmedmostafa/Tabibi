@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/features/doctor/appointments/domain/entities/appointment_details_entity.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_card.dart';
 
 class ReasonForVisitCard extends StatelessWidget {
   final AppointmentDetailsEntity details;
@@ -9,31 +10,20 @@ class ReasonForVisitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tt = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
     final typeLabel = details.type == 1 ? 'Video Call' : 'Consultation';
 
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16.r),
-      ),
+    return DoctorCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Reason for Visit',
-            style: tt.titleLarge?.copyWith(
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-          ),
+          Text('Reason for Visit', style: theme.textTheme.titleLarge),
           SizedBox(height: 12.h),
           Text(
             typeLabel,
-            style: tt.bodyMedium?.copyWith(
+            style: theme.textTheme.bodyMedium?.copyWith(
               height: 1.5,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
         ],

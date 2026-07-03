@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
+import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
-import 'package:tabibi/core/utils/theme/theme.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_loading_state.dart';
+import 'package:tabibi/features/doctor/core/widgets/doctor_empty_state.dart';
 import 'package:tabibi/features/doctor/requests/presentation/cubit/requests_cubit.dart';
 import 'package:tabibi/features/doctor/requests/presentation/cubit/requests_state.dart';
 import 'package:tabibi/features/doctor/requests/presentation/widgets/request_card.dart';
@@ -14,26 +16,17 @@ class AppointmentRequestsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return BlocProvider(
       create: (context) => sl<RequestsCubit>(),
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: theme.scaffoldBackgroundColor,
         appBar: AppBar(
-          title: Text(
-            'Appointment Requests',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-          ),
+          title: Text('Appointment Requests', style: theme.textTheme.titleLarge),
           centerTitle: true,
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          elevation: 0,
           leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              size: 24.sp,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
+            icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp),
             onPressed: () => context.pop(),
           ),
         ),
@@ -42,21 +35,19 @@ class AppointmentRequestsPage extends StatelessWidget {
             return Column(
               children: [
                 Container(
-                  color: Theme.of(context).colorScheme.surface,
                   padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
                   child: Column(
                     children: [
-                      const _SearchBar(),
+                      _SearchBar(),
                       SizedBox(height: 16.h),
-                      const _FilterChips(),
+                      _FilterChips(),
                     ],
                   ),
                 ),
-                // Loading bar indicator on top of content
                 if (state.isActionLoading)
                   LinearProgressIndicator(
-                    color: AppTheme.primaryColor,
-                    backgroundColor: AppTheme.primaryColor.withAlpha(40),
+                    color: AppColors.primary,
+                    backgroundColor: AppColors.primary.withAlpha(40),
                   ),
                 Expanded(child: _buildBody(context, state)),
               ],
@@ -68,8 +59,11 @@ class AppointmentRequestsPage extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context, RequestsState state) {
+    final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     if (state.isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return const DoctorLoadingState();
     }
 
     if (state.errorMessage != null && state.allRequests.isEmpty) {
@@ -77,20 +71,22 @@ class AppointmentRequestsPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error_outline, size: 64.sp, color: Colors.red[300]),
+            Icon(Icons.error_outline, size: 64.sp, color: isDark ? AppColors.grey500 : Colors.red[300]),
             SizedBox(height: 16.h),
             Text(
               state.errorMessage!,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: isDark ? AppColors.grey400 : AppColors.grey500,
               ),
             ),
             SizedBox(height: 16.h),
-            ElevatedButton(
-              onPressed: () => context.read<RequestsCubit>().getRequests(),
-              child: const Text('Retry'),
+            SizedBox(
+              height: 48.h,
+              child: ElevatedButton(
+                onPressed: () => context.read<RequestsCubit>().getRequests(),
+                child: Text('Retry', style: theme.textTheme.labelLarge),
+              ),
             ),
           ],
         ),
@@ -98,30 +94,15 @@ class AppointmentRequestsPage extends StatelessWidget {
     }
 
     if (state.filteredRequests.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.search_off,
-              size: 64.sp,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
-            SizedBox(height: 16.h),
-            Text(
-              'No requests found',
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ],
-        ),
+      return DoctorEmptyState(
+        icon: Icons.search_off,
+        message: 'No requests found',
       );
     }
 
     return RefreshIndicator(
       onRefresh: () => context.read<RequestsCubit>().getRequests(),
+      color: AppColors.primary,
       child: ListView.builder(
         padding: EdgeInsets.all(16.w),
         itemCount: state.filteredRequests.length,
@@ -135,10 +116,8 @@ class AppointmentRequestsPage extends StatelessWidget {
                 onSuccess: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(
-                        '✓ Appointment approved for ${request.patientName}',
-                      ),
-                      backgroundColor: Colors.green,
+                      content: Text('Appointment approved for ${request.patientName}'),
+                      backgroundColor: AppColors.actionGreen,
                     ),
                   );
                 },
@@ -146,7 +125,7 @@ class AppointmentRequestsPage extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Failed: $error'),
-                      backgroundColor: Colors.red,
+                      backgroundColor: AppColors.error,
                     ),
                   );
                 },
@@ -158,10 +137,8 @@ class AppointmentRequestsPage extends StatelessWidget {
                 onSuccess: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(
-                        '✗ Appointment cancelled for ${request.patientName}',
-                      ),
-                      backgroundColor: Colors.orange,
+                      content: Text('Appointment cancelled for ${request.patientName}'),
+                      backgroundColor: AppColors.actionAmber,
                     ),
                   );
                 },
@@ -169,7 +146,7 @@ class AppointmentRequestsPage extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Failed: $error'),
-                      backgroundColor: Colors.red,
+                      backgroundColor: AppColors.error,
                     ),
                   );
                 },
@@ -177,63 +154,61 @@ class AppointmentRequestsPage extends StatelessWidget {
             },
           );
         },
-    
       ),
     );
   }
 }
 
 class _SearchBar extends StatelessWidget {
-  const _SearchBar();
-
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      onChanged: (query) => context.read<RequestsCubit>().search(query),
-      decoration: InputDecoration(
-        hintText: 'Search patients...',
-        hintStyle: TextStyle(
-          color: Theme.of(context).colorScheme.onSurfaceVariant,
-          fontSize: 14.sp,
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+
+    return Container(
+      height: 56.h,
+      decoration: BoxDecoration(
+        color: theme.cardColor,
+        borderRadius: BorderRadius.circular(28.r),
+        border: Border.all(
+          color: isDark ? AppColors.grey700 : AppColors.grey200,
         ),
-        prefixIcon: Icon(
-          Icons.search,
-          color: Theme.of(context).colorScheme.onSurfaceVariant,
-          size: 20.sp,
+      ),
+      child: TextField(
+        onChanged: (query) => context.read<RequestsCubit>().search(query),
+        decoration: InputDecoration(
+          hintText: 'Search patients...',
+          hintStyle: TextStyle(
+            color: isDark ? AppColors.grey400 : AppColors.grey500,
+            fontSize: 14.sp,
+          ),
+          prefixIcon: Icon(
+            Icons.search,
+            color: AppColors.primary,
+            size: 20.sp,
+          ),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(vertical: 16.h),
         ),
-        filled: true,
-        fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide.none,
-        ),
-        contentPadding: EdgeInsets.symmetric(vertical: 12.h),
       ),
     );
   }
 }
 
 class _FilterChips extends StatelessWidget {
-  const _FilterChips();
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RequestsCubit, RequestsState>(
       buildWhen: (prev, curr) =>
           prev.selectedFilter != curr.selectedFilter ||
           prev.allRequests.length != curr.allRequests.length,
-    
       builder: (context, state) {
         final todayCount = state.allRequests.where((r) {
           if (!r.isUpcoming) return false;
           final now = DateTime.now();
           final today = DateTime(now.year, now.month, now.day);
           final localDate = r.dateTime.toLocal();
-          final rDate = DateTime(
-            localDate.year,
-            localDate.month,
-            localDate.day,
-          );
+          final rDate = DateTime(localDate.year, localDate.month, localDate.day);
           return rDate.isAtSameMomentAs(today);
         }).length;
 
@@ -277,19 +252,20 @@ class _FilterChips extends StatelessWidget {
     required bool isSelected,
     required VoidCallback onTap,
   }) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppTheme.primaryColor
-              : Theme.of(context).cardColor,
+              ? theme.colorScheme.primary
+              : theme.cardColor,
           borderRadius: BorderRadius.circular(20.r),
           border: Border.all(
             color: isSelected
-                ? AppTheme.primaryColor
-                : Theme.of(context).dividerColor,
+                ? theme.colorScheme.primary
+                : theme.dividerColor,
           ),
         ),
         child: Text(
@@ -297,7 +273,7 @@ class _FilterChips extends StatelessWidget {
           style: TextStyle(
             color: isSelected
                 ? Colors.white
-                : Theme.of(context).colorScheme.onSurface,
+                : theme.colorScheme.onSurface,
             fontSize: 14.sp,
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
           ),
