@@ -13,6 +13,7 @@ import 'package:tabibi/features/doctor/profile/presentation/pages/edit_doctor_pr
 import 'package:tabibi/features/doctor/profile/presentation/widget/account_section.dart';
 import 'package:tabibi/features/doctor/profile/presentation/widget/availability_section.dart';
 import 'package:tabibi/features/doctor/profile/presentation/widget/danger_zone_section.dart';
+import 'package:tabibi/features/doctor/profile/presentation/widget/language_section.dart';
 import 'package:tabibi/features/doctor/profile/presentation/widget/profile_header.dart';
 import 'package:tabibi/features/doctor/profile/presentation/widget/quick_action_section.dart';
 import 'package:tabibi/features/doctor/profile/presentation/widget/security_section.dart';
@@ -35,12 +36,8 @@ class SettingsPage extends StatelessWidget {
         BlocProvider(
           create: (_) => sl<DoctorProfileCubit>()..getDoctorProfile(),
         ),
-        BlocProvider(
-          create: (_) => sl<ReviewsCubit>()..getReviews(),
-        ),
-        BlocProvider(
-          create: (_) => sl<DoctorLogoutCubit>(),
-        ),
+        BlocProvider(create: (_) => sl<ReviewsCubit>()..getReviews()),
+        BlocProvider(create: (_) => sl<DoctorLogoutCubit>()),
       ],
       child: Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
@@ -100,22 +97,15 @@ class SettingsPage extends StatelessWidget {
                           profile: profile,
                           rating: rating,
                           reviews: reviewsCount,
-                          onCameraTap: () => _openEditProfile(
-                            context,
-                            profile,
-                          ),
+                          onCameraTap: () => _openEditProfile(context, profile),
                         ),
                         SizedBox(height: 24.h),
                         AccountSection(
                           profile: profile,
-                          onPersonalInfoTap: () => _openEditProfile(
-                            context,
-                            profile,
-                          ),
-                          onClinicInfoTap: () => _openEditProfile(
-                            context,
-                            profile,
-                          ),
+                          onPersonalInfoTap: () =>
+                              _openEditProfile(context, profile),
+                          onClinicInfoTap: () =>
+                              _openEditProfile(context, profile),
                         ),
                         SizedBox(height: 24.h),
                         SecuritySection(
@@ -125,9 +115,12 @@ class SettingsPage extends StatelessWidget {
                               context.push(AppRoutes.notifications),
                         ),
                         SizedBox(height: 24.h),
+                        const LanguageSection(),
+                        SizedBox(height: 24.h),
                         AvailabilitySection(
                           profile: profile,
-                          onTap: () => context.push(AppRoutes.doctorAvailability),
+                          onTap: () =>
+                              context.push(AppRoutes.doctorAvailability),
                         ),
                         SizedBox(height: 24.h),
                         const QuickActionsSection(),

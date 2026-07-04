@@ -6,6 +6,7 @@ import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/core/widgets/drop_menu.dart/drop_menu.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/cities_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/cities_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CityDropdown extends StatelessWidget {
   final String? selectedCityId;
@@ -25,9 +26,7 @@ class CityDropdown extends StatelessWidget {
           return const Padding(
             padding: EdgeInsets.symmetric(vertical: 20),
             child: Center(
-              child: CircularProgressIndicator(
-                color: AppColors.primary,
-              ),
+              child: CircularProgressIndicator(color: AppColors.primary),
             ),
           );
         }
@@ -36,7 +35,7 @@ class CityDropdown extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: Text(
-              state.errorMessage ?? 'Failed to load cities',
+              state.errorMessage ?? 'failedToLoadCities'.tr(),
               style: const TextStyle(color: Colors.red),
             ),
           );
@@ -44,8 +43,8 @@ class CityDropdown extends StatelessWidget {
 
         if (state.status == CitiesStatus.success && state.cities.isNotEmpty) {
           return DropMenu(
-            hint: 'City',
-            
+            hint: 'cityDropdown'.tr(),
+
             prefixIcon: Iconsax.location,
             items: state.cities.map((city) => city.name).toList(),
             onChanged: (value) {
@@ -59,8 +58,8 @@ class CityDropdown extends StatelessWidget {
             },
             value: selectedCityId != null
                 ? state.cities
-                    .firstWhere((city) => city.id == selectedCityId)
-                    .name
+                      .firstWhere((city) => city.id == selectedCityId)
+                      .name
                 : null,
           );
         }

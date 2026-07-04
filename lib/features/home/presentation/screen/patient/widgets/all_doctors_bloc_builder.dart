@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,7 +35,7 @@ class AllDoctorsBlocBuilder extends StatelessWidget {
 
         if (state.status == DoctorsStatus.failure) {
           return Center(
-            child: Text(state.errorMessage ?? 'Error loading doctors'),
+            child: Text(state.errorMessage ?? 'errorLoadingDoctors'.tr()),
           );
         }
 
@@ -51,7 +52,9 @@ class AllDoctorsBlocBuilder extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '${doctors.length} Doctors found',
+                    'doctorsFound'.tr(
+                      namedArgs: {'count': doctors.length.toString()},
+                    ),
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w700,
@@ -61,18 +64,14 @@ class AllDoctorsBlocBuilder extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'Default',
+                        'defaultSort'.tr(),
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: mutedColor,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Icon(
-                        Icons.unfold_more,
-                        size: 16.sp,
-                        color: mutedColor,
-                      ),
+                      Icon(Icons.unfold_more, size: 16.sp, color: mutedColor),
                     ],
                   ),
                 ],
@@ -89,9 +88,11 @@ class AllDoctorsBlocBuilder extends StatelessWidget {
                           ),
                           VerticalSpace(height: 16.h),
                           Text(
-                            'No doctors found',
+                            'noDoctorsFound'.tr(),
                             style: TextStyle(
-                              color: isDark ? AppColors.grey400 : AppColors.textSecondary,
+                              color: isDark
+                                  ? AppColors.grey400
+                                  : AppColors.textSecondary,
                               fontSize: 16.sp,
                             ),
                           ),
@@ -205,11 +206,7 @@ class _AllDoctorsSkeleton extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          width: 180.w,
-                          height: 18.h,
-                          color: lineBg,
-                        ),
+                        Container(width: 180.w, height: 18.h, color: lineBg),
                         SizedBox(height: 6.h),
                         Container(
                           width: 100.w,
@@ -222,7 +219,11 @@ class _AllDoctorsSkeleton extends StatelessWidget {
                         SizedBox(height: 10.h),
                         Row(
                           children: [
-                            Icon(Icons.location_on_rounded, size: 15, color: AppColors.grey500),
+                            const Icon(
+                              Icons.location_on_rounded,
+                              size: 15,
+                              color: AppColors.grey500,
+                            ),
                             SizedBox(width: 4.w),
                             Container(
                               width: 150.w,
@@ -234,29 +235,21 @@ class _AllDoctorsSkeleton extends StatelessWidget {
                         SizedBox(height: 10.h),
                         Row(
                           children: [
-                            Icon(Icons.star, size: 16, color: AppColors.grey500),
+                            const Icon(
+                              Icons.star,
+                              size: 16,
+                              color: AppColors.grey500,
+                            ),
                             SizedBox(width: 4.w),
-                            Container(
-                              width: 30.w,
-                              height: 12.h,
-                              color: lineBg,
-                            ),
+                            Container(width: 30.w, height: 12.h, color: lineBg),
                             SizedBox(width: 8.w),
-                            Container(
-                              width: 80.w,
-                              height: 12.h,
-                              color: lineBg,
-                            ),
+                            Container(width: 80.w, height: 12.h, color: lineBg),
                           ],
                         ),
                         SizedBox(height: 10.h),
                         Row(
                           children: [
-                            Container(
-                              width: 80.w,
-                              height: 16.h,
-                              color: lineBg,
-                            ),
+                            Container(width: 80.w, height: 16.h, color: lineBg),
                             const Spacer(),
                             Container(
                               width: 80.w,
@@ -269,11 +262,7 @@ class _AllDoctorsSkeleton extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: 2.h),
-                        Container(
-                          width: 120.w,
-                          height: 11.h,
-                          color: lineBg,
-                        ),
+                        Container(width: 120.w, height: 11.h, color: lineBg),
                       ],
                     ),
                   ),
@@ -286,4 +275,3 @@ class _AllDoctorsSkeleton extends StatelessWidget {
     );
   }
 }
-

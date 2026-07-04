@@ -92,7 +92,7 @@ class EditProfileFormBody extends StatelessWidget {
               hint: AppStrings.selectGender,
               value: selectedGender,
               prefixIcon: Iconsax.user_edit,
-              items: const [
+              items: [
                 DropdownMenuItem(value: 1, child: Text(AppStrings.male)),
                 DropdownMenuItem(value: 2, child: Text(AppStrings.female)),
               ],

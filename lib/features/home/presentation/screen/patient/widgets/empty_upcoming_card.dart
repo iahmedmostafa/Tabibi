@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/soft_card_decoration.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EmptyUpcomingCard extends StatelessWidget {
   const EmptyUpcomingCard({super.key, required this.onTap});
@@ -35,7 +36,7 @@ class EmptyUpcomingCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'No upcoming appointments yet',
+                    'noUpcomingAppointments'.tr(),
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: isDark ? AppColors.white : AppColors.black,
                       fontWeight: FontWeight.w800,
@@ -43,7 +44,7 @@ class EmptyUpcomingCard extends StatelessWidget {
                   ),
                   SizedBox(height: 4.h),
                   Text(
-                    'Tap to view your bookings.',
+                    'tapToViewBookings'.tr(),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: isDark ? AppColors.grey400 : AppColors.grey500,
                       fontWeight: FontWeight.w600,

@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:tabibi/core/services/location_services.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 part 'clinic_location_state.dart';
 
@@ -51,7 +52,7 @@ class ClinicLocationCubit extends Cubit<ClinicLocationState> {
       final lat = locationData.latitude;
       final lng = locationData.longitude;
       if (lat == null || lng == null) {
-        throw Exception('Location data is null');
+        throw Exception('locationDataNull'.tr());
       }
 
       final latLng = LatLng(lat, lng);
@@ -67,16 +68,14 @@ class ClinicLocationCubit extends Cubit<ClinicLocationState> {
       emit(
         state.copyWith(
           isLoading: false,
-          errorMessage:
-              'Location permission denied. You can still tap on the map to choose the clinic location.',
+          errorMessage: 'locationPermissionDenied'.tr(),
         ),
       );
     } on LocationServicesException {
       emit(
         state.copyWith(
           isLoading: false,
-          errorMessage:
-              'Location services are disabled. Please enable GPS or tap on the map to choose the clinic location.',
+          errorMessage: 'locationServicesDisabled'.tr(),
         ),
       );
     } catch (_) {
@@ -84,8 +83,8 @@ class ClinicLocationCubit extends Cubit<ClinicLocationState> {
         state.copyWith(
           isLoading: false,
           errorMessage: isInitialLoad
-              ? 'Could not get current location. Showing default map. You can tap on the map to choose the clinic location.'
-              : 'Could not get current location. Please try again or tap on the map.',
+              ? 'couldNotGetCurrentLocation'.tr()
+              : 'couldNotGetLocationRetry'.tr(),
         ),
       );
     }

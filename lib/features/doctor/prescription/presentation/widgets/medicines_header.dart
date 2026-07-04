@@ -4,6 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_styles.dart';
 import 'package:tabibi/features/doctor/core/widgets/doctor_card.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MedicinesHeader extends StatelessWidget {
   final int count;
@@ -38,14 +39,14 @@ class MedicinesHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Medicines',
+                  'medicinesHeader'.tr(),
                   style: AppTextStyle.h3.copyWith(
                     color: isDark ? Colors.white : AppColors.grey900,
                   ),
                 ),
                 SizedBox(height: 3.h),
                 Text(
-                  '$count ${count == 1 ? 'item' : 'items'} added to this prescription',
+                  'itemsAdded'.tr(namedArgs: {'count': count.toString()}),
                   style: AppTextStyle.bodyXsMedium.copyWith(
                     color: isDark ? AppColors.grey400 : AppColors.grey500,
                   ),
@@ -57,7 +58,7 @@ class MedicinesHeader extends StatelessWidget {
           ElevatedButton.icon(
             onPressed: onAddMedicine,
             icon: Icon(Icons.add, size: 18.sp),
-            label: const Text('Add'),
+            label: Text('add'.tr()),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.teal,
               foregroundColor: Colors.white,

@@ -77,6 +77,7 @@ import 'package:tabibi/features/onboarding/presentation/screens/onboarding.dart'
 import 'package:tabibi/features/patient_profile/presentation/controller/patient_profile_cubit.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/profile_cubit.dart';
 import 'package:tabibi/features/patient_profile/presentation/screens/edit_profile_screen.dart';
+import 'package:tabibi/features/patient_settings/presentation/screens/patient_settings_screen.dart';
 import 'package:tabibi/features/video_call/presentation/cubit/video_call_cubit.dart';
 import 'package:tabibi/features/video_call/presentation/screen/video_call_screen.dart';
 
@@ -554,6 +555,11 @@ final GoRouter router = GoRouter(
         create: (context) => sl<AiSymptomCubit>(),
         child: const AiSymptomChatScreen(),
       ),
+    ),
+    AppGoRoute(
+      path: AppRoutes.patientSettings,
+      name: AppRoutes.patientSettings,
+      builder: (context, state) => const PatientSettingsScreen(),
     ),
     AppGoRoute(
       path: AppRoutes.editProfile,

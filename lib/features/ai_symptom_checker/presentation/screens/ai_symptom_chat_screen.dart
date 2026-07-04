@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,11 +31,7 @@ class _AiSymptomChatScreenState extends State<AiSymptomChatScreen> {
   void initState() {
     super.initState();
     _messages.add(
-      ChatMessage(
-        text:
-            'Hello! I am your AI Health Assistant. Please describe your symptoms in detail, and I will try to help you figure out what might be wrong.',
-        isUser: false,
-      ),
+      ChatMessage(text: 'aiHealthAssistantIntro'.tr(), isUser: false),
     );
   }
 
@@ -67,7 +64,7 @@ class _AiSymptomChatScreenState extends State<AiSymptomChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AI Health Assistant'),
+        title: Text('aiHealthAssistant'.tr()),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -82,10 +79,7 @@ class _AiSymptomChatScreenState extends State<AiSymptomChatScreen> {
                 if (state is AiSymptomSuccess) {
                   setState(() {
                     _messages.add(
-                      ChatMessage(
-                        text: state.result.answer,
-                        isUser: false,
-                      ),
+                      ChatMessage(text: state.result.answer, isUser: false),
                     );
                   });
                   _scrollToBottom();
@@ -93,7 +87,9 @@ class _AiSymptomChatScreenState extends State<AiSymptomChatScreen> {
                   setState(() {
                     _messages.add(
                       ChatMessage(
-                        text: 'Sorry, I encountered an error: ${state.message}',
+                        text: 'sorryError'.tr(
+                          namedArgs: {'message': state.message},
+                        ),
                         isUser: false,
                       ),
                     );
@@ -188,7 +184,6 @@ class _AiSymptomChatScreenState extends State<AiSymptomChatScreen> {
     );
   }
 
-
   Widget _buildMessageInput() {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
@@ -211,7 +206,7 @@ class _AiSymptomChatScreenState extends State<AiSymptomChatScreen> {
               maxLines: 3,
               minLines: 1,
               decoration: InputDecoration(
-                hintText: 'Type your symptoms...',
+                hintText: 'typeYourSymptoms'.tr(),
                 hintStyle: const TextStyle(color: AppColors.grey400),
                 filled: true,
                 fillColor: isDark ? AppColors.grey800 : AppColors.grey50,

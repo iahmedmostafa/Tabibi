@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 class DoctorAppointmentStatus {
   const DoctorAppointmentStatus._();
 
@@ -19,13 +21,13 @@ class DoctorAppointmentStatus {
   static String label(int status) {
     switch (status) {
       case upcoming:
-        return 'Upcoming';
+        return 'upcoming'.tr();
       case completed:
-        return 'Completed';
+        return 'completed'.tr();
       case refunded:
-        return 'Refunded';
+        return 'refunded'.tr();
       default:
-        return 'Unknown';
+        return 'unknown'.tr();
     }
   }
 }

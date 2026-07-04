@@ -13,6 +13,7 @@ import 'package:tabibi/features/doctor/schedule/presentation/cubit/schedule_stat
 import 'package:tabibi/features/doctor/schedule/presentation/widgets/schedule_appointments_header.dart';
 import 'package:tabibi/features/doctor/schedule/presentation/widgets/schedule_date_timeline.dart';
 import 'package:tabibi/features/doctor/schedule/presentation/widgets/schedule_empty_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MySchedulePage extends StatefulWidget {
   final bool showBottomNav;
@@ -119,13 +120,13 @@ class _MySchedulePageState extends State<MySchedulePage> {
           : h == 0
           ? 12
           : h;
-      final period = h >= 12 ? 'PM' : 'AM';
+      final period = h >= 12 ? 'PM'.tr() : 'AM'.tr();
       return Appointment(
         id: apt.id,
         patientName: apt.patientName,
         time: '$hour:${m.toString().padLeft(2, '0')} $period',
         date: DateFormat('MMM dd, yyyy').format(localDateTime),
-        type: apt.type?.toString() ?? 'Consultation',
+        type: apt.type?.toString() ?? 'consultation'.tr(),
         status: DoctorAppointmentStatus.fromJson(apt.status),
       );
     }).toList();
@@ -161,7 +162,7 @@ class _ScheduleError extends StatelessWidget {
           ElevatedButton.icon(
             onPressed: onRetry,
             icon: const Icon(Icons.refresh_rounded),
-            label: const Text('Retry'),
+            label: Text('retry'.tr()),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.midnightBlue,
               foregroundColor: Colors.white,

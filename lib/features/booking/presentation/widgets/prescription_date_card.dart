@@ -4,6 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/utils/formatters.dart/formatters.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PrescriptionDateCard extends StatelessWidget {
   final String createdAt;
@@ -29,7 +30,9 @@ class PrescriptionDateCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(18.r),
         boxShadow: [
           BoxShadow(
-            color: AppColors.midnightBlue.withValues(alpha: isDark ? 0.28 : 0.20),
+            color: AppColors.midnightBlue.withValues(
+              alpha: isDark ? 0.28 : 0.20,
+            ),
             blurRadius: 18,
             offset: const Offset(0, 10),
           ),
@@ -62,7 +65,7 @@ class PrescriptionDateCard extends StatelessWidget {
               SizedBox(width: 14.w),
               Expanded(
                 child: Text(
-                  'Your Medical Prescription',
+                  'yourMedicalPrescription'.tr(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w800,
@@ -117,11 +120,10 @@ class PrescriptionDateCard extends StatelessWidget {
           ),
           SizedBox(height: 10.h),
           Text(
-            'Review your diagnosis, notes, and prescribed medicine schedule.',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.white70,
-                  height: 1.4,
-                ),
+            'reviewDiagnosisInstructions'.tr(),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.white70, height: 1.4),
           ),
         ],
       ),

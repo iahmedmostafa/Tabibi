@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:tabibi/features/doctor/earnings/domain/entities/earnings.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EarningsFormatters {
   const EarningsFormatters._();
@@ -21,11 +22,11 @@ class EarningsFormatters {
   static String periodLabel(EarningsPeriod period) {
     switch (period) {
       case EarningsPeriod.week:
-        return 'Week';
+        return 'week'.tr();
       case EarningsPeriod.month:
-        return 'Month';
+        return 'month'.tr();
       case EarningsPeriod.year:
-        return 'Year';
+        return 'year'.tr();
     }
   }
 }

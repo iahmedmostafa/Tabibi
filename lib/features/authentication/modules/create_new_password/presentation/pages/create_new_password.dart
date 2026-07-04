@@ -1,4 +1,5 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -30,7 +31,7 @@ class CreateNewPassword extends StatelessWidget {
         listener: (context, state) {
           if (state.status == CreatePasswordStatus.success) {
             AppHelperFunctions.showAwesomeSnackBar(
-              title: 'Success',
+              title: 'success'.tr(),
               message: state.message ?? "success",
               contentType: ContentType.success,
               context: context,
@@ -39,7 +40,7 @@ class CreateNewPassword extends StatelessWidget {
             context.go(AppRoutes.login);
           } else if (state.status == CreatePasswordStatus.failure) {
             AppHelperFunctions.showAwesomeSnackBar(
-              title: 'Error',
+              title: 'error'.tr(),
               message: state.errorMessage ?? "failure",
               contentType: ContentType.failure,
               context: context,
@@ -57,7 +58,7 @@ class CreateNewPassword extends StatelessWidget {
                     VerticalSpace(height: AppHeight.h32),
                     const ArrowBack(nameRoute: AppRoutes.verifyCode),
                     VerticalSpace(height: AppHeight.h32),
-                    const TopSection(
+                    TopSection(
                       title: AppStrings.createNewPassword,
                       supTitle: AppStrings.supTitleCreateNewPassword,
                     ),
@@ -86,7 +87,7 @@ class CreateNewPassword extends StatelessWidget {
                           ? () {}
                           : () => cubit.createNewPassword(),
                       title: state.status == CreatePasswordStatus.loading
-                          ? 'Creating...'
+                          ? 'creating'.tr()
                           : AppStrings.resetPassword,
                     ),
                   ],

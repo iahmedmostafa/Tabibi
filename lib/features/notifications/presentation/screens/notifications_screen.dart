@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -62,7 +63,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   child: Column(
                     children: [
                       SvgPicture.asset(AppImages.empty),
-                      const Text('No notifications yet'),
+                      Text('noNotificationsYet'.tr()),
                     ],
                   ),
                 );
@@ -103,15 +104,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       SizedBox(height: AppHeight.h24),
                     ],
                     if (yesterdayNotifications.isNotEmpty) ...[
-                      const NotificationSectionHeader(
-                        title: AppStrings.yesterday,
-                      ),
+                      NotificationSectionHeader(title: AppStrings.yesterday),
                       SizedBox(height: AppHeight.h16),
                       ..._buildNotificationList(yesterdayNotifications),
                       SizedBox(height: AppHeight.h24),
                     ],
                     if (olderNotifications.isNotEmpty) ...[
-                      const NotificationSectionHeader(title: 'Older'),
+                      NotificationSectionHeader(title: 'older'.tr()),
                       SizedBox(height: AppHeight.h16),
                       ..._buildNotificationList(olderNotifications),
                     ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EarningsInlineError extends StatelessWidget {
   final String message;
@@ -23,7 +24,9 @@ class EarningsInlineError extends StatelessWidget {
         color: isDark ? Colors.red.withValues(alpha: 0.1) : AppColors.lightPink,
         borderRadius: BorderRadius.circular(14.r),
         border: Border.all(
-          color: isDark ? Colors.red.shade900.withValues(alpha: 0.5) : Colors.transparent,
+          color: isDark
+              ? Colors.red.shade900.withValues(alpha: 0.5)
+              : Colors.transparent,
         ),
       ),
       child: Column(
@@ -40,7 +43,7 @@ class EarningsInlineError extends StatelessWidget {
           TextButton(
             onPressed: onRetry,
             child: Text(
-              'Retry',
+              'retry'.tr(),
               style: TextStyle(
                 color: isDark ? Colors.red.shade300 : AppColors.midnightBlue,
                 fontWeight: FontWeight.bold,
@@ -117,7 +120,7 @@ class EarningsErrorState extends StatelessWidget {
                 backgroundColor: AppColors.midnightBlue,
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Retry'),
+              child: Text('retry'.tr()),
             ),
           ],
         ),

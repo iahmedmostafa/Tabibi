@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctors_map/data/models/doctor_map_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class DoctorDetailsCard extends StatelessWidget {
   final DoctorMapModel doctor;
@@ -80,10 +81,7 @@ class DoctorDetailsCard extends StatelessWidget {
                           IconButton(
                             onPressed: onClose,
                             splashRadius: 18,
-                            icon: Icon(
-                              Icons.close_rounded,
-                              color: bodyColor,
-                            ),
+                            icon: Icon(Icons.close_rounded, color: bodyColor),
                           ),
                         ],
                       ),
@@ -91,7 +89,9 @@ class DoctorDetailsCard extends StatelessWidget {
                       _InfoChip(
                         label: doctor.displaySpecialty,
                         backgroundColor: chipColor,
-                        textColor: isDark ? AppColors.grey100 : AppColors.primary,
+                        textColor: isDark
+                            ? AppColors.grey100
+                            : AppColors.primary,
                       ),
                     ],
                   ),
@@ -181,7 +181,7 @@ class DoctorDetailsCard extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: onGoNow,
                 icon: const Icon(Icons.navigation_rounded),
-                label: const Text('Go Now'),
+                label: Text('goNow'.tr()),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,

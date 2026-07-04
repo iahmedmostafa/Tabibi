@@ -8,6 +8,7 @@ import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_images.dart';
 import 'package:tabibi/core/utils/constants/app_styles.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CustomCarouselSlider extends StatefulWidget {
   const CustomCarouselSlider({super.key});
@@ -30,7 +31,7 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
             enlargeCenterPage: true,
             autoPlay: false,
             pageSnapping: true,
-            
+
             onPageChanged: (index, reason) {
               setState(() {
                 currentIndex = index;
@@ -97,7 +98,7 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
                               SizedBox(
                                 width: 210.w,
                                 child: Text(
-                                  'Looking for specialist doctors?',
+                                  'lookingForSpecialistDoctors'.tr(),
                                   style: AppTextStyle.bodySBold.copyWith(
                                     color: AppColors.white,
                                     fontSize: 22.sp,
@@ -109,7 +110,7 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
                               SizedBox(
                                 width: 210.w,
                                 child: Text(
-                                  'Schedule an appointment with top-rated doctors in a calmer, more guided experience.',
+                                  'scheduleAppointmentDescription'.tr(),
                                   style: AppTextStyle.bodyLg.copyWith(
                                     color: AppColors.white.withOpacity(0.84),
                                     fontSize: 13.sp,
@@ -119,7 +120,8 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
                               ),
                               SizedBox(height: 14.h),
                               GestureDetector(
-                                onTap: () => context.pushNamed(AppRoutes.allDoctors),
+                                onTap: () =>
+                                    context.pushNamed(AppRoutes.allDoctors),
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: 14.w,
@@ -133,8 +135,10 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
                                     ),
                                   ),
                                   child: Text(
-                                    'Explore doctors',
-                                    style: Theme.of(context).textTheme.labelLarge
+                                    'exploreDoctors'.tr(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelLarge
                                         ?.copyWith(
                                           color: AppColors.white,
                                           fontWeight: FontWeight.w700,

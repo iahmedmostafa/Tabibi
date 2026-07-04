@@ -17,6 +17,7 @@ class RemoveFavoriteDialog extends StatelessWidget {
     return ConfirmationDialog(
       title: AppStrings.removeFromFavorites,
       message: '${AppStrings.areYouSureRemoveFavorite}\n$doctorName',
+      cancelText: AppStrings.cancel,
       confirmText: AppStrings.yesRemove,
       onConfirm: onConfirm,
     );

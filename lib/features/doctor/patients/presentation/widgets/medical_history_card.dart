@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/patients/domain/entities/patient.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MedicalHistoryCard extends StatelessWidget {
   final Patient patient;
@@ -25,7 +26,7 @@ class MedicalHistoryCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Medical History',
+            'medicalHistory'.tr(),
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
@@ -54,10 +55,12 @@ class MedicalHistoryCard extends StatelessWidget {
                         ),
                         SizedBox(height: 4.h),
                         Text(
-                          'Since ${condition.since}',
+                          '${'since'.tr()} ${condition.since}',
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: isDark ? AppColors.grey400 : Colors.grey[600],
+                            color: isDark
+                                ? AppColors.grey400
+                                : Colors.grey[600],
                           ),
                         ),
                       ],
@@ -70,16 +73,22 @@ class MedicalHistoryCard extends StatelessWidget {
                       vertical: 4.h,
                     ),
                     decoration: BoxDecoration(
-                      color: isDark ? Colors.green.shade900.withValues(alpha: 0.2) : const Color(0xFFE8F5E9),
+                      color: isDark
+                          ? Colors.green.shade900.withValues(alpha: 0.2)
+                          : const Color(0xFFE8F5E9),
                       borderRadius: BorderRadius.circular(12.r),
                       border: Border.all(
-                        color: isDark ? Colors.green.shade800 : Colors.transparent,
+                        color: isDark
+                            ? Colors.green.shade800
+                            : Colors.transparent,
                       ),
                     ),
                     child: Text(
                       condition.status,
                       style: TextStyle(
-                        color: isDark ? Colors.green.shade300 : const Color(0xFF4CAF50),
+                        color: isDark
+                            ? Colors.green.shade300
+                            : const Color(0xFF4CAF50),
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
                       ),

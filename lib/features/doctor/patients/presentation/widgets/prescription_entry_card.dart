@@ -7,6 +7,7 @@ import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/patients/domain/entities/patient.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/pages/create_prescription_args.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/policies/prescription_write_policy.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PrescriptionEntryCard extends StatelessWidget {
   final String appointmentId;
@@ -71,8 +72,8 @@ class PrescriptionEntryCard extends StatelessWidget {
                   children: [
                     Text(
                       policy.canWrite
-                          ? 'Prescription Required'
-                          : 'Prescription Unavailable',
+                          ? 'prescriptionRequired'.tr()
+                          : 'prescriptionUnavailable'.tr(),
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: isDark ? Colors.white : AppColors.grey900,
                         fontWeight: FontWeight.w800,
@@ -81,9 +82,9 @@ class PrescriptionEntryCard extends StatelessWidget {
                     SizedBox(height: 3.h),
                     Text(
                       policy.canWrite
-                          ? 'Finalize diagnosis and medicines for this visit.'
+                          ? 'finalizeDiagnosis'.tr()
                           : policy.disabledMessage ??
-                              'Prescription cannot be written for this appointment.',
+                                'prescriptionCannotBeWritten'.tr(),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: isDark ? AppColors.grey400 : AppColors.grey500,
                         height: 1.35,
@@ -112,7 +113,7 @@ class PrescriptionEntryCard extends StatelessWidget {
                     }
                   : null,
               icon: Icon(Iconsax.edit_2, size: 18.sp),
-              label: const Text('Write Prescription'),
+              label: Text('writePrescription'.tr()),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.midnightBlue,
                 foregroundColor: Colors.white,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:tabibi/features/doctor/core/doctor_localizations.dart';
 import 'package:tabibi/features/doctor/core/widgets/doctor_card.dart';
 import 'package:tabibi/features/doctor/core/widgets/doctor_section_header.dart';
@@ -18,7 +19,7 @@ class AvailabilitySection extends StatelessWidget {
 
     final workingHoursText = profile.schedule.isNotEmpty
         ? '${profile.schedule.first.openTime} - ${profile.schedule.first.closeTime}'
-        : (loc.isAr ? 'غير محدد' : 'Not Configured');
+        : 'notSpecified'.tr();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

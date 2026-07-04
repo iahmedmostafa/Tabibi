@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
@@ -64,18 +65,18 @@ class _DashboardContent extends StatelessWidget {
       final localDateTime = apt.appointmentDate.toLocal();
       final h = localDateTime.hour;
       final m = localDateTime.minute;
+      final period = h >= 12 ? 'PM'.tr() : 'AM'.tr();
       final hour = h > 12
           ? h - 12
           : h == 0
           ? 12
           : h;
-      final period = h >= 12 ? 'PM' : 'AM';
       return Appointment(
         id: apt.id,
         patientName: apt.patientName,
         time: '$hour:${m.toString().padLeft(2, '0')} $period',
-        date: 'Today',
-        type: apt.type?.toString() ?? 'Consultation',
+        date: 'todayLabel'.tr(),
+        type: apt.type?.toString() ?? 'consultation'.tr(),
         status: DoctorAppointmentStatus.fromJson(apt.status),
       );
     }).toList();

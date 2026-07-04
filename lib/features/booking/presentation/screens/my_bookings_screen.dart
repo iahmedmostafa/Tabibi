@@ -10,6 +10,7 @@ import 'package:tabibi/features/booking/data/models/booking_model.dart';
 import 'package:tabibi/features/booking/presentation/controller/my_bookings_cubit.dart';
 import 'package:tabibi/features/booking/presentation/widgets/booking_card.dart';
 import 'package:tabibi/features/booking/presentation/widgets/booking_tab_filter.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MyBookingsScreen extends StatefulWidget {
   final BookingStatus initialStatus;
@@ -62,12 +63,12 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
             final bookings = isLoading
                 ? List.generate(
                     4,
-                    (index) => const BookingModel(
+                    (index) => BookingModel(
                       id: 'dummy',
                       doctorId: 'dummy',
-                      doctorName: 'Dr. Skeletonizer Name',
-                      department: 'Department',
-                      address: 'Hospital Address',
+                      doctorName: 'drSkeletonizerName'.tr(),
+                      department: 'departmentDropdown'.tr(),
+                      address: 'hospitalAddress'.tr(),
                       appointmentDate: '2025-01-01T10:00:00.000Z',
                       type: 1,
                     ),

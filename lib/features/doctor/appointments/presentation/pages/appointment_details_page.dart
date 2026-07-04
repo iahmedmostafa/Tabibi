@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:tabibi/core/DI/service_locator.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_cubit.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_state.dart';
@@ -33,7 +34,7 @@ class AppointmentDetailsPage extends StatelessWidget {
         backgroundColor: theme.scaffoldBackgroundColor,
         appBar: AppBar(
           title: Text(
-            'Appointment Details',
+            'appointmentDetails'.tr(),
             style: theme.textTheme.titleLarge,
           ),
           centerTitle: true,

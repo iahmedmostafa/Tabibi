@@ -6,6 +6,7 @@ import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/helper/helper_functions.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/cubit/verify_code_cubit.dart';
 import 'package:tabibi/features/authentication/modules/verify_code/presentation/cubit/verify_code_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class VerifyCodeListeners extends StatelessWidget {
   final Widget child;
@@ -22,8 +23,8 @@ class VerifyCodeListeners extends StatelessWidget {
             if (state.status == VerifyCodeStatus.success) {
               if (state.origin == VerifyOrigin.forgot) {
                 AppHelperFunctions.showAwesomeSnackBar(
-                  title: 'Success',
-                  message: state.message ?? 'Verification successful!',
+                  title: 'success'.tr(),
+                  message: state.message ?? 'verificationSuccessful'.tr(),
                   contentType: ContentType.success,
                   context: context,
                 );
@@ -33,24 +34,24 @@ class VerifyCodeListeners extends StatelessWidget {
                 );
               } else if (state.origin == VerifyOrigin.signup) {
                 AppHelperFunctions.showAwesomeSnackBar(
-                  title: 'Success',
-                  message: 'The Account is Created Successfully \n  Login now',
+                  title: 'success'.tr(),
+                  message: 'accountCreatedSuccessfully'.tr(),
                   contentType: ContentType.success,
                   context: context,
                 );
                 context.go(AppRoutes.login);
               } else {
                 AppHelperFunctions.showAwesomeSnackBar(
-                  title: 'Success',
-                  message: state.message ?? 'Verification successful!',
+                  title: 'success'.tr(),
+                  message: state.message ?? 'verificationSuccessful'.tr(),
                   contentType: ContentType.success,
                   context: context,
                 );
               }
             } else if (state.status == VerifyCodeStatus.failure) {
               AppHelperFunctions.showAwesomeSnackBar(
-                title: 'Error',
-                message: state.errorMessage ?? 'Verification failed!',
+                title: 'error'.tr(),
+                message: state.errorMessage ?? 'verificationFailed'.tr(),
                 contentType: ContentType.failure,
                 context: context,
               );
@@ -63,15 +64,15 @@ class VerifyCodeListeners extends StatelessWidget {
           listener: (context, state) {
             if (state.resendStatus == ResendCodeStatus.success) {
               AppHelperFunctions.showAwesomeSnackBar(
-                title: 'Success',
-                message: state.message ?? 'Code resent successfully!',
+                title: 'success'.tr(),
+                message: state.message ?? 'codeResentSuccessfully'.tr(),
                 contentType: ContentType.success,
                 context: context,
               );
             } else if (state.resendStatus == ResendCodeStatus.failure) {
               AppHelperFunctions.showAwesomeSnackBar(
-                title: 'Error',
-                message: state.errorMessage ?? 'Failed to resend code!',
+                title: 'error'.tr(),
+                message: state.errorMessage ?? 'failedToResendCode'.tr(),
                 contentType: ContentType.failure,
                 context: context,
               );

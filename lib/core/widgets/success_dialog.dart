@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SuccessDialog extends StatelessWidget {
   const SuccessDialog({super.key});
@@ -16,7 +17,9 @@ class SuccessDialog extends StatelessWidget {
     final titleColor = theme.colorScheme.onSurface;
     final bodyColor = isDark ? AppColors.grey300 : AppColors.grey600;
     final accentColor = isDark ? AppColors.teal20 : AppColors.lightTeal;
-    final accentRingColor = isDark ? AppColors.teal80 : AppColors.actionGreenLight;
+    final accentRingColor = isDark
+        ? AppColors.teal80
+        : AppColors.actionGreenLight;
 
     return Dialog(
       insetPadding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -51,7 +54,7 @@ class SuccessDialog extends StatelessWidget {
             ),
             VerticalSpace(height: AppHeight.h24),
             Text(
-              'Congratulations!',
+              'congratulationsApproved'.tr(),
               style: theme.textTheme.headlineMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: titleColor,
@@ -59,7 +62,7 @@ class SuccessDialog extends StatelessWidget {
             ),
             VerticalSpace(height: AppHeight.h16),
             Text(
-              'Your account is ready to use. You will be redirected to the Home Page in a few seconds...',
+              'accountReadyToUse'.tr(),
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(color: bodyColor),
             ),

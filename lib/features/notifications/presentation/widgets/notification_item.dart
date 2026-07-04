@@ -8,6 +8,7 @@ import 'package:tabibi/core/utils/extensions/date_time_extension.dart';
 import 'package:tabibi/core/utils/helper/helper_functions.dart';
 import 'package:tabibi/features/notifications/domain/entities/notification_entity.dart';
 import 'package:tabibi/features/notifications/presentation/cubit/notifications_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class NotificationItem extends StatelessWidget {
   final NotificationEntity notification;
@@ -93,10 +94,15 @@ class NotificationItem extends StatelessWidget {
     final now = DateTime.now();
     final diff = now.difference(createdAt);
 
-    if (diff.inSeconds < 60) return 'Just now';
-    if (diff.inMinutes < 60) return '${diff.inMinutes}m';
-    if (diff.inHours < 24) return '${diff.inHours}h';
-    if (diff.inDays < 7) return '${diff.inDays}d';
+    if (diff.inSeconds < 60) return 'justNow'.tr();
+    if (diff.inMinutes < 60)
+      return 'timeMinutes'.tr(
+        namedArgs: {'minutes': diff.inMinutes.toString()},
+      );
+    if (diff.inHours < 24)
+      return 'timeHours'.tr(namedArgs: {'hours': diff.inHours.toString()});
+    if (diff.inDays < 7)
+      return 'timeDays'.tr(namedArgs: {'days': diff.inDays.toString()});
     return '${createdAt.day}/${createdAt.month}/${createdAt.year}';
   }
 

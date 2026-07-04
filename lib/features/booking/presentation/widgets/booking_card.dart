@@ -17,6 +17,7 @@ import 'package:tabibi/features/booking/presentation/controller/add_review_cubit
 import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
 import 'package:tabibi/features/booking/presentation/controller/my_bookings_cubit.dart';
 import 'package:tabibi/features/home/data/models/doctor_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BookingCard extends StatelessWidget {
   final BookingModel booking;
@@ -86,7 +87,7 @@ class BookingCard extends StatelessWidget {
                       ),
                       SizedBox(width: 4.w),
                       Text(
-                        "Chat",
+                        'chat'.tr(),
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 12.sp,
@@ -115,8 +116,7 @@ class BookingCard extends StatelessWidget {
                   image: DecorationImage(
                     image: booking.doctorAvatar != null
                         ? CachedNetworkImageProvider(booking.doctorAvatar!)
-                        : const AssetImage(AppImages.person)
-                              as ImageProvider,
+                        : const AssetImage(AppImages.person) as ImageProvider,
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -187,7 +187,7 @@ class BookingCard extends StatelessWidget {
             Expanded(
               child: _buildButton(
                 context,
-                "Cancel",
+                'cancelBooking'.tr(),
                 AppColors.grey100,
                 AppColors.grey700,
                 () => _showCancelBookingDialog(context),
@@ -199,14 +199,14 @@ class BookingCard extends StatelessWidget {
             child: booking.type == 0
                 ? _buildButton(
                     context,
-                    "Go to Clinic",
+                    'goToClinic'.tr(),
                     AppColors.paleBlueLight,
                     AppColors.primary,
                     () {},
                   )
                 : _buildButton(
                     context,
-                    "Start Call",
+                    'startCall'.tr(),
                     AppColors.primary,
                     AppColors.white,
                     () {
@@ -227,7 +227,7 @@ class BookingCard extends StatelessWidget {
               Expanded(
                 child: _buildButton(
                   context,
-                  "Re-Book",
+                  'reBook'.tr(),
                   AppColors.paleBlueLight,
                   AppColors.primary,
                   () {
@@ -276,7 +276,7 @@ class BookingCard extends StatelessWidget {
               width: double.infinity,
               child: _buildButton(
                 context,
-                "Add Review",
+                'addReview'.tr(),
                 AppColors.primary,
                 Colors.white,
                 () => _showAddReviewDialog(context),
@@ -291,7 +291,7 @@ class BookingCard extends StatelessWidget {
           Expanded(
             child: _buildButton(
               context,
-              "Re-Book",
+              'reBook'.tr(),
               AppColors.paleBlueLight,
               AppColors.primary,
               () {
@@ -413,20 +413,18 @@ class _AddReviewDialogState extends State<_AddReviewDialog> {
           Navigator.of(context).pop();
           widget.onSubmitted();
           messenger.showSnackBar(
-            const SnackBar(content: Text('Review added successfully')),
+            SnackBar(content: Text('reviewAddedSuccessfully'.tr())),
           );
         } else if (state.status == AddReviewStatus.failure) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage ?? 'Failed to add review'),
-            ),
+            SnackBar(content: Text(state.errorMessage ?? 'error'.tr())),
           );
         }
       },
       builder: (context, state) {
         final isLoading = state.status == AddReviewStatus.loading;
         return AlertDialog(
-          title: Text('Review ${widget.booking.doctorName}'),
+          title: Text('${"addReview".tr()} ${widget.booking.doctorName}'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -450,8 +448,8 @@ class _AddReviewDialogState extends State<_AddReviewDialog> {
                 minLines: 3,
                 maxLines: 5,
                 enabled: !isLoading,
-                decoration: const InputDecoration(
-                  hintText: 'Write your review',
+                decoration: InputDecoration(
+                  hintText: 'writeYourReview'.tr(),
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -460,7 +458,7 @@ class _AddReviewDialogState extends State<_AddReviewDialog> {
           actions: [
             TextButton(
               onPressed: isLoading ? null : () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text('cancel'.tr()),
             ),
             ElevatedButton(
               onPressed: isLoading
@@ -476,7 +474,7 @@ class _AddReviewDialogState extends State<_AddReviewDialog> {
                       height: 18.w,
                       child: const CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Text('Submit'),
+                  : Text('submit'.tr()),
             ),
           ],
         );
@@ -505,7 +503,7 @@ class _CancelBookingDialog extends StatelessWidget {
           Navigator.of(context).pop();
           onCancelled();
           messenger.showSnackBar(
-            const SnackBar(content: Text('Booking cancelled successfully')),
+            SnackBar(content: Text('bookingCancelledSuccessfully'.tr())),
           );
         } else if (state is AppointmentFailure) {
           ScaffoldMessenger.of(
@@ -516,10 +514,12 @@ class _CancelBookingDialog extends StatelessWidget {
       builder: (context, state) {
         final isLoading = state is AppointmentBookingLoading;
         return ConfirmationDialog(
-          title: 'Cancel booking',
-          message: 'Cancel your appointment with Dr $doctorName?',
-          cancelText: 'Keep',
-          confirmText: 'Cancel Booking',
+          title: 'cancelBookingTitle'.tr(),
+          message: 'cancelYourAppointment'.tr(
+            namedArgs: {'doctorName': doctorName},
+          ),
+          cancelText: 'keep'.tr(),
+          confirmText: 'cancelBookingAction'.tr(),
           icon: Icons.event_busy_outlined,
           closeOnConfirm: false,
           isLoading: isLoading,

@@ -6,6 +6,7 @@ import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/widgets/premium_animated_button.dart';
 import 'package:tabibi/features/home/data/models/doctor_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class DoctorCard extends StatelessWidget {
   final DoctorModel doctor;
@@ -42,10 +43,7 @@ class DoctorCard extends StatelessWidget {
       opacity: curve,
       child: ScaleTransition(
         scale: Tween<double>(begin: 0.96, end: 1).animate(curve),
-        child: Material(
-          color: Colors.transparent,
-          child: child,
-        ),
+        child: Material(color: Colors.transparent, child: child),
       ),
     );
   }
@@ -57,7 +55,9 @@ class DoctorCard extends StatelessWidget {
     final reviewCount = doctor.reviewCount ?? 0;
     final heroTag = 'doctor-avatar-${doctor.id}';
     final cardSurface = isDark ? AppColors.grey900 : AppColors.white;
-    final cardBorder = isDark ? AppColors.grey800 : AppColors.black.withValues(alpha: 0.1);
+    final cardBorder = isDark
+        ? AppColors.grey800
+        : AppColors.black.withValues(alpha: 0.1);
     final titleColor = isDark ? AppColors.white : AppColors.black;
     final bodyColor = isDark ? AppColors.grey400 : AppColors.grey500;
     final subtleSurface = isDark ? AppColors.grey800 : AppColors.paleBlueLight;
@@ -100,14 +100,15 @@ class DoctorCard extends StatelessWidget {
                                   fit: BoxFit.cover,
                                   placeholder: (context, url) =>
                                       Container(color: imagePlaceholder),
-                                  errorWidget: (context, url, error) => Container(
-                                    color: imagePlaceholder,
-                                    child: Icon(
-                                      Icons.person,
-                                      color: imageIconColor,
-                                      size: 44,
-                                    ),
-                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Container(
+                                        color: imagePlaceholder,
+                                        child: Icon(
+                                          Icons.person,
+                                          color: imageIconColor,
+                                          size: 44,
+                                        ),
+                                      ),
                                 )
                               : Container(
                                   color: imagePlaceholder,
@@ -131,7 +132,9 @@ class DoctorCard extends StatelessWidget {
                       vertical: 7.h,
                     ),
                     decoration: BoxDecoration(
-                      color: isDark ? AppColors.actionGreenLight : AppColors.successLight,
+                      color: isDark
+                          ? AppColors.actionGreenLight
+                          : AppColors.successLight,
                       borderRadius: BorderRadius.circular(999.r),
                     ),
                     child: Row(
@@ -143,9 +146,13 @@ class DoctorCard extends StatelessWidget {
                         ),
                         SizedBox(width: 4.w),
                         Text(
-                          rating > 0 ? rating.toStringAsFixed(1) : 'New',
+                          rating > 0
+                              ? rating.toStringAsFixed(1)
+                              : 'newLabel'.tr(),
                           style: TextStyle(
-                            color: isDark ? AppColors.grey100 : AppColors.successDark,
+                            color: isDark
+                                ? AppColors.grey100
+                                : AppColors.successDark,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w800,
                           ),
@@ -164,12 +171,16 @@ class DoctorCard extends StatelessWidget {
                       width: 36.w,
                       height: 36.w,
                       decoration: BoxDecoration(
-                        color: isDark ? AppColors.grey800 : AppColors.white.withOpacity(0.92),
+                        color: isDark
+                            ? AppColors.grey800
+                            : AppColors.white.withOpacity(0.92),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         isFavorite ? Icons.favorite : Icons.favorite_border,
-                        color: isFavorite ? AppColors.error : (isDark ? AppColors.grey300 : AppColors.grey500),
+                        color: isFavorite
+                            ? AppColors.error
+                            : (isDark ? AppColors.grey300 : AppColors.grey500),
                         size: 18.sp,
                       ),
                     ),
@@ -196,7 +207,7 @@ class DoctorCard extends StatelessWidget {
                 ),
                 VerticalSpace(height: 6.h),
                 _InfoPill(
-                  label: doctor.department ?? 'General Medicine',
+                  label: doctor.department ?? 'generalMedicine'.tr(),
                   backgroundColor: subtleSurface,
                   textColor: isDark ? AppColors.grey200 : AppColors.primary,
                 ),
@@ -211,11 +222,8 @@ class DoctorCard extends StatelessWidget {
                     const HorizentalSpace(width: 4),
                     Expanded(
                       child: Text(
-                        doctor.address ?? 'Clinic address not available',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: bodyColor,
-                        ),
+                        doctor.address ?? 'clinicAddressNotAvailable'.tr(),
+                        style: TextStyle(fontSize: 12.sp, color: bodyColor),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -228,7 +236,7 @@ class DoctorCard extends StatelessWidget {
                     Icon(Icons.star, color: AppColors.actionGreen, size: 16.sp),
                     const HorizentalSpace(width: 4),
                     Text(
-                      rating > 0 ? rating.toStringAsFixed(1) : 'New',
+                      rating > 0 ? rating.toStringAsFixed(1) : 'newLabel'.tr(),
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w800,
@@ -243,11 +251,8 @@ class DoctorCard extends StatelessWidget {
                     ),
                     const HorizentalSpace(width: 8),
                     Text(
-                      '$reviewCount Reviews',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: bodyColor,
-                      ),
+                      "$reviewCount ${'reviews'.tr()}",
+                      style: TextStyle(fontSize: 12.sp, color: bodyColor),
                     ),
                   ],
                 ),
@@ -267,7 +272,7 @@ class DoctorCard extends StatelessWidget {
                       ),
                     ),
                     PremiumAnimatedButton(
-                      text: 'Book Now',
+                      text: 'bookNow'.tr(),
                       icon: Icons.calendar_today_rounded,
                       onTap: onBookTap ?? () {},
                     ),
@@ -275,7 +280,9 @@ class DoctorCard extends StatelessWidget {
                 ),
                 VerticalSpace(height: 2.h),
                 Text(
-                  '${doctor.yearsOfExperience} years experience',
+                  'yearsExperience'.tr(
+                    namedArgs: {'years': doctor.yearsOfExperience.toString()},
+                  ),
                   style: TextStyle(fontSize: 11.sp, color: bodyColor),
                 ),
               ],

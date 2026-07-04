@@ -8,6 +8,7 @@ import 'package:tabibi/features/doctor/prescription/presentation/cubit/create_pr
 import 'package:tabibi/features/doctor/prescription/presentation/pages/create_prescription_args.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/widgets/create_prescription_form.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/widgets/create_prescription_submit_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CreatePrescriptionPage extends StatelessWidget {
   final CreatePrescriptionArgs args;
@@ -23,7 +24,10 @@ class CreatePrescriptionPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
-          title: Text('Create Prescription', style: Theme.of(context).textTheme.titleLarge),
+          title: Text(
+            'createPrescription'.tr(),
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           centerTitle: true,
           elevation: 0,
           leading: IconButton(
@@ -48,8 +52,8 @@ class CreatePrescriptionPage extends StatelessWidget {
   ) {
     if (state.status == CreatePrescriptionStatus.success) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Prescription saved and appointment completed.'),
+        SnackBar(
+          content: Text('prescriptionSaved'.tr()),
           backgroundColor: AppColors.success,
         ),
       );
@@ -60,7 +64,7 @@ class CreatePrescriptionPage extends StatelessWidget {
     if (state.hasFailureFeedback) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(state.errorMessage ?? 'Failed to save prescription.'),
+          content: Text(state.errorMessage ?? 'failedToSavePrescription'.tr()),
           backgroundColor: AppColors.error,
         ),
       );

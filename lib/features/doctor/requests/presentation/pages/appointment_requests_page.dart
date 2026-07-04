@@ -10,6 +10,7 @@ import 'package:tabibi/features/doctor/core/widgets/doctor_empty_state.dart';
 import 'package:tabibi/features/doctor/requests/presentation/cubit/requests_cubit.dart';
 import 'package:tabibi/features/doctor/requests/presentation/cubit/requests_state.dart';
 import 'package:tabibi/features/doctor/requests/presentation/widgets/request_card.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AppointmentRequestsPage extends StatelessWidget {
   const AppointmentRequestsPage({super.key});
@@ -23,7 +24,10 @@ class AppointmentRequestsPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
         appBar: AppBar(
-          title: Text('Appointment Requests', style: theme.textTheme.titleLarge),
+          title: Text(
+            'appointmentRequests'.tr(),
+            style: theme.textTheme.titleLarge,
+          ),
           centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp),
@@ -71,7 +75,11 @@ class AppointmentRequestsPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error_outline, size: 64.sp, color: isDark ? AppColors.grey500 : Colors.red[300]),
+            Icon(
+              Icons.error_outline,
+              size: 64.sp,
+              color: isDark ? AppColors.grey500 : Colors.red[300],
+            ),
             SizedBox(height: 16.h),
             Text(
               state.errorMessage!,
@@ -85,7 +93,7 @@ class AppointmentRequestsPage extends StatelessWidget {
               height: 48.h,
               child: ElevatedButton(
                 onPressed: () => context.read<RequestsCubit>().getRequests(),
-                child: Text('Retry', style: theme.textTheme.labelLarge),
+                child: Text('retry'.tr(), style: theme.textTheme.labelLarge),
               ),
             ),
           ],
@@ -96,7 +104,7 @@ class AppointmentRequestsPage extends StatelessWidget {
     if (state.filteredRequests.isEmpty) {
       return DoctorEmptyState(
         icon: Icons.search_off,
-        message: 'No requests found',
+        message: 'noRequestsFound'.tr(),
       );
     }
 
@@ -116,7 +124,11 @@ class AppointmentRequestsPage extends StatelessWidget {
                 onSuccess: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Appointment approved for ${request.patientName}'),
+                      content: Text(
+                        'appointmentApproved'.tr(
+                          namedArgs: {'patientName': request.patientName},
+                        ),
+                      ),
                       backgroundColor: AppColors.actionGreen,
                     ),
                   );
@@ -124,7 +136,9 @@ class AppointmentRequestsPage extends StatelessWidget {
                 onError: (error) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Failed: $error'),
+                      content: Text(
+                        'appointmentFailed'.tr(namedArgs: {'message': error}),
+                      ),
                       backgroundColor: AppColors.error,
                     ),
                   );
@@ -137,7 +151,11 @@ class AppointmentRequestsPage extends StatelessWidget {
                 onSuccess: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Appointment cancelled for ${request.patientName}'),
+                      content: Text(
+                        'appointmentCancelledFor'.tr(
+                          namedArgs: {'patientName': request.patientName},
+                        ),
+                      ),
                       backgroundColor: AppColors.actionAmber,
                     ),
                   );
@@ -145,7 +163,9 @@ class AppointmentRequestsPage extends StatelessWidget {
                 onError: (error) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Failed: $error'),
+                      content: Text(
+                        'appointmentFailed'.tr(namedArgs: {'message': error}),
+                      ),
                       backgroundColor: AppColors.error,
                     ),
                   );
@@ -177,16 +197,12 @@ class _SearchBar extends StatelessWidget {
       child: TextField(
         onChanged: (query) => context.read<RequestsCubit>().search(query),
         decoration: InputDecoration(
-          hintText: 'Search patients...',
+          hintText: 'searchPatients'.tr(),
           hintStyle: TextStyle(
             color: isDark ? AppColors.grey400 : AppColors.grey500,
             fontSize: 14.sp,
           ),
-          prefixIcon: Icon(
-            Icons.search,
-            color: AppColors.primary,
-            size: 20.sp,
-          ),
+          prefixIcon: Icon(Icons.search, color: AppColors.primary, size: 20.sp),
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(vertical: 16.h),
         ),
@@ -208,17 +224,23 @@ class _FilterChips extends StatelessWidget {
           final now = DateTime.now();
           final today = DateTime(now.year, now.month, now.day);
           final localDate = r.dateTime.toLocal();
-          final rDate = DateTime(localDate.year, localDate.month, localDate.day);
+          final rDate = DateTime(
+            localDate.year,
+            localDate.month,
+            localDate.day,
+          );
           return rDate.isAtSameMomentAs(today);
         }).length;
 
-        final upcomingCount = state.allRequests.where((r) => r.isUpcoming).length;
+        final upcomingCount = state.allRequests
+            .where((r) => r.isUpcoming)
+            .length;
 
         return Row(
           children: [
             _buildChip(
               context,
-              label: 'All (${state.allRequests.length})',
+              label: '${"allTab".tr()} (${state.allRequests.length})',
               isSelected: state.selectedFilter == RequestFilter.all,
               onTap: () =>
                   context.read<RequestsCubit>().setFilter(RequestFilter.all),
@@ -226,7 +248,7 @@ class _FilterChips extends StatelessWidget {
             SizedBox(width: 8.w),
             _buildChip(
               context,
-              label: 'Today ($todayCount)',
+              label: '${"todayTab".tr()} ($todayCount)',
               isSelected: state.selectedFilter == RequestFilter.today,
               onTap: () =>
                   context.read<RequestsCubit>().setFilter(RequestFilter.today),
@@ -234,7 +256,7 @@ class _FilterChips extends StatelessWidget {
             SizedBox(width: 8.w),
             _buildChip(
               context,
-              label: 'Upcoming ($upcomingCount)',
+              label: '${"upcomingTab".tr()} ($upcomingCount)',
               isSelected: state.selectedFilter == RequestFilter.upcoming,
               onTap: () => context.read<RequestsCubit>().setFilter(
                 RequestFilter.upcoming,
@@ -258,22 +280,16 @@ class _FilterChips extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         decoration: BoxDecoration(
-          color: isSelected
-              ? theme.colorScheme.primary
-              : theme.cardColor,
+          color: isSelected ? theme.colorScheme.primary : theme.cardColor,
           borderRadius: BorderRadius.circular(20.r),
           border: Border.all(
-            color: isSelected
-                ? theme.colorScheme.primary
-                : theme.dividerColor,
+            color: isSelected ? theme.colorScheme.primary : theme.dividerColor,
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected
-                ? Colors.white
-                : theme.colorScheme.onSurface,
+            color: isSelected ? Colors.white : theme.colorScheme.onSurface,
             fontSize: 14.sp,
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
           ),

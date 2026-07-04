@@ -1,4 +1,5 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -90,11 +91,11 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
   String? _heightError;
 
   final List<String> _diseaseOptions = [
-    'Diabetes',
-    'Hypertension',
-    'Heart Disease',
-    'Asthma',
-    'None',
+    'diabetes'.tr(),
+    'hypertension'.tr(),
+    'heartDisease'.tr(),
+    'asthma'.tr(),
+    'noneMedical'.tr(),
   ];
 
   @override
@@ -125,11 +126,11 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
   void _toggleDisease(String disease) {
     setState(() {
       _diseasesError = null;
-      if (disease == 'None') {
+      if (disease == 'noneMedical'.tr()) {
         _selectedDiseases.clear();
-        _selectedDiseases.add('None');
+        _selectedDiseases.add('noneMedical'.tr());
       } else {
-        _selectedDiseases.remove('None');
+        _selectedDiseases.remove('noneMedical'.tr());
         if (_selectedDiseases.contains(disease)) {
           _selectedDiseases.remove(disease);
         } else {
@@ -145,7 +146,7 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
     setState(() {
       // Chronic diseases
       if (_selectedDiseases.isEmpty) {
-        _diseasesError = 'Please select at least one option';
+        _diseasesError = 'pleaseSelectAtLeastOne'.tr();
         isValid = false;
       } else {
         _diseasesError = null;
@@ -153,7 +154,7 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
 
       // Medications
       if (_medicationsController.text.trim().isEmpty) {
-        _medicationsError = 'Please enter your medications or write "None"';
+        _medicationsError = 'pleaseEnterMedications'.tr();
         isValid = false;
       } else {
         _medicationsError = null;
@@ -161,7 +162,7 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
 
       // Allergies
       if (_allergiesController.text.trim().isEmpty) {
-        _allergiesError = 'Please enter your allergies or write "None"';
+        _allergiesError = 'pleaseEnterAllergies'.tr();
         isValid = false;
       } else {
         _allergiesError = null;
@@ -169,7 +170,7 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
 
       // Surgeries
       if (_surgeriesController.text.trim().isEmpty) {
-        _surgeriesError = 'Please enter your surgeries or write "None"';
+        _surgeriesError = 'pleaseEnterSurgeries'.tr();
         isValid = false;
       } else {
         _surgeriesError = null;
@@ -177,10 +178,10 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
 
       // Weight
       if (_weightController.text.trim().isEmpty) {
-        _weightError = 'Required';
+        _weightError = 'required'.tr();
         isValid = false;
       } else if (double.tryParse(_weightController.text.trim()) == null) {
-        _weightError = 'Invalid number';
+        _weightError = 'invalidNumber'.tr();
         isValid = false;
       } else {
         _weightError = null;
@@ -188,10 +189,10 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
 
       // Height
       if (_heightController.text.trim().isEmpty) {
-        _heightError = 'Required';
+        _heightError = 'required'.tr();
         isValid = false;
       } else if (double.tryParse(_heightController.text.trim()) == null) {
-        _heightError = 'Invalid number';
+        _heightError = 'invalidNumber'.tr();
         isValid = false;
       } else {
         _heightError = null;
@@ -210,7 +211,9 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
         .where((e) => e.isNotEmpty)
         .toList();
 
-    final diseases = _selectedDiseases.where((d) => d != 'None').toList();
+    final diseases = _selectedDiseases
+        .where((d) => d != 'noneMedical'.tr())
+        .toList();
 
     final params = UpdateMedicalProfileParams(
       chronicDiseases: diseases,
@@ -235,8 +238,8 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
           widget.onDone?.call();
         } else if (state.updateStatus == MedicalProfileUpdateStatus.failure) {
           AppHelperFunctions.showAwesomeSnackBar(
-            title: 'Error',
-            message: state.errorMessage ?? 'Something went wrong',
+            title: 'error'.tr(),
+            message: state.errorMessage ?? 'somethingWentWrong'.tr(),
             contentType: ContentType.failure,
             context: context,
           );
@@ -312,23 +315,17 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Complete your medical profile',
+                                    'completeMedicalProfile'.tr(),
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                        ?.copyWith(fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(height: 2.h),
                                   Text(
-                                    'Help doctors understand your condition better',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(
-                                          color: AppColors.textGrey,
-                                        ),
+                                    'helpDoctorsUnderstand'.tr(),
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(color: AppColors.textGrey),
                                   ),
                                 ],
                               ),
@@ -338,14 +335,15 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
                         SizedBox(height: 24.h),
 
                         // Chronic Diseases
-                        _buildSectionLabel(context, 'Chronic Diseases'),
+                        _buildSectionLabel(context, 'chronicDiseases'.tr()),
                         SizedBox(height: 10.h),
                         Wrap(
                           spacing: 8.w,
                           runSpacing: 8.h,
                           children: _diseaseOptions.map((disease) {
-                            final isSelected =
-                                _selectedDiseases.contains(disease);
+                            final isSelected = _selectedDiseases.contains(
+                              disease,
+                            );
                             return GestureDetector(
                               onTap: () => _toggleDisease(disease),
                               child: AnimatedContainer(
@@ -358,17 +356,17 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
                                   color: isSelected
                                       ? AppColors.blue.withValues(alpha: 0.1)
                                       : isDark
-                                          ? AppColors.grey800
-                                          : AppColors.grey50,
+                                      ? AppColors.grey800
+                                      : AppColors.grey50,
                                   borderRadius: BorderRadius.circular(20.r),
                                   border: Border.all(
                                     color: isSelected
                                         ? AppColors.blue
                                         : _diseasesError != null
-                                            ? AppColors.red
-                                            : isDark
-                                                ? AppColors.grey700
-                                                : AppColors.grey200,
+                                        ? AppColors.red
+                                        : isDark
+                                        ? AppColors.grey700
+                                        : AppColors.grey200,
                                   ),
                                 ),
                                 child: Row(
@@ -391,8 +389,8 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
                                             color: isSelected
                                                 ? AppColors.blue
                                                 : isDark
-                                                    ? AppColors.grey300
-                                                    : AppColors.grey700,
+                                                ? AppColors.grey300
+                                                : AppColors.grey700,
                                             fontWeight: isSelected
                                                 ? FontWeight.w600
                                                 : FontWeight.normal,
@@ -417,11 +415,11 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
                         SizedBox(height: 20.h),
 
                         // Current Medications
-                        _buildSectionLabel(context, 'Current Medications'),
+                        _buildSectionLabel(context, 'currentMedications'.tr()),
                         SizedBox(height: 8.h),
                         _buildTextField(
                           controller: _medicationsController,
-                          hint: 'Enter medications (e.g. Panadol, Metformin...)',
+                          hint: 'medicationsHint'.tr(),
                           icon: Iconsax.edit,
                           isDark: isDark,
                           errorText: _medicationsError,
@@ -434,11 +432,11 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
                         SizedBox(height: 20.h),
 
                         // Allergies
-                        _buildSectionLabel(context, 'Allergies'),
+                        _buildSectionLabel(context, 'allergies'.tr()),
                         SizedBox(height: 8.h),
                         _buildTextField(
                           controller: _allergiesController,
-                          hint: 'Any allergies? (e.g. Penicillin, Pollen...)',
+                          hint: 'allergiesHint'.tr(),
                           icon: Iconsax.shield_cross,
                           isDark: isDark,
                           errorText: _allergiesError,
@@ -451,11 +449,11 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
                         SizedBox(height: 20.h),
 
                         // Previous Surgeries
-                        _buildSectionLabel(context, 'Previous Surgeries'),
+                        _buildSectionLabel(context, 'previousSurgeries'.tr()),
                         SizedBox(height: 8.h),
                         _buildTextField(
                           controller: _surgeriesController,
-                          hint: 'Any previous surgeries?',
+                          hint: 'surgeriesHint'.tr(),
                           icon: Iconsax.scissor,
                           isDark: isDark,
                           errorText: _surgeriesError,
@@ -474,11 +472,11 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  _buildSectionLabel(context, 'Weight (kg)'),
+                                  _buildSectionLabel(context, 'weightKg'.tr()),
                                   SizedBox(height: 8.h),
                                   _buildTextField(
                                     controller: _weightController,
-                                    hint: 'e.g. 70',
+                                    hint: 'weightHint'.tr(),
                                     icon: Iconsax.weight,
                                     isDark: isDark,
                                     keyboardType: TextInputType.number,
@@ -497,11 +495,11 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  _buildSectionLabel(context, 'Height (cm)'),
+                                  _buildSectionLabel(context, 'heightCm'.tr()),
                                   SizedBox(height: 8.h),
                                   _buildTextField(
                                     controller: _heightController,
-                                    hint: 'e.g. 175',
+                                    hint: 'heightHint'.tr(),
                                     icon: Iconsax.ruler,
                                     isDark: isDark,
                                     keyboardType: TextInputType.number,
@@ -522,7 +520,8 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
                         // Buttons
                         BlocBuilder<MedicalProfileCubit, MedicalProfileState>(
                           builder: (context, state) {
-                            final isLoading = state.updateStatus ==
+                            final isLoading =
+                                state.updateStatus ==
                                 MedicalProfileUpdateStatus.loading;
                             return Row(
                               children: [
@@ -544,12 +543,13 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
                                               : AppColors.grey300,
                                         ),
                                         shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12.r),
+                                          borderRadius: BorderRadius.circular(
+                                            12.r,
+                                          ),
                                         ),
                                       ),
                                       child: Text(
-                                        'Skip',
+                                        'skip'.tr(),
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleMedium
@@ -571,8 +571,9 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: AppColors.blue,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12.r),
+                                          borderRadius: BorderRadius.circular(
+                                            12.r,
+                                          ),
                                         ),
                                       ),
                                       child: isLoading
@@ -581,12 +582,12 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
                                               height: 24.h,
                                               child:
                                                   const CircularProgressIndicator(
-                                                color: Colors.white,
-                                                strokeWidth: 2,
-                                              ),
+                                                    color: Colors.white,
+                                                    strokeWidth: 2,
+                                                  ),
                                             )
                                           : Text(
-                                              'Continue',
+                                              'continueText'.tr(),
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .titleMedium
@@ -618,9 +619,9 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
   Widget _buildSectionLabel(BuildContext context, String label) {
     return Text(
       label,
-      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+      style: Theme.of(
+        context,
+      ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
     );
   }
 
@@ -656,8 +657,8 @@ class _MedicalProfileBottomSheetState extends State<MedicalProfileBottomSheet> {
                 color: errorText != null
                     ? AppColors.red
                     : isDark
-                        ? AppColors.grey700
-                        : AppColors.grey200,
+                    ? AppColors.grey700
+                    : AppColors.grey200,
               ),
             ),
             focusedBorder: OutlineInputBorder(

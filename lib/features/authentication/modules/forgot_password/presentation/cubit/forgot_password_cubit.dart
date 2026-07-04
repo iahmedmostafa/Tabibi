@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:tabibi/features/authentication/domain/usecases/forgot_password_use_case.dart';
 import 'package:tabibi/features/authentication/modules/forgot_password/presentation/cubit/forgot_password_state.dart';
 
@@ -31,7 +32,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
       (message) => emit(
         state.copyWith(
           status: ForgotPasswordStatus.success,
-          message: "Done successfully",
+          message: 'doneSuccessfully'.tr(),
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MapErrorOverlay extends StatelessWidget {
   final String message;
@@ -37,10 +38,14 @@ class MapErrorOverlay extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.error_outline_rounded, color: AppColors.error, size: 42.sp),
+            Icon(
+              Icons.error_outline_rounded,
+              color: AppColors.error,
+              size: 42.sp,
+            ),
             SizedBox(height: 10.h),
             Text(
-              'Could not load doctors',
+              'couldNotLoadDoctors'.tr(),
               style: TextStyle(
                 color: titleColor,
                 fontSize: 16.sp,
@@ -59,7 +64,7 @@ class MapErrorOverlay extends StatelessWidget {
               height: 48.h,
               child: ElevatedButton(
                 onPressed: onRetry,
-                child: const Text('Try again'),
+                child: Text('tryAgain'.tr()),
               ),
             ),
           ],

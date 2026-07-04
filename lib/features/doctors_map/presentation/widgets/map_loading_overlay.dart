@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MapLoadingOverlay extends StatelessWidget {
   const MapLoadingOverlay({super.key});
@@ -41,7 +42,7 @@ class MapLoadingOverlay extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Finding doctors nearby',
+                    'findingDoctorsNearby'.tr(),
                     style: TextStyle(
                       color: textColor,
                       fontSize: 14.sp,
@@ -50,7 +51,7 @@ class MapLoadingOverlay extends StatelessWidget {
                   ),
                   SizedBox(height: 2.h),
                   Text(
-                    'Updating map results...',
+                    'updatingMapResults'.tr(),
                     style: TextStyle(color: bodyColor, fontSize: 12.sp),
                   ),
                 ],

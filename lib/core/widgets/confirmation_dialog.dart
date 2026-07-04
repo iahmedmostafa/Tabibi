@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_dimensions.dart';
-import 'package:tabibi/core/utils/constants/app_strings.dart';
 
 /// A reusable confirmation dialog used for destructive actions (logout, remove, etc.)
 class ConfirmationDialog extends StatelessWidget {
@@ -22,7 +21,7 @@ class ConfirmationDialog extends StatelessWidget {
     required this.message,
     required this.confirmText,
     required this.onConfirm,
-    this.cancelText = AppStrings.cancel,
+    this.cancelText = '',
     this.isLoading = false,
     this.closeOnConfirm = true,
     this.icon,
@@ -37,14 +36,14 @@ class ConfirmationDialog extends StatelessWidget {
     return Dialog(
       insetPadding: EdgeInsets.symmetric(horizontal: 24.w),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28.r)),
-      backgroundColor: isDark? AppColors.grey900 : AppColors.white,
+      backgroundColor: isDark ? AppColors.grey900 : AppColors.white,
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: 360.w),
         child: Padding(
           padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 20.h),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
               if (icon != null) ...[
                 Container(
                   width: 48.w,
@@ -70,60 +69,62 @@ class ConfirmationDialog extends StatelessWidget {
                 width: double.infinity,
                 height: 1,
                 color: theme.dividerColor.withValues(alpha: 0.55),
-            ),
-              SizedBox(height: 16.h),
-            Text(
-              message,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: isDark ? AppColors.grey300 : AppColors.grey700,
-                height: 1.45,
               ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 24.h),
-            Row(
-              children: [
-                Expanded(
-                  child: TextButton(
-                    onPressed: isLoading ? null : () => Navigator.pop(context),
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(22.r),
+              SizedBox(height: 16.h),
+              Text(
+                message,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: isDark ? AppColors.grey300 : AppColors.grey700,
+                  height: 1.45,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 24.h),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: isLoading
+                          ? null
+                          : () => Navigator.pop(context),
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(22.r),
+                        ),
+                        minimumSize: Size(0, 44.h),
+                        padding: EdgeInsets.symmetric(vertical: AppHeight.h12),
                       ),
-                      minimumSize: Size(0, 44.h),
-                      padding: EdgeInsets.symmetric(vertical: AppHeight.h12),
-                    ),
-                    child: Text(
-                      cancelText,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: isDark ? AppColors.grey300 : AppColors.grey700,
-                        fontWeight: FontWeight.w600,
+                      child: Text(
+                        cancelText,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: isDark ? AppColors.grey300 : AppColors.grey700,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(width: AppWidth.w12),
-                Expanded(
-                  child: ElevatedButton(
+                  SizedBox(width: AppWidth.w12),
+                  Expanded(
+                    child: ElevatedButton(
                       onPressed: isLoading
                           ? null
                           : () {
                               if (closeOnConfirm) Navigator.pop(context);
                               onConfirm();
                             },
-                    style: ElevatedButton.styleFrom(
+                      style: ElevatedButton.styleFrom(
                         backgroundColor: actionColor,
                         disabledBackgroundColor: actionColor.withValues(
                           alpha: 0.65,
                         ),
-                      shape: RoundedRectangleBorder(
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(22.r),
-                      ),
+                        ),
                         elevation: 0,
                         minimumSize: Size(0, 44.h),
                         padding: EdgeInsets.symmetric(vertical: AppHeight.h12),
-                    ),
+                      ),
                       child: isLoading
                           ? SizedBox(
                               width: 18.w,
@@ -140,14 +141,14 @@ class ConfirmationDialog extends StatelessWidget {
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
                               ),
+                            ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }

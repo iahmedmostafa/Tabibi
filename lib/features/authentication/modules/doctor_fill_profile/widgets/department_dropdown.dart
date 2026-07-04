@@ -4,6 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/core/widgets/drop_menu.dart/drop_menu.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/departments_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class DepartmentDropdown extends StatelessWidget {
   final String? selectedDepartmentId;
@@ -30,7 +31,7 @@ class DepartmentDropdown extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: Text(
-              state.errorMessage ?? 'Failed to load departments',
+              state.errorMessage ?? 'failedToLoadDepartments'.tr(),
               style: const TextStyle(color: Colors.red),
             ),
           );
@@ -39,9 +40,11 @@ class DepartmentDropdown extends StatelessWidget {
         if (state.departmentsStatus == DepartmentsStatus.success &&
             state.departments.isNotEmpty) {
           return DropMenu(
-            hint: 'Department',
+            hint: 'departmentDropdown'.tr(),
             prefixIcon: Iconsax.briefcase,
-            items: state.departments.map((department) => department.name).toList(),
+            items: state.departments
+                .map((department) => department.name)
+                .toList(),
             onChanged: (value) {
               if (value != null) {
                 final selectedCity = state.departments.firstWhere(
@@ -52,8 +55,8 @@ class DepartmentDropdown extends StatelessWidget {
             },
             value: selectedDepartmentId != null
                 ? state.departments
-                    .firstWhere((city) => city.id == selectedDepartmentId)
-                    .name
+                      .firstWhere((city) => city.id == selectedDepartmentId)
+                      .name
                 : null,
           );
         }

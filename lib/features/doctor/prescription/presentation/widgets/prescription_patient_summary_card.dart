@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PrescriptionPatientSummaryCard extends StatelessWidget {
   final String patientName;
@@ -89,11 +90,14 @@ class PrescriptionPatientSummaryCard extends StatelessWidget {
               _PatientChip(icon: Iconsax.profile_2user, label: gender),
               _PatientChip(
                 icon: Iconsax.calendar,
-                label: age > 0 ? '$age years' : 'Age unavailable',
+                label: age > 0
+                    ? 'ageYears'.tr(namedArgs: {'age': age.toString()})
+                    : 'ageUnavailable'.tr(),
               ),
               _PatientChip(
                 icon: Iconsax.receipt_item,
-                label: 'Visit ${_shortAppointmentId(appointmentId)}',
+                label:
+                    '${'visitPrefix'.tr()}${_shortAppointmentId(appointmentId)}',
               ),
             ],
           ),

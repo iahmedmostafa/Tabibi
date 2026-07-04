@@ -8,6 +8,7 @@ import 'package:tabibi/features/doctor/earnings/presentation/widgets/earnings_da
 import 'package:tabibi/features/doctor/earnings/presentation/widgets/earnings_inline_states.dart';
 import 'package:tabibi/features/doctor/earnings/presentation/widgets/earnings_period_tabs.dart';
 import 'package:tabibi/features/doctor/earnings/presentation/widgets/earnings_section_header.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EarningsAnalyticsSection extends StatelessWidget {
   const EarningsAnalyticsSection({super.key});
@@ -24,9 +25,9 @@ class EarningsAnalyticsSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const EarningsSectionHeader(
-                title: 'Analytics',
-                subtitle: 'Revenue trend by selected period',
+              EarningsSectionHeader(
+                title: 'analytics'.tr(),
+                subtitle: 'revenueTrend'.tr(),
                 icon: Icons.show_chart,
               ),
               SizedBox(height: 16.h),
@@ -40,11 +41,11 @@ class EarningsAnalyticsSection extends StatelessWidget {
               else if (state.hasAnalyticsFailure)
                 EarningsInlineError(
                   message:
-                      state.analyticsErrorMessage ?? 'Failed to load chart.',
+                      state.analyticsErrorMessage ?? 'failedToLoadChart'.tr(),
                   onRetry: context.read<EarningsCubit>().retryAnalytics,
                 )
               else if (state.chartData.isEmpty)
-                const EarningsEmptyInlineState(message: 'No analytics data yet.')
+                EarningsEmptyInlineState(message: 'noAnalyticsData'.tr())
               else
                 EarningsChart(data: state.chartData),
             ],

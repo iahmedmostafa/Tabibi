@@ -43,7 +43,9 @@ class ProfileMenuList extends StatelessWidget {
                   icon: Iconsax.user,
                   text: AppStrings.editProfile,
                   onTap: () async {
-                    final result = await context.pushNamed(AppRoutes.editProfile);
+                    final result = await context.pushNamed(
+                      AppRoutes.editProfile,
+                    );
                     if (result == true) {
                       if (context.mounted) {
                         context.read<ProfileCubit>().getProfile();
@@ -71,7 +73,9 @@ class ProfileMenuList extends StatelessWidget {
                 ProfileMenuItem(
                   icon: Iconsax.setting_2,
                   text: AppStrings.settings,
-                  onTap: () {},
+                  onTap: () {
+                    context.pushNamed(AppRoutes.patientSettings);
+                  },
                 ),
                 _buildDivider(context),
                 ProfileMenuItem(
@@ -89,7 +93,7 @@ class ProfileMenuList extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16.h),
-          
+
           // Log Out Card
           Container(
             decoration: BoxDecoration(

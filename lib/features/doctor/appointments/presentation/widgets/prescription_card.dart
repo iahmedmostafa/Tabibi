@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/appointments/domain/entities/appointment_details_entity.dart';
 import 'package:tabibi/features/doctor/core/widgets/doctor_card.dart';
@@ -18,21 +19,29 @@ class PrescriptionCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Prescription / Diagnosis', style: theme.textTheme.titleLarge),
+          Text('prescriptionDiagnosis'.tr(), style: theme.textTheme.titleLarge),
           SizedBox(height: 16.h),
-          _buildRow(context, 'Diagnosis', prescription.diagnosis),
-          Divider(height: 24.h, color: isDark ? AppColors.grey800 : AppColors.grey200),
+          _buildRow(context, 'diagnosis'.tr(), prescription.diagnosis),
+          Divider(
+            height: 24.h,
+            color: isDark ? AppColors.grey800 : AppColors.grey200,
+          ),
           _buildRow(
             context,
-            'Notes',
-            prescription.notes?.isNotEmpty == true ? prescription.notes! : 'None',
+            'notes'.tr(),
+            prescription.notes?.isNotEmpty == true
+                ? prescription.notes!
+                : 'none'.tr(),
           ),
           if (prescription.medicines.isNotEmpty) ...[
-            Divider(height: 24.h, color: isDark ? AppColors.grey800 : AppColors.grey200),
+            Divider(
+              height: 24.h,
+              color: isDark ? AppColors.grey800 : AppColors.grey200,
+            ),
             _buildRow(
               context,
-              'Medicines',
-              '${prescription.medicines.length} Item(s)',
+              'medicinesHeader'.tr(),
+              '${prescription.medicines.length} ${'medicineItems'.tr()}',
             ),
           ],
         ],

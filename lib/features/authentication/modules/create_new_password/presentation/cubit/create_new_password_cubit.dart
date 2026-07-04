@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:tabibi/features/authentication/domain/usecases/create_new_password_use_case.dart'; // IMPORT NEW USE CASE
 import 'package:tabibi/features/authentication/modules/create_new_password/presentation/cubit/create_new_password_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CreateNewPasswordCubit extends Cubit<CreateNewPasswordState> {
   final CreateNewPasswordUseCase createNewPasswordUseCase; // تغيير الاسم
@@ -26,7 +27,7 @@ class CreateNewPasswordCubit extends Cubit<CreateNewPasswordState> {
       emit(
         state.copyWith(
           status: CreatePasswordStatus.failure,
-          errorMessage: 'Email not provided for password creation.',
+          errorMessage: 'emailNotProvided'.tr(),
         ),
       );
       return;

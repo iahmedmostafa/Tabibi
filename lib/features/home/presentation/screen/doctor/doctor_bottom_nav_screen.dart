@@ -6,6 +6,7 @@ import 'package:tabibi/core/network/server_connection.dart';
 import 'package:tabibi/core/services/cache_helper.dart';
 import 'package:tabibi/core/services/notification_manager.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:tabibi/features/doctor/chat/presentation/pages/doctor_conversations_screen.dart';
 import 'package:tabibi/features/doctor/core/doctor_localizations.dart';
 import 'package:tabibi/features/doctor/dashboard/presentation/pages/dashboard_page.dart';
@@ -40,6 +41,8 @@ class _DoctorBottomNavScreenState extends State<DoctorBottomNavScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    context.locale;
+
     final loc = DoctorLocalizations.of(context);
 
     final tabs = [

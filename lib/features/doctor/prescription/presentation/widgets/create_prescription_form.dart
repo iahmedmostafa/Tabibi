@@ -10,6 +10,7 @@ import 'package:tabibi/features/doctor/prescription/presentation/widgets/medicin
 import 'package:tabibi/features/doctor/prescription/presentation/widgets/prescription_form_section_card.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/widgets/prescription_patient_summary_card.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/widgets/prescription_text_field.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CreatePrescriptionForm extends StatelessWidget {
   final CreatePrescriptionArgs args;
@@ -50,16 +51,16 @@ class _ClinicalNotesSection extends StatelessWidget {
     final cubit = context.read<CreatePrescriptionCubit>();
 
     return PrescriptionFormSectionCard(
-      title: 'Clinical Notes',
-      subtitle: 'Capture the diagnosis and guidance for the visit',
+      title: 'clinicalNotes'.tr(),
+      subtitle: 'captureDiagnosis'.tr(),
       icon: Iconsax.health,
       child: Column(
         children: [
           PrescriptionTextField(
             initialValue: '',
             onChanged: cubit.diagnosisChanged,
-            label: 'Diagnosis',
-            hintText: 'Enter primary diagnosis',
+            label: 'diagnosis'.tr(),
+            hintText: 'enterPrimaryDiagnosis'.tr(),
             icon: Iconsax.clipboard_text,
             maxLines: 3,
           ),
@@ -67,8 +68,8 @@ class _ClinicalNotesSection extends StatelessWidget {
           PrescriptionTextField(
             initialValue: '',
             onChanged: cubit.notesChanged,
-            label: 'Additional Notes',
-            hintText: 'Follow-up notes, lifestyle advice, warnings',
+            label: 'additionalNotes'.tr(),
+            hintText: 'followUpNotes'.tr(),
             icon: Iconsax.note_text,
             maxLines: 3,
           ),

@@ -8,6 +8,7 @@ import 'package:tabibi/features/doctor/core/widgets/doctor_card.dart';
 import 'package:tabibi/features/doctor/core/widgets/doctor_status_badge.dart';
 import 'package:tabibi/features/doctor/doctor_appointment_status.dart';
 import 'package:tabibi/features/doctor/requests/domain/entities/appointment_request.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class RequestCard extends StatelessWidget {
   final AppointmentRequest request;
@@ -70,7 +71,9 @@ class RequestCard extends StatelessWidget {
                         Text(
                           '${Formatter.formatDateForDoctor(request.dateTime)} - ${Formatter.formatTimeForDoctor(request.dateTime)}',
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: isDark ? AppColors.grey400 : AppColors.grey500,
+                            color: isDark
+                                ? AppColors.grey400
+                                : AppColors.grey500,
                           ),
                         ),
                       ],
@@ -111,7 +114,13 @@ class RequestCard extends StatelessWidget {
                     child: OutlinedButton.icon(
                       onPressed: onReject,
                       icon: Icon(Icons.close, size: 18.sp),
-                      label: Text('Reject', style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
+                      label: Text(
+                        'reject'.tr(),
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.error,
                         side: BorderSide(color: AppColors.lightPink),
@@ -130,7 +139,13 @@ class RequestCard extends StatelessWidget {
                     child: ElevatedButton.icon(
                       onPressed: onApprove,
                       icon: Icon(Icons.check, size: 18.sp),
-                      label: Text('Approve', style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
+                      label: Text(
+                        'approve'.tr(),
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,

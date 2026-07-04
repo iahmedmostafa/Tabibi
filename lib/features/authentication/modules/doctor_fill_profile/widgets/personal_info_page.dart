@@ -7,6 +7,7 @@ import 'package:tabibi/features/authentication/modules/fill_profile/presentation
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/date_picker_field.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/image_upload_section.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/name_input_field.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PersonalInfoPage extends StatelessWidget {
   final TextEditingController nameController;
@@ -39,21 +40,25 @@ class PersonalInfoPage extends StatelessWidget {
         VerticalSpace(height: AppHeight.h28),
         NameInputField(controller: nameController),
         VerticalSpace(height: AppHeight.h28),
-        NameInputField(controller: bioController, hintText: 'Bio', maxLines: 3),
+        NameInputField(
+          controller: bioController,
+          hintText: 'bio'.tr(),
+          maxLines: 3,
+        ),
         VerticalSpace(height: AppHeight.h28),
         DropMenu(
           hint: AppStrings.genderFillProfile,
-          items: const ['Male', 'Female'],
+          items: ['male'.tr(), 'female'.tr()],
           onChanged: (value) {
-            onGenderChanged(value == 'Male' ? 1 : 2);
+            onGenderChanged(value == 'male'.tr() ? 1 : 2);
           },
-          value: gender == 1 ? 'Male' : 'Female',
+          value: gender == 1 ? 'male'.tr() : 'female'.tr(),
         ),
         VerticalSpace(height: AppHeight.h28),
         DatePickerField(
           selectedDate: selectedBirthdate,
           hintText: AppStrings.dateFillProfile,
-          pickerTitle: 'Select your birthdate',
+          pickerTitle: 'selectBirthdate'.tr(),
           onDateSelected: onBirthdateSelected,
           initialDateTime: DateTime(2000, 1, 1),
         ),

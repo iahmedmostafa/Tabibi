@@ -4,6 +4,7 @@ import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/widgets/clinic_image_upload_section.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/city_dropdown.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/name_input_field.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ClinicInfoPage extends StatelessWidget {
   final TextEditingController clinicNameController;
@@ -36,17 +37,17 @@ class ClinicInfoPage extends StatelessWidget {
         VerticalSpace(height: AppHeight.h20),
         NameInputField(
           controller: clinicNameController,
-          hintText: 'Clinic Name',
+          hintText: 'clinicName'.tr(),
         ),
         VerticalSpace(height: AppHeight.h20),
         NameInputField(
           controller: clinicAddressController,
-          hintText: 'Clinic Address',
+          hintText: 'clinicAddress'.tr(),
         ),
         VerticalSpace(height: AppHeight.h20),
         NameInputField(
           controller: clinicPhoneController,
-          hintText: 'Clinic Phone',
+          hintText: 'clinicPhone'.tr(),
         ),
         VerticalSpace(height: AppHeight.h20),
         CityDropdown(
@@ -56,12 +57,12 @@ class ClinicInfoPage extends StatelessWidget {
         VerticalSpace(height: AppHeight.h20),
         NameInputField(
           controller: consultationFeeController,
-          hintText: 'Consultation Fee',
+          hintText: 'consultationFee'.tr(),
         ),
         VerticalSpace(height: AppHeight.h20),
         NameInputField(
           controller: yearsOfExperienceController,
-          hintText: 'Years of Experience',
+          hintText: 'yearsOfExperience'.tr(),
         ),
       ],
     );

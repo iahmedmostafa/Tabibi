@@ -14,6 +14,7 @@ import 'package:tabibi/features/doctor/core/widgets/doctor_section_header.dart';
 import 'package:tabibi/features/doctor/reviews/domain/entities/review.dart';
 import 'package:tabibi/features/doctor/reviews/presentation/cubit/reviews_cubit.dart';
 import 'package:tabibi/features/doctor/reviews/presentation/cubit/reviews_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ReviewsPage extends StatelessWidget {
   const ReviewsPage({super.key});
@@ -28,7 +29,10 @@ class ReviewsPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
         appBar: AppBar(
-          title: Text('Reviews & Ratings', style: theme.textTheme.titleLarge),
+          title: Text(
+            'reviewsAndRatings'.tr(),
+            style: theme.textTheme.titleLarge,
+          ),
           centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp),
@@ -53,7 +57,7 @@ class ReviewsPage extends StatelessWidget {
             }
             if (state.status == ReviewsStatus.failure) {
               return DoctorErrorState(
-                message: state.errorMessage ?? 'Failed to load reviews',
+                message: state.errorMessage ?? 'failedToLoadReviews'.tr(),
                 onRetry: () => context.read<ReviewsCubit>().getReviews(),
               );
             }
@@ -118,7 +122,7 @@ class _RatingSummaryCard extends StatelessWidget {
                     ),
                     SizedBox(height: 8.h),
                     Text(
-                      '${summary.totalReviews} reviews',
+                      '${summary.totalReviews} ${"reviews".tr()}',
                       style: AppTextStyle.bodyXsMedium.copyWith(
                         color: isDark ? AppColors.grey400 : AppColors.grey500,
                       ),
@@ -222,7 +226,7 @@ class _FilterChips extends StatelessWidget {
             child: Row(
               children: [
                 _FilterChip(
-                  label: 'All',
+                  label: 'allFilter'.tr(),
                   isSelected: state.selectedRatingFilter == null,
                   onTap: () =>
                       context.read<ReviewsCubit>().filterByRating(null),
@@ -302,7 +306,7 @@ class _ReviewsList extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: DoctorSectionHeader(title: 'Patient Reviews'),
+          child: DoctorSectionHeader(title: 'patientReviews'.tr()),
         ),
         SizedBox(height: 12.h),
         BlocBuilder<ReviewsCubit, ReviewsState>(
@@ -310,15 +314,15 @@ class _ReviewsList extends StatelessWidget {
               previous.filteredReviews != current.filteredReviews,
           builder: (context, state) {
             if (state.filteredReviews.isEmpty) {
-              return const DoctorEmptyState(
+              return DoctorEmptyState(
                 icon: Icons.reviews_outlined,
-                message: 'No reviews found for this rating',
+                message: 'noReviewsForRating'.tr(),
               );
             }
             return Column(
-              children: state.filteredReviews.map(
-                (review) => _ReviewCard(review: review),
-              ).toList(),
+              children: state.filteredReviews
+                  .map((review) => _ReviewCard(review: review))
+                  .toList(),
             );
           },
         ),
@@ -410,7 +414,7 @@ class _ReviewCard extends StatelessWidget {
               ),
               SizedBox(width: 4.w),
               Text(
-                'Helpful (${review.helpfulCount})',
+                '${"helpful".tr()} (${review.helpfulCount})',
                 style: AppTextStyle.bodyXsMedium.copyWith(
                   color: isDark ? AppColors.grey400 : AppColors.grey500,
                 ),

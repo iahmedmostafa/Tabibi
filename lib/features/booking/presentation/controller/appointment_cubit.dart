@@ -11,6 +11,7 @@ import 'package:tabibi/features/booking/domain/usecases/cancel_booking_use_case.
 import 'package:tabibi/features/booking/domain/usecases/confirm_payment_use_case.dart';
 import 'package:tabibi/features/booking/domain/usecases/create_booking_use_case.dart';
 import 'package:tabibi/features/booking/domain/usecases/get_available_slots_use_case.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 part 'appointment_state.dart';
 
@@ -117,8 +118,8 @@ class AppointmentCubit extends Cubit<AppointmentState> {
           log("bookingId: ${bookingId.toString()}");
 
           if (clientSecret == null || bookingId == null) {
-            const error = "Failed to initiate payment process";
-            emit(const AppointmentFailure(error));
+            final error = 'failedToInitiatePayment'.tr();
+            emit(AppointmentFailure(error));
             return;
           }
 
@@ -140,7 +141,9 @@ class AppointmentCubit extends Cubit<AppointmentState> {
               },
             );
           } catch (e) {
-            final errorMsg = "Payment failed or cancelled: ${e.toString()}";
+            final errorMsg = 'paymentFailedOrCancelled'.tr(
+              namedArgs: {'message': e.toString()},
+            );
             emit(AppointmentFailure(errorMsg));
 
             // Optionally call cancel booking if payment failed
@@ -149,7 +152,9 @@ class AppointmentCubit extends Cubit<AppointmentState> {
         },
       );
     } catch (e) {
-      final errorMsg = "An error occurred: ${e.toString()}";
+      final errorMsg = 'anErrorOccurred'.tr(
+        namedArgs: {'message': e.toString()},
+      );
 
       emit(AppointmentFailure(errorMsg));
     }

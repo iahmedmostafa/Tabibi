@@ -14,6 +14,7 @@ import 'package:tabibi/features/home/data/models/doctor_model.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/doctors_state.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/home_feedback_panel.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class RecommendedDoctorsSection extends StatelessWidget {
   const RecommendedDoctorsSection({super.key});
@@ -28,13 +29,13 @@ class RecommendedDoctorsSection extends StatelessWidget {
 
         if (state.status == DoctorsStatus.failure) {
           return ErrorPanel(
-            message: state.errorMessage ?? 'Failed to load doctors',
+            message: state.errorMessage ?? 'failedToLoadDoctors'.tr(),
           );
         }
 
         final doctors = state.doctors.take(8).toList();
         if (doctors.isEmpty) {
-          return const EmptyPanel(message: 'No doctors available right now');
+          return EmptyPanel(message: 'noDoctorsAvailable'.tr());
         }
 
         return SizedBox(
@@ -91,7 +92,8 @@ class _RecommendedDoctorCard extends StatelessWidget {
         ? AppColors.grey800
         : AppColors.black.withValues(alpha: 0.1);
     final titleColor = isDark ? AppColors.white : AppColors.black;
-    final bodyColor = isDark ? AppColors.grey400 : AppColors.grey500;    final imageBg = isDark ? AppColors.grey800 : AppColors.grey300;
+    final bodyColor = isDark ? AppColors.grey400 : AppColors.grey500;
+    final imageBg = isDark ? AppColors.grey800 : AppColors.grey300;
     final imageIconColor = isDark ? AppColors.grey400 : AppColors.grey500;
 
     return InkWell(
@@ -199,7 +201,7 @@ class _RecommendedDoctorCard extends StatelessWidget {
                   ),
                   SizedBox(height: 6.h),
                   Text(
-                    doctor.department ?? 'General Medicine',
+                    doctor.department ?? 'generalMedicine'.tr(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -218,7 +220,7 @@ class _RecommendedDoctorCard extends StatelessWidget {
                       SizedBox(width: 4.w),
                       Expanded(
                         child: Text(
-                          doctor.address ?? 'Clinic address',
+                          doctor.address ?? 'clinicAddress'.tr(),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodySmall
@@ -300,7 +302,7 @@ class _RatingPill extends StatelessWidget {
           Icon(Icons.star_rounded, color: AppColors.actionAmber, size: 16.sp),
           SizedBox(width: 4.w),
           Text(
-            rating > 0 ? rating.toStringAsFixed(1) : 'New',
+            rating > 0 ? rating.toStringAsFixed(1) : 'newLabel'.tr(),
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
               color: isDark ? AppColors.grey100 : AppColors.black,
               fontWeight: FontWeight.w800,
@@ -397,4 +399,3 @@ class _DoctorsSkeleton extends StatelessWidget {
     );
   }
 }
-

@@ -6,6 +6,7 @@ import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/cities_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/cities_state.dart';
 import 'package:tabibi/features/patient_profile/presentation/widgets/edit_profile_dropdown.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EditProfileCityDropdown extends StatelessWidget {
   final String? selectedCityId;
@@ -27,7 +28,7 @@ class EditProfileCityDropdown extends StatelessWidget {
 
         if (state.status == CitiesStatus.failure) {
           return Text(
-            state.errorMessage ?? 'Failed to load cities',
+            state.errorMessage ?? 'failedToLoadCities'.tr(),
             style: const TextStyle(color: Colors.red),
           );
         }

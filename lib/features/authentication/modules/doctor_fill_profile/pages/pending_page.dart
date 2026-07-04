@@ -6,6 +6,7 @@ import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_styles.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PendingPage extends StatelessWidget {
   const PendingPage({super.key});
@@ -34,7 +35,7 @@ class PendingPage extends StatelessWidget {
               ),
               const VerticalSpace(height: 32),
               Text(
-                'Account Under Review',
+                'accountUnderReview'.tr(),
                 style: AppTextStyle.h2.copyWith(
                   color: AppColors.primary,
                   fontSize: 24,
@@ -43,7 +44,7 @@ class PendingPage extends StatelessWidget {
               ),
               const VerticalSpace(height: 16),
               Text(
-                'Your profile is currently being reviewed by our admin team. This process usually takes 24-48 hours.\n\nRefresh the page to check the status.',
+                'accountUnderReviewDescription'.tr(),
                 style: AppTextStyle.bodySRegular.copyWith(
                   color: AppColors.textGrey,
                   height: 1.5,
@@ -53,7 +54,7 @@ class PendingPage extends StatelessWidget {
               ),
               const VerticalSpace(height: 48),
               PrimaryButton(
-                title: 'Back to Login',
+                title: 'backToLogin'.tr(),
                 onPress: () {
                   context.goNamed(AppRoutes.login);
                 },

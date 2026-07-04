@@ -11,6 +11,7 @@ import 'package:tabibi/features/doctor/earnings/presentation/widgets/earnings_an
 import 'package:tabibi/features/doctor/earnings/presentation/widgets/earnings_inline_states.dart';
 import 'package:tabibi/features/doctor/earnings/presentation/widgets/earnings_summary_cards.dart';
 import 'package:tabibi/features/doctor/earnings/presentation/widgets/earnings_transactions_section.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EarningsPage extends StatelessWidget {
   const EarningsPage({super.key});
@@ -24,7 +25,7 @@ class EarningsPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
         appBar: AppBar(
-          title: Text('Earnings', style: theme.textTheme.titleLarge),
+          title: Text('earnings'.tr(), style: theme.textTheme.titleLarge),
           centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp),
@@ -39,7 +40,7 @@ class EarningsPage extends StatelessWidget {
 
             if (state.hasInitialDashboardFailure) {
               return EarningsErrorState(
-                message: state.errorMessage ?? 'Failed to load earnings.',
+                message: state.errorMessage ?? 'failedToLoadEarnings'.tr(),
                 onRetry: context.read<EarningsCubit>().retryDashboard,
               );
             }

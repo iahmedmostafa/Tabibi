@@ -1,4 +1,5 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -39,7 +40,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                   VerticalSpace(height: AppHeight.h32),
                   const ArrowBack(nameRoute: AppRoutes.login),
                   VerticalSpace(height: AppHeight.h32),
-                  const TopSection(
+                  TopSection(
                     title: AppStrings.forgotPassword,
                     supTitle: AppStrings.supTitleForgotPassword,
                   ),
@@ -56,8 +57,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                     listener: (context, state) {
                       if (state.status == ForgotPasswordStatus.success) {
                         AppHelperFunctions.showAwesomeSnackBar(
-                          title: 'Success',
-                          message: 'Code sent successfully',
+                          title: 'success'.tr(),
+                          message: 'codeSentSuccessfully'.tr(),
                           contentType: ContentType.success,
                           context: context,
                         );
@@ -67,7 +68,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                         );
                       } else if (state.status == ForgotPasswordStatus.failure) {
                         AppHelperFunctions.showAwesomeSnackBar(
-                          title: 'Error',
+                          title: 'error'.tr(),
                           message: state.errorMessage ?? 'Error occurred',
                           contentType: ContentType.failure,
                           context: context,
@@ -80,7 +81,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                             ? null
                             : () => cubit.sendCode(),
                         title: state.status == ForgotPasswordStatus.loading
-                            ? 'Sending...'
+                            ? 'sending'.tr()
                             : AppStrings.sendCode,
                       );
                     },

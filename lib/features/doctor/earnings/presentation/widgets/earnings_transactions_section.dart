@@ -7,6 +7,7 @@ import 'package:tabibi/features/doctor/earnings/presentation/widgets/earnings_da
 import 'package:tabibi/features/doctor/earnings/presentation/widgets/earnings_inline_states.dart';
 import 'package:tabibi/features/doctor/earnings/presentation/widgets/earnings_section_header.dart';
 import 'package:tabibi/features/doctor/earnings/presentation/widgets/earnings_transaction_card.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EarningsTransactionsSection extends StatelessWidget {
   const EarningsTransactionsSection({super.key});
@@ -24,9 +25,9 @@ class EarningsTransactionsSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const EarningsSectionHeader(
-                title: 'Recent Transactions',
-                subtitle: 'Completed visit payments',
+              EarningsSectionHeader(
+                title: 'recentTransactions'.tr(),
+                subtitle: 'completedVisitPayments'.tr(),
                 icon: Icons.receipt_long_outlined,
               ),
               SizedBox(height: 16.h),
@@ -39,11 +40,11 @@ class EarningsTransactionsSection extends StatelessWidget {
                 EarningsInlineError(
                   message:
                       state.transactionsErrorMessage ??
-                      'Failed to load transactions.',
+                      'failedToLoadTransactions'.tr(),
                   onRetry: context.read<EarningsCubit>().retryTransactions,
                 )
               else if (state.transactions.isEmpty)
-                const EarningsEmptyInlineState(message: 'No transactions yet.')
+                EarningsEmptyInlineState(message: 'noTransactionsYet'.tr())
               else ...[
                 ...state.transactions.map(
                   (transaction) => Padding(
@@ -72,7 +73,7 @@ class EarningsTransactionsSection extends StatelessWidget {
                                 strokeWidth: 2,
                               ),
                             )
-                          : const Text('Load More'),
+                          : Text('loadMore'.tr()),
                     ),
                   ),
               ],

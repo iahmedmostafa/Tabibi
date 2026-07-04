@@ -1,12 +1,13 @@
 import 'package:intl/intl.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 /// VALIDATION CLASS
 class Validator {
   /// Empty Text Validation
   static String? validateEmptyText(String? fieldName, String? value) {
     if (value == null || value.isEmpty) {
-      return '$fieldName is required.';
+      return 'fieldIsRequired'.tr(namedArgs: {'fieldName': fieldName ?? ''});
     }
 
     return null;
@@ -14,12 +15,12 @@ class Validator {
 
   static String? validatePinCode(String? pinCode) {
     if (pinCode == null || pinCode.isEmpty) {
-      return 'Pin Code is required.';
+      return 'pinCodeRequired'.tr();
     }
 
     // Check for exact pinCode length (6 digits expected)
     if (pinCode.length < 6) {
-      return 'Pin Code must be 6 Digits.';
+      return 'pinCodeMustBe6Digits'.tr();
     }
 
     return null;
@@ -27,7 +28,7 @@ class Validator {
 
   static String? validateAge(String? input) {
     if (input == null || input.isEmpty) {
-      return 'Date of Birth is required.';
+      return 'dateOfBirthRequired'.tr();
     }
 
     try {
@@ -49,7 +50,7 @@ class Validator {
         return AppStrings.dateOfBirthError;
       }
     } catch (e) {
-      return 'Invalid date format. Use dd-MMM-yyyy.';
+      return 'invalidDateFormat'.tr();
     }
 
     return null;
@@ -58,7 +59,7 @@ class Validator {
   /// Username Validation
   static String? validateUsername(String? username) {
     if (username == null || username.isEmpty) {
-      return 'Username is required.';
+      return 'usernameRequired'.tr();
     }
 
     // Define a regular expression pattern for the username.
@@ -80,7 +81,7 @@ class Validator {
     }
 
     if (!isValid) {
-      return 'Username is not valid.';
+      return 'usernameNotValid'.tr();
     }
 
     return null;
@@ -89,14 +90,14 @@ class Validator {
   /// Email Validation
   static String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Email is required.';
+      return 'emailRequired'.tr();
     }
 
     // Regular expression for email validation
     final emailRegExp = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
 
     if (!emailRegExp.hasMatch(value)) {
-      return 'Invalid email address.';
+      return 'invalidEmail'.tr();
     }
 
     return null;
@@ -105,27 +106,27 @@ class Validator {
   /// Password Validation
   static String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Password is required.';
+      return 'passwordRequired'.tr();
     }
 
     // Check for minimum password length
     if (value.length < 6) {
-      return 'Password must be at least 6 characters long.';
+      return 'passwordMinLength'.tr();
     }
 
     // Check for uppercase letters
     if (!value.contains(RegExp(r'[A-Z]'))) {
-      return 'Password must contain at least one uppercase letter.';
+      return 'passwordUppercase'.tr();
     }
 
     // Check for numbers
     if (!value.contains(RegExp(r'[0-9]'))) {
-      return 'Password must contain at least one number.';
+      return 'passwordNumber'.tr();
     }
 
     // Check for special characters
     if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
-      return 'Password must contain at least one special character.';
+      return 'passwordSpecialChar'.tr();
     }
 
     return null;
@@ -134,7 +135,7 @@ class Validator {
   /// Phone Number Validation
   static String? validatePhoneNumber(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Phone number is required.';
+      return 'phoneRequired'.tr();
     }
 
     final returnValue = validatePhoneNumberFormat(value);
@@ -151,7 +152,7 @@ class Validator {
     final phoneRegExp = RegExp(r'^\d{10}$');
 
     if (!phoneRegExp.hasMatch(value)) {
-      return 'Invalid phone number format (10 digits required).';
+      return 'invalidPhoneFormat'.tr();
     }
 
     return null;
@@ -162,10 +163,10 @@ class Validator {
     String originalPassword,
   ) {
     if (confirmPassword == null || confirmPassword.isEmpty) {
-      return 'Confirm password is required.';
+      return 'confirmPasswordRequired'.tr();
     }
     if (confirmPassword != originalPassword) {
-      return 'Passwords do not match.';
+      return 'passwordsDoNotMatch'.tr();
     }
     return null;
   }

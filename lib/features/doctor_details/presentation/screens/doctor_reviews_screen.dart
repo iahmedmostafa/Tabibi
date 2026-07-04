@@ -8,6 +8,7 @@ import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/features/doctor_details/presentation/controller/reviews_cubit.dart';
 import 'package:tabibi/features/doctor_details/presentation/controller/reviews_state.dart';
 import 'package:tabibi/features/doctor_details/presentation/widgets/review_item.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class DoctorReviewsScreen extends StatefulWidget {
   final String doctorId;
@@ -138,7 +139,7 @@ class _DoctorReviewsScreenState extends State<DoctorReviewsScreen> {
                     ),
                     child: TextFormField(
                       decoration: InputDecoration(
-                        hintText: "Search in reviews",
+                        hintText: 'searchInReviews'.tr(),
                         prefixIcon: Icon(
                           Iconsax.search_normal,
                           color: AppColors.primary,
@@ -189,25 +190,33 @@ class _DoctorReviewsScreenState extends State<DoctorReviewsScreen> {
                       children: [
                         _buildFilterChip(
                           context,
-                          "Filter",
+                          'filter'.tr(),
                           icon: Iconsax.setting_4,
                           hasDropdown: true,
                         ),
                         SizedBox(width: 8.w),
-                        _buildFilterChip(context, "Verified", isActive: true),
+                        _buildFilterChip(
+                          context,
+                          'verified'.tr(),
+                          isActive: true,
+                        ),
                         SizedBox(width: 8.w),
-                        _buildFilterChip(context, "Latest", isActive: true),
+                        _buildFilterChip(
+                          context,
+                          'latest'.tr(),
+                          isActive: true,
+                        ),
                         SizedBox(width: 8.w),
-                        _buildFilterChip(context, "With Photos"),
+                        _buildFilterChip(context, 'withPhotos'.tr()),
                         SizedBox(width: 8.w),
-                        _buildFilterChip(context, "Detailed"),
+                        _buildFilterChip(context, 'detailed'.tr()),
                       ],
                     ),
                   ),
                   SizedBox(height: 16.h),
                   Expanded(
                     child: reviews.isEmpty
-                        ? const Center(child: Text("No reviews found"))
+                        ? Center(child: Text('noReviewsFound'.tr()))
                         : ListView.builder(
                             controller: _scrollController,
                             padding: EdgeInsets.symmetric(

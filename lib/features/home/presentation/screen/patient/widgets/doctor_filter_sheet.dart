@@ -8,6 +8,7 @@ import 'package:tabibi/features/authentication/modules/fill_profile/presentation
 import 'package:tabibi/features/home/data/models/doctors_filter_params.dart';
 import 'package:tabibi/features/home/data/models/department_model.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/departments_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class DoctorsFilterSheet extends StatefulWidget {
   final DoctorsFilterParams initialFilters;
@@ -21,13 +22,13 @@ class DoctorsFilterSheet extends StatefulWidget {
 class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
   late DoctorsFilterParams _draft;
 
-  static const List<_SortOption> _sortOptions = [
-    _SortOption('Default', null),
-    _SortOption('Name A-Z', 'Name'),
-    _SortOption('Name Z-A', 'Name desc'),
-    _SortOption('Lowest fee', 'ConsultationFee'),
-    _SortOption('Highest fee', 'ConsultationFee desc'),
-    _SortOption('Most experienced', 'YearsOfExperience desc'),
+  static final List<_SortOption> _sortOptions = [
+    _SortOption('defaultSort'.tr(), null),
+    _SortOption('nameAZ'.tr(), 'Name'),
+    _SortOption('nameZA'.tr(), 'Name desc'),
+    _SortOption('lowestFee'.tr(), 'ConsultationFee'),
+    _SortOption('highestFee'.tr(), 'ConsultationFee desc'),
+    _SortOption('mostExperienced'.tr(), 'YearsOfExperience desc'),
   ];
 
   @override
@@ -77,7 +78,7 @@ class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
                   children: [
                     Expanded(
                       child: Text(
-                        'Filter',
+                        'filter'.tr(),
                         style: TextStyle(
                           color: textColor,
                           fontSize: 20.sp,
@@ -87,8 +88,8 @@ class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
                     ),
                     TextButton(
                       onPressed: _reset,
-                      child: const Text(
-                        'Reset',
+                      child: Text(
+                        'reset'.tr(),
                         style: TextStyle(
                           color: AppColors.primary,
                           fontWeight: FontWeight.w700,
@@ -98,13 +99,13 @@ class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
                   ],
                 ),
                 SizedBox(height: 18.h),
-                _SectionLabel(label: 'Show Me', isDark: isDark),
+                _SectionLabel(label: 'showMe'.tr(), isDark: isDark),
                 SizedBox(height: 10.h),
                 Row(
                   children: [
                     Expanded(
                       child: _choice(
-                        'Everyone',
+                        'everyone'.tr(),
                         _draft.gender == null,
                         isDark,
                         () => setState(
@@ -115,7 +116,7 @@ class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
                     SizedBox(width: 10.w),
                     Expanded(
                       child: _choice(
-                        'Male',
+                        'maleGender'.tr(),
                         _draft.gender == 1,
                         isDark,
                         () =>
@@ -125,7 +126,7 @@ class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
                     SizedBox(width: 10.w),
                     Expanded(
                       child: _choice(
-                        'Female',
+                        'femaleGender'.tr(),
                         _draft.gender == 2,
                         isDark,
                         () =>
@@ -135,7 +136,7 @@ class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
                   ],
                 ),
                 SizedBox(height: 18.h),
-                _SectionLabel(label: 'City', isDark: isDark),
+                _SectionLabel(label: 'cityLabel'.tr(), isDark: isDark),
                 SizedBox(height: 8.h),
                 BlocBuilder<auth_city.CitiesCubit, dynamic>(
                   builder: (context, state) {
@@ -146,13 +147,13 @@ class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
                       value: _draft.cityId,
                       isDark: isDark,
                       hint: state.status == CitiesStatus.loading
-                          ? 'Loading cities...'
-                          : 'All cities',
+                          ? 'loadingCities'.tr()
+                          : 'allCities'.tr(),
                       items: [
                         DropdownMenuItem<String?>(
                           value: null,
                           child: Text(
-                            'All cities',
+                            'allCities'.tr(),
                             style: TextStyle(color: textColor),
                           ),
                         ),
@@ -176,22 +177,23 @@ class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
                   },
                 ),
                 SizedBox(height: 18.h),
-                _SectionLabel(label: 'Department', isDark: isDark),
+                _SectionLabel(label: 'department'.tr(), isDark: isDark),
                 SizedBox(height: 8.h),
                 BlocBuilder<DepartmentsCubit, DepartmentsState>(
                   builder: (context, state) {
-                    final List<Department> departments = state.departments ?? [];
+                    final List<Department> departments =
+                        state.departments ?? [];
                     return _FilterDropdown<String?>(
                       value: _draft.departmentId,
                       isDark: isDark,
                       hint: state.departmentsStatus == DepartmentsStatus.loading
-                          ? 'Loading departments...'
-                          : 'All departments',
+                          ? 'loadingDepartments'.tr()
+                          : 'allDepartments'.tr(),
                       items: [
                         DropdownMenuItem<String?>(
                           value: null,
                           child: Text(
-                            'All departments',
+                            'allDepartments'.tr(),
                             style: TextStyle(color: textColor),
                           ),
                         ),
@@ -215,12 +217,12 @@ class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
                   },
                 ),
                 SizedBox(height: 18.h),
-                _SectionLabel(label: 'Sort By', isDark: isDark),
+                _SectionLabel(label: 'sortBy'.tr(), isDark: isDark),
                 SizedBox(height: 8.h),
                 _FilterDropdown<String?>(
                   value: _draft.sort,
                   isDark: isDark,
-                  hint: 'Default',
+                  hint: 'defaultSort'.tr(),
                   items: _sortOptions
                       .map(
                         (option) => DropdownMenuItem<String?>(
@@ -240,24 +242,25 @@ class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
                   ),
                 ),
                 SizedBox(height: 18.h),
-                _SectionLabel(label: 'Rating Order', isDark: isDark),
+                _SectionLabel(label: 'ratingOrder'.tr(), isDark: isDark),
                 SizedBox(height: 8.h),
                 Row(
                   children: [
                     Expanded(
                       child: _choice(
-                        'None',
+                        'none'.tr(),
                         _draft.sortByRating == null,
                         isDark,
                         () => setState(
-                          () => _draft = _draft.copyWith(clearSortByRating: true),
+                          () =>
+                              _draft = _draft.copyWith(clearSortByRating: true),
                         ),
                       ),
                     ),
                     SizedBox(width: 10.w),
                     Expanded(
                       child: _choice(
-                        'Highest',
+                        'highest'.tr(),
                         _draft.sortByRating?.toLowerCase() == 'desc',
                         isDark,
                         () => setState(
@@ -268,7 +271,7 @@ class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
                     SizedBox(width: 10.w),
                     Expanded(
                       child: _choice(
-                        'Lowest',
+                        'lowest'.tr(),
                         _draft.sortByRating?.toLowerCase() == 'asc',
                         isDark,
                         () => setState(
@@ -279,39 +282,45 @@ class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
                   ],
                 ),
                 SizedBox(height: 18.h),
-                _SectionLabel(label: 'Review Count Order', isDark: isDark),
+                _SectionLabel(label: 'reviewCountOrder'.tr(), isDark: isDark),
                 SizedBox(height: 8.h),
                 Row(
                   children: [
                     Expanded(
                       child: _choice(
-                        'None',
+                        'none'.tr(),
                         _draft.sortByReviewCount == null,
                         isDark,
                         () => setState(
-                          () => _draft = _draft.copyWith(clearSortByReviewCount: true),
+                          () => _draft = _draft.copyWith(
+                            clearSortByReviewCount: true,
+                          ),
                         ),
                       ),
                     ),
                     SizedBox(width: 10.w),
                     Expanded(
                       child: _choice(
-                        'Most',
+                        'most'.tr(),
                         _draft.sortByReviewCount?.toLowerCase() == 'desc',
                         isDark,
                         () => setState(
-                          () => _draft = _draft.copyWith(sortByReviewCount: 'desc'),
+                          () => _draft = _draft.copyWith(
+                            sortByReviewCount: 'desc',
+                          ),
                         ),
                       ),
                     ),
                     SizedBox(width: 10.w),
                     Expanded(
                       child: _choice(
-                        'Least',
+                        'least'.tr(),
                         _draft.sortByReviewCount?.toLowerCase() == 'asc',
                         isDark,
                         () => setState(
-                          () => _draft = _draft.copyWith(sortByReviewCount: 'asc'),
+                          () => _draft = _draft.copyWith(
+                            sortByReviewCount: 'asc',
+                          ),
                         ),
                       ),
                     ),
@@ -320,7 +329,7 @@ class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
                 SizedBox(height: 18.h),
                 Row(
                   children: [
-                    _SectionLabel(label: 'Page Size', isDark: isDark),
+                    _SectionLabel(label: 'pageSize'.tr(), isDark: isDark),
                     const Spacer(),
                     Text(
                       '${_draft.pageSize}',
@@ -334,7 +343,9 @@ class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
                 SliderTheme(
                   data: SliderTheme.of(context).copyWith(
                     activeTrackColor: AppColors.primary,
-                    inactiveTrackColor: isDark ? AppColors.grey800 : AppColors.grey200,
+                    inactiveTrackColor: isDark
+                        ? AppColors.grey800
+                        : AppColors.grey200,
                     thumbColor: AppColors.primary,
                     overlayColor: AppColors.primary.withOpacity(0.12),
                   ),
@@ -367,7 +378,7 @@ class _DoctorsFilterSheetState extends State<DoctorsFilterSheet> {
                       ),
                       onPressed: () => Navigator.of(context).pop(_draft),
                       child: Text(
-                        'Apply Filters',
+                        'applyFilters'.tr(),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 15.sp,
@@ -457,10 +468,7 @@ class _FilterDropdown<T> extends StatelessWidget {
     return DropdownButtonFormField<T>(
       initialValue: value,
       isExpanded: true,
-      hint: Text(
-        hint,
-        style: TextStyle(color: hintColor),
-      ),
+      hint: Text(hint, style: TextStyle(color: hintColor)),
       items: items,
       onChanged: onChanged,
       dropdownColor: dropdownColor,
@@ -495,4 +503,3 @@ class _SortOption {
 
   const _SortOption(this.label, this.value);
 }
-

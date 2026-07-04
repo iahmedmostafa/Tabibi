@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BookingTabFilter extends StatelessWidget {
   final BookingStatus selectedTab;
@@ -20,9 +21,9 @@ class BookingTabFilter extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildTabItem(context, "Upcoming", BookingStatus.upcoming),
-          _buildTabItem(context, "Completed", BookingStatus.completed),
-          _buildTabItem(context, "Refunded", BookingStatus.cancelled),
+          _buildTabItem(context, 'upcoming'.tr(), BookingStatus.upcoming),
+          _buildTabItem(context, 'completed'.tr(), BookingStatus.completed),
+          _buildTabItem(context, 'refunded'.tr(), BookingStatus.cancelled),
         ],
       ),
     );

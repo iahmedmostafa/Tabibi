@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_images.dart';
 import 'package:tabibi/features/doctor_details/domain/entities/doctor_details_entity.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ReviewItem extends StatelessWidget {
   final DoctorReview review;
@@ -14,16 +15,16 @@ class ReviewItem extends StatelessWidget {
     final duration = DateTime.now().difference(dateTime);
     if (duration.inDays > 365) {
       final years = (duration.inDays / 365).floor();
-      return "$years year${years > 1 ? 's' : ''} ago";
+      return 'yearsAgo'.tr(namedArgs: {'years': years.toString()});
     } else if (duration.inDays > 30) {
       final months = (duration.inDays / 30).floor();
-      return "$months month${months > 1 ? 's' : ''} ago";
+      return 'monthsAgo'.tr(namedArgs: {'months': months.toString()});
     } else if (duration.inDays > 0) {
-      return "${duration.inDays} day${duration.inDays > 1 ? 's' : ''} ago";
+      return 'daysAgo'.tr(namedArgs: {'days': duration.inDays.toString()});
     } else if (duration.inHours > 0) {
-      return "${duration.inHours} hour${duration.inHours > 1 ? 's' : ''} ago";
+      return 'hoursAgo'.tr(namedArgs: {'hours': duration.inHours.toString()});
     } else {
-      return "just now";
+      return 'justNow'.tr();
     }
   }
 
@@ -84,11 +85,7 @@ class ReviewItem extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                      size: 18.sp,
-                    ),
+                    Icon(Icons.star, color: Colors.amber, size: 18.sp),
                     SizedBox(width: 4.w),
                     Text(
                       review.rating.toStringAsFixed(1),
@@ -116,7 +113,9 @@ class ReviewItem extends StatelessWidget {
           Text(
             review.comment!,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: isDark ? AppColors.textDarkSecondary : AppColors.textSecondary,
+              color: isDark
+                  ? AppColors.textDarkSecondary
+                  : AppColors.textSecondary,
               height: 1.4,
               fontSize: 13.sp,
             ),

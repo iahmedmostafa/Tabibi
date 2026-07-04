@@ -5,6 +5,7 @@ import 'package:tabibi/core/utils/constants/app_dimensions.dart';
 import 'package:tabibi/core/widgets/drop_menu.dart/drop_menu.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
 import 'package:tabibi/features/doctor_profile/domain/entities/doctor_profile.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SchedulePage extends StatefulWidget {
   final ValueChanged<List<Schedule>> onScheduleChanged;
@@ -34,7 +35,13 @@ class _SchedulePageState extends State<SchedulePage> {
   String _formatTime(TimeOfDay time) {
     // Convert local time to UTC before sending to backend
     final now = DateTime.now();
-    final localDt = DateTime(now.year, now.month, now.day, time.hour, time.minute);
+    final localDt = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      time.hour,
+      time.minute,
+    );
     final utcDt = localDt.toUtc();
     final hour = utcDt.hour.toString().padLeft(2, '0');
     final minute = utcDt.minute.toString().padLeft(2, '0');
@@ -86,7 +93,7 @@ class _SchedulePageState extends State<SchedulePage> {
     if (dayIndex >= 0 && dayIndex < _daysOfWeek.length) {
       return _daysOfWeek[dayIndex];
     }
-    return 'Unknown';
+    return 'unknown'.tr();
   }
 
   @override
@@ -96,12 +103,12 @@ class _SchedulePageState extends State<SchedulePage> {
       children: [
         VerticalSpace(height: AppHeight.h20),
         Text(
-          'Set your working hours',
+          'setWorkingHours'.tr(),
           style: Theme.of(context).textTheme.titleMedium,
         ),
         VerticalSpace(height: AppHeight.h20),
         DropMenu(
-          hint: 'Select Day',
+          hint: 'selectDay'.tr(),
           items: _daysOfWeek,
           onChanged: (value) {
             setState(() {
@@ -125,7 +132,7 @@ class _SchedulePageState extends State<SchedulePage> {
                   child: Text(
                     _openTime != null
                         ? _openTime!.format(context)
-                        : 'Open Time',
+                        : 'openTime'.tr(),
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
@@ -144,7 +151,7 @@ class _SchedulePageState extends State<SchedulePage> {
                   child: Text(
                     _closeTime != null
                         ? _closeTime!.format(context)
-                        : 'Close Time',
+                        : 'closeTime'.tr(),
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
@@ -155,7 +162,10 @@ class _SchedulePageState extends State<SchedulePage> {
         VerticalSpace(height: AppHeight.h20),
         SizedBox(
           width: double.infinity,
-          child: PrimaryButton(onPress: _addSchedule, title: 'Add Schedule'),
+          child: PrimaryButton(
+            onPress: _addSchedule,
+            title: 'addSchedule'.tr(),
+          ),
         ),
         VerticalSpace(height: AppHeight.h20),
         Expanded(

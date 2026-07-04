@@ -12,6 +12,7 @@ import 'package:tabibi/features/doctor/patients/presentation/widgets/medical_his
 import 'package:tabibi/features/doctor/patients/presentation/widgets/patient_header_card.dart';
 import 'package:tabibi/features/doctor/patients/presentation/widgets/prescription_entry_card.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/policies/prescription_write_policy.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PatientProfilePage extends StatelessWidget {
   final Patient patient;
@@ -55,7 +56,10 @@ class PatientProfilePage extends StatelessWidget {
             child: Scaffold(
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               appBar: AppBar(
-                title: Text('Patient Profile', style: Theme.of(context).textTheme.titleLarge),
+                title: Text(
+                  'patientProfile'.tr(),
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
                 centerTitle: true,
                 leading: IconButton(
                   icon: Icon(
@@ -69,7 +73,7 @@ class PatientProfilePage extends StatelessWidget {
                   TextButton(
                     onPressed: () {},
                     child: Text(
-                      'Edit',
+                      'edit'.tr(),
                       style: TextStyle(
                         color: AppColors.midnightBlue,
                         fontSize: 16.sp,

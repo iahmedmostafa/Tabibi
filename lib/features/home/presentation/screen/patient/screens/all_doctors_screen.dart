@@ -14,6 +14,7 @@ import 'package:tabibi/features/home/presentation/screen/patient/widgets/doctor_
 import '../cubit/departments_cubit.dart';
 import '../widgets/all_doctors_bloc_builder.dart';
 import '../widgets/custom_text_field.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AllDoctorsScreen extends StatefulWidget {
   final String? initialDepartmentId;
@@ -90,7 +91,7 @@ class _AllDoctorsScreenState extends State<AllDoctorsScreen> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
-          'All Doctors',
+          'allDoctors'.tr(),
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,

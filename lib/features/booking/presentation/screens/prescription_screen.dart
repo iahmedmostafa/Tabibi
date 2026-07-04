@@ -13,6 +13,7 @@ import 'package:tabibi/features/booking/presentation/widgets/empty_prescription_
 import 'package:tabibi/features/booking/presentation/widgets/medicine_card.dart';
 import 'package:tabibi/features/booking/presentation/widgets/prescription_date_card.dart';
 import 'package:tabibi/features/booking/presentation/widgets/prescription_section_card.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PrescriptionScreen extends StatelessWidget {
   const PrescriptionScreen({super.key});
@@ -20,7 +21,9 @@ class PrescriptionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final scaffoldBackground = isDark ? AppColors.darkBackground : AppColors.grey50;
+    final scaffoldBackground = isDark
+        ? AppColors.darkBackground
+        : AppColors.grey50;
     final appBarBackground = isDark ? AppColors.darkBackground : Colors.white;
     final titleColor = isDark ? AppColors.white : AppColors.grey900;
     final iconColor = isDark ? AppColors.white : AppColors.black;
@@ -56,7 +59,9 @@ class PrescriptionScreen extends StatelessWidget {
               return Center(
                 child: CircularProgressIndicator(
                   color: AppColors.primary,
-                  backgroundColor: isDark ? AppColors.grey800 : AppColors.grey200,
+                  backgroundColor: isDark
+                      ? AppColors.grey800
+                      : AppColors.grey200,
                 ),
               );
             }
@@ -104,7 +109,7 @@ class PrescriptionScreen extends StatelessWidget {
           PrescriptionSectionCard(
             icon: Iconsax.health,
             title: AppStrings.diagnosis,
-            subtitle: 'Clinical summary from your completed visit',
+            subtitle: 'clinicalSummary'.tr(),
             child: Text(
               prescription.diagnosis,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -119,7 +124,7 @@ class PrescriptionScreen extends StatelessWidget {
             PrescriptionSectionCard(
               icon: Iconsax.note_1,
               title: AppStrings.notes,
-              subtitle: 'Additional guidance from your doctor',
+              subtitle: 'additionalGuidance'.tr(),
               child: Text(
                 prescription.notes!,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -205,10 +210,10 @@ class _MedicinesHeader extends StatelessWidget {
                 ),
                 SizedBox(height: 3.h),
                 Text(
-                  'Follow the dosage and timing exactly as prescribed',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: subtitleColor,
-                  ),
+                  'followDosage'.tr(),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: subtitleColor),
                 ),
               ],
             ),
@@ -221,7 +226,7 @@ class _MedicinesHeader extends StatelessWidget {
               borderRadius: BorderRadius.circular(999.r),
             ),
             child: Text(
-              '$count ${count == 1 ? 'item' : AppStrings.items}',
+              '$count ${count == 1 ? 'item'.tr() : AppStrings.items}',
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
                 color: chipTextColor,
                 fontWeight: FontWeight.w800,

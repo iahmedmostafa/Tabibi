@@ -11,6 +11,7 @@ import 'package:tabibi/features/home/presentation/screen/patient/widgets/quick_a
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/recommended_doctors_section.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/section_header.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/upcoming_appointment_section.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PatientHomeScreen extends StatelessWidget {
   const PatientHomeScreen({super.key});
@@ -80,20 +81,21 @@ class PatientHomeScreen extends StatelessWidget {
                       const QuickActionsRow(),
                       SizedBox(height: 24.h),
                       SectionHeader(
-                        title: 'Categories',
-                        onTap: () => context.pushNamed(AppRoutes.allDepartments),
+                        title: 'categories'.tr(),
+                        onTap: () =>
+                            context.pushNamed(AppRoutes.allDepartments),
                       ),
                       SizedBox(height: 14.h),
                       const CategoriesSection(),
                       SizedBox(height: 26.h),
                       SectionHeader(
-                        title: 'Recommended Doctors',
+                        title: 'recommendedDoctors'.tr(),
                         onTap: () => context.pushNamed(AppRoutes.allDoctors),
                       ),
                       SizedBox(height: 14.h),
                       const RecommendedDoctorsSection(),
                       SizedBox(height: 26.h),
-                      const SectionHeader(title: 'Upcoming Appointment'),
+                      SectionHeader(title: 'upcomingAppointment'.tr()),
                       SizedBox(height: 14.h),
                       const UpcomingAppointmentSection(),
                     ]),

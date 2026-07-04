@@ -6,6 +6,7 @@ import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_styles.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class RejectedPage extends StatelessWidget {
   const RejectedPage({super.key});
@@ -57,7 +58,7 @@ class RejectedPage extends StatelessWidget {
                 onPress: () {
                   context.goNamed(AppRoutes.signUp);
                 },
-                title: 'Re-register',
+                title: 'reRegister'.tr(),
               ),
               const VerticalSpace(height: 12),
               TextButton(
@@ -65,7 +66,7 @@ class RejectedPage extends StatelessWidget {
                   context.goNamed(AppRoutes.login);
                 },
                 child: Text(
-                  'Go to Login',
+                  'goToLogin'.tr(),
                   style: AppTextStyle.bodySRegular.copyWith(
                     color: AppColors.primary,
                     fontSize: 16,

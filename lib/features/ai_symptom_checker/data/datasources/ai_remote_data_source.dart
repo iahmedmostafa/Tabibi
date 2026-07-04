@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
+
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:tabibi/core/error/exceptions.dart';
 import 'package:tabibi/core/error/failure.dart';
+import 'package:tabibi/core/network/api_config.dart';
 import 'package:tabibi/core/network/error_message_model.dart';
 import 'package:tabibi/features/ai_symptom_checker/data/models/symptom_check_result_model.dart';
 
@@ -19,16 +19,9 @@ class AiRemoteDataSourceImpl implements BaseAiRemoteDataSource {
   @override
   Future<SymptomCheckResultModel> checkSymptoms(String symptomsText) async {
     try {
-      final String url = (kIsWeb || !Platform.isAndroid)
-          ? "http://localhost:8000/chat/"
-          : "http://10.0.2.2:8000/chat/";
+      final String url = "${await ApiConfig.getBaseUrl()}/chat/";
 
-      final response = await dio.post(
-        url,
-        data: {
-          'message': symptomsText,
-        },
-      );
+      final response = await dio.post(url, data: {'message': symptomsText});
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         dynamic data = response.data;

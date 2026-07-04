@@ -12,6 +12,7 @@ class LogoutDialog extends StatelessWidget {
     return ConfirmationDialog(
       title: AppStrings.logout,
       message: AppStrings.areYouSureLogout,
+      cancelText: AppStrings.cancel,
       confirmText: AppStrings.yesLogout,
       icon: Icons.logout,
       onConfirm: onLogout,

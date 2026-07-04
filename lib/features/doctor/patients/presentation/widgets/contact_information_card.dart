@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/patients/domain/entities/patient.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ContactInformationCard extends StatelessWidget {
   final Patient patient;
@@ -25,7 +26,7 @@ class ContactInformationCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Contact Information',
+            'contactInformation'.tr(),
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
@@ -33,9 +34,19 @@ class ContactInformationCard extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16.h),
-          _buildContactRow(context, Icons.phone, const Color(0xFF2196F3), patient.phone),
+          _buildContactRow(
+            context,
+            Icons.phone,
+            const Color(0xFF2196F3),
+            patient.phone,
+          ),
           SizedBox(height: 16.h),
-          _buildContactRow(context, Icons.email, const Color(0xFF4CAF50), patient.email),
+          _buildContactRow(
+            context,
+            Icons.email,
+            const Color(0xFF4CAF50),
+            patient.email,
+          ),
           SizedBox(height: 16.h),
           _buildContactRow(
             context,
@@ -48,7 +59,12 @@ class ContactInformationCard extends StatelessWidget {
     );
   }
 
-  Widget _buildContactRow(BuildContext context, IconData icon, Color iconColor, String text) {
+  Widget _buildContactRow(
+    BuildContext context,
+    IconData icon,
+    Color iconColor,
+    String text,
+  ) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Row(

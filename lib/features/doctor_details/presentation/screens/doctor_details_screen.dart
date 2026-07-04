@@ -9,6 +9,7 @@ import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
 import 'package:tabibi/core/utils/formatters.dart/formatters.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:tabibi/features/doctor_details/presentation/controller/doctor_details_cubit.dart';
 import 'package:tabibi/features/doctor_details/presentation/controller/doctor_details_state.dart';
 import 'package:tabibi/features/doctor_details/presentation/widgets/doctor_details_header.dart';
@@ -51,10 +52,11 @@ class DoctorDetailsScreen extends StatelessWidget {
     final effectiveHeroTag = heroTag ?? 'doctor-avatar-${doctor.id}';
 
     return BlocProvider(
-      create: (context) => sl<DoctorDetailsCubit>()..getDoctorDetails(doctor.id),
+      create: (context) =>
+          sl<DoctorDetailsCubit>()..getDoctorDetails(doctor.id),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(AppStrings.doctorDetails),
+          title: Text(AppStrings.doctorDetails),
           centerTitle: true,
           leadingWidth: 64.w,
           leading: Padding(
@@ -115,22 +117,28 @@ class DoctorDetailsScreen extends StatelessWidget {
                     Text(
                       AppStrings.aboutMe,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.sp,
-                          ),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.sp,
+                      ),
                     ),
                     SizedBox(height: 8.h),
                     ExpandableAboutText(
-                      text: details.bio ??
-                          'Dr. ${details.name}, a dedicated ${details.department}, brings a wealth of experience to our center.',
+                      text:
+                          details.bio ??
+                          'doctorDetailsDescription'.tr(
+                            namedArgs: {
+                              'name': '${"drPrefix".tr()}${details.name}',
+                              'department': details.department,
+                            },
+                          ),
                     ),
                     SizedBox(height: 24.h),
                     Text(
                       AppStrings.workingTime,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.sp,
-                          ),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.sp,
+                      ),
                     ),
                     SizedBox(height: 12.h),
                     Divider(
@@ -146,15 +154,19 @@ class DoctorDetailsScreen extends StatelessWidget {
                           children: [
                             Text(
                               Formatter.getDayName(s.dayOfWeek),
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
                                     color: AppColors.grey500,
                                     fontSize: 14.sp,
                                   ),
                             ),
                             Text(
                               '${_formatToLocal24Hour(s.openTime)} - ${_formatToLocal24Hour(s.closeTime)}',
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: isDark ? Colors.white : AppColors.black,
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: isDark
+                                        ? Colors.white
+                                        : AppColors.black,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 14.sp,
                                   ),
@@ -167,24 +179,26 @@ class DoctorDetailsScreen extends StatelessWidget {
                     Text(
                       AppStrings.consultationFee,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.sp,
-                          ),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.sp,
+                      ),
                     ),
                     SizedBox(height: 8.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Fee',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          'fee'.tr(),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
                                 color: AppColors.grey500,
                                 fontSize: 14.sp,
                               ),
                         ),
                         Text(
                           '${details.consultationFee} EGP',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16.sp,
@@ -195,9 +209,11 @@ class DoctorDetailsScreen extends StatelessWidget {
                     SizedBox(height: 24.h),
                     ReviewBlocBuilder(details: details),
                     if (details.reviews.isEmpty)
-                      const Text('No reviews yet')
+                      Text('noReviewsYet'.tr())
                     else
-                      ...details.reviews.take(3).map(
+                      ...details.reviews
+                          .take(3)
+                          .map(
                             (r) => Padding(
                               padding: EdgeInsets.only(bottom: 12.h),
                               child: ReviewItem(review: r),
@@ -220,10 +236,7 @@ class DoctorDetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _HeroLoadingHeader(
-                    doctor: doctor,
-                    heroTag: effectiveHeroTag,
-                  ),
+                  _HeroLoadingHeader(doctor: doctor, heroTag: effectiveHeroTag),
                   SizedBox(height: 24.h),
                   const Center(child: CircularProgressIndicator()),
                 ],
@@ -244,7 +257,9 @@ class _HeroLoadingHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title = doctor.name.startsWith('Dr.') ? doctor.name : 'Dr. ${doctor.name}';
+    final title = doctor.name.startsWith('Dr.')
+        ? doctor.name
+        : '${"drPrefix".tr()}${doctor.name}';
 
     return Row(
       children: [
@@ -276,17 +291,17 @@ class _HeroLoadingHeader extends StatelessWidget {
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.sp,
-                    ),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.sp,
+                ),
               ),
               SizedBox(height: 6.h),
               Text(
                 doctor.department ?? '',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.grey500,
-                      fontWeight: FontWeight.w500,
-                    ),
+                  color: AppColors.grey500,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               SizedBox(height: 8.h),
               Text(
@@ -294,9 +309,9 @@ class _HeroLoadingHeader extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.grey500,
-                      fontSize: 13.sp,
-                    ),
+                  color: AppColors.grey500,
+                  fontSize: 13.sp,
+                ),
               ),
             ],
           ),
@@ -325,21 +340,21 @@ class _ExpandableAboutTextState extends State<ExpandableAboutText> {
       return Text(
         text,
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.grey500,
-              height: 1.5,
-              fontSize: 14.sp,
-            ),
+          color: AppColors.grey500,
+          height: 1.5,
+          fontSize: 14.sp,
+        ),
       );
     }
 
     return RichText(
       text: TextSpan(
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.grey500,
-              height: 1.5,
-              fontSize: 14.sp,
-              fontFamily: Theme.of(context).textTheme.bodyMedium?.fontFamily,
-            ),
+          color: AppColors.grey500,
+          height: 1.5,
+          fontSize: 14.sp,
+          fontFamily: Theme.of(context).textTheme.bodyMedium?.fontFamily,
+        ),
         children: [
           TextSpan(
             text: isExpanded ? text : '${text.substring(0, maxLength)}... ',
@@ -354,7 +369,7 @@ class _ExpandableAboutTextState extends State<ExpandableAboutText> {
                 });
               },
               child: Text(
-                isExpanded ? 'Show less' : 'Read more',
+                isExpanded ? 'showLess'.tr() : 'readMore'.tr(),
                 style: const TextStyle(
                   color: AppColors.primary,
                   fontWeight: FontWeight.bold,

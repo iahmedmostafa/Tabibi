@@ -1,4 +1,5 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -50,10 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               VerticalSpace(height: AppHeight.h85),
 
-              const TopSection(
-                title: AppStrings.welcome,
-                supTitle: AppStrings.hope,
-              ),
+              TopSection(title: AppStrings.welcome, supTitle: AppStrings.hope),
 
               VerticalSpace(height: AppHeight.h32),
 
@@ -63,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 isPassword: false,
                 controller: cubit.emailController,
                 validator: (value) =>
-                    Validator.validateEmptyText("Email", value),
+                    Validator.validateEmptyText("email".tr(), value),
               ),
 
               VerticalSpace(height: AppHeight.h20),
@@ -72,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: AppStrings.password,
                 icon: Iconsax.password_check,
                 validator: (value) =>
-                    Validator.validateEmptyText("Password", value),
+                    Validator.validateEmptyText("password".tr(), value),
                 isPassword: isPasswordVisible,
                 suffixIcon: isPasswordVisible ? Iconsax.eye_slash : Iconsax.eye,
                 onpressed: () {
@@ -89,15 +87,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 listener: (context, state) async {
                   if (state is LogInFailure) {
                     AppHelperFunctions.showAwesomeSnackBar(
-                      title: 'Error',
+                      title: 'error'.tr(),
                       message: state.errorMessage,
                       contentType: ContentType.failure,
                       context: context,
                     );
                   } else if (state is LogInSuccess) {
                     AppHelperFunctions.showAwesomeSnackBar(
-                      title: 'Success',
-                      message: "Logged in successfully",
+                      title: 'success'.tr(),
+                      message: "loggedInSuccessfully".tr(),
                       contentType: ContentType.success,
                       context: context,
                     );
@@ -174,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
     result.fold(
       (failure) {
         AppHelperFunctions.showAwesomeSnackBar(
-          title: 'Error',
+          title: 'error'.tr(),
           message: failure.message,
           contentType: ContentType.failure,
           context: context,

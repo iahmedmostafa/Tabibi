@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
@@ -29,15 +30,15 @@ class _CallPageState extends State<CallPage> {
           listener: (context, state) {},
           builder: (context, state) {
             if (state is VideoCallLoading || state is VideoCallInitial) {
-              return const Center(
+              return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircularProgressIndicator(color: Colors.white),
-                    SizedBox(height: 16),
+                    const CircularProgressIndicator(color: Colors.white),
+                    const SizedBox(height: 16),
                     Text(
-                      'Connecting to video call...',
-                      style: TextStyle(color: Colors.white70),
+                      'connectingToVideoCall'.tr(),
+                      style: const TextStyle(color: Colors.white70),
                     ),
                   ],
                 ),
@@ -56,7 +57,7 @@ class _CallPageState extends State<CallPage> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Failed to load video call:\n${(state.message.formatVideoCallErrorMessage(context))}',
+                        '${'failedToLoadVideoCall'.tr()}\n${(state.message.formatVideoCallErrorMessage(context))}',
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
@@ -69,11 +70,11 @@ class _CallPageState extends State<CallPage> {
                           ),
                         ),
                         onPressed: () => Navigator.of(context).pop(),
-                        child: const Padding(
-                          padding: EdgeInsets.all(8),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
                           child: Text(
-                            'Go Back',
-                            style: TextStyle(color: Colors.white),
+                            'goBack'.tr(),
+                            style: const TextStyle(color: Colors.white),
                           ),
                         ),
                       ),

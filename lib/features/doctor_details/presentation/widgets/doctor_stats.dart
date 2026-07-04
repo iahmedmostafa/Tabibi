@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class DoctorStats extends StatelessWidget {
   final int patientCount;
@@ -22,15 +23,25 @@ class DoctorStats extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _buildStatItem(context, Iconsax.profile_2user, "$patientCount+", "Patients"),
+        _buildStatItem(
+          context,
+          Iconsax.profile_2user,
+          "$patientCount+",
+          'patientsStat'.tr(),
+        ),
         _buildStatItem(
           context,
           Iconsax.briefcase,
           "$yearsOfExperience+",
-          "Years Exp.",
+          'yearsExp'.tr(),
         ),
-        _buildStatItem(context, Iconsax.star, "$rating+", "Rating"),
-        _buildStatItem(context, Iconsax.message, "$reviewCount", "Review"),
+        _buildStatItem(context, Iconsax.star, "$rating+", 'ratingStat'.tr()),
+        _buildStatItem(
+          context,
+          Iconsax.message,
+          "$reviewCount",
+          'reviewStat'.tr(),
+        ),
       ],
     );
   }
@@ -64,9 +75,7 @@ class DoctorStats extends StatelessWidget {
           SizedBox(height: 2.h),
           Text(
             label,
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall?.copyWith(
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: AppColors.grey500,
               fontSize: 12.sp,
             ),

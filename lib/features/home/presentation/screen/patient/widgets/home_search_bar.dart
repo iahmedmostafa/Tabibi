@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HomeSearchBar extends StatelessWidget {
   const HomeSearchBar({super.key});
@@ -35,15 +36,11 @@ class HomeSearchBar extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(
-              Iconsax.search_normal,
-              color: AppColors.primary,
-              size: 20.sp,
-            ),
+            Icon(Iconsax.search_normal, color: AppColors.primary, size: 20.sp),
             SizedBox(width: 12.w),
             Expanded(
               child: Text(
-                'Search doctor, specialty',
+                'searchDoctor'.tr(),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: isDark ? AppColors.grey400 : AppColors.grey500,
                 ),

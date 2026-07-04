@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -72,7 +73,7 @@ class _FillProfileState extends State<FillProfile> {
                   const ArrowBack(nameRoute: AppRoutes.signUp),
                   HorizentalSpace(width: AppWidth.w14),
                   Text(
-                    "Fill Your Profile",
+                    "fillYourProfile".tr(),
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ],
@@ -90,7 +91,7 @@ class _FillProfileState extends State<FillProfile> {
               DatePickerField(
                 selectedDate: selectedBirthdate,
                 hintText: AppStrings.dateFillProfile,
-                pickerTitle: 'Select your birthdate',
+                pickerTitle: 'selectBirthdate'.tr(),
                 onDateSelected: (date) {
                   setState(() {
                     selectedBirthdate = date;
@@ -101,14 +102,14 @@ class _FillProfileState extends State<FillProfile> {
               VerticalSpace(height: AppHeight.h20),
               DropMenu(
                 hint: AppStrings.genderFillProfile,
-                items: const ['Male', 'Female'],
+                items: ['male'.tr(), 'female'.tr()],
                 prefixIcon: Iconsax.user_square,
                 onChanged: (value) {
                   setState(() {
-                    gender = value == 'Male' ? 1 : 2;
+                    gender = value == 'male'.tr() ? 1 : 2;
                   });
                 },
-                value: gender == 1 ? 'Male' : 'Female',
+                value: gender == 1 ? 'male'.tr() : 'female'.tr(),
               ),
               VerticalSpace(height: AppHeight.h20),
 
@@ -133,7 +134,7 @@ class _FillProfileState extends State<FillProfile> {
                   }
                   if (state.updateStatus ==
                       PatientProfileUpdateStatus.loading) {
-                    EasyLoading.show(status: 'Loading...');
+                    EasyLoading.show(status: 'loading'.tr());
                   } else if (state.updateStatus ==
                       PatientProfileUpdateStatus.success) {
                     EasyLoading.dismiss().then((_) {
@@ -162,8 +163,9 @@ class _FillProfileState extends State<FillProfile> {
                       PatientProfileUpdateStatus.failure) {
                     EasyLoading.dismiss();
                     AppHelperFunctions.showAwesomeSnackBar(
-                      title: 'Error',
-                      message: state.errorMessage ?? 'Failed to update profile',
+                      title: 'error'.tr(),
+                      message:
+                          state.errorMessage ?? 'failedToUpdateProfile'.tr(),
                       contentType: ContentType.failure,
                       context: context,
                     );

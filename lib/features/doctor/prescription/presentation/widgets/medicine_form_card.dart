@@ -6,6 +6,7 @@ import 'package:tabibi/core/utils/constants/app_styles.dart';
 import 'package:tabibi/features/doctor/core/widgets/doctor_card.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/cubit/create_prescription_state.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/widgets/prescription_text_field.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MedicineFormCard extends StatelessWidget {
   final PrescriptionMedicineFormInput medicine;
@@ -64,14 +65,14 @@ class MedicineFormCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Medicine $index',
+                      'medicineFormTitle'.tr(namedArgs: {'index': '$index'}),
                       style: AppTextStyle.h3.copyWith(
                         color: isDark ? Colors.white : AppColors.grey900,
                       ),
                     ),
                     SizedBox(height: 2.h),
                     Text(
-                      'Dose, schedule, duration, and patient instructions',
+                      'medicineDoseHint'.tr(),
                       style: AppTextStyle.bodyXsMedium.copyWith(
                         color: isDark ? AppColors.grey400 : AppColors.grey500,
                       ),
@@ -82,7 +83,9 @@ class MedicineFormCard extends StatelessWidget {
               if (canRemove)
                 Container(
                   decoration: BoxDecoration(
-                    color: isDark ? Colors.red.shade900.withValues(alpha: 0.2) : AppColors.lightPink,
+                    color: isDark
+                        ? Colors.red.shade900.withValues(alpha: 0.2)
+                        : AppColors.lightPink,
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: IconButton(
@@ -91,7 +94,7 @@ class MedicineFormCard extends StatelessWidget {
                       Iconsax.trash,
                       color: isDark ? Colors.red.shade300 : AppColors.error,
                     ),
-                    tooltip: 'Remove medicine',
+                    tooltip: 'removeMedicine'.tr(),
                   ),
                 ),
             ],
@@ -100,8 +103,8 @@ class MedicineFormCard extends StatelessWidget {
           PrescriptionTextField(
             initialValue: medicine.medicineName,
             onChanged: onMedicineNameChanged,
-            label: 'Medicine Name',
-            hintText: 'e.g. Amoxicillin',
+            label: 'medicineName'.tr(),
+            hintText: 'medicineNameHint'.tr(),
             icon: Iconsax.hospital,
             validator: _requiredValidator,
           ),
@@ -112,8 +115,8 @@ class MedicineFormCard extends StatelessWidget {
                 child: PrescriptionTextField(
                   initialValue: medicine.dosage,
                   onChanged: onDosageChanged,
-                  label: 'Dosage',
-                  hintText: '500 mg',
+                  label: 'dosageLabel'.tr(),
+                  hintText: 'dosageHint'.tr(),
                   icon: Iconsax.health,
                   validator: _requiredValidator,
                 ),
@@ -123,8 +126,8 @@ class MedicineFormCard extends StatelessWidget {
                 child: PrescriptionTextField(
                   initialValue: medicine.frequency,
                   onChanged: onFrequencyChanged,
-                  label: 'Frequency',
-                  hintText: 'Twice daily',
+                  label: 'frequencyLabel'.tr(),
+                  hintText: 'frequencyHint'.tr(),
                   icon: Iconsax.clock,
                   validator: _requiredValidator,
                 ),
@@ -135,8 +138,8 @@ class MedicineFormCard extends StatelessWidget {
           PrescriptionTextField(
             initialValue: medicine.duration,
             onChanged: onDurationChanged,
-            label: 'Duration',
-            hintText: '7 days',
+            label: 'durationLabel'.tr(),
+            hintText: 'durationHint'.tr(),
             icon: Iconsax.calendar,
             validator: _requiredValidator,
           ),
@@ -144,8 +147,8 @@ class MedicineFormCard extends StatelessWidget {
           PrescriptionTextField(
             initialValue: medicine.instructions,
             onChanged: onInstructionsChanged,
-            label: 'Instructions',
-            hintText: 'After meals, avoid dairy products',
+            label: 'instructionsLabel'.tr(),
+            hintText: 'instructionsHint'.tr(),
             icon: Iconsax.note_1,
             maxLines: 2,
             validator: _requiredValidator,
@@ -157,7 +160,7 @@ class MedicineFormCard extends StatelessWidget {
 
   String? _requiredValidator(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Required';
+      return 'requiredField'.tr();
     }
     return null;
   }

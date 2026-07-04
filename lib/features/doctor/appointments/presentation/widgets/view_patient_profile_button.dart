@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_cubit.dart';
@@ -51,7 +52,7 @@ class ViewPatientProfileButton extends StatelessWidget {
         },
         icon: Icon(Icons.person_search_outlined, size: 20.sp),
         label: Text(
-          'View Patient Profile',
+          'viewPatientProfile'.tr(),
           style: theme.textTheme.labelLarge?.copyWith(
             fontWeight: FontWeight.w700,
             letterSpacing: 0.3,

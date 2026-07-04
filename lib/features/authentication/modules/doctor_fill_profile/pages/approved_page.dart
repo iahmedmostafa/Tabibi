@@ -6,6 +6,7 @@ import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_styles.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ApprovedPage extends StatelessWidget {
   const ApprovedPage({super.key});
@@ -34,7 +35,7 @@ class ApprovedPage extends StatelessWidget {
               ),
               const VerticalSpace(height: 32),
               Text(
-                '🎉 Congratulations!',
+                'congratulationsApproved'.tr(),
                 style: AppTextStyle.h2.copyWith(
                   color: Colors.green.shade700,
                   fontSize: 28,
@@ -44,7 +45,7 @@ class ApprovedPage extends StatelessWidget {
               ),
               const VerticalSpace(height: 16),
               Text(
-                'Your profile has been approved!\n\nYou can now start connecting with patients and providing your medical expertise through our platform.',
+                'profileApprovedDescription'.tr(),
                 style: AppTextStyle.bodySRegular.copyWith(
                   color: AppColors.textGrey,
                   height: 1.6,
@@ -57,7 +58,7 @@ class ApprovedPage extends StatelessWidget {
                 onPress: () {
                   context.goNamed(AppRoutes.homeDoctorScreen);
                 },
-                title: 'Go to Home',
+                title: 'goToHome'.tr(),
               ),
             ],
           ),

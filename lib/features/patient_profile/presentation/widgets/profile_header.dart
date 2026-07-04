@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
@@ -84,16 +85,13 @@ class ProfileHeader extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                     )
-                  : Image.asset(
-                      AppImages.carouselImage,
-                      fit: BoxFit.cover,
-                    ),
+                  : Image.asset(AppImages.carouselImage, fit: BoxFit.cover),
             ),
           ),
         ),
         SizedBox(height: 16.h),
         Text(
-          profile?.name ?? "User",
+          profile?.name ?? "user".tr(),
           style: TextStyle(
             fontSize: 22.sp,
             fontWeight: FontWeight.w800,
@@ -105,11 +103,7 @@ class ProfileHeader extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Iconsax.location,
-                size: 14.sp,
-                color: AppColors.grey500,
-              ),
+              Icon(Iconsax.location, size: 14.sp, color: AppColors.grey500),
               SizedBox(width: 4.w),
               Text(
                 profile!.city!.name,

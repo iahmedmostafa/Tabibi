@@ -16,6 +16,7 @@ import 'package:tabibi/features/home/presentation/screen/patient/screens/patient
 import 'package:tabibi/features/notifications/data/datasources/fcm_token_data_source.dart';
 import 'package:tabibi/features/patient_profile/presentation/screens/profile_screen.dart';
 import 'package:tabibi/features/patient_profile/presentation/widgets/medical_profile_bottom_sheet.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BottomNavScreen extends StatefulWidget {
   const BottomNavScreen({super.key, this.initialIndex = 0});
@@ -29,33 +30,35 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   int _currentIndex = 0;
   String? accessToken;
 
-  static const _tabs = [
-    _NavItem(
-      activeIcon: Iconsax.home_15,
-      inactiveIcon: Iconsax.home4,
-      label: 'Home',
-    ),
-    _NavItem(
-      activeIcon: Iconsax.location5,
-      inactiveIcon: Iconsax.location4,
-      label: 'Explore',
-    ),
-    _NavItem(
-      activeIcon: Iconsax.calendar5,
-      inactiveIcon: Iconsax.calendar_1,
-      label: 'Bookings',
-    ),
-    _NavItem(
-      activeIcon: Iconsax.message5,
-      inactiveIcon: Iconsax.message4,
-      label: 'Chat',
-    ),
-    _NavItem(
-      activeIcon: Iconsax.user,
-      inactiveIcon: Iconsax.user,
-      label: 'Profile',
-    ),
-  ];
+  List<_NavItem> _buildTabs() {
+    return [
+      _NavItem(
+        activeIcon: Iconsax.home_15,
+        inactiveIcon: Iconsax.home4,
+        label: 'home'.tr(),
+      ),
+      _NavItem(
+        activeIcon: Iconsax.location5,
+        inactiveIcon: Iconsax.location4,
+        label: 'explore'.tr(),
+      ),
+      _NavItem(
+        activeIcon: Iconsax.calendar5,
+        inactiveIcon: Iconsax.calendar_1,
+        label: 'bookings'.tr(),
+      ),
+      _NavItem(
+        activeIcon: Iconsax.message5,
+        inactiveIcon: Iconsax.message4,
+        label: 'chat'.tr(),
+      ),
+      _NavItem(
+        activeIcon: Iconsax.user,
+        inactiveIcon: Iconsax.user,
+        label: 'profileTab'.tr(),
+      ),
+    ];
+  }
 
   static const _screens = [
     PatientHomeScreen(),
@@ -90,11 +93,14 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    context.locale;
+
+    final tabs = _buildTabs();
 
     return Scaffold(
       body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: _NavBar(
-        items: _tabs,
+        items: tabs,
         currentIndex: _currentIndex,
         isDark: isDark,
         onTap: _onTap,

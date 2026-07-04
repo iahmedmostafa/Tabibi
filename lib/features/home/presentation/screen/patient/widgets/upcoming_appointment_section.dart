@@ -10,6 +10,7 @@ import 'package:tabibi/features/home/presentation/screen/patient/widgets/empty_u
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/home_feedback_panel.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/upcoming_appointment_card.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/upcoming_appointment_skeleton.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class UpcomingAppointmentSection extends StatelessWidget {
   const UpcomingAppointmentSection({super.key});
@@ -24,8 +25,7 @@ class UpcomingAppointmentSection extends StatelessWidget {
 
         if (state.status == UpcomingBookingStatus.failure) {
           return ErrorPanel(
-            message:
-                state.errorMessage ?? 'Failed to load upcoming appointment',
+            message: state.errorMessage ?? 'failedToLoadDoctors'.tr(),
           );
         }
 
@@ -50,7 +50,7 @@ class UpcomingAppointmentSection extends StatelessWidget {
           booking: booking,
           formattedDate: formattedDate,
           formattedTime: formattedTime,
-          countText: '${summary.totalUpcomingCount} upcoming',
+          countText: '${summary.totalUpcomingCount} ${'upcoming'.tr()}',
           onTap: () => context.pushNamed(
             AppRoutes.myBookings,
             extra: BookingStatus.upcoming,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -46,11 +47,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       ),
       child: Row(
         children: [
-          Icon(
-            Iconsax.search_normal,
-            color: AppColors.primary,
-            size: 20.sp,
-          ),
+          Icon(Iconsax.search_normal, color: AppColors.primary, size: 20.sp),
           SizedBox(width: 12.w),
           Expanded(
             child: TextField(
@@ -59,13 +56,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
               onChanged: widget.onChanged,
               autofocus: false,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: isDark ? AppColors.white : AppColors.black,
-                  ),
+                color: isDark ? AppColors.white : AppColors.black,
+              ),
               decoration: InputDecoration(
-                hintText: 'Search by name, profession...',
+                hintText: 'searchByName'.tr(),
                 hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: isDark ? AppColors.grey400 : AppColors.grey500,
-                    ),
+                  color: isDark ? AppColors.grey400 : AppColors.grey500,
+                ),
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,

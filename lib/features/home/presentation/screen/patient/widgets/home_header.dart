@@ -6,6 +6,7 @@ import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/notification_badge.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/profile_cubit.dart';
 import 'package:tabibi/features/patient_profile/presentation/controller/profile_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});
@@ -16,10 +17,10 @@ class HomeHeader extends StatelessWidget {
       builder: (context, state) {
         final name = state is ProfileLoaded
             ? state.patientProfile.name
-            : 'Guest';
+            : 'guest'.tr();
         final city = state is ProfileLoaded
-            ? state.patientProfile.city?.name ?? 'Your city'
-            : 'Your city';
+            ? state.patientProfile.city?.name ?? 'yourCity'.tr()
+            : 'yourCity'.tr();
         final firstName = name.trim().split(' ').first;
         final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -30,7 +31,7 @@ class HomeHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hello, $firstName',
+                    '${'hello'.tr()}, $firstName',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.w800,
                       letterSpacing: -0.4,
@@ -38,7 +39,7 @@ class HomeHeader extends StatelessWidget {
                   ),
                   SizedBox(height: 6.h),
                   Text(
-                    'Location',
+                    'location'.tr(),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: isDark ? AppColors.grey400 : AppColors.grey500,
                       height: 1.4,
@@ -67,10 +68,13 @@ class HomeHeader extends StatelessWidget {
                           constraints: BoxConstraints(maxWidth: 180.w),
                           child: Text(
                             city,
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: isDark ? AppColors.white : AppColors.black,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  color: isDark
+                                      ? AppColors.white
+                                      : AppColors.black,
+                                  fontWeight: FontWeight.w700,
+                                ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/patients/domain/entities/patient.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PreviousVisitsCard extends StatelessWidget {
   final Patient patient;
@@ -25,7 +26,7 @@ class PreviousVisitsCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Previous Visits',
+            'previousVisits'.tr(),
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
@@ -70,7 +71,9 @@ class PreviousVisitsCard extends StatelessWidget {
                           visit.date,
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: isDark ? AppColors.grey400 : Colors.grey[600],
+                            color: isDark
+                                ? AppColors.grey400
+                                : Colors.grey[600],
                           ),
                         ),
                       ],

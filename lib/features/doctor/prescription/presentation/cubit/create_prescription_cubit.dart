@@ -4,6 +4,7 @@ import 'package:tabibi/features/doctor/prescription/domain/entities/prescription
 import 'package:tabibi/features/doctor/prescription/domain/usecases/complete_appointment_use_case.dart';
 import 'package:tabibi/features/doctor/prescription/domain/usecases/create_prescription_use_case.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/cubit/create_prescription_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CreatePrescriptionCubit extends Cubit<CreatePrescriptionState> {
   final CreatePrescriptionUseCase createPrescriptionUseCase;
@@ -15,10 +16,7 @@ class CreatePrescriptionCubit extends Cubit<CreatePrescriptionState> {
     this.completeAppointmentUseCase,
   ) : super(const CreatePrescriptionState());
 
-  void initialize({
-    required String appointmentId,
-    DateTime? appointmentDate,
-  }) {
+  void initialize({required String appointmentId, DateTime? appointmentDate}) {
     emit(
       state.copyWith(
         appointmentId: appointmentId,
@@ -48,7 +46,9 @@ class CreatePrescriptionCubit extends Cubit<CreatePrescriptionState> {
   }
 
   void removeMedicine(int index) {
-    if (!state.canRemoveMedicine || index < 0 || index >= state.medicines.length) {
+    if (!state.canRemoveMedicine ||
+        index < 0 ||
+        index >= state.medicines.length) {
       return;
     }
 
@@ -83,8 +83,7 @@ class CreatePrescriptionCubit extends Cubit<CreatePrescriptionState> {
       emit(
         state.copyWith(
           status: CreatePrescriptionStatus.unavailable,
-          errorMessage:
-              'Prescription can be written only after the appointment time is reached.',
+          errorMessage: 'prescriptionAfterVisit'.tr(),
         ),
       );
       return;
@@ -93,7 +92,7 @@ class CreatePrescriptionCubit extends Cubit<CreatePrescriptionState> {
       emit(
         state.copyWith(
           status: CreatePrescriptionStatus.validationFailure,
-          errorMessage: 'Please complete diagnosis and all medicine fields.',
+          errorMessage: 'pleaseCompleteDiagnosis'.tr(),
         ),
       );
       return;
@@ -145,8 +144,9 @@ class CreatePrescriptionCubit extends Cubit<CreatePrescriptionState> {
           (failure) => emit(
             state.copyWith(
               status: CreatePrescriptionStatus.completionFailure,
-              errorMessage:
-                  'Prescription was saved, but appointment completion failed: ${failure.message}',
+              errorMessage: 'prescriptionSaveFailed'.tr(
+                namedArgs: {'message': failure.message},
+              ),
             ),
           ),
           (_) => emit(

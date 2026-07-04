@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../../core/DI/service_locator.dart';
 import '../../../../core/utils/constants/app_colors.dart';
 import '../../domain/entities/chat_entity.dart';
@@ -33,8 +34,8 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Chats',
+        title: Text(
+          'chats'.tr(),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
@@ -87,7 +88,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
           ),
           SizedBox(height: 16.h),
           Text(
-            'No messages yet',
+            'noMessagesYet'.tr(),
             style: TextStyle(
               fontSize: 18.sp,
               color: AppColors.grey600,
@@ -96,7 +97,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
           ),
           SizedBox(height: 8.h),
           Text(
-            'Your conversations will appear here',
+            'yourConversationsWillAppearHere'.tr(),
             style: TextStyle(fontSize: 14.sp, color: AppColors.grey500),
           ),
         ],
@@ -112,7 +113,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
           Icon(Icons.error_outline, size: 60.sp, color: Colors.red),
           SizedBox(height: 16.h),
           Text(
-            'Failed to load chats',
+            'failedToLoadChats'.tr(),
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
@@ -123,7 +124,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
           ElevatedButton.icon(
             onPressed: _refresh,
             icon: const Icon(Icons.refresh),
-            label: const Text('Retry'),
+            label: Text('retry'.tr()),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.midnightBlue,
               foregroundColor: Colors.white,

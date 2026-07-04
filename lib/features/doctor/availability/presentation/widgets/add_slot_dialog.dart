@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/availability/presentation/cubit/availability_cubit.dart';
 
@@ -11,28 +12,28 @@ class AddSlotDialog extends StatefulWidget {
 }
 
 class _AddSlotDialogState extends State<AddSlotDialog> {
-  String selectedDay = 'Monday';
+  String selectedDay = 'monday'.tr();
   final List<String> days = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
+    'monday'.tr(),
+    'tuesday'.tr(),
+    'wednesday'.tr(),
+    'thursday'.tr(),
+    'friday'.tr(),
+    'saturday'.tr(),
+    'sunday'.tr(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Add Time Slot'),
+      title: Text('addTimeSlot'.tr()),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           DropdownButtonFormField<String>(
             value: selectedDay,
-            decoration: const InputDecoration(
-              labelText: 'Select Day',
+            decoration: InputDecoration(
+              labelText: 'selectDay'.tr(),
               border: OutlineInputBorder(),
             ),
             items: days.map((day) {
@@ -51,7 +52,7 @@ class _AddSlotDialogState extends State<AddSlotDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
+          child: Text('cancel'.tr()),
         ),
         ElevatedButton(
           onPressed: () {
@@ -62,7 +63,7 @@ class _AddSlotDialogState extends State<AddSlotDialog> {
             backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
           ),
-          child: const Text('Add'),
+          child: Text('add'.tr()),
         ),
       ],
     );

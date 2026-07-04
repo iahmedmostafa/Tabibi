@@ -15,6 +15,7 @@ import 'package:tabibi/features/booking/presentation/widgets/show_data_time.dart
 import 'package:tabibi/features/booking/presentation/widgets/time_slot_grid.dart';
 import 'package:tabibi/features/doctor_details/data/models/doctor_details_model.dart';
 import 'package:tabibi/features/patient_profile/presentation/widgets/medical_profile_bottom_sheet.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BookAppointmentScreen extends StatelessWidget {
   final DoctorDetailsModel doctor;
@@ -25,9 +26,7 @@ class BookAppointmentScreen extends StatelessWidget {
     MedicalProfileBottomSheet.showIfNeeded(
       context,
       onComplete: () {
-        context.read<AppointmentCubit>().bookAppointment(
-              doctorId: doctor.id,
-            );
+        context.read<AppointmentCubit>().bookAppointment(doctorId: doctor.id);
       },
     );
   }
@@ -36,7 +35,7 @@ class BookAppointmentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppStrings.bookAppointment),
+        title: Text(AppStrings.bookAppointment),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -53,7 +52,7 @@ class BookAppointmentScreen extends StatelessWidget {
           } else if (state is AppointmentFailure) {
             log(state.message);
             AppHelperFunctions.showAwesomeSnackBar(
-              title: 'Error',
+              title: 'error'.tr(),
               message: state.message,
               contentType: ContentType.failure,
               context: context,
@@ -106,4 +105,3 @@ class BookAppointmentScreen extends StatelessWidget {
     );
   }
 }
-

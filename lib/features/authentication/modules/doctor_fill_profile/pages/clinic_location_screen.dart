@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/clinic_location_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 /// Simple value object returned to the previous screen.
 class ClinicLocationResult {
@@ -33,7 +34,7 @@ class _ClinicLocationScreenState extends State<ClinicLocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Select Clinic Location')),
+      appBar: AppBar(title: Text('selectClinicLocation'.tr())),
       body: BlocBuilder<ClinicLocationCubit, ClinicLocationState>(
         builder: (context, state) {
           final controller = _mapController;

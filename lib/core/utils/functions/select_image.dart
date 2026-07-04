@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 Future<void> selectImage(
   Function(File) onImagePicked,
@@ -50,7 +51,7 @@ Future<void> selectImage(
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Choose photo source',
+                      'choosePhotoSource'.tr(),
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: titleColor,
                         fontWeight: FontWeight.w700,
@@ -61,7 +62,7 @@ Future<void> selectImage(
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Pick a new profile photo from your gallery or camera.',
+                      'pickNewProfilePhoto'.tr(),
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: subtitleColor,
                         height: 1.35,
@@ -71,8 +72,8 @@ Future<void> selectImage(
                   SizedBox(height: 20.h),
                   _ImageSourceTile(
                     icon: Iconsax.gallery,
-                    title: 'Photo Gallery',
-                    subtitle: 'Choose from existing photos',
+                    title: 'photoGallery'.tr(),
+                    subtitle: 'chooseFromExisting'.tr(),
                     backgroundColor: isDark
                         ? AppColors.grey800
                         : AppColors.grey100,
@@ -91,8 +92,8 @@ Future<void> selectImage(
                   SizedBox(height: 12.h),
                   _ImageSourceTile(
                     icon: Iconsax.camera,
-                    title: 'Camera',
-                    subtitle: 'Take a new profile picture',
+                    title: 'camera'.tr(),
+                    subtitle: 'takeNewProfilePicture'.tr(),
                     backgroundColor: AppColors.primary.withOpacity(0.08),
                     borderColor: AppColors.primary.withOpacity(0.18),
                     iconColor: AppColors.primary,

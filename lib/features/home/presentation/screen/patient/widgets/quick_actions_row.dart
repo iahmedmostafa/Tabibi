@@ -6,6 +6,7 @@ import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_images.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/features/patient_profile/presentation/widgets/medical_profile_bottom_sheet.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class QuickActionsRow extends StatelessWidget {
   const QuickActionsRow({super.key});
@@ -14,14 +15,14 @@ class QuickActionsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final actions = [
       _FeatureCardData(
-        title: 'Appointment Booking',
+        title: 'appointmentBooking'.tr(),
         iconPath: AppImages.quickActionDoctor,
         gradientColors: const [Color(0xFFE9DCFF), Color(0xFFD9CCFF)],
         accent: const Color(0xFF8D6BE8),
         onTap: () => context.pushNamed(AppRoutes.allDoctors),
       ),
       _FeatureCardData(
-        title: 'AI Medical Assistant',
+        title: 'aiMedicalAssistant'.tr(),
         iconPath: AppImages.quickActionSupport,
         gradientColors: const [Color(0xFFD7FFF8), Color(0xFFA9EEE4)],
         accent: const Color(0xFF27C7B8),
@@ -29,7 +30,7 @@ class QuickActionsRow extends StatelessWidget {
         onTap: () => context.pushNamed(AppRoutes.aiSymptomCheck),
       ),
       _FeatureCardData(
-        title: 'Medical Records',
+        title: 'medicalRecords'.tr(),
         iconPath: AppImages.quickActionHistory,
         gradientColors: const [Color(0xFFE3ECFF), Color(0xFFC9D8FF)],
         accent: const Color(0xFF6288FF),
@@ -39,7 +40,7 @@ class QuickActionsRow extends StatelessWidget {
         ),
       ),
       _FeatureCardData(
-        title: 'Prescription Manager',
+        title: 'prescriptionManager'.tr(),
         iconPath: AppImages.quickActionReport,
         gradientColors: const [Color(0xFFFFE3EA), Color(0xFFFFC5D2)],
         accent: const Color(0xFFFF7D9A),

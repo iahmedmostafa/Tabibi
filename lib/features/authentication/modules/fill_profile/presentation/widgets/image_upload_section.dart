@@ -8,6 +8,7 @@ import 'package:tabibi/core/utils/functions/select_image.dart';
 import 'package:tabibi/core/utils/helper/helper_functions.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/widgets/profile_image_picker.dart';
 
 class ImageUploadSection extends StatefulWidget {
@@ -47,9 +48,9 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
           isUploaded = false;
 
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Uploading image...'),
-              duration: Duration(seconds: 1),
+            SnackBar(
+              content: Text('uploadingImage'.tr()),
+              duration: const Duration(seconds: 1),
             ),
           );
         } else if (state.status == UploadImageStatus.success) {
@@ -57,8 +58,8 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
             isUploaded = true;
           });
           AppHelperFunctions.showAwesomeSnackBar(
-            title: 'Success',
-            message: 'Image uploaded successfully',
+            title: 'success'.tr(),
+            message: 'imageUploadedSuccessfully'.tr(),
             contentType: ContentType.success,
             context: context,
           );
@@ -66,8 +67,8 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
           isUploaded = false;
 
           AppHelperFunctions.showAwesomeSnackBar(
-            title: 'Error',
-            message: state.errorMessage ?? 'Upload failed',
+            title: 'error'.tr(),
+            message: state.errorMessage ?? 'uploadFailed'.tr(),
             contentType: ContentType.failure,
             context: context,
           );

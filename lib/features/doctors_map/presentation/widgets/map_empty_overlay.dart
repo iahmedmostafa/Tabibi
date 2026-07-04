@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MapEmptyOverlay extends StatelessWidget {
   final VoidCallback onReset;
@@ -35,7 +36,7 @@ class MapEmptyOverlay extends StatelessWidget {
             Icon(Icons.place_outlined, color: AppColors.primary, size: 42.sp),
             SizedBox(height: 10.h),
             Text(
-              'No doctors found here',
+              'noDoctorsFoundHere'.tr(),
               style: TextStyle(
                 color: titleColor,
                 fontSize: 16.sp,
@@ -44,7 +45,7 @@ class MapEmptyOverlay extends StatelessWidget {
             ),
             SizedBox(height: 6.h),
             Text(
-              'Try searching a different area or move the map and search again.',
+              'trySearchingDifferentArea'.tr(),
               textAlign: TextAlign.center,
               style: TextStyle(color: bodyColor, fontSize: 12.sp, height: 1.4),
             ),
@@ -54,7 +55,7 @@ class MapEmptyOverlay extends StatelessWidget {
               height: 48.h,
               child: ElevatedButton(
                 onPressed: onReset,
-                child: const Text('Reset search'),
+                child: Text('resetSearch'.tr()),
               ),
             ),
           ],

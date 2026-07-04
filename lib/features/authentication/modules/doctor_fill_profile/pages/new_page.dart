@@ -6,6 +6,7 @@ import 'package:tabibi/core/style/spacing/vertical_space.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_styles.dart';
 import 'package:tabibi/core/widgets/primary_button.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class NewPage extends StatelessWidget {
   const NewPage({super.key});
@@ -34,7 +35,7 @@ class NewPage extends StatelessWidget {
               ),
               const VerticalSpace(height: 32),
               Text(
-                'Complete Your Profile',
+                'completeYourProfile'.tr(),
                 style: AppTextStyle.h2.copyWith(
                   color: Colors.orange.shade700,
                   fontSize: 24,
@@ -44,7 +45,7 @@ class NewPage extends StatelessWidget {
               ),
               const VerticalSpace(height: 16),
               Text(
-                'Your profile information is incomplete. Please fill in all the required details to proceed with registration.\n\nThis will help us verify your credentials and credentials properly.',
+                'profileInfoDescription'.tr(),
                 style: AppTextStyle.bodySRegular.copyWith(
                   color: AppColors.textGrey,
                   height: 1.6,
@@ -57,7 +58,7 @@ class NewPage extends StatelessWidget {
                 onPress: () {
                   context.goNamed(AppRoutes.doctorFillProfile);
                 },
-                title: 'Continue Registration',
+                title: 'continueRegistration'.tr(),
               ),
             ],
           ),

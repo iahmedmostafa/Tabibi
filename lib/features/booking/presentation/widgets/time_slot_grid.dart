@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/formatters.dart/formatters.dart';
 import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class TimeSlotGrid extends StatelessWidget {
   final Function(String) onTimeSelected;
@@ -25,7 +26,7 @@ class TimeSlotGrid extends StatelessWidget {
         }
 
         if (cubit.availableSlots.isEmpty) {
-          return const Center(child: Text("No slots available for this date"));
+          return Center(child: Text('noSlotsAvailable'.tr()));
         }
 
         return GridView.builder(

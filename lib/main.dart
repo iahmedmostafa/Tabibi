@@ -12,8 +12,8 @@ import 'package:tabibi/core/services/shared_prefs_service.dart';
 import 'package:tabibi/core/utils/theme/theme.dart';
 import 'package:tabibi/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:tabibi/firebase_options.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'core/routing/app_router.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +23,17 @@ Future<void> main() async {
   Stripe.publishableKey = ApiKeys.publishableKey;
   await NotificationManager.instance.init();
   await init();
-  runApp(const TabibiApp());
+  await EasyLocalization.ensureInitialized();
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('ar')],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      startLocale: const Locale('en'),
+      useOnlyLangCode: true,
+      child: const TabibiApp(),
+    ),
+  );
 }
 
 class TabibiApp extends StatelessWidget {
@@ -38,6 +48,9 @@ class TabibiApp extends StatelessWidget {
         return BlocProvider(
           create: (context) => sl<NotificationsCubit>()..getUnreadCount(),
           child: MaterialApp.router(
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
             debugShowCheckedModeBanner: false,
             routerConfig: router,
             themeMode: ThemeMode.system,

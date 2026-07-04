@@ -15,6 +15,7 @@ import 'package:tabibi/features/doctor_profile/domain/entities/doctor_profile.da
 import 'package:tabibi/features/doctor_profile/domain/entities/update_doctor_profile_params.dart';
 import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_cubit.dart';
 import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EditDoctorProfilePage extends StatefulWidget {
   final DoctorProfile profile;
@@ -97,7 +98,9 @@ class _EditDoctorProfilePageState extends State<EditDoctorProfilePage> {
       child: BlocListener<UploadImageCubit, UploadImageState>(
         listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
-          setState(() => _isUploading = state.status == UploadImageStatus.loading);
+          setState(
+            () => _isUploading = state.status == UploadImageStatus.loading,
+          );
 
           if (state.status == UploadImageStatus.success &&
               state.imageUrl != null) {
@@ -105,9 +108,7 @@ class _EditDoctorProfilePageState extends State<EditDoctorProfilePage> {
           } else if (state.status == UploadImageStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(
-                  state.errorMessage ?? 'Image upload failed',
-                ),
+                content: Text(state.errorMessage ?? 'imageUploadFailed'.tr()),
                 backgroundColor: AppColors.error,
               ),
             );
@@ -117,7 +118,8 @@ class _EditDoctorProfilePageState extends State<EditDoctorProfilePage> {
           listenWhen: (previous, current) => previous.status != current.status,
           listener: (context, state) {
             setState(() {
-              _isCredentialUploading = state.status == UploadImageStatus.loading;
+              _isCredentialUploading =
+                  state.status == UploadImageStatus.loading;
             });
 
             if (state.status == UploadImageStatus.success &&
@@ -127,7 +129,7 @@ class _EditDoctorProfilePageState extends State<EditDoctorProfilePage> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    state.errorMessage ?? 'Credential image upload failed',
+                    state.errorMessage ?? 'credentialImageUploadFailed'.tr(),
                   ),
                   backgroundColor: AppColors.error,
                 ),
@@ -135,231 +137,239 @@ class _EditDoctorProfilePageState extends State<EditDoctorProfilePage> {
             }
           },
           child: BlocConsumer<DoctorProfileCubit, DoctorProfileState>(
-          listenWhen: (previous, current) =>
-              previous.updateStatus != current.updateStatus,
-          listener: (context, state) {
-            if (state.updateStatus == DoctorProfileUpdateStatus.success) {
-              context.read<DoctorProfileCubit>().getDoctorProfile();
-              Navigator.of(context).pop(true);
-            }
+            listenWhen: (previous, current) =>
+                previous.updateStatus != current.updateStatus,
+            listener: (context, state) {
+              if (state.updateStatus == DoctorProfileUpdateStatus.success) {
+                context.read<DoctorProfileCubit>().getDoctorProfile();
+                Navigator.of(context).pop(true);
+              }
 
-            if (state.updateStatus == DoctorProfileUpdateStatus.failure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content:
-                      Text(state.errorMessage ?? 'Failed to update profile'),
-                  backgroundColor: AppColors.error,
-                ),
-              );
-            }
-          },
-          builder: (context, state) {
-            final isSaving =
-                state.updateStatus == DoctorProfileUpdateStatus.loading;
-
-            return Scaffold(
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              appBar: AppBar(
-                title: const Text('Edit Profile'),
-                centerTitle: true,
-                actions: [
-                  TextButton(
-                    onPressed: (isSaving || _isUploading || _isCredentialUploading) ? null : _submit,
-                    child: isSaving
-                        ? SizedBox(
-                            width: 18.w,
-                            height: 18.w,
-                            child: const CircularProgressIndicator(
-                              strokeWidth: 2,
-                            ),
-                          )
-                        : const Text('Save'),
+              if (state.updateStatus == DoctorProfileUpdateStatus.failure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      state.errorMessage ?? 'failedToUpdateProfile'.tr(),
+                    ),
+                    backgroundColor: AppColors.error,
                   ),
-                ],
-              ),
-              body: Form(
-                key: _formKey,
-                child: ListView(
-                  padding: EdgeInsets.all(16.w),
-                  children: [
-                    Center(
-                      child: Stack(
-                        children: [
-                          CircleAvatar(
-                            radius: 50.w,
-                            backgroundColor:
-                                isDark ? AppColors.grey800 : AppColors.teal200,
-                            backgroundImage: _localImageFile != null
-                                ? FileImage(_localImageFile!)
-                                : (_networkImageUrl != null &&
-                                        _networkImageUrl!.isNotEmpty
-                                    ? CachedNetworkImageProvider(
-                                        _networkImageUrl!)
-                                    : null),
-                            child: (_localImageFile == null &&
-                                    (_networkImageUrl == null ||
-                                        _networkImageUrl!.isEmpty))
-                                ? Text(
-                                    widget.profile.initials,
-                                    style: TextStyle(
-                                      fontSize: 36.sp,
-                                      fontWeight: FontWeight.bold,
+                );
+              }
+            },
+            builder: (context, state) {
+              final isSaving =
+                  state.updateStatus == DoctorProfileUpdateStatus.loading;
+
+              return Scaffold(
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                appBar: AppBar(
+                  title: Text('editDoctorProfile'.tr()),
+                  centerTitle: true,
+                  actions: [
+                    TextButton(
+                      onPressed:
+                          (isSaving || _isUploading || _isCredentialUploading)
+                          ? null
+                          : _submit,
+                      child: isSaving
+                          ? SizedBox(
+                              width: 18.w,
+                              height: 18.w,
+                              child: const CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : Text('save'.tr()),
+                    ),
+                  ],
+                ),
+                body: Form(
+                  key: _formKey,
+                  child: ListView(
+                    padding: EdgeInsets.all(16.w),
+                    children: [
+                      Center(
+                        child: Stack(
+                          children: [
+                            CircleAvatar(
+                              radius: 50.w,
+                              backgroundColor: isDark
+                                  ? AppColors.grey800
+                                  : AppColors.teal200,
+                              backgroundImage: _localImageFile != null
+                                  ? FileImage(_localImageFile!)
+                                  : (_networkImageUrl != null &&
+                                            _networkImageUrl!.isNotEmpty
+                                        ? CachedNetworkImageProvider(
+                                            _networkImageUrl!,
+                                          )
+                                        : null),
+                              child:
+                                  (_localImageFile == null &&
+                                      (_networkImageUrl == null ||
+                                          _networkImageUrl!.isEmpty))
+                                  ? Text(
+                                      widget.profile.initials,
+                                      style: TextStyle(
+                                        fontSize: 36.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: isDark
+                                            ? Colors.white
+                                            : AppColors.midnightBlue,
+                                      ),
+                                    )
+                                  : null,
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: GestureDetector(
+                                onTap: _handleImageSelection,
+                                child: Container(
+                                  padding: EdgeInsets.all(8.w),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.midnightBlue,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
                                       color: isDark
-                                          ? Colors.white
-                                          : AppColors.midnightBlue,
+                                          ? AppColors.darkSurface
+                                          : Colors.white,
+                                      width: 2,
                                     ),
-                                  )
-                                : null,
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: GestureDetector(
-                              onTap: _handleImageSelection,
-                              child: Container(
-                                padding: EdgeInsets.all(8.w),
-                                decoration: BoxDecoration(
-                                  color: AppColors.midnightBlue,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: isDark
-                                        ? AppColors.darkSurface
-                                        : Colors.white,
-                                    width: 2,
+                                  ),
+                                  child: Icon(
+                                    Icons.camera_alt,
+                                    color: Colors.white,
+                                    size: 16.sp,
                                   ),
                                 ),
-                                child: Icon(
-                                  Icons.camera_alt,
-                                  color: Colors.white,
-                                  size: 16.sp,
-                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 24.h),
+                      _SectionCard(
+                        title: 'credentialImage'.tr(),
+                        children: [
+                          Center(
+                            child: GestureDetector(
+                              onTap: _handleCredentialImageSelection,
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    width: 250.w,
+                                    height: 168.h,
+                                    decoration: BoxDecoration(
+                                      color: isDark
+                                          ? AppColors.grey800
+                                          : AppColors.grey200,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(12.r),
+                                      ),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(12.r),
+                                      ),
+                                      child: _buildCredentialImage(),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: Container(
+                                      width: 40.w,
+                                      height: 40.w,
+                                      decoration: const BoxDecoration(
+                                        color: AppColors.darkTeal,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: _isCredentialUploading
+                                          ? Padding(
+                                              padding: EdgeInsets.all(10.w),
+                                              child:
+                                                  const CircularProgressIndicator(
+                                                    strokeWidth: 2,
+                                                    color: Colors.white,
+                                                  ),
+                                            )
+                                          : const Icon(
+                                              Icons.camera_alt,
+                                              color: Colors.white,
+                                              size: 20,
+                                            ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(height: 24.h),
-                    _SectionCard(
-                      title: 'Credential Image',
-                      children: [
-                        Center(
-                          child: GestureDetector(
-                            onTap: _handleCredentialImageSelection,
-                            child: Stack(
-                              children: [
-                                Container(
-                                  width: 250.w,
-                                  height: 168.h,
-                                  decoration: BoxDecoration(
-                                    color: isDark
-                                        ? AppColors.grey800
-                                        : AppColors.grey200,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(12.r),
-                                    ),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(12.r),
-                                    ),
-                                    child: _buildCredentialImage(),
-                                  ),
-                                ),
-                                Positioned(
-                                  bottom: 0,
-                                  right: 0,
-                                  child: Container(
-                                    width: 40.w,
-                                    height: 40.w,
-                                    decoration: const BoxDecoration(
-                                      color: AppColors.darkTeal,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: _isCredentialUploading
-                                        ? Padding(
-                                            padding: EdgeInsets.all(10.w),
-                                            child: const CircularProgressIndicator(
-                                              strokeWidth: 2,
-                                              color: Colors.white,
-                                            ),
-                                          )
-                                        : const Icon(
-                                            Icons.camera_alt,
-                                            color: Colors.white,
-                                            size: 20,
-                                          ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                      SizedBox(height: 16.h),
+                      _SectionCard(
+                        title: 'accountInformation'.tr(),
+                        children: [
+                          _TextField(
+                            controller: _nameController,
+                            label: 'name'.tr(),
+                            validator: _requiredValidator,
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16.h),
-                    _SectionCard(
-                      title: 'Account Information',
-                      children: [
-                        _TextField(
-                          controller: _nameController,
-                          label: 'Name',
-                          validator: _requiredValidator,
-                        ),
-                        SizedBox(height: 12.h),
-                        _TextField(
-                          controller: _bioController,
-                          label: 'Bio',
-                          maxLines: 3,
-                        ),
-                        SizedBox(height: 12.h),
-                        _TextField(
-                          controller: _consultationFeeController,
-                          label: 'Consultation Fee',
-                          keyboardType: TextInputType.number,
-                          validator: _positiveNumberValidator,
-                        ),
-                        SizedBox(height: 12.h),
-                        _TextField(
-                          controller: _yearsOfExperienceController,
-                          label: 'Years of Experience',
-                          keyboardType: TextInputType.number,
-                          validator: _nonNegativeIntValidator,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16.h),
-                    _SectionCard(
-                      title: 'Clinic Information',
-                      children: [
-                        _TextField(
-                          controller: _clinicNameController,
-                          label: 'Clinic Name',
-                          validator: _requiredValidator,
-                        ),
-                        SizedBox(height: 12.h),
-                        _TextField(
-                          controller: _clinicAddressController,
-                          label: 'Clinic Address',
-                          validator: _requiredValidator,
-                        ),
-                        SizedBox(height: 12.h),
-                        _TextField(
-                          controller: _clinicPhoneController,
-                          label: 'Clinic Phone',
-                          keyboardType: TextInputType.phone,
-                          validator: _requiredValidator,
-                        ),
-                      ],
-                    ),
-                  ],
+                          SizedBox(height: 12.h),
+                          _TextField(
+                            controller: _bioController,
+                            label: 'bio'.tr(),
+                            maxLines: 3,
+                          ),
+                          SizedBox(height: 12.h),
+                          _TextField(
+                            controller: _consultationFeeController,
+                            label: 'consultationFee'.tr(),
+                            keyboardType: TextInputType.number,
+                            validator: _positiveNumberValidator,
+                          ),
+                          SizedBox(height: 12.h),
+                          _TextField(
+                            controller: _yearsOfExperienceController,
+                            label: 'yearsOfExperience'.tr(),
+                            keyboardType: TextInputType.number,
+                            validator: _nonNegativeIntValidator,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16.h),
+                      _SectionCard(
+                        title: 'clinicInformation'.tr(),
+                        children: [
+                          _TextField(
+                            controller: _clinicNameController,
+                            label: 'clinicName'.tr(),
+                            validator: _requiredValidator,
+                          ),
+                          SizedBox(height: 12.h),
+                          _TextField(
+                            controller: _clinicAddressController,
+                            label: 'clinicAddress'.tr(),
+                            validator: _requiredValidator,
+                          ),
+                          SizedBox(height: 12.h),
+                          _TextField(
+                            controller: _clinicPhoneController,
+                            label: 'clinicPhone'.tr(),
+                            keyboardType: TextInputType.phone,
+                            validator: _requiredValidator,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
-    ),
     );
   }
 
@@ -369,8 +379,7 @@ class _EditDoctorProfilePageState extends State<EditDoctorProfilePage> {
     final profile = widget.profile;
     final uploadedUrl = _uploadImageCubit.uploadedImageUrl;
     final avatarUrl = uploadedUrl ?? _networkImageUrl;
-    final credentialUploadedUrl =
-        _credentialUploadImageCubit.uploadedImageUrl;
+    final credentialUploadedUrl = _credentialUploadImageCubit.uploadedImageUrl;
     final credentialImageUrl =
         credentialUploadedUrl ?? _credentialNetworkImageUrl;
 
@@ -406,10 +415,7 @@ class _EditDoctorProfilePageState extends State<EditDoctorProfilePage> {
   Widget _buildCredentialImage() {
     if (_credentialNetworkImageUrl != null &&
         _credentialNetworkImageUrl!.isNotEmpty) {
-      return Image.network(
-        _credentialNetworkImageUrl!,
-        fit: BoxFit.fill,
-      );
+      return Image.network(_credentialNetworkImageUrl!, fit: BoxFit.fill);
     }
     return const Icon(
       Icons.credit_card_rounded,
@@ -419,19 +425,19 @@ class _EditDoctorProfilePageState extends State<EditDoctorProfilePage> {
   }
 
   String? _requiredValidator(String? value) {
-    if (value == null || value.trim().isEmpty) return 'This field is required';
+    if (value == null || value.trim().isEmpty) return 'fieldRequired'.tr();
     return null;
   }
 
   String? _positiveNumberValidator(String? value) {
     final parsed = double.tryParse(value?.trim() ?? '');
-    if (parsed == null || parsed <= 0) return 'Enter a valid positive number';
+    if (parsed == null || parsed <= 0) return 'validPositiveNumber'.tr();
     return null;
   }
 
   String? _nonNegativeIntValidator(String? value) {
     final parsed = int.tryParse(value?.trim() ?? '');
-    if (parsed == null || parsed < 0) return 'Enter a valid number';
+    if (parsed == null || parsed < 0) return 'validNumber'.tr();
     return null;
   }
 

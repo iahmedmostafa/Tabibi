@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tabibi/core/error/exceptions.dart';
 import 'package:tabibi/features/doctor/appointments/domain/usecases/get_appointment_details_usecase.dart';
 import 'package:tabibi/features/doctor/appointments/presentation/cubit/appointment_details_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AppointmentDetailsCubit extends Cubit<AppointmentDetailsState> {
   final GetAppointmentDetailsUseCase getAppointmentDetailsUseCase;
@@ -17,9 +18,7 @@ class AppointmentDetailsCubit extends Cubit<AppointmentDetailsState> {
     } on ServerException catch (e) {
       emit(AppointmentDetailsError(e.errorMessageModel.statusMessage));
     } catch (e) {
-      emit(
-        const AppointmentDetailsError('Failed to fetch appointment details.'),
-      );
+      emit(AppointmentDetailsError('failedToFetchAppointmentDetails'.tr()));
     }
   }
 

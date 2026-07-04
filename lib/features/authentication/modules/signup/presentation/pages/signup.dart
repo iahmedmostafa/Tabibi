@@ -1,4 +1,5 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -45,7 +46,7 @@ class _SignupScreenState extends State<SignupScreen> {
             child: Column(
               children: [
                 VerticalSpace(height: AppHeight.h85),
-                const TopSection(
+                TopSection(
                   title: AppStrings.createAccount,
                   supTitle: AppStrings.subTitleCreateAccount,
                 ),
@@ -67,7 +68,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   icon: Iconsax.user,
                   // pass a validator closure so it matches String? Function(String?)?
                   validator: (value) =>
-                      Validator.validateEmptyText("Name", value),
+                      Validator.validateEmptyText("name".tr(), value),
                   isPassword: false,
                 ),
 
@@ -84,13 +85,13 @@ class _SignupScreenState extends State<SignupScreen> {
                 DropMenu(
                   hint: AppStrings.selectRole,
                   prefixIcon: Iconsax.user_tag,
-                  items: const ['Patient', 'Doctor'],
+                  items: ['patient'.tr(), 'doctorRole'.tr()],
                   onChanged: (value) async {
                     setState(() {
-                      role = value == 'Patient' ? 1 : 2;
+                      role = value == 'patient'.tr() ? 1 : 2;
                     });
                   },
-                  value: role == 1 ? 'Patient' : 'Doctor',
+                  value: role == 1 ? 'patient'.tr() : 'doctorRole'.tr(),
                 ),
 
                 VerticalSpace(height: AppHeight.h24),
@@ -99,7 +100,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     if (state.status == SignUpStatus.success) {
                       // navigate to verify code page with email and origin
                       AppHelperFunctions.showAwesomeSnackBar(
-                        title: 'Success',
+                        title: 'success'.tr(),
                         message: state.message!,
                         contentType: ContentType.success,
                         context: context,
@@ -109,9 +110,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         extra: {'origin': 'signup'},
                       );
                     } else if (state.status == SignUpStatus.failure) {
-                      final msg = state.errorMessage ?? 'Sign up failed';
+                      final msg = state.errorMessage ?? 'signUpFailed'.tr();
                       AppHelperFunctions.showAwesomeSnackBar(
-                        title: 'Error',
+                        title: 'error'.tr(),
                         message: msg,
                         contentType: ContentType.failure,
                         context: context,

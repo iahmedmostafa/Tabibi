@@ -5,6 +5,7 @@ import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/patients/presentation/cubit/medical_history_cubit.dart';
 import 'package:tabibi/features/doctor/patients/presentation/cubit/medical_history_state.dart';
 import 'package:tabibi/features/patient_profile/data/models/medical_profile_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MedicalHistorySection extends StatelessWidget {
   const MedicalHistorySection({super.key});
@@ -35,10 +36,7 @@ class MedicalHistorySection extends StatelessWidget {
     );
   }
 
-  Widget _buildCard({
-    required BuildContext context,
-    required Widget child,
-  }) {
+  Widget _buildCard({required BuildContext context, required Widget child}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
@@ -80,7 +78,7 @@ class MedicalHistorySection extends StatelessWidget {
           ),
           SizedBox(height: 8.h),
           Text(
-            message ?? 'Failed to load medical history',
+            message ?? 'failedToLoadMedicalHistory'.tr(),
             style: TextStyle(
               fontSize: 14.sp,
               color: isDark ? AppColors.grey400 : AppColors.grey600,
@@ -99,7 +97,7 @@ class MedicalHistorySection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildTitle(context, 'Medical History'),
+          _buildTitle(context, 'medicalHistory'.tr()),
           SizedBox(height: 16.h),
           Icon(
             Icons.assignment_outlined,
@@ -108,7 +106,7 @@ class MedicalHistorySection extends StatelessWidget {
           ),
           SizedBox(height: 8.h),
           Text(
-            'No medical history available',
+            'noMedicalHistory'.tr(),
             style: TextStyle(
               fontSize: 14.sp,
               color: isDark ? AppColors.grey400 : AppColors.grey600,
@@ -119,10 +117,7 @@ class MedicalHistorySection extends StatelessWidget {
     );
   }
 
-  Widget _buildContent(
-    BuildContext context,
-    MedicalProfileModel profile,
-  ) {
+  Widget _buildContent(BuildContext context, MedicalProfileModel profile) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return _buildCard(
@@ -130,28 +125,37 @@ class MedicalHistorySection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildTitle(context, 'Medical History'),
+          _buildTitle(context, 'medicalHistory'.tr()),
           SizedBox(height: 16.h),
           if (profile.chronicDiseases.isNotEmpty) ...[
-            _buildSectionLabel(context, 'Chronic Diseases'),
+            _buildSectionLabel(context, 'chronicDiseasesList'.tr()),
             SizedBox(height: 8.h),
             _buildChipList(context, profile.chronicDiseases, isDark),
             SizedBox(height: 16.h),
           ],
-          if (profile.medications != null && profile.medications!.isNotEmpty) ...[
-            _buildSectionLabel(context, 'Medications'),
+          if (profile.medications != null &&
+              profile.medications!.isNotEmpty) ...[
+            _buildSectionLabel(context, 'medicationsList'.tr()),
             SizedBox(height: 8.h),
             _buildValueText(context, profile.medications!),
             SizedBox(height: 16.h),
           ],
           if (profile.allergies != null && profile.allergies!.isNotEmpty) ...[
-            _buildSectionLabel(context, 'Allergies'),
+            _buildSectionLabel(context, 'allergiesCard'.tr()),
             SizedBox(height: 8.h),
-            _buildChipList(context, profile.allergies!.split(',').map((s) => s.trim()).where((s) => s.isNotEmpty).toList(), isDark),
+            _buildChipList(
+              context,
+              profile.allergies!
+                  .split(',')
+                  .map((s) => s.trim())
+                  .where((s) => s.isNotEmpty)
+                  .toList(),
+              isDark,
+            ),
             SizedBox(height: 16.h),
           ],
           if (profile.surgeries.isNotEmpty) ...[
-            _buildSectionLabel(context, 'Surgeries'),
+            _buildSectionLabel(context, 'surgeriesList'.tr()),
             SizedBox(height: 8.h),
             _buildChipList(context, profile.surgeries, isDark),
             SizedBox(height: 16.h),
@@ -199,11 +203,7 @@ class MedicalHistorySection extends StatelessWidget {
     );
   }
 
-  Widget _buildChipList(
-    BuildContext context,
-    List<String> items,
-    bool isDark,
-  ) {
+  Widget _buildChipList(BuildContext context, List<String> items, bool isDark) {
     if (items.isEmpty) {
       return _buildNotSpecified(context);
     }
@@ -236,7 +236,7 @@ class MedicalHistorySection extends StatelessWidget {
   Widget _buildNotSpecified(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Text(
-      'Not specified',
+      'notSpecified'.tr(),
       style: TextStyle(
         fontSize: 14.sp,
         fontStyle: FontStyle.italic,
@@ -252,9 +252,9 @@ class MedicalHistorySection extends StatelessWidget {
           child: _buildInfoItem(
             context,
             icon: Icons.monitor_weight_outlined,
-            label: 'Weight',
+            label: 'weightStat'.tr(),
             value: profile.weight != null && profile.weight!.isNotEmpty
-                ? '${profile.weight} kg'
+                ? '${profile.weight} ${"weightStat".tr()}'
                 : null,
           ),
         ),
@@ -263,9 +263,9 @@ class MedicalHistorySection extends StatelessWidget {
           child: _buildInfoItem(
             context,
             icon: Icons.height_outlined,
-            label: 'Height',
+            label: 'heightCm'.tr(),
             value: profile.height != null && profile.height!.isNotEmpty
-                ? '${profile.height} cm'
+                ? '${profile.height} ${"heightCm".tr()}'
                 : null,
           ),
         ),
@@ -291,11 +291,7 @@ class MedicalHistorySection extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(
-            icon,
-            size: 20.sp,
-            color: AppColors.midnightBlue,
-          ),
+          Icon(icon, size: 20.sp, color: AppColors.midnightBlue),
           SizedBox(width: 10.w),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,14 +305,16 @@ class MedicalHistorySection extends StatelessWidget {
               ),
               SizedBox(height: 2.h),
               Text(
-                value ?? 'Not specified',
+                value ?? 'notSpecified'.tr(),
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
                   color: value != null
                       ? (isDark ? Colors.white : AppColors.grey900)
                       : (isDark ? AppColors.grey500 : AppColors.grey400),
-                  fontStyle: value != null ? FontStyle.normal : FontStyle.italic,
+                  fontStyle: value != null
+                      ? FontStyle.normal
+                      : FontStyle.italic,
                 ),
               ),
             ],
@@ -339,7 +337,7 @@ class MedicalHistorySection extends StatelessWidget {
         ),
         SizedBox(width: 6.w),
         Text(
-          'Last updated: $displayDate',
+          '${'lastUpdated'.tr()} $displayDate',
           style: TextStyle(
             fontSize: 12.sp,
             color: isDark ? AppColors.grey500 : AppColors.grey400,
@@ -353,8 +351,18 @@ class MedicalHistorySection extends StatelessWidget {
     try {
       final dt = DateTime.parse(dateStr);
       final months = [
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+        'Jan'.tr(),
+        'Feb'.tr(),
+        'Mar'.tr(),
+        'Apr'.tr(),
+        'May'.tr(),
+        'Jun'.tr(),
+        'Jul'.tr(),
+        'Aug'.tr(),
+        'Sep'.tr(),
+        'Oct'.tr(),
+        'Nov'.tr(),
+        'Dec'.tr(),
       ];
       return '${dt.day} ${months[dt.month - 1]} ${dt.year}';
     } catch (_) {

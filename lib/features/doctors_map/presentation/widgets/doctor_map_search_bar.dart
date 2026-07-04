@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class DoctorMapSearchBar extends StatelessWidget {
   final TextEditingController controller;
@@ -46,13 +47,13 @@ class DoctorMapSearchBar extends StatelessWidget {
               onChanged: onChanged,
               textInputAction: TextInputAction.search,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: isDark ? AppColors.white : AppColors.black,
-                  ),
+                color: isDark ? AppColors.white : AppColors.black,
+              ),
               decoration: InputDecoration(
-                hintText: 'Search doctors',
-                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: hintColor,
-                    ),
+                hintText: 'searchDoctors'.tr(),
+                hintStyle: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: hintColor),
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
@@ -70,11 +71,7 @@ class DoctorMapSearchBar extends StatelessWidget {
               return IconButton(
                 splashRadius: 20,
                 onPressed: onClear,
-                icon: Icon(
-                  Icons.close_rounded,
-                  color: hintColor,
-                  size: 20.sp,
-                ),
+                icon: Icon(Icons.close_rounded, color: hintColor, size: 20.sp),
               );
             },
           ),

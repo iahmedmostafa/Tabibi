@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 enum PrescriptionWriteRestriction {
   none,
@@ -20,19 +21,16 @@ class PrescriptionWritePolicy extends Equatable {
   });
 
   const PrescriptionWritePolicy.allowed()
-      : this._(
-          canWrite: true,
-          restriction: PrescriptionWriteRestriction.none,
-        );
+    : this._(canWrite: true, restriction: PrescriptionWriteRestriction.none);
 
   const PrescriptionWritePolicy.disabled({
     required PrescriptionWriteRestriction restriction,
     required String message,
   }) : this._(
-          canWrite: false,
-          restriction: restriction,
-          disabledMessage: message,
-        );
+         canWrite: false,
+         restriction: restriction,
+         disabledMessage: message,
+       );
 
   factory PrescriptionWritePolicy.evaluate({
     required DateTime appointmentDate,
@@ -43,28 +41,27 @@ class PrescriptionWritePolicy extends Equatable {
     final currentTime = now ?? DateTime.now();
 
     if (appointmentStatus == 3) {
-      return const PrescriptionWritePolicy.disabled(
+      return PrescriptionWritePolicy.disabled(
         restriction: PrescriptionWriteRestriction.appointmentCompleted,
-        message: 'This appointment has already been completed.',
+        message: 'appointmentAlreadyCompleted'.tr(),
       );
     }
     if (appointmentStatus == 4) {
-      return const PrescriptionWritePolicy.disabled(
+      return PrescriptionWritePolicy.disabled(
         restriction: PrescriptionWriteRestriction.appointmentCancelled,
-        message: 'Prescription cannot be written for a cancelled appointment.',
+        message: 'prescriptionCancelledAppointment'.tr(),
       );
     }
     if (hasPrescription) {
-      return const PrescriptionWritePolicy.disabled(
+      return PrescriptionWritePolicy.disabled(
         restriction: PrescriptionWriteRestriction.prescriptionExists,
-        message: 'A prescription already exists for this appointment.',
+        message: 'prescriptionAlreadyExists'.tr(),
       );
     }
     if (appointmentDate.isAfter(currentTime)) {
-      return const PrescriptionWritePolicy.disabled(
+      return PrescriptionWritePolicy.disabled(
         restriction: PrescriptionWriteRestriction.appointmentInFuture,
-        message:
-            'Prescription can be written only after the appointment time is reached.',
+        message: 'prescriptionAfterVisit'.tr(),
       );
     }
 

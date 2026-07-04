@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class DocumentsCard extends StatelessWidget {
   const DocumentsCard({super.key});
@@ -25,7 +26,7 @@ class DocumentsCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Documents & Scans',
+                'documentsAndScans'.tr(),
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
@@ -33,7 +34,7 @@ class DocumentsCard extends StatelessWidget {
                 ),
               ),
               Text(
-                'View All',
+                'viewAll'.tr(),
                 style: TextStyle(
                   color: AppColors.midnightBlue,
                   fontSize: 14.sp,

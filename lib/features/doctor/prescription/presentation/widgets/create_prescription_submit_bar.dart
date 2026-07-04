@@ -6,6 +6,7 @@ import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_styles.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/cubit/create_prescription_cubit.dart';
 import 'package:tabibi/features/doctor/prescription/presentation/cubit/create_prescription_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CreatePrescriptionSubmitBar extends StatelessWidget {
   const CreatePrescriptionSubmitBar({super.key});
@@ -47,13 +48,19 @@ class CreatePrescriptionSubmitBar extends StatelessWidget {
                       )
                     : const Icon(Iconsax.tick_circle),
                 label: Text(
-                  isLoading ? 'Saving Prescription...' : 'Save Prescription',
+                  isLoading
+                      ? 'savingPrescription'.tr()
+                      : 'savePrescription'.tr(),
                   style: AppTextStyle.button,
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.midnightBlue,
-                  disabledBackgroundColor: isDark ? AppColors.grey800 : AppColors.grey400,
-                  disabledForegroundColor: isDark ? AppColors.grey500 : Colors.white,
+                  disabledBackgroundColor: isDark
+                      ? AppColors.grey800
+                      : AppColors.grey400,
+                  disabledForegroundColor: isDark
+                      ? AppColors.grey500
+                      : Colors.white,
                   foregroundColor: Colors.white,
                   padding: EdgeInsets.symmetric(vertical: 16.h),
                   shape: RoundedRectangleBorder(

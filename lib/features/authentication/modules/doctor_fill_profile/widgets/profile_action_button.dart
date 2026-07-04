@@ -10,6 +10,7 @@ import 'package:tabibi/core/widgets/primary_button.dart';
 import 'package:tabibi/core/widgets/success_dialog.dart';
 import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_cubit.dart';
 import 'package:tabibi/features/doctor_profile/presentation/controller/doctor_profile_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ProfileActionButton extends StatelessWidget {
   final int currentPage;
@@ -61,8 +62,8 @@ class ProfileActionButton extends StatelessWidget {
         else if (state.updateStatus == DoctorProfileUpdateStatus.failure) {
           EasyLoading.dismiss();
           AppHelperFunctions.showAwesomeSnackBar(
-            title: 'Error',
-            message: state.errorMessage ?? 'Failed to update profile',
+            title: 'error'.tr(),
+            message: state.errorMessage ?? 'failedToUpdateProfile'.tr(),
             contentType: ContentType.failure,
             context: context,
           );
@@ -70,7 +71,7 @@ class ProfileActionButton extends StatelessWidget {
       },
       child: PrimaryButton(
         onPress: currentPage < 3 ? onNextPage : onSubmit,
-        title: currentPage == 3 ? AppStrings.saveFillProfile : "Next",
+        title: currentPage == 3 ? AppStrings.saveFillProfile : 'nextStep'.tr(),
       ),
     );
   }

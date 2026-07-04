@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/constants/app_strings.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EmptyPrescriptionView extends StatelessWidget {
   const EmptyPrescriptionView({super.key});
@@ -45,11 +46,7 @@ class EmptyPrescriptionView extends StatelessWidget {
                   color: iconBackground,
                   borderRadius: BorderRadius.circular(20.r),
                 ),
-                child: Icon(
-                  Iconsax.document,
-                  size: 34.sp,
-                  color: iconColor,
-                ),
+                child: Icon(Iconsax.document, size: 34.sp, color: iconColor),
               ),
               SizedBox(height: 16.h),
               Text(
@@ -62,11 +59,10 @@ class EmptyPrescriptionView extends StatelessWidget {
               ),
               SizedBox(height: 6.h),
               Text(
-                'Your prescription will appear here after your doctor publishes it.',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: bodyColor,
-                  height: 1.4,
-                ),
+                'prescriptionWillAppearHere'.tr(),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: bodyColor, height: 1.4),
                 textAlign: TextAlign.center,
               ),
             ],

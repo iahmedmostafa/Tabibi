@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/booking/presentation/controller/appointment_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BookingTypeSelection extends StatelessWidget {
   const BookingTypeSelection({super.key});
@@ -16,14 +17,14 @@ class BookingTypeSelection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Appointment Type",
+              'appointmentType'.tr(),
               style: Theme.of(
                 context,
               ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16.h),
             _TypeItem(
-              title: "Personal",
+              title: 'personal'.tr(),
               icon: Icons.groups_outlined,
               iconColor: Colors.blue,
               value: 0,
@@ -32,7 +33,7 @@ class BookingTypeSelection extends StatelessWidget {
             ),
             const Divider(),
             _TypeItem(
-              title: "Video Call",
+              title: 'videoCall'.tr(),
               icon: Icons.videocam_outlined,
               iconColor: Colors.green,
               value: 1,

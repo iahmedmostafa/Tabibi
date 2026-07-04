@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/patients/domain/entities/patient.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AllergiesCard extends StatelessWidget {
   final Patient patient;
@@ -25,7 +26,7 @@ class AllergiesCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Allergies',
+            'allergiesCard'.tr(),
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
@@ -40,16 +41,22 @@ class AllergiesCard extends StatelessWidget {
               return Container(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.red.shade900.withValues(alpha: 0.2) : const Color(0xFFFFEBEE),
+                  color: isDark
+                      ? Colors.red.shade900.withValues(alpha: 0.2)
+                      : const Color(0xFFFFEBEE),
                   borderRadius: BorderRadius.circular(20.r),
                   border: Border.all(
-                    color: isDark ? Colors.red.shade800 : const Color(0xFFFFCDD2),
+                    color: isDark
+                        ? Colors.red.shade800
+                        : const Color(0xFFFFCDD2),
                   ),
                 ),
                 child: Text(
                   allergy,
                   style: TextStyle(
-                    color: isDark ? Colors.red.shade300 : const Color(0xFFD32F2F),
+                    color: isDark
+                        ? Colors.red.shade300
+                        : const Color(0xFFD32F2F),
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                   ),

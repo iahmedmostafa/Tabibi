@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 
@@ -33,7 +34,10 @@ class AppointmentActionButtons extends StatelessWidget {
               context.push(AppRoutes.callPage, extra: {'bookingId': bookingId});
             },
             icon: Icon(Icons.videocam_outlined, size: 20.sp),
-            label: Text('Start Consultation', style: theme.textTheme.labelLarge),
+            label: Text(
+              'startConsultation'.tr(),
+              style: theme.textTheme.labelLarge,
+            ),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
@@ -52,9 +56,14 @@ class AppointmentActionButtons extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: () {},
                   icon: Icon(Icons.calendar_today, size: 18.sp),
-                  label: Text('Reschedule', style: TextStyle(fontSize: 14.sp)),
+                  label: Text(
+                    'reschedule'.tr(),
+                    style: TextStyle(fontSize: 14.sp),
+                  ),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: isDark ? AppColors.white : AppColors.grey900,
+                    foregroundColor: isDark
+                        ? AppColors.white
+                        : AppColors.grey900,
                     side: BorderSide(
                       color: isDark ? AppColors.grey700 : AppColors.grey300,
                     ),
@@ -72,7 +81,10 @@ class AppointmentActionButtons extends StatelessWidget {
                 child: ElevatedButton.icon(
                   onPressed: () {},
                   icon: Icon(Icons.cancel_outlined, size: 18.sp),
-                  label: Text('Cancel', style: TextStyle(fontSize: 14.sp)),
+                  label: Text(
+                    'cancelAppointment'.tr(),
+                    style: TextStyle(fontSize: 14.sp),
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.lightPink,
                     foregroundColor: AppColors.error,
@@ -100,7 +112,10 @@ class AppointmentActionButtons extends StatelessWidget {
               },
             ),
             icon: Icon(Icons.chat_bubble_outline, size: 20.sp),
-            label: Text('Message Patient', style: TextStyle(fontSize: 14.sp)),
+            label: Text(
+              'messagePatient'.tr(),
+              style: TextStyle(fontSize: 14.sp),
+            ),
             style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.primary,
               side: BorderSide(color: AppColors.paleBlueLight),

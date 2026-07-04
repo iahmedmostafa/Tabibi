@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SectionHeader extends StatelessWidget {
   const SectionHeader({super.key, required this.title, this.onTap});
@@ -12,12 +13,7 @@ class SectionHeader extends StatelessWidget {
 
     return Row(
       children: [
-        Expanded(
-          child: Text(
-            title,
-            style: theme.textTheme.headlineSmall
-          ),
-        ),
+        Expanded(child: Text(title, style: theme.textTheme.headlineSmall)),
         if (onTap != null)
           Material(
             color: Colors.transparent,
@@ -34,7 +30,7 @@ class SectionHeader extends StatelessWidget {
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
-                  'See All',
+                  'seeAll'.tr(),
                   style: theme.textTheme.labelLarge?.copyWith(
                     color: theme.colorScheme.primary,
                     fontWeight: FontWeight.w700,

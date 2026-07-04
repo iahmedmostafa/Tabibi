@@ -24,7 +24,7 @@ class ReviewBlocBuilder extends StatelessWidget {
           onPressed: () {
             context.push('${AppRoutes.doctorReviews}/${details.id}');
           },
-          child: const Text(AppStrings.seeAll),
+          child: Text(AppStrings.seeAll),
         ),
       ],
     );

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/features/doctor/earnings/domain/entities/earnings.dart';
 import 'package:tabibi/features/doctor/earnings/presentation/utils/earnings_formatters.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EarningsHeroSummaryCard extends StatelessWidget {
   final EarningsSummary summary;
@@ -54,7 +55,7 @@ class EarningsHeroSummaryCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Lifetime Earnings',
+                      'lifetimeEarnings'.tr(),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Colors.white70,
                         fontWeight: FontWeight.w600,
@@ -106,31 +107,31 @@ class EarningsSummaryGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final cards = [
       _MetricData(
-        'This Month',
+        'thisMonth'.tr(),
         EarningsFormatters.money(summary.thisMonthEarnings),
         Icons.today,
         AppColors.teal,
       ),
       _MetricData(
-        'Commission',
+        'commission'.tr(),
         EarningsFormatters.money(summary.appCommission),
         Icons.percent_rounded,
         AppColors.orange,
       ),
       _MetricData(
-        'Growth',
+        'growth'.tr(),
         '${summary.growthPercentage.toStringAsFixed(1)}%',
         Icons.trending_up,
         AppColors.green,
       ),
       _MetricData(
-        'Consultations',
+        'consultations'.tr(),
         summary.totalConsultations.toString(),
         Icons.groups_outlined,
         AppColors.blue,
       ),
       _MetricData(
-        'Average / Visit',
+        'averagePerVisit'.tr(),
         EarningsFormatters.money(summary.averagePerVisit),
         Icons.payments_outlined,
         AppColors.purple,
@@ -209,7 +210,9 @@ class _MetricCard extends StatelessWidget {
         color: theme.cardColor,
         borderRadius: BorderRadius.circular(18.r),
         border: Border.all(
-          color: isDark ? AppColors.grey800 : AppColors.black.withValues(alpha: 0.1),
+          color: isDark
+              ? AppColors.grey800
+              : AppColors.black.withValues(alpha: 0.1),
         ),
         boxShadow: [
           BoxShadow(

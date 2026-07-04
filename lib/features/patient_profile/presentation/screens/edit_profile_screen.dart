@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -94,8 +95,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           setState(() => _networkImageUrl = state.imageUrl);
         } else if (state.status == UploadImageStatus.failure) {
           AppHelperFunctions.showAwesomeSnackBar(
-            title: 'Error',
-            message: state.errorMessage ?? 'Image upload failed',
+            title: 'error'.tr(),
+            message: state.errorMessage ?? 'imageUploadFailed'.tr(),
             contentType: ContentType.failure,
             context: context,
           );
@@ -105,11 +106,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         listenWhen: (prev, curr) => prev.updateStatus != curr.updateStatus,
         listener: (context, state) {
           if (state.updateStatus == PatientProfileUpdateStatus.loading) {
-            EasyLoading.show(status: 'Saving...');
+            EasyLoading.show(status: 'saving'.tr());
           } else if (state.updateStatus == PatientProfileUpdateStatus.success) {
             EasyLoading.dismiss();
             AppHelperFunctions.showAwesomeSnackBar(
-              title: 'Success',
+              title: 'success'.tr(),
               message: AppStrings.profileUpdatedSuccess,
               contentType: ContentType.success,
               context: context,
@@ -118,8 +119,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           } else if (state.updateStatus == PatientProfileUpdateStatus.failure) {
             EasyLoading.dismiss();
             AppHelperFunctions.showAwesomeSnackBar(
-              title: 'Error',
-              message: state.errorMessage ?? 'Failed to update profile',
+              title: 'error'.tr(),
+              message: state.errorMessage ?? 'failedToUpdateProfile'.tr(),
               contentType: ContentType.failure,
               context: context,
             );

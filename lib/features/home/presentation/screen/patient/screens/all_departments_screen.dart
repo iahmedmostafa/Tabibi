@@ -5,6 +5,7 @@ import 'package:tabibi/core/utils/constants/app_colors.dart';
 import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/departments_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/department_grid_view.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AllDepartmentsScreen extends StatelessWidget {
   const AllDepartmentsScreen({super.key});
@@ -18,7 +19,7 @@ class AllDepartmentsScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: Text(
-          'All Categories',
+          'allCategories'.tr(),
           style: TextStyle(
             color: AppColors.midnightBlue,
             fontSize: 20.sp,
@@ -36,13 +37,15 @@ class AllDepartmentsScreen extends StatelessWidget {
 
             if (state.departmentsStatus == DepartmentsStatus.failure) {
               return Center(
-                child: Text(state.errorMessage ?? 'Failed to load categories'),
+                child: Text(
+                  state.errorMessage ?? 'failedToLoadCategories'.tr(),
+                ),
               );
             }
 
             final departments = state.departments ?? [];
             if (departments.isEmpty) {
-              return const Center(child: Text('No categories found'));
+              return Center(child: Text('noCategoriesFound'.tr()));
             }
 
             return SingleChildScrollView(

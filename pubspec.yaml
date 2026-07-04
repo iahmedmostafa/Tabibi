@@ -49,6 +49,8 @@ dependencies:
   url_launcher: ^6.3.2
   zego_uikit_prebuilt_call: any
   flutter_staggered_animations: ^1.1.1
+  easy_localization: ^3.0.8
+  device_info_plus: ^11.4.0
 
 dependency_overrides:
   zego_zim: 2.27.0
@@ -70,6 +72,7 @@ flutter:
   assets:
     - assets/images/
     - assets/logo/
+    - assets/translations/
     - .env
   # fonts:
   #   - family: Schyler

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:tabibi/core/routing/app_routes.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ScheduleAppointmentsHeader extends StatelessWidget {
   final int count;
@@ -25,11 +26,10 @@ class ScheduleAppointmentsHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '$count appointments',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium
-                    ?.copyWith(fontSize: 16.sp),
+                '$count ${"appointmentsLabel".tr()}',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontSize: 16.sp),
               ),
               Text(
                 DateFormat('EEEE, MMM d').format(selectedDate),
@@ -39,8 +39,10 @@ class ScheduleAppointmentsHeader extends StatelessWidget {
           ),
           TextButton(
             onPressed: () => context.push(AppRoutes.doctorAvailability),
-            child:
-                Text('Edit Availability', style: TextStyle(fontSize: 14.sp)),
+            child: Text(
+              'editAvailability'.tr(),
+              style: TextStyle(fontSize: 14.sp),
+            ),
           ),
         ],
       ),

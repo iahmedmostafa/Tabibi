@@ -10,6 +10,7 @@ import 'package:tabibi/core/utils/helper/helper_functions.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/cubit/clinic_upload_image_cubit.dart';
 import 'package:tabibi/features/authentication/modules/doctor_fill_profile/widgets/credential_image_picker.dart';
 import 'package:tabibi/features/authentication/modules/fill_profile/presentation/cubit/upload_image_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ClinicImageUploadSection extends StatefulWidget {
   const ClinicImageUploadSection({super.key});
@@ -50,9 +51,9 @@ class _CredentialImageUploadSectionState
           isUploaded = false;
 
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Uploading credential image...'),
-              duration: Duration(seconds: 1),
+            SnackBar(
+              content: Text('uploadingCredentialImage'.tr()),
+              duration: const Duration(seconds: 1),
             ),
           );
         } else if (state.status == UploadImageStatus.success) {
@@ -60,8 +61,8 @@ class _CredentialImageUploadSectionState
             isUploaded = true;
           });
           AppHelperFunctions.showAwesomeSnackBar(
-            title: 'Success',
-            message: 'Credential image uploaded successfully',
+            title: 'success'.tr(),
+            message: 'credentialImageUploadedSuccessfully'.tr(),
             contentType: ContentType.success,
             context: context,
           );
@@ -69,7 +70,7 @@ class _CredentialImageUploadSectionState
           isUploaded = false;
 
           AppHelperFunctions.showAwesomeSnackBar(
-            title: 'Error',
+            title: 'error'.tr(),
             message: state.errorMessage ?? 'Upload failed',
             contentType: ContentType.failure,
             context: context,

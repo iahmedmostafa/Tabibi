@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -26,7 +27,7 @@ class EditAvailabilityPage extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                'Availability saved!',
+                'availabilitySaved'.tr(),
                 style: TextStyle(fontSize: 14.sp),
               ),
               backgroundColor: AppColors.midnightBlue,
@@ -37,7 +38,7 @@ class EditAvailabilityPage extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                state.errorMessage ?? 'Failed to save availability',
+                state.errorMessage ?? 'failedToSaveAvailability'.tr(),
                 style: TextStyle(fontSize: 14.sp),
               ),
               backgroundColor: AppColors.error,
@@ -49,7 +50,10 @@ class EditAvailabilityPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
-          title: Text(loc.availability, style: Theme.of(context).textTheme.titleLarge),
+          title: Text(
+            loc.availability,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           centerTitle: true,
           leading: IconButton(
             icon: Icon(
@@ -61,14 +65,14 @@ class EditAvailabilityPage extends StatelessWidget {
           ),
           actions: [
             BlocBuilder<AvailabilityCubit, AvailabilityState>(
-              buildWhen: (previous, current) => previous.status != current.status,
+              buildWhen: (previous, current) =>
+                  previous.status != current.status,
               builder: (context, state) {
                 final isSaving = state.status == AvailabilityStatus.loading;
                 return TextButton(
                   onPressed: isSaving
                       ? null
-                      : () =>
-                          context.read<AvailabilityCubit>().save(),
+                      : () => context.read<AvailabilityCubit>().save(),
                   child: isSaving
                       ? SizedBox(
                           width: 18.w,
@@ -78,7 +82,7 @@ class EditAvailabilityPage extends StatelessWidget {
                           ),
                         )
                       : Text(
-                          'Save',
+                          'saveLabel'.tr(),
                           style: TextStyle(
                             fontSize: 16.sp,
                             color: AppColors.midnightBlue,
@@ -96,9 +100,7 @@ class EditAvailabilityPage extends StatelessWidget {
               previous.isInitialLoading != current.isInitialLoading,
           builder: (context, state) {
             if (state.isInitialLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: CircularProgressIndicator());
             }
             return SingleChildScrollView(
               padding: EdgeInsets.all(16.w),
@@ -134,7 +136,7 @@ class _WorkingDaysSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Working Days',
+              'workingDaysLabel'.tr(),
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
@@ -164,8 +166,9 @@ class _WorkingDaysSection extends StatelessWidget {
                         ),
                         value: entry.value,
                         activeColor: AppColors.midnightBlue,
-                        activeTrackColor:
-                            AppColors.midnightBlue.withValues(alpha: 0.3),
+                        activeTrackColor: AppColors.midnightBlue.withValues(
+                          alpha: 0.3,
+                        ),
                         onChanged: (value) {
                           context.read<AvailabilityCubit>().toggleWorkingDay(
                             entry.key,
@@ -176,10 +179,9 @@ class _WorkingDaysSection extends StatelessWidget {
                       if (entry.key != 'Sunday')
                         Divider(
                           height: 1.h,
-                          color:
-                              isDark
-                                  ? AppColors.grey800
-                                  : const Color(0xFFE2E8F0),
+                          color: isDark
+                              ? AppColors.grey800
+                              : const Color(0xFFE2E8F0),
                           indent: 16.w,
                           endIndent: 16.w,
                         ),
@@ -212,7 +214,7 @@ class _TimeSlotsSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Time Slots',
+                  'timeSlotsLabel'.tr(),
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
@@ -231,7 +233,10 @@ class _TimeSlotsSection extends StatelessWidget {
                     );
                   },
                   icon: Icon(Icons.add, size: 18.sp),
-                  label: Text('Add Slot', style: TextStyle(fontSize: 14.sp)),
+                  label: Text(
+                    'addSlot'.tr(),
+                    style: TextStyle(fontSize: 14.sp),
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.midnightBlue,
                     foregroundColor: Colors.white,
@@ -252,7 +257,7 @@ class _TimeSlotsSection extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.all(32.w),
                   child: Text(
-                    'No time slots added yet',
+                    'noTimeSlotsYet'.tr(),
                     style: TextStyle(
                       color: isDark ? AppColors.grey400 : AppColors.grey600,
                       fontSize: 14.sp,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tabibi/core/utils/constants/app_colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SearchThisAreaButton extends StatelessWidget {
   final VoidCallback onTap;
@@ -33,10 +34,14 @@ class SearchThisAreaButton extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.refresh_rounded, color: AppColors.primary, size: 18.sp),
+                Icon(
+                  Icons.refresh_rounded,
+                  color: AppColors.primary,
+                  size: 18.sp,
+                ),
                 SizedBox(width: 8.w),
                 Text(
-                  'Search this area',
+                  'searchThisArea'.tr(),
                   style: TextStyle(
                     fontSize: 13.sp,
                     fontWeight: FontWeight.w700,

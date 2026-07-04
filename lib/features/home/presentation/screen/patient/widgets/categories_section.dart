@@ -7,6 +7,7 @@ import 'package:tabibi/core/utils/enums/enums.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/cubit/departments_cubit.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/department_category_card.dart';
 import 'package:tabibi/features/home/presentation/screen/patient/widgets/home_feedback_panel.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CategoriesSection extends StatelessWidget {
   const CategoriesSection({super.key});
@@ -23,13 +24,13 @@ class CategoriesSection extends StatelessWidget {
 
         if (state.departmentsStatus == DepartmentsStatus.failure) {
           return ErrorPanel(
-            message: state.errorMessage ?? 'Failed to load categories',
+            message: state.errorMessage ?? 'failedToLoadCategories'.tr(),
           );
         }
 
         final departments = state.departments ?? [];
         if (departments.isEmpty) {
-          return const EmptyPanel(message: 'No categories available');
+          return EmptyPanel(message: 'noCategoriesAvailable'.tr());
         }
 
         final visibleDepartments = departments.take(8).toList();
